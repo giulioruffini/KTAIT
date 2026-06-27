@@ -120,6 +120,66 @@ theorem probabilistic_regulator_theorem
             zpow_add₀ (by norm_num : (2 : ℝ) ≠ 0)]
         ring
 
+/-- **Theorem 2 (sharp form), retaining the regulator cost `2^{−K(R)}`.**
+    This is clarification (ii) of the ART paper / WP0162 Eq. (22): before dropping
+    `2^{−K(R)}≤1`. No extra hypothesis is needed — the exponent identity is exact
+    (the `K(R)` term carried through, not bounded away):
+    `post (W,R) x ≤ C · 2^{M(W:R)} · 2^{−Δ} · 2^{−K(R)}`.
+    Equivalently (by the chain rule `K(W,R)=K(W)+K(R\mid W)`, an AIT axiom) this reads
+    `≤ C · 2^{−K(R\mid W)} · 2^{−Δ}`. -/
+theorem probabilistic_regulator_theorem_sharp
+    (W R xon xoff : F.Obj)
+    (c0 : ℤ) (hoff : (F.K xoff : ℤ) ≤ (F.K W : ℤ) + c0)
+    {c1 : ℝ} (hLB : F.CodingLB c1) :
+    ∃ C : ℝ, 0 < C ∧
+      F.post (F.pair W R) xon
+        ≤ C * (2 : ℝ) ^ (IK F.toAITFrame W R)
+            * (2 : ℝ) ^ (-((F.K xoff : ℤ) - (F.K xon : ℤ)))
+            * (2 : ℝ) ^ (-(F.K R : ℤ)) := by
+  have hc1 := hLB.1
+  refine ⟨(1 / c1) * (2 : ℝ) ^ c0, by positivity, ?_⟩
+  -- exact exponent identity (K(R) retained, not dropped):
+  have hexp : (F.K xon : ℤ) - (F.K (F.pair W R) : ℤ)
+      ≤ c0 + IK F.toAITFrame W R - ((F.K xoff : ℤ) - (F.K xon : ℤ)) - (F.K R : ℤ) := by
+    simp only [IK]; omega
+  calc F.post (F.pair W R) xon
+      ≤ (1 / c1) * (2 : ℝ) ^ ((F.K xon : ℤ) - (F.K (F.pair W R) : ℤ)) :=
+        wrapper_bound F hLB _ _
+    _ ≤ (1 / c1) * (2 : ℝ) ^ (c0 + IK F.toAITFrame W R
+            - ((F.K xoff : ℤ) - (F.K xon : ℤ)) - (F.K R : ℤ)) := by
+        gcongr
+        norm_num
+    _ = (1 / c1) * (2 : ℝ) ^ c0 * (2 : ℝ) ^ (IK F.toAITFrame W R)
+          * (2 : ℝ) ^ (-((F.K xoff : ℤ) - (F.K xon : ℤ))) * (2 : ℝ) ^ (-(F.K R : ℤ)) := by
+        rw [show c0 + IK F.toAITFrame W R - ((F.K xoff : ℤ) - (F.K xon : ℤ)) - (F.K R : ℤ)
+              = c0 + IK F.toAITFrame W R + (-((F.K xoff : ℤ) - (F.K xon : ℤ)))
+                  + (-(F.K R : ℤ)) from by ring,
+            zpow_add₀ (by norm_num : (2 : ℝ) ≠ 0),
+            zpow_add₀ (by norm_num : (2 : ℝ) ≠ 0),
+            zpow_add₀ (by norm_num : (2 : ℝ) ≠ 0)]
+        ring
+
+/-- The published headline (Theorem 2) follows from the sharp form by `2^{−K(R)} ≤ 1`. -/
+theorem probabilistic_regulator_theorem_of_sharp
+    (W R xon xoff : F.Obj)
+    (c0 : ℤ) (hoff : (F.K xoff : ℤ) ≤ (F.K W : ℤ) + c0)
+    {c1 : ℝ} (hLB : F.CodingLB c1) :
+    ∃ C : ℝ, 0 < C ∧
+      F.post (F.pair W R) xon
+        ≤ C * (2 : ℝ) ^ (IK F.toAITFrame W R)
+            * (2 : ℝ) ^ (-((F.K xoff : ℤ) - (F.K xon : ℤ))) := by
+  obtain ⟨C, hC, hsharp⟩ := probabilistic_regulator_theorem_sharp F W R xon xoff c0 hoff hLB
+  refine ⟨C, hC, ?_⟩
+  have hKR : (2 : ℝ) ^ (-(F.K R : ℤ)) ≤ 1 := by
+    apply zpow_le_one_of_nonpos₀ (by norm_num) (by omega)
+  calc F.post (F.pair W R) xon
+      ≤ C * (2 : ℝ) ^ (IK F.toAITFrame W R)
+          * (2 : ℝ) ^ (-((F.K xoff : ℤ) - (F.K xon : ℤ))) * (2 : ℝ) ^ (-(F.K R : ℤ)) := hsharp
+    _ ≤ C * (2 : ℝ) ^ (IK F.toAITFrame W R)
+          * (2 : ℝ) ^ (-((F.K xoff : ℤ) - (F.K xon : ℤ))) * 1 := by gcongr
+    _ = C * (2 : ℝ) ^ (IK F.toAITFrame W R)
+          * (2 : ℝ) ^ (-((F.K xoff : ℤ) - (F.K xon : ℤ))) := by ring
+
 /-- **Theorem 3 (On/Off evidence equals the complexity gap).** The ON/OFF evidence ratio
     is `2^Δ` up to the coding constants, `Δ = K(O_{W,∅}) − K(O_{W,R})`:
     `(c₁/c₂)·2^{Δ} ≤ m(x_on)/m(x_off) ≤ (c₂/c₁)·2^{Δ}`.

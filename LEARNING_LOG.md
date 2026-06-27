@@ -162,3 +162,9 @@ A 2–3 line note after each milestone: what we learned / what tripped us up.
 - Lean lessons: Mathlib's 4-arg monotone-division is `div_le_div₀ (0≤c)(a≤c)(0<d)(d≤b)`;
   `mul_div_mul_comm : a*b/(c*d) = a/c*(b/d)`; choosing a multiplicative statement sidesteps
   the whole `Real.logb` API.
+- Added `probabilistic_regulator_theorem_sharp`: the ART Thm 2 sharp form retaining
+  `2^{−K(R)}` (clarification (ii) / WP0162 Eq. 22). No extra hypothesis — the exponent
+  identity is EXACT (the headline form just drops `2^{−K(R)} ≤ 1`). The headline is then
+  re-derived as `probabilistic_regulator_theorem_of_sharp` via
+  `zpow_le_one_of_nonpos₀ (by norm_num) (by omega)` (note: the non-positive-exponent side
+  goal `−K(R) ≤ 0` is `omega`, not `positivity`).
