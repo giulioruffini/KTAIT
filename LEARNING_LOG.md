@@ -141,3 +141,24 @@ A 2–3 line note after each milestone: what we learned / what tripped us up.
   free variables even when value-independent (`Toy.K` ignores its arg) — `simp [defs]`
   reduces them away first, then it closes. (c) `decide` evaluates `if`/`natAbs`/`Int`
   comparisons on concrete frames — ideal for "this instance holds / that one fails".
+
+## Phase 1 — close the ART chain (2026-06-27)
+
+- Refactored `AITProb` to carry the semimeasure `m` and DEFINE the posterior
+  `post e x := 2^{-K e}/m x` (canonical-code posterior = Lemma 1 specialized). Coding
+  theorem now a frame predicate: `CodingLB`/`CodingUB`.
+- DERIVED the wrapper bound Eq. (6) (`wrapper_bound`): `post e x ≤ (1/c₁)·2^{K x − K e}`
+  — previously an assumed hypothesis, now a theorem from `CodingLB` (proof = Lemma 1's
+  upper half via `post_factor` + `div_le_div_iff₀` + `mul_le_mul_of_nonneg_right`).
+- `theorem1_posterior_tilt`: two-sided posterior tilt; key trick — the exponent
+  `K x − K W − K R + IK = K x − K(pair W R)` by `simp only [IK]; ring`, reducing to the
+  two-sided wrapper.
+- `probabilistic_regulator_theorem` re-proved to consume `wrapper_bound` (no free
+  wrapper hypothesis): now rests on `CodingLB` + Lemma 2.
+- `theorem3_onoff_evidence` in LOG-FREE multiplicative form
+  `(c₁/c₂)2^Δ ≤ m_on/m_off ≤ (c₂/c₁)2^Δ` (avoids `Real.logb`); proof = `div_le_div₀`
+  (Mathlib's 4-arg division-monotonicity) + an algebra lemma via `mul_div_mul_comm` and
+  `zpow_sub₀`. All four `#print axioms` = Lean core only.
+- Lean lessons: Mathlib's 4-arg monotone-division is `div_le_div₀ (0≤c)(a≤c)(0<d)(d≤b)`;
+  `mul_div_mul_comm : a*b/(c*d) = a/c*(b/d)`; choosing a multiplicative statement sidesteps
+  the whole `Real.logb` API.
