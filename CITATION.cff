@@ -1,0 +1,37 @@
+cff-version: 1.2.0
+message: "If you use this formalization, please cite it as below."
+title: "KTAIT: A Lean 4 Formalization of Kolmogorov Theory"
+abstract: >-
+  A Lean 4 + Mathlib formalization that machine-checks the Kolmogorov-Theory (KT)
+  corollaries against an explicit, satisfiable axiomatic AIT/Bayes interface: the
+  probabilistic Algorithmic Regulator Theorem, persistence and its conservation ledger,
+  regulator selection, the temporal self-model, self-model incompleteness, and the
+  uncomputability of regulatory coarse-graining. KT corollaries are proved sorry-free;
+  standard AIT/probability/computability results are assumed as a delimited axiom layer.
+type: software
+authors:
+  - family-names: Ruffini
+    given-names: Giulio
+    affiliation: "Barcelona Computational Foundation; Neuroelectrics; Starlab"
+version: "0.1.0"
+date-released: "2026-06-27"
+license: Apache-2.0
+url: "https://github.com/giulioruffini/KTAIT"
+repository-code: "https://github.com/giulioruffini/KTAIT"
+keywords:
+  - Kolmogorov Theory
+  - algorithmic information theory
+  - Lean 4
+  - Mathlib
+  - formal verification
+  - algorithmic regulator theorem
+references:
+  - type: report
+    title: "A Lean 4 Formalization of Kolmogorov Theory: Axioms, Theorems, and Project Status"
+    authors:
+      - family-names: Ruffini
+        given-names: Giulio
+    institution:
+      name: Barcelona Computational Foundation
+    number: "WP0195"
+    year: 2026

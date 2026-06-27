@@ -67,3 +67,21 @@ The living status document — methodology (standard AIT + Bayes as a delimited 
 layer; KT corollaries proved `sorry`-free), the full theorem inventory across the KT
 corpus with per-statement status, and the roadmap — is **BCOM WP0195**
 (`BCOM WPs and Blogs/working_drafts/WP0195-Lean_KT_Formalization/`).
+
+## Citing this work
+
+See `CITATION.cff` (GitHub renders a "Cite this repository" button). BibTeX:
+
+```bibtex
+@software{ruffini2026ktait,
+  author  = {Ruffini, Giulio},
+  title   = {{KTAIT}: A {Lean}~4 Formalization of {Kolmogorov} {Theory}},
+  year    = {2026},
+  version = {0.1.0},
+  url     = {https://github.com/giulioruffini/KTAIT},
+  note    = {Companion: BCOM Working Paper WP0195}
+}
+```
+
+For a permanent, citable snapshot with a DOI, archive a tagged release via Zenodo
+(GitHub → Zenodo integration; requires a public repo or a manual upload of the release zip).
