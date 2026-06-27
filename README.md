@@ -39,10 +39,24 @@ Toolchain is pinned in `lean-toolchain` (Lean v4.31.0); Mathlib is pinned in
 ## Milestones
 
 - **M0** — Toolchain & hello-Lean ✅
-- **M1** — Typed ontology (`KTAIT/Ontology.lean`)
-- **M2** — AIT interface (`KTAIT/Basic.lean`)
-- **M3** — Persistence (`KTAIT/Persistence.lean`)
-- **M4** — ART axiom + self-model corollary (`KTAIT/ART.lean`, `KTAIT/SelfModel.lean`)
-- **M5** — Toy model + bad statements (`KTAIT/ToyModel.lean`, `KTAIT/BadStatements.lean`)
+- **M1** — Typed ontology (`KTAIT/Ontology.lean`) ✅
+- **M2** — AIT interface (`KTAIT/Basic.lean`) ✅
+- **M2.5** — Probabilistic ART, Level 1.5 (`KTAIT/ART.lean` Theorem 2, `KTAIT/Probability.lean` Lemma 1) ✅
+- **M3** — Persistence (`KTAIT/Persistence.lean`) ✅
+- **M4** — Self-model corollary, Prop. 3 (`KTAIT/SelfModel.lean`) ✅
+- **M5** — Toy model + bad statements (`KTAIT/ToyModel.lean`, `KTAIT/BadStatements.lean`) ✅
 
 See `LEARNING_LOG.md` for a running 2–3 line note per milestone.
+
+## What is proved (Level 1 + the probabilistic ART of Level 1.5)
+
+- **`AITProb.probabilistic_regulator_theorem`** — ART Theorem 2 (the real posterior
+  bound `P((W,R)|x,E) ≤ C·2^{M(W:R)}·2^{−Δ}`).
+- **`PrefixMachine.lemma1_posterior_bounds`** — Lemma 1, the Bayes↔Kolmogorov bridge.
+- **`self_regulation_temporal_model`** — Prop. 3, self-regulation requires a temporal
+  self-model.
+- **`pers_eq_nmai`**, **`persistent_pos`** — persistence as temporal self-information.
+- All KT corollaries are `sorry`-free; `#print axioms` shows only Lean core
+  (`propext`, `Classical.choice`, `Quot.sound`) plus the named AIT *hypotheses*.
+- Non-vacuity witnessed in `ToyModel.lean`; the typed/`y*` guards bite in
+  `BadStatements.lean`.
