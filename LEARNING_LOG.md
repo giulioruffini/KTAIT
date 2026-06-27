@@ -184,3 +184,16 @@ A 2–3 line note after each milestone: what we learned / what tripped us up.
   posterior favors regulators simple *given the world*.
 - `#print axioms`: `regulator_selection = [propext, Quot.sound]` (no `Classical.choice`);
   conditional corollary = Lean core.
+
+## Phase 2 — persistence conservation (WP0162 Prop 2) (2026-06-27)
+
+- `ConservationLedger F OW R`: `K(O_W) = I_K(O_W:R) + K(O_W|R*)` — the symmetry of
+  algorithmic information rearranged (the residual splits further into action + innovation,
+  the third sink, not modeled).
+- `persistence_conservation`: bounded form `|K(O_W) − (IK + condStar)| ≤ slack` straight
+  from `SymmetryOfInformation`. Proof: the inside is the negation of `hsym OW R`'s term, so
+  `rw [show … = −(…) from by ring, Int.natAbs_neg]; exact h`. `#print axioms = [propext]`.
+- `conservation_tradeoff`: at fixed `K(O_W)`, `IK(O_W:R₂) ≤ IK(O_W:R₁) ↔ condStar R₁ ≤
+  condStar R₂` — maximizing shared structure = minimizing the conditional residual. `omega`.
+- Pattern noticed: WP0162 §D Props 1 & 2 are both "order-equivalence under an AIT identity"
+  (chain rule / symmetry of info) + `omega` — the same proof shape as the self-model.
