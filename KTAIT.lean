@@ -4,5 +4,6 @@ import KTAIT.ART
 import KTAIT.Probability
 import KTAIT.SelfModel
 import KTAIT.Persistence
+import KTAIT.RegulatorSelection
 import KTAIT.ToyModel
 import KTAIT.BadStatements

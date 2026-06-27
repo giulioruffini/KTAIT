@@ -168,3 +168,19 @@ A 2–3 line note after each milestone: what we learned / what tripped us up.
   re-derived as `probabilistic_regulator_theorem_of_sharp` via
   `zpow_le_one_of_nonpos₀ (by norm_num) (by omega)` (note: the non-positive-exponent side
   goal `−K(R) ≤ 0` is `omega`, not `positivity`).
+
+## Phase 3 — regulator selection (WP0162 Prop 1) (2026-06-27)
+
+- `ChainRule F W R`: `K(R|W) = K(R) − M(W:R)` (i.e. `cond R W = K R − IK W R`), the chain
+  rule / symmetry of information as a named AIT hypothesis.
+- `regulator_selection_order`: `cond R₁ W ≤ cond R₂ W ↔ (M−K)(R₂) ≤ (M−K)(R₁)` —
+  minimizing conditional complexity `K(·|W)` = maximizing `M(W:·) − K(·)`. Pure `omega`
+  after `simp only [ChainRule]`.
+- `regulator_selection`: set form over the sufficiency set `S` (`R*` minimizes `K(·|W)` on
+  `S` ↔ maximizes `M−K` on `S`), via the order lemma.
+- `probabilistic_regulator_theorem_conditional`: ties the SHARP ART form to the `2^{−K(R|W)}`
+  reading — `M(W:R) − K(R) = −K(R|W)` by the chain rule, so the regulator-cost factors
+  `2^{M}·2^{−K(R)}` collapse to `2^{−K(R|W)}`. Directly answers the conditioning thread: the
+  posterior favors regulators simple *given the world*.
+- `#print axioms`: `regulator_selection = [propext, Quot.sound]` (no `Classical.choice`);
+  conditional corollary = Lean core.

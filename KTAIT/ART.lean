@@ -39,7 +39,16 @@ namespace AITProb
 
 variable (F : AITProb)
 
-/-- The Bayesian (canonical-code) posterior `P(e | x) = 2^{−K(e)} / m(x)`. -/
+/-- The Bayesian (canonical-code) posterior `P(e | x) = 2^{−K(e)} / m(x)`.
+
+    **Conditioning, made explicit (resolves a common ambiguity).** `post e x` is conditioned
+    on the SECOND argument `x` ONLY — for the regulator theorems below, `x = xon = O_{W,R}`,
+    the ON readout. The complexities `K` are all *unconditioned* (`K : Obj → ℕ`). The gap
+    `Δ = K(O_{W,∅}) − K(O_{W,R})` is a *derived* quantity, NOT a conditioning event, and the
+    OFF run enters ONLY through the hypothesis `hoff` (Lemma 2), never in the denominator
+    `m x`. So the paper's `Pr((W,R) | x, E_{bR})` is, in this proof, `Pr((W,R) | x)` plus the
+    side hypothesis `hoff` — matching the ART paper's own clarification (iv). The distinct
+    object "posterior conditioned on the gap `δ_N ≥ Δ`" (WP0162 Eq. 26) is NOT this one. -/
 noncomputable def post (e x : F.Obj) : ℝ := (2 : ℝ) ^ (-(F.K e : ℤ)) / F.m x
 
 /-- Coding Theorem, lower bound: `c₁·2^{−K x} ≤ m x` (with `c₁ > 0`). -/
