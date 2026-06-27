@@ -251,5 +251,9 @@ A 2–3 line note after each milestone: what we learned / what tripped us up.
   "typeclass `AddAction ?m X` stuck"; same for `X` in the `Setoid X`-typed defs. Fix: make BOTH
   `T` and `X` EXPLICIT variables. Also a `show` that beta-reduces the goal trips the style linter —
   use `change`.
-- Remaining geometry: the genuine Lie-group / manifold theorems (transitivity, homogeneous spaces
-  `G/H`, moduli stacks) and Level-2 grounding.
+- `Homogeneous.homogeneousSpace` (G2, Theorem A4 core): a transitive symmetry action makes the
+  state space a homogeneous space, `X ≃ G ⧸ stabilizer x`, via Mathlib `orbitEquivQuotientStabilizer`
+  + `orbit_eq_univ` + `Equiv.Set.univ`/`Equiv.setCongr`. The dimension formula `dim X = dim G −
+  dim H` needs manifold dimension (deferred).
+- Remaining geometry (deferred): the manifold/dimension refinements, Lie pseudogroups, moduli
+  stacks, Mostow rigidity (not in Mathlib); and Level-2 grounding.

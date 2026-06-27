@@ -313,7 +313,10 @@ statistic.
 \item \lean{Noether.trajLabel\_conserved}, \lean{Noether.conserved\_comp\_symm} --- the abstract
 core of generalized Noether (Structured Dynamics paper): the trajectory label is conserved by the
 flow, and symmetries commuting with the flow act on conserved quantities. (Continuous-time analogue
-of the orbit-label theorem; the genuine Lie-group/manifold layer remains future work.)
+of the orbit-label theorem.)
+\item \lean{Homogeneous.homogeneousSpace} --- a transitive symmetry action makes the state space a
+homogeneous space, $X \simeq G/H_x$ (Theorem A4's algebraic core; the manifold/dimension layer
+remains future work).
 \item \lean{persistence\_conservation} / \lean{conservation\_tradeoff} --- WP0162 Proposition~2:
 the ledger $K(O_W)=\Ik(O_W{:}R)+K(O_W\mid R^\ast)$ (from symmetry of information), and at fixed
 $K(O_W)$, maximizing $\Ik$ $=$ minimizing the conditional residual.
@@ -391,7 +394,8 @@ Cor.\ C1--C3 & blanket uncomputability/fuzziness; acquisition; discovery & KT & 
 \midrule
 Thms A1--A5 & Lie transitivity, homogeneous space, moduli stack & STD & \stna\ (out of scope v1) \\
 Noether (gen.) & continuous symmetry $\Rightarrow$ conserved quantity (abstract flow core) & KT & \stproved\ (\lean{trajLabel\_conserved}) \\
-Lie transitivity / homogeneous space $G/H$ / moduli stacks & — & STD/geom & \sttodo\ (geom.\ track) \\
+Homogeneous space (transitive action $\Rightarrow$ $G/H$) & — & STD & \stproved\ (\lean{homogeneousSpace}) \\
+Lie pseudogroups / moduli stacks / Mostow / dim formula & — & geom & \sttodo\ (not in Mathlib) \\
 \midrule
 \multicolumn{4}{@{}l}{\textit{Foundational --- nix019 / K-input}}\\
 \midrule

@@ -70,4 +70,24 @@ theorem conserved_comp_symm {L : Type} {C : X → L} (hC : Conserved T C) (σ : 
   exact hC t (σ x)
 
 end Noether
+
+/-! ## Homogeneous space — a transitive symmetry makes the state space `G ⧸ H` -/
+
+namespace Homogeneous
+open MulAction
+
+variable {G : Type} [Group G] {X : Type} [MulAction G X]
+
+/-- **Homogeneous space (Theorem A4, algebraic core).** If a symmetry group `G` acts
+    transitively on the state space `X`, then `X` is the homogeneous space `G ⧸ Hₓ`, where
+    `Hₓ = stabilizer G x` for any basepoint `x` — solutions are coordinatized by the group modulo
+    what fixes a reference. (The differential-geometric refinement, `dim X = dim G − dim Hₓ`, needs
+    manifold dimension and is left to the geometry track.) -/
+noncomputable def homogeneousSpace [IsPretransitive G X] (x : X) :
+    X ≃ G ⧸ stabilizer G x :=
+  (Equiv.Set.univ X).symm.trans
+    ((Equiv.setCongr (show orbit G x = Set.univ from orbit_eq_univ G x).symm).trans
+      (orbitEquivQuotientStabilizer G x))
+
+end Homogeneous
 end KTAIT
