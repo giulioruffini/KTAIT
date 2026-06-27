@@ -6,5 +6,6 @@ import KTAIT.SelfModel
 import KTAIT.Persistence
 import KTAIT.RegulatorSelection
 import KTAIT.SelfModelLimits
+import KTAIT.CoarseGraining
 import KTAIT.ToyModel
 import KTAIT.BadStatements

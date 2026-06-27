@@ -212,3 +212,14 @@ A 2–3 line note after each milestone: what we learned / what tripped us up.
 - Methodology held: the standard computability theorems (Kleene, Chaitin) enter as the
   hypotheses (`KIsShortest`, the certifier ceiling); the KT content is their self-modeling
   consequence. The diagonalization needing NO axioms is a nice surprise.
+
+## Phase 5 — coarse-graining uncomputability (WP0193) (2026-06-27)
+
+- Abstract computability: `CompT`/`CompS` predicates on the two solver shapes; `specialize T`
+  sets `y := x`; `ReductionClosure` (a computable targeted solver specializes to a computable
+  structure-function solver); `VV` axiom (`¬ CompS sf0`, Vereshchagin–Vitányi).
+- `theoremB` / `corollaryB`: a *correct* targeted/regulatory solver (`specialize T = sf0`) is
+  uncomputable, by reduction to V–V (`rw [hcorrect]` then `exact hvv`). Both depend on NO
+  axioms — the reduction is pure logic; V–V is the named hypothesis.
+- ROADMAP COMPLETE (5/5). Whole KT corpus of WP0162/WP0192/WP0193 + the probabilistic ART
+  is formalized; KT corollaries sorry-free, axioms = Lean core + named AIT facts.
