@@ -238,5 +238,18 @@ A 2–3 line note after each milestone: what we learned / what tripped us up.
 - `ART.low_complexity_shrinkage` (Thm A4): counting bound + `idx < K(W)` ⇒ strict shrinkage (`omega`).
 - `CoarseGraining.theoremA` (selection uncomputability, = the `theoremB` reduction) and
   `CoarseGraining.existence` (WP0193 Prop 1, `∃` from the bounded self-code witness) — axiom-free.
-- All six `#print axioms` = Lean core (two axiom-free). Easy+medium batch done; only the geometry
-  track (Noether/Lie) and Level-2 grounding remain.
+- All six `#print axioms` = Lean core (two axiom-free). Easy+medium batch done.
+
+## Geometry track — generalized Noether (2026-06-27)
+
+- `NoetherFlow.lean`: the flow = an `AddAction` of a time group `T` on state space `X`.
+  `Conserved T C := ∀ t x, C (t +ᵥ x) = C x`; `trajLabel` (flow-orbit label) via Setoid/Quotient;
+  `trajLabel_conserved` (the universal conserved quantity); `conserved_comp_symm` (a symmetry
+  commuting with the flow carries conserved quantities to conserved quantities — the Noether
+  correspondence). Continuous-time analogue of `OrbitLabel`; axiom-free dynamics.
+- Lean lesson: with `variable {T}`, `Conserved C` cannot infer `T` (it is not in `C`'s type) →
+  "typeclass `AddAction ?m X` stuck"; same for `X` in the `Setoid X`-typed defs. Fix: make BOTH
+  `T` and `X` EXPLICIT variables. Also a `show` that beta-reduces the goal trips the style linter —
+  use `change`.
+- Remaining geometry: the genuine Lie-group / manifold theorems (transitivity, homogeneous spaces
+  `G/H`, moduli stacks) and Level-2 grounding.

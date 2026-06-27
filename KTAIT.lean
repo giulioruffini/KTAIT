@@ -9,5 +9,6 @@ import KTAIT.SelfModelLimits
 import KTAIT.CoarseGraining
 import KTAIT.Contrast
 import KTAIT.OrbitLabel
+import KTAIT.NoetherFlow
 import KTAIT.ToyModel
 import KTAIT.BadStatements
