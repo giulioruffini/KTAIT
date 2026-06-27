@@ -60,3 +60,10 @@ See `LEARNING_LOG.md` for a running 2–3 line note per milestone.
   (`propext`, `Classical.choice`, `Quot.sound`) plus the named AIT *hypotheses*.
 - Non-vacuity witnessed in `ToyModel.lean`; the typed/`y*` guards bite in
   `BadStatements.lean`.
+
+## Status tracker & methodology
+
+The living status document — methodology (standard AIT + Bayes as a delimited axiom
+layer; KT corollaries proved `sorry`-free), the full theorem inventory across the KT
+corpus with per-statement status, and the roadmap — is **BCOM WP0195**
+(`BCOM WPs and Blogs/working_drafts/WP0195-Lean_KT_Formalization/`).
