@@ -1,87 +1,144 @@
-# KTAIT — Kolmogorov Theory / AIT interface, formalized in Lean 4
+# KTAIT — Kolmogorov Theory, formalized in Lean 4
 
-A small, typed, **axiomatic** KT/AIT interface in Lean 4 + Mathlib. We machine-check
-that the **KT corollaries** (Proposition 1, the persistence equation) follow logically
-from a clearly stated **AIT interface** — and that the ontology is typed so structural
-bugs (comparing a whole to its own part) cannot hide.
+A [Lean 4](https://leanprover.github.io/) + [Mathlib](https://github.com/leanprover-community/mathlib4)
+formalization that **machine-checks the corollaries of Kolmogorov Theory (KT)** against an
+explicit, *satisfiable* axiomatic interface to algorithmic information theory (AIT) and Bayesian
+inference.
+
+> **What it certifies:** the KT results — the probabilistic Algorithmic Regulator Theorem,
+> persistence and its conservation ledger, universal-prior regulator selection, the temporal
+> self-model, self-model incompleteness, and the uncomputability of regulatory coarse-graining —
+> follow *logically* from a clearly delimited layer of standard AIT/probability facts, with no
+> `sorry`. The KT ontology is **typed** so that structural errors (e.g. comparing a pattern to
+> its own part) cannot even compile.
+
+It does **not** re-prove classical AIT. Those results (the coding theorem, symmetry of
+information, Bayes' rule, Kleene/Rice/Chaitin, Vereshchagin–Vitányi) are an honest, named
+**axiom layer**; the contribution is checking that the *new* KT corollaries are correctly typed
+and genuinely entailed by it.
+
+- **Toolchain:** Lean `v4.31.0`, Mathlib `v4.31.0` (both pinned).
+- **Companion working paper:** BCOM **WP0195** — methodology, full theorem inventory with
+  per-statement status, and roadmap.
+- **Source theory:** the KT papers (Pattern Persistence WP0162, Agent Know Thyself WP0192,
+  Regulatory Coarse-Graining WP0193, and *An Algorithmic-Information-Theoretic Regulator
+  Theorem*, Entropy 2026 28:257).
 
 ## The one rule
 
-> **AIT theorems are allowed to be _axioms_ at this stage. KT corollaries must be
-> _proved_ from those axioms with no `sorry`.**
+> **Standard AIT and probability theorems may be *assumed* (a named axiom layer).
+> KT corollaries must be *proved* from them, with no `sorry`.**
 
-If a KT corollary needs a `sorry`, that is a real gap in the paper. If an AIT fact is
-an `axiom`, that is honest and expected at Level 1.
+If a KT corollary needed a `sorry`, that would be a real gap in the theory. An assumed coding
+theorem is honest and expected.
 
-## Scope guardrail
+**Soundness note.** The AIT facts are stated as *named hypotheses* (`Prop`s about a frame),
+**not** as global `axiom`s — a global "law for every frame" would be inconsistent here (one can
+build a frame violating it and derive `False`). As a result, `#print axioms` on every KT
+corollary shows only Lean's core axioms (`propext`, `Classical.choice`, `Quot.sound`) plus the
+named hypotheses, and a *toy model* witnesses that the hypotheses are jointly satisfiable — so
+the corollaries are not vacuously true.
 
-> **Level 1 = axiomatic, typed KT/AIT interface.** AIT theorems are axioms; KT
-> corollaries are proved from them without `sorry`; a toy model witnesses consistency.
-> We are forcing the ontology — substrate, pattern, readout, regulator, self-code,
-> time — not formalizing Kolmogorov complexity. Levels 2 (computability-backed `K`)
-> and 3 (universal prior / ART proof) are future work.
+## What is proved
 
-## Paper statement (earned by this formalization)
+All results are `sorry`-free; `#print axioms` confirms each rests only on Lean core + the named
+AIT hypotheses.
 
-> *This formalization checks the dependency structure of the KT corollaries relative
-> to an explicit AIT interface; it does not re-prove the AIT theorems themselves.*
+| Result | Lean name | Module |
+|---|---|---|
+| **ART Theorem 2** — `P((W,R)\|x,E) ≤ C·2^{M(W:R)}·2^{−Δ}` | `probabilistic_regulator_theorem` | `ART` |
+| ART Theorem 2, **sharp** (`·2^{−K(R)}`) + `2^{−K(R\|W)}` form | `..._sharp`, `..._conditional` | `ART`, `RegulatorSelection` |
+| ART **Theorem 1** (posterior tilt) | `theorem1_posterior_tilt` | `ART` |
+| ART **Theorem 3** (on/off evidence `≍ 2^{Δ}`) | `theorem3_onoff_evidence` | `ART` |
+| ART **wrapper bound** Eq. (6) — *derived* from the coding theorem | `wrapper_bound` | `ART` |
+| **Lemma 1** — Bayes posterior `= 2^{−\|p\|}/m(x)`, sandwiched by coding thm | `lemma1_posterior_bounds` | `Probability` |
+| **Persistence** = temporal self-information | `pers_eq_nmai`, `persistent_pos` | `Persistence` |
+| **Conservation ledger** (WP0162 Prop. 2) + trade-off | `persistence_conservation`, `conservation_tradeoff` | `Persistence` |
+| **Regulator selection** (WP0162 Prop. 1) | `regulator_selection` | `RegulatorSelection` |
+| **Temporal self-model** (WP0162 Prop. 3 / WP0192 Prop. 1) | `self_regulation_temporal_model` | `SelfModel` |
+| **Self-model incompleteness** (WP0162 Prop. 4 / WP0192 Principle 1) | `quine_floor`, `self_prediction_dichotomy`, `chaitin_blocks_minimality` | `SelfModelLimits` |
+| **Coarse-graining uncomputability** (WP0193 Thm B / Cor. B) | `theoremB`, `corollaryB` | `CoarseGraining` |
 
-## Build
+Plus: typed KT **ontology** with a part-whole guard (`Ontology`), **satisfiability witnesses**
+(`ToyModel`), and documented **guards** — the whole-vs-part error and the `y`-vs-`y*` conditioning
+error fail to compile (`BadStatements`).
+
+## The axiom layer (what we assume)
+
+Standard, classical results — assumed, not re-proved:
+
+- **Complexity:** invariance theorem; coding theorem `−log m(x) = K(x) ± O(1)` (uncond. & cond.);
+  Kraft–McMillan; symmetry of information `I_K(x:y) = K(x) − K(x|y*) + O(log)`; chain rule.
+- **Probability:** Solomonoff–Levin universal semimeasure; Bayes' rule with the deterministic
+  likelihood `P(x|p)=𝟙{U(p)=x}`.
+- **Computability/logic:** Kleene's recursion theorem; Rice's theorem; Chaitin's incompleteness;
+  Vereshchagin–Vitányi (structure-function uncomputability).
+
+## Build & verify
 
 ```sh
-lake exe cache get   # download prebuilt Mathlib (do this once)
-lake build           # compile the project; should be green
+elan default stable            # one-time: install Lean toolchain manager
+lake exe cache get             # download prebuilt Mathlib (do this once; avoids ~1h compile)
+lake build                     # compile the project — should be green
 ```
 
-Toolchain is pinned in `lean-toolchain` (Lean v4.31.0); Mathlib is pinned in
-`lakefile.toml`. Use VS Code + the Lean 4 extension for the interactive goal view.
+Verify a result is honest (no hidden `sorry`/axioms):
 
-## Milestones
+```sh
+echo 'import KTAIT.ART
+#print axioms KTAIT.AITProb.probabilistic_regulator_theorem' | lake env lean /dev/stdin
+# → depends on axioms: [propext, Classical.choice, Quot.sound]
+```
 
-- **M0** — Toolchain & hello-Lean ✅
-- **M1** — Typed ontology (`KTAIT/Ontology.lean`) ✅
-- **M2** — AIT interface (`KTAIT/Basic.lean`) ✅
-- **M2.5** — Probabilistic ART, Level 1.5 (`KTAIT/ART.lean` Theorem 2, `KTAIT/Probability.lean` Lemma 1) ✅
-- **M3** — Persistence (`KTAIT/Persistence.lean`) ✅
-- **M4** — Self-model corollary, Prop. 3 (`KTAIT/SelfModel.lean`) ✅
-- **M5** — Toy model + bad statements (`KTAIT/ToyModel.lean`, `KTAIT/BadStatements.lean`) ✅
+Use **VS Code / Cursor + the Lean 4 extension** for the interactive goal view.
 
-See `LEARNING_LOG.md` for a running 2–3 line note per milestone.
+## Repository layout
 
-## What is proved (Level 1 + the probabilistic ART of Level 1.5)
+```
+KTAIT/
+├── Ontology.lean        — six typed KT roles + the part-whole guard
+├── Basic.lean           — AITFrame; IK, NMAI, condStar; AIT laws as named Props
+├── Probability.lean     — prefix machine, Bayes posterior, Lemma 1
+├── ART.lean             — AITProb; ART Theorems 1–3 (+ sharp form), wrapper bound
+├── Persistence.lean     — persistence + conservation ledger
+├── SelfModel.lean       — temporal self-model (Prop. 3)
+├── RegulatorSelection.lean — regulator selection (Prop. 1) + conditional ART form
+├── SelfModelLimits.lean — self-model incompleteness (Prop. 4)
+├── CoarseGraining.lean  — regulatory coarse-graining uncomputable (WP0193)
+├── ToyModel.lean        — satisfiability witnesses (non-vacuity)
+└── BadStatements.lean   — the guards bite (documentation-by-compilation)
+LEARNING_LOG.md          — a short note per milestone
+```
 
-- **`AITProb.probabilistic_regulator_theorem`** — ART Theorem 2 (the real posterior
-  bound `P((W,R)|x,E) ≤ C·2^{M(W:R)}·2^{−Δ}`).
-- **`PrefixMachine.lemma1_posterior_bounds`** — Lemma 1, the Bayes↔Kolmogorov bridge.
-- **`self_regulation_temporal_model`** — Prop. 3, self-regulation requires a temporal
-  self-model.
-- **`pers_eq_nmai`**, **`persistent_pos`** — persistence as temporal self-information.
-- All KT corollaries are `sorry`-free; `#print axioms` shows only Lean core
-  (`propext`, `Classical.choice`, `Quot.sound`) plus the named AIT *hypotheses*.
-- Non-vacuity witnessed in `ToyModel.lean`; the typed/`y*` guards bite in
-  `BadStatements.lean`.
+## Status & future work
 
-## Status tracker & methodology
+The arithmetic/probabilistic KT corpus is complete. Documented future work:
 
-The living status document — methodology (standard AIT + Bayes as a delimited axiom
-layer; KT corollaries proved `sorry`-free), the full theorem inventory across the KT
-corpus with per-statement status, and the roadmap — is **BCOM WP0195**
-(`BCOM WPs and Blogs/working_drafts/WP0195-Lean_KT_Formalization/`).
+- **Easy/medium extensions:** the contrast-fiber posterior (Eq. 26); ART low-complexity
+  shrinkage; the boundary-as-sufficient-statistic; the orbit-label / generalized-energy theorem.
+- **Geometry track:** the Lie-group / Noether layer of the world-models paper (needs Mathlib
+  differential geometry).
+- **Level 2 (grounding):** replace the abstract complexity/computability hypotheses with a
+  concrete universal prefix machine, so `K` is computability-backed rather than axiomatic.
 
-## Citing this work
+See **WP0195** for the full inventory and roadmap.
 
-See `CITATION.cff` (GitHub renders a "Cite this repository" button). BibTeX:
+## Citing
+
+See `CITATION.cff` (GitHub shows a "Cite this repository" button). BibTeX:
 
 ```bibtex
 @software{ruffini2026ktait,
   author  = {Ruffini, Giulio},
   title   = {{KTAIT}: A {Lean}~4 Formalization of {Kolmogorov} {Theory}},
-  year    = {2026},
-  version = {0.1.0},
+  year    = {2026}, version = {0.1.0},
   url     = {https://github.com/giulioruffini/KTAIT},
   note    = {Companion: BCOM Working Paper WP0195}
 }
 ```
 
-For a permanent, citable snapshot with a DOI, archive a tagged release via Zenodo
-(GitHub → Zenodo integration; requires a public repo or a manual upload of the release zip).
+For a permanently citable snapshot with a DOI, archive a tagged release via Zenodo.
+
+## License
+
+Apache-2.0. Built with [Claude Code](https://claude.com/claude-code).
