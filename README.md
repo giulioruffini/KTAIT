@@ -132,12 +132,14 @@ See `CITATION.cff` (GitHub shows a "Cite this repository" button). BibTeX:
   author  = {Ruffini, Giulio},
   title   = {{KTAIT}: A {Lean}~4 Formalization of {Kolmogorov} {Theory}},
   year    = {2026}, version = {0.1.0},
+  doi     = {10.5281/zenodo.20969562},
   url     = {https://github.com/giulioruffini/KTAIT},
-  note    = {Companion: BCOM Working Paper WP0195}
+  note    = {Companion: BCOM Working Paper WP0195 (bundled in \texttt{docs/})}
 }
 ```
 
-For a permanently citable snapshot with a DOI, archive a tagged release via Zenodo.
+Permanent archive (DOI): **[10.5281/zenodo.20969562](https://doi.org/10.5281/zenodo.20969562)**.
+The companion working paper **WP0195** is bundled in `docs/WP0195.pdf`.
 
 ## License
 

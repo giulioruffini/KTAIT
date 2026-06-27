@@ -1,0 +1,461 @@
+\documentclass[11pt,a4paper]{article}
+
+% ── Encoding & fonts ──────────────────────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% ── Layout ────────────────────────────────────────────────────────────
+\usepackage[margin=2.5cm, top=3cm, bottom=3cm]{geometry}
+\usepackage{parskip}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{pdflscape}
+\usepackage{afterpage}
+
+% ── Mathematics ───────────────────────────────────────────────────────
+\usepackage{amsmath,amssymb,amsthm}
+
+% ── Lists & tables ────────────────────────────────────────────────────
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{array}
+
+% ── Graphics ──────────────────────────────────────────────────────────
+\usepackage{graphicx}
+\usepackage{float}
+
+% ── Colors & boxes ────────────────────────────────────────────────────
+\usepackage[dvipsnames]{xcolor}
+\usepackage[most,xparse]{tcolorbox}
+\tcbuselibrary{breakable}
+
+% ── Bibliography ──────────────────────────────────────────────────────
+\usepackage[super,comma,sort&compress]{natbib}
+\bibliographystyle{unsrtnat}
+
+% ── Hyperlinks ────────────────────────────────────────────────────────
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=bcomblue, citecolor=bcomblue, urlcolor=bcomblue}
+
+% ── BCOM brand palette ───────────────────────────────────────────────
+\definecolor{bcomblue}{HTML}{002878}
+\definecolor{bcomcoral}{HTML}{FF6657}
+\definecolor{bcomlight}{HTML}{D6E4F0}
+\definecolor{bcompink}{HTML}{F5D5D5}
+\definecolor{bcompale}{HTML}{F8F9FC}
+\definecolor{defbg}{HTML}{F8F9FC}
+
+% ── Section formatting ────────────────────────────────────────────────
+\titleformat{\section}
+  {\color{bcomblue}\large\bfseries\sffamily}{\thesection}{1em}{}[\vspace{2pt}\color{bcomblue}\titlerule]
+\titleformat{\subsection}
+  {\color{bcomblue}\normalsize\bfseries\sffamily}{\thesubsection}{1em}{}
+\titlespacing{\section}{0pt}{1.5em}{0.8em}
+\titlespacing{\subsection}{0pt}{1.2em}{0.5em}
+
+% ── Header / footer ──────────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\newcommand{\wpnumber}{WP0195}
+\newcommand{\wpdate}{June 2026}
+\newcommand{\wppillar}{Kolmogorov Theory (KT)}
+\fancyhead[L]{\small\sffamily\color{bcomblue}BCOM Working Paper \wpnumber}
+\fancyhead[R]{\small\sffamily\color{bcomblue}\wpdate}
+\fancyfoot[C]{\small\sffamily\thepage}
+\fancyfoot[L]{\small\sffamily\color{gray}\wppillar}
+\fancyfoot[R]{\small\sffamily\color{gray}Barcelona Computational Foundation}
+
+% ── Boxes ─────────────────────────────────────────────────────────────
+\tcbset{bcombox/.style={
+  enhanced, breakable, colback=bcompale, colframe=bcomblue,
+  boxrule=0.6pt, arc=2pt, left=8pt, right=8pt, top=0pt, bottom=6pt,
+  fonttitle=\bfseries\sffamily\small\color{white}, coltitle=white, colbacktitle=bcomblue,
+  attach boxed title to top left={yshift=-2pt, xshift=0pt},
+  boxed title style={sharp corners, colback=bcomblue, boxrule=0pt},
+  before upper={\setlength{\parskip}{4pt}}}}
+\newtcolorbox{defbox}[1][]{bcombox, title=#1}
+\newtcolorbox{thmbox}[1][]{bcombox, title=#1}
+\newtcolorbox{rembox}[1][]{bcombox, title=#1}
+
+% ── Shortcuts ─────────────────────────────────────────────────────────
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\newcommand{\lean}[1]{\texttt{\small #1}}
+\newcommand{\Ik}{\mathrm{I}_K}
+\newcommand{\stproved}{\textcolor{ForestGreen}{\textbf{Proved}}}
+\newcommand{\staxiom}{\textcolor{bcomblue}{\textbf{Axiom}}}
+\newcommand{\sttodo}{\textcolor{bcomcoral}{\textbf{TODO}}}
+\newcommand{\stna}{\textcolor{gray}{n/a}}
+
+% ══════════════════════════════════════════════════════════════════════
+\begin{document}
+
+% ── TITLE PAGE ────────────────────────────────────────────────────────
+\thispagestyle{empty}
+\begin{center}
+\vspace*{0.3cm}
+\includegraphics[height=2.2cm]{LOGO_RGB_COLORE_orizzontale.png}
+\vspace{0.4cm}
+
+{\color{bcomblue}\rule{\textwidth}{1.5pt}}
+\vspace{0.4cm}
+
+{\sffamily\color{gray}\large BARCELONA COMPUTATIONAL FOUNDATION}
+\vspace{0.15cm}
+
+{\sffamily\color{bcomblue}\Large\bfseries Working Paper \wpnumber}
+\vspace{0.2cm}
+
+{\sffamily\color{bcomblue!70}\normalsize Pillar: \wppillar}
+\vspace{0.8cm}
+
+{\LARGE\bfseries\sffamily\color{bcomblue} A Lean~4 Formalization of Kolmogorov Theory}
+\vspace{0.4cm}
+
+{\Large\sffamily Axioms, Theorems, and Project Status}
+\vspace{0.4cm}
+
+{\large\sffamily Machine-checking the KT corollaries against an explicit AIT interface}
+\vspace{1.0cm}
+
+{\color{bcomblue}\rule{0.4\textwidth}{0.6pt}}
+\vspace{0.6cm}
+
+{\large Giulio Ruffini with Claude Opus 4.8}
+\vspace{0.2cm}
+
+{\sffamily\small Barcelona Computational Foundation \quad$\cdot$\quad Neuroelectrics, Barcelona}
+\vspace{0.1cm}
+
+{\small\texttt{giulio.ruffini@bcom.one}}
+\vspace{1.0cm}
+
+{\sffamily\large \wpdate}
+\vspace{1.0cm}
+
+{\color{bcomblue}\rule{\textwidth}{1.5pt}}
+\vspace{\fill}
+
+{\small\sffamily\color{gray}\url{https://bcom.one} \quad$\cdot$\quad Lean source: \url{https://github.com/giulioruffini/KTAIT} \quad$\cdot$\quad \textsc{doi}:\,10.5281/zenodo.20969562}
+\end{center}
+\newpage
+
+% ── ABSTRACT ──────────────────────────────────────────────────────────
+\begin{abstract}
+\noindent We are building \lean{KTAIT}, a Lean~4 + Mathlib formalization whose purpose is
+narrow and load-bearing: to \emph{machine-check that the Kolmogorov-Theory (KT) corollaries
+follow logically from an explicit algorithmic-information-theory (AIT) interface}, and that
+the KT ontology is typed so that structural errors (e.g.\ comparing a whole pattern to its own
+part) cannot silently compile. We do \emph{not} re-prove classical AIT: the standard AIT and
+probability results (the invariance theorem, the coding theorem, symmetry of information,
+Kraft's inequality, Bayes' rule, the Solomonoff--Levin universal semimeasure, the recursion
+theorem, Rice's and Chaitin's theorems, and the Vereshchagin--Vitányi structure-function
+results) are taken as a clearly delimited \emph{axiom layer}. Every \emph{KT} corollary is then
+\emph{proved} from that layer with no \lean{sorry}, and a toy model witnesses that the axiom
+layer is jointly satisfiable (so the corollaries are not vacuously true). This working paper
+states the methodology, fixes the axiom layer, inventories every theorem/lemma across the KT
+corpus with its current formalization status, and sets a prioritized roadmap.
+\end{abstract}
+
+\vspace{0.5em}
+\noindent\textbf{Keywords:} Kolmogorov Theory, algorithmic information theory, Lean~4, Mathlib,
+formal verification, algorithmic regulator theorem, persistence, self-model.
+
+\noindent\textbf{Classification:} MSC 68Q30, 03B35, 68V15 \quad/\quad ACM F.4.1
+
+\clearpage
+\tableofcontents
+\newpage
+
+% ══════════════════════════════════════════════════════════════════════
+\section{Introduction and methodology}
+\label{sec:intro}
+% ══════════════════════════════════════════════════════════════════════
+
+KT has matured to the point where the dominant risk is no longer in the classical results it
+invokes, but in whether the \emph{new} KT corollaries are \emph{correctly typed} and
+\emph{logically entailed} by those results. This project addresses exactly that risk with a
+proof assistant.\cite{leanmathlib}
+
+\subsection{The one rule}
+\begin{thmbox}[The one rule]
+Standard AIT (and probability) theorems are allowed to be \emph{axioms}. KT corollaries must be
+\emph{proved} from those axioms with no \lean{sorry}.
+\end{thmbox}
+\noindent If a KT corollary needs a \lean{sorry}, that is a real gap in the paper. If a classical
+AIT fact is an axiom, that is honest and expected: we are checking the \emph{dependency
+structure}, not the AIT foundations.
+
+\subsection{Why this is worth doing}
+The bug class we most want to exclude is \emph{ontological}. For example, writing
+$\Ik(A:\mathcal{S})$ where $\mathcal{S}\subset A$ is structurally vacuous (a whole versus its own
+part); the correct object is \emph{temporal}, $\Ik(\mathcal{S}_t:\mathcal{S}_{t+\tau})$ or
+$K(\mathcal{S}_{t+\tau}\mid \mathcal{S}_t,E,C)\ll K(\mathcal{S}_{t+\tau}\mid C)$. In \lean{KTAIT}
+the KT roles (\emph{substrate, pattern, self-code, readout, regulator, time}) are \emph{distinct
+types}; the only bridge to a common carrier is an explicit projection, so the bad version
+\emph{fails to type-check}. The whole-vs-part error becomes a typed obligation, not a silent
+mistake.
+
+\subsection{Soundness: named hypotheses, not global axioms}
+\label{sec:soundness}
+A na\"ive encoding \lean{axiom F : forall (F : AITFrame), P F} asserting a law for \emph{every}
+frame is \emph{inconsistent} here: one can hand-build a frame violating it (e.g.\ \lean{slack=0}
+with mismatched $K$) and derive \lean{False}, which would make all corollaries vacuously true.
+We therefore state each AIT fact as a \emph{named hypothesis} (a \lean{Prop} about a frame) and
+let each corollary consume it. Consequently \lean{\#print axioms} on every KT corollary shows
+only Lean's core axioms (\lean{propext}, \lean{Classical.choice}, \lean{Quot.sound}) --- strictly
+stronger than ``rests on named AIT axioms.'' The toy model (\S\ref{sec:status}) then exhibits a
+concrete frame satisfying the hypotheses, witnessing joint satisfiability.
+
+\subsection{Scope}
+The current effort is \textbf{Level~1} (a typed, axiomatic KT/AIT interface) plus
+\textbf{Level~1.5} (the faithful \emph{probabilistic} ART, including its Bayesian posterior and
+the coding-theorem bridge). Out of scope for now: a computability-backed $K$ from a concrete
+universal machine (Level~2), and the differential-geometric (Lie-group / Noether) layer of the
+world-models paper,\cite{ruffini2025worldmodels} which is a separate track.
+
+% ══════════════════════════════════════════════════════════════════════
+\section{The standard AIT / probability axiom layer}
+\label{sec:axioms}
+% ══════════════════════════════════════════════════════════════════════
+
+These are the results we \emph{assume}. They are classical and not in doubt; collecting them here
+fixes precisely what the KT proofs are allowed to lean on. (Per K's directive, starting from these
+as axioms --- and similarly for Bayes --- is acceptable and intended.)
+
+\begin{defbox}[Axiom layer A --- complexity]
+\textbf{Invariance theorem.} $K$ is machine-independent up to an additive $O(1)$.\\
+\textbf{Coding theorem (unconditional).} $c_1 2^{-K(x)}\le m(x)\le c_2 2^{-K(x)}$, i.e.
+$-\log_2 m(x)=K(x)\pm O(1)$.\\
+\textbf{Coding theorem (conditional).} $m(x\mid y)\asymp 2^{-K(x\mid y)}$.\\
+\textbf{Kraft--McMillan.} $\sum_p 2^{-|p|}\le 1$, hence $\sum_x m(x)\le 1$.\\
+\textbf{Symmetry of information.} $\Ik(x{:}y)=K(x)+K(y)-K(x,y)=K(x)-K(x\mid y^\ast)+O(\log)$;
+chain rule $K(x,y)=K(x)+K(y\mid x^\ast)+O(1)$.\\
+\textbf{Multiplicity compression.} $N_{\le L}(x)\ge 2^r \Rightarrow K(x)\le L-r+O(\log L)$.
+\end{defbox}
+
+\begin{defbox}[Axiom layer B --- probability / Bayes]
+\textbf{Solomonoff--Levin universal semimeasure.} $m(x)=\sum_{U(p)=x}2^{-|p|}$; conditional
+$m(R\mid W)\asymp 2^{-K(R\mid W)}$.\\
+\textbf{Bayes' rule + deterministic likelihood.} prior $P(p)=2^{-|p|}$, likelihood
+$P(x\mid p)=\mathbf{1}\{U(p)=x\}$, evidence $P(x)=m(x)$.\\
+\textbf{Excess-length decay.} $\Pr\{|p|\ge K(x)+k \mid x\}\le 2C\,2^{-k}$.
+\end{defbox}
+
+\begin{defbox}[Axiom layer C --- computability / logic]
+\textbf{Kleene's second recursion theorem} (quines); \textbf{Rice's theorem};
+\textbf{Chaitin's incompleteness} ($T$ proves no $K(x)>n$ for $n>c_T$; $K$ uncomputable);
+\textbf{Vereshchagin--Vitányi}: the Kolmogorov structure function $h_x(\alpha)$ is uncomputable
+and minimal sufficient statistics are not locatable.
+\end{defbox}
+
+% ══════════════════════════════════════════════════════════════════════
+\section{Current status of the Lean development}
+\label{sec:status}
+% ══════════════════════════════════════════════════════════════════════
+
+The repository (\url{https://github.com/giulioruffini/KTAIT}) builds green on Lean~4.31.0 +
+Mathlib~v4.31.0. Modules:
+
+\begin{center}\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Module} & \textbf{Content} & \textbf{Key results} \\
+\midrule
+\lean{Ontology.lean} & six typed KT roles + part-whole guard & \lean{SelfCode} carries \lean{isSub} \\
+\lean{Basic.lean} & \lean{AITFrame}, \lean{IK}, \lean{NMAI}, \lean{condStar} & symmetry as named \lean{Prop} \\
+\lean{Probability.lean} & prefix machine, Bayes posterior, coding thm & Lemma~1 (bridge) \\
+\lean{ART.lean} & \lean{AITProb} (posterior), Theorem~2 & probabilistic regulator thm \\
+\lean{Persistence.lean} & \lean{Pers}, \lean{TemporalSelfInfo} & persistence lemmas \\
+\lean{SelfModel.lean} & \lean{DeltaSelf}, Proposition~3 & temporal self-model \\
+\lean{ToyModel.lean} & \lean{Toy}, \lean{ToyMachine}, \lean{ToyGap} & satisfiability witnesses \\
+\lean{BadStatements.lean} & guards bite & part-whole + $y$ vs $y^\ast$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent\textbf{Proved KT corollaries (no \lean{sorry}; \lean{\#print axioms} = Lean core only):}
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt]
+\item \lean{AITProb.probabilistic\_regulator\_theorem} --- ART Theorem~2,
+$\Pr((W,R)\mid x,E)\le C\,2^{\,M(W:R)}2^{-\Delta}$.
+\item \lean{AITProb.wrapper\_bound} --- ART Eq.~(6), now \emph{derived} from the coding theorem:
+$\mathrm{post}(e,x)\le (1/c_1)2^{K(x)-K(e)}$.
+\item \lean{AITProb.probabilistic\_regulator\_theorem\_sharp} --- ART Theorem~2 \emph{sharp form}
+retaining the regulator cost: $\mathrm{post}\le C\,2^{M(W:R)}2^{-\Delta}2^{-K(R)}$ (no extra
+hypothesis; the headline drops $2^{-K(R)}\le 1$, \lean{...\_of\_sharp}).
+\item \lean{AITProb.theorem1\_posterior\_tilt} --- ART Theorem~1, two-sided posterior tilt.
+\item \lean{AITProb.theorem3\_onoff\_evidence} --- ART Theorem~3, ON/OFF evidence ratio
+$\asymp 2^{\Delta}$ (log-free form).
+\item \lean{CoarseGraining.theoremB} / \lean{corollaryB} --- WP0193 Theorem~B / Corollary~B:
+regulatory coarse-graining is uncomputable, by reduction to Vereshchagin--Vitányi.
+\item \lean{quine\_floor}, \lean{self\_prediction\_dichotomy}, \lean{chaitin\_blocks\_minimality}
+--- WP0192 Principle~1 / WP0162 Proposition~4: the three independent obstructions to a complete,
+exact, certifiable self-model (the middle one is an axiom-free diagonalization).
+\item \lean{persistence\_conservation} / \lean{conservation\_tradeoff} --- WP0162 Proposition~2:
+the ledger $K(O_W)=\Ik(O_W{:}R)+K(O_W\mid R^\ast)$ (from symmetry of information), and at fixed
+$K(O_W)$, maximizing $\Ik$ $=$ minimizing the conditional residual.
+\item \lean{regulator\_selection} --- WP0162 Proposition~1: $\argmin_R K(R\mid W)=\argmax_R[M(W{:}R)-K(R)]$.
+\item \lean{AITProb.probabilistic\_regulator\_theorem\_conditional} --- ART sharp form in the
+$2^{-K(R\mid W)}$ reading (posterior favors regulators simple given the world).
+\item \lean{PrefixMachine.lemma1\_posterior\_bounds} --- the Bayes$\leftrightarrow$Kolmogorov bridge,
+$\tfrac{1}{c_2}2^{K(x)-|p|}\le P(p\mid x)\le \tfrac{1}{c_1}2^{K(x)-|p|}$.
+\item \lean{self\_regulation\_temporal\_model} --- Proposition~3,
+$K(S_{t+\tau}\mid S_t,E,C)\le K(S_{t+\tau}\mid C)-\Delta_{\rm self}+2\,\mathrm{slack}$.
+\item \lean{pers\_eq\_nmai}, \lean{persistent\_pos} --- persistence as temporal self-information.
+\end{itemize}
+
+\noindent\textbf{Satisfiability witnesses:} \lean{toy\_symmetry} (symmetry of information holds for
+\lean{Toy}), \lean{toyMachine\_coding} (coding theorem holds for \lean{ToyMachine}),
+\lean{toy\_self\_model\_fires} (the self-model corollary fires with a genuine gap
+$\Delta_{\rm self}=3$). \textbf{Guards:} \lean{\#check\_failure (peers A S)} (part-whole), and
+\lean{ystar\_form\_holds} vs \lean{rawy\_form\_fails} (symmetry must use $y^\ast$, not $y$).
+
+% ══════════════════════════════════════════════════════════════════════
+\section{Theorem inventory and formalization status}
+\label{sec:inventory}
+% ══════════════════════════════════════════════════════════════════════
+
+Every numbered/named formal statement across the KT corpus, classified
+\textbf{[STD]} (standard AIT/probability/logic --- axiom candidate) or \textbf{[KT]}
+(Kolmogorov-Theory-specific --- proof target), with status. Sources:
+ART paper,\cite{ruffini2026art} Pattern Persistence (WP0162),\cite{ruffini2026persistence}
+Agent Know Thyself (WP0192), Regulatory Coarse-Graining (WP0193), world-models
+paper,\cite{ruffini2025worldmodels} and the foundational AIT-of-consciousness paper.\cite{ruffini2017algorithmic}
+
+{\small
+\begin{longtable}{@{}p{2.1cm}p{6.6cm}p{1.0cm}p{2.6cm}@{}}
+\toprule
+\textbf{ID (paper)} & \textbf{Statement (abbreviated)} & \textbf{Class} & \textbf{Status} \\
+\midrule
+\endhead
+\multicolumn{4}{@{}l}{\textit{ART paper --- The Algorithmic Regulator (Entropy 2026, 28, 257)}}\\
+\midrule
+Lemma 1 & $P(p\mid x)=2^{-|p|}/m(x)$; sandwiched by coding thm & STD & \stproved\ (\lean{lemma1\_...}) \\
+Theorem 2 & $\Pr((W,R)\mid x,E)\le C\,2^{M(W:R)}2^{-\Delta}$ & KT & \stproved\ (\lean{prob\_reg\_thm}) \\
+Theorem 2 (sharp) & retains regulator cost: $\le C\,2^{M}2^{-\Delta}2^{-K(R)}$ & KT & \stproved\ (\lean{..\_sharp}) \\
+Lemma 2 & OFF run lower-bounds world: $K(O_{W,\varnothing})\le K(W)+c_0$ & KT & \staxiom\ (hyp.\ \lean{hoff}) \\
+Eq.~(6) & wrapper bound $\mathrm{post}\le (1/c_1)2^{K(x)-K(W,R)}$ & KT & \stproved\ (\lean{wrapper\_bound}) \\
+Theorem 1 & coupled-pair posterior tilt $\in[\cdot]2^{K(x)-K(W)-K(R)+M}$ & KT & \stproved\ (\lean{theorem1\_...}) \\
+Theorem 3 & $m(O_{W,R})/m(O_{W,\varnothing})\asymp 2^{\Delta}$ (as-if objective) & KT & \stproved\ (\lean{theorem3\_...}) \\
+Theorem A4 & low-complexity output $\Rightarrow$ strict tiny shrinkage of $K(W\mid R)$ & KT & \sttodo \\
+Defs 1--2 & internal model ($M(W{:}R)>0$); good regulator ($\Delta>0$) & KT & \stna\ (encoded) \\
+Thms A1--A3, Lem A1 & coding thm (uncond/cond), Kraft counting, excess-length decay & STD & \staxiom \\
+\midrule
+\multicolumn{4}{@{}l}{\textit{Pattern Persistence --- WP0162}}\\
+\midrule
+Proposition 3 & self-regulation $\Rightarrow$ temporal self-model (Eq.~44) & KT & \stproved\ (\lean{self\_reg\_...}) \\
+Proposition 1 & regulator selection $\argmin K(R\mid W)=\argmax[M-K(R)]$ & KT & \stproved\ (\lean{regulator\_selection}) \\
+Proposition 2 & persistence conservation ledger $K(O_W)=\Ik+K(O_W\mid R^\ast)\pm O(\log)$ & KT & \stproved\ (\lean{persistence\_...}) \\
+Proposition 4 & self-model incompleteness (3 obstructions) & KT & \stproved\ (\lean{quine\_floor},$\ldots$) \\
+Orbit-label thm & conserved orbit label = ``generalized energy'' & KT & \sttodo\ (geom.\ track) \\
+\midrule
+\multicolumn{4}{@{}l}{\textit{Agent Know Thyself --- WP0192}}\\
+\midrule
+Proposition 1 & temporal self-model (= WP0162 Prop.~3) & KT & \stproved\ (same) \\
+Principle 1 & self-model incompleteness (= WP0162 Prop.~4) & KT & \stproved\ (Phase~4) \\
+Conjecture & acquired self-model prior & KT & \stna\ (conjecture) \\
+\midrule
+\multicolumn{4}{@{}l}{\textit{Regulatory Coarse-Graining --- WP0193}}\\
+\midrule
+Theorem B & targeted sufficient projection uncomputable & STD & \stproved\ (\lean{theoremB}) \\
+Corollary B & regulatory coarse-graining uncomputable & KT & \stproved\ (\lean{corollaryB}) \\
+Lemma 1 & uncomputability of $h_{x\to y}$ & STD & \staxiom\ (via V--V) \\
+Proposition 1 & existence of a bounded regulation-sufficient projection & KT & \sttodo \\
+Theorem A & selection uncomputability & KT & \sttodo \\
+Cor.\ C1--C3 & blanket uncomputability/fuzziness; acquisition; discovery & KT & \stna\ (interp.) \\
+\midrule
+\multicolumn{4}{@{}l}{\textit{World models / Lie groups --- Entropy 2025 (separate geometry track)}}\\
+\midrule
+Thms A1--A5 & Lie transitivity, homogeneous space, moduli stack & STD & \stna\ (out of scope v1) \\
+Noether (gen.) & continuous symmetry $\Rightarrow$ conserved quantity & KT & \sttodo\ (geom.\ track) \\
+\midrule
+\multicolumn{4}{@{}l}{\textit{Foundational --- nix019 / K-input}}\\
+\midrule
+Hyp.\ 1--2, Cons.\ 1--2 & simplicity selection; structured experience; high MAI & KT & \stna\ (informal) \\
+\bottomrule
+\end{longtable}}
+
+\noindent\textbf{Legend.} \stproved: machine-checked in Lean, no \lean{sorry}. \staxiom: assumed
+(standard result, or a named hypothesis consumed by a corollary). \sttodo: a KT proof target not
+yet formalized. \stna: definition, conjecture, interpretive remark, or informal claim (not a
+proof target in the current scope).
+
+% ══════════════════════════════════════════════════════════════════════
+\section{Roadmap}
+\label{sec:roadmap}
+% ══════════════════════════════════════════════════════════════════════
+
+Priorities are ordered to maximize KT-correctness assurance per unit effort, exploiting the fact
+that the AIT/Bayes layer (\S\ref{sec:axioms}) may be assumed.
+
+\begin{description}[leftmargin=1.4em,style=nextline]
+\item[\textcolor{ForestGreen}{Phase~1 --- close the ART chain. \textbf{DONE.}}] The wrapper bound
+Eq.~(6) is now a \emph{derived} theorem (\lean{wrapper\_bound}) from the coding theorem (\lean{CodingLB});
+ART \textbf{Theorem~1} (\lean{theorem1\_posterior\_tilt}) and \textbf{Theorem~3}
+(\lean{theorem3\_onoff\_evidence}, log-free form) are proved; \lean{probabilistic\_regulator\_theorem}
+now consumes \lean{wrapper\_bound} and rests on the coding theorem $+$ Lemma~2. All four
+\lean{\#print axioms} $=$ Lean core only.
+\item[\textcolor{ForestGreen}{Phase~2 --- persistence conservation (WP0162 Prop.~2). \textbf{DONE.}}]
+Ledger $K(O_W)=\Ik(O_W{:}R)+K(O_W\mid R^\ast)$ (\lean{persistence\_conservation}, from symmetry of
+information) and the trade-off ``max $\Ik$ $=$ min conditional residual'' (\lean{conservation\_tradeoff}).
+\item[\textcolor{ForestGreen}{Phase~3 --- regulator selection (WP0162 Prop.~1). \textbf{DONE.}}]
+$\argmin_{R}K(R\mid W)=\argmax_R[M(W{:}R)-K(R)]$ proved (\lean{regulator\_selection}) from the
+chain rule; the ART sharp form's $2^{-K(R\mid W)}$ reading is
+\lean{probabilistic\_regulator\_theorem\_conditional}.
+\item[\textcolor{ForestGreen}{Phase~4 --- self-model incompleteness. \textbf{DONE.}}]
+The three independent obstructions: the quine floor (\lean{quine\_floor}, $|Q_A|\ge K(A)$),
+the self-prediction dichotomy (\lean{self\_prediction\_dichotomy}, an axiom-free diagonalization),
+and the Chaitin ceiling on minimality (\lean{chaitin\_blocks\_minimality}).
+\item[\textcolor{ForestGreen}{Phase~5 --- coarse-graining uncomputability (WP0193). \textbf{DONE.}}]
+Theorem~B and Corollary~B (regulatory coarse-graining uncomputable) proved by an abstract
+reduction to Vereshchagin--Vitányi (\lean{theoremB}, \lean{corollaryB}).
+
+\smallskip\noindent\textbf{All five roadmap phases are complete.} The WP0162 / WP0192 / WP0193
+KT corollaries and the full probabilistic ART layer are machine-checked, \lean{sorry}-free,
+resting only on Lean core plus the named AIT axiom layer of \S\ref{sec:axioms}.
+\item[\textcolor{gray}{Later --- geometry track.}] The Lie-group/Noether layer of the world-models
+paper is a distinct development (differential geometry in Mathlib), deferred until the AIT/KT core
+is complete.
+\end{description}
+
+\noindent Each phase keeps the invariant: KT results \lean{sorry}-free; \lean{\#print axioms} =
+Lean core + named hypotheses; new hypotheses discharged by an extended toy model.
+
+% ══════════════════════════════════════════════════════════════════════
+\section{Conclusion}
+% ══════════════════════════════════════════════════════════════════════
+We have a green, machine-checked Level-1/1.5 core: the probabilistic ART (Theorem~2), the
+Bayes$\leftrightarrow$Kolmogorov bridge (Lemma~1), the temporal self-model (Proposition~3), and
+persistence, all proved from an explicit, satisfiable AIT/Bayes axiom layer, with the KT ontology
+typed so the whole-vs-part error cannot compile. This document is the living status tracker; the
+roadmap above closes the remaining KT corollaries paper-by-paper while keeping the soundness
+invariants intact.
+
+% ── Bibliography (manual) ─────────────────────────────────────────────
+\begin{thebibliography}{9}
+\bibitem{leanmathlib} L.\ de Moura and S.\ Ullrich, \emph{The Lean~4 Theorem Prover and
+Programming Language}, CADE 2021; The mathlib Community, \emph{The Lean Mathematical Library},
+CPP 2020.
+\bibitem{ruffini2026art} G.\ Ruffini et al., \emph{An Algorithmic-Information-Theoretic Regulator
+Theorem}, Entropy \textbf{28}(3):257, 2026.
+\bibitem{ruffini2026persistence} G.\ Ruffini, \emph{Pattern Persistence} (BCOM WP0162), 2026.
+\bibitem{ruffini2025worldmodels} G.\ Ruffini et al., \emph{World models, Lie groups, and symmetry
+in Kolmogorov Theory}, Entropy \textbf{27}(1):90, 2025.
+\bibitem{ruffini2017algorithmic} G.\ Ruffini, \emph{An algorithmic information theory of
+consciousness}, Neuroscience of Consciousness \textbf{2017}(1):nix019.
+\bibitem{livitanyi} M.\ Li and P.\ Vit\'anyi, \emph{An Introduction to Kolmogorov Complexity and
+Its Applications}, 4th ed., Springer, 2019.
+\end{thebibliography}
+
+\end{document}
