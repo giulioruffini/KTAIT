@@ -302,6 +302,14 @@ regulatory coarse-graining is uncomputable, by reduction to Vereshchagin--Vitán
 \item \lean{quine\_floor}, \lean{self\_prediction\_dichotomy}, \lean{chaitin\_blocks\_minimality}
 --- WP0192 Principle~1 / WP0162 Proposition~4: the three independent obstructions to a complete,
 exact, certifiable self-model (the middle one is an axiom-free diagonalization).
+\item \lean{contrast\_posterior\_ranks\_by\_complexity} --- WP0162 Q3 (Eq.~26): the contrast-fiber
+posterior ranks by joint simplicity, with no $2^{-\Delta}$ tilt.
+\item \lean{OrbitLabel.genEnergy\_conserved} --- WP0162 App.~C: generalized energy as a conserved
+orbit label (axiom-free).
+\item \lean{boundary\_sufficient} --- WP0162 App.~E: the thin boundary as a compressed sufficient
+statistic.
+\item \lean{low\_complexity\_shrinkage} --- ART Theorem~A4; \lean{CoarseGraining.theoremA},
+\lean{CoarseGraining.existence} --- WP0193 Theorem~A and Proposition~1.
 \item \lean{persistence\_conservation} / \lean{conservation\_tradeoff} --- WP0162 Proposition~2:
 the ledger $K(O_W)=\Ik(O_W{:}R)+K(O_W\mid R^\ast)$ (from symmetry of information), and at fixed
 $K(O_W)$, maximizing $\Ik$ $=$ minimizing the conditional residual.
@@ -348,7 +356,7 @@ Lemma 2 & OFF run lower-bounds world: $K(O_{W,\varnothing})\le K(W)+c_0$ & KT & 
 Eq.~(6) & wrapper bound $\mathrm{post}\le (1/c_1)2^{K(x)-K(W,R)}$ & KT & \stproved\ (\lean{wrapper\_bound}) \\
 Theorem 1 & coupled-pair posterior tilt $\in[\cdot]2^{K(x)-K(W)-K(R)+M}$ & KT & \stproved\ (\lean{theorem1\_...}) \\
 Theorem 3 & $m(O_{W,R})/m(O_{W,\varnothing})\asymp 2^{\Delta}$ (as-if objective) & KT & \stproved\ (\lean{theorem3\_...}) \\
-Theorem A4 & low-complexity output $\Rightarrow$ strict tiny shrinkage of $K(W\mid R)$ & KT & \sttodo \\
+Theorem A4 & low-complexity output $\Rightarrow$ strict tiny shrinkage of $K(W\mid R)$ & KT & \stproved\ (\lean{low\_complexity\_shrinkage}) \\
 Defs 1--2 & internal model ($M(W{:}R)>0$); good regulator ($\Delta>0$) & KT & \stna\ (encoded) \\
 Thms A1--A3, Lem A1 & coding thm (uncond/cond), Kraft counting, excess-length decay & STD & \staxiom \\
 \midrule
@@ -358,7 +366,7 @@ Proposition 3 & self-regulation $\Rightarrow$ temporal self-model (Eq.~44) & KT 
 Proposition 1 & regulator selection $\argmin K(R\mid W)=\argmax[M-K(R)]$ & KT & \stproved\ (\lean{regulator\_selection}) \\
 Proposition 2 & persistence conservation ledger $K(O_W)=\Ik+K(O_W\mid R^\ast)\pm O(\log)$ & KT & \stproved\ (\lean{persistence\_...}) \\
 Proposition 4 & self-model incompleteness (3 obstructions) & KT & \stproved\ (\lean{quine\_floor},$\ldots$) \\
-Orbit-label thm & conserved orbit label = ``generalized energy'' & KT & \sttodo\ (geom.\ track) \\
+Orbit-label thm & conserved orbit label = ``generalized energy'' & KT & \stproved\ (\lean{genEnergy\_conserved}) \\
 \midrule
 \multicolumn{4}{@{}l}{\textit{Agent Know Thyself --- WP0192}}\\
 \midrule
@@ -371,8 +379,8 @@ Conjecture & acquired self-model prior & KT & \stna\ (conjecture) \\
 Theorem B & targeted sufficient projection uncomputable & STD & \stproved\ (\lean{theoremB}) \\
 Corollary B & regulatory coarse-graining uncomputable & KT & \stproved\ (\lean{corollaryB}) \\
 Lemma 1 & uncomputability of $h_{x\to y}$ & STD & \staxiom\ (via V--V) \\
-Proposition 1 & existence of a bounded regulation-sufficient projection & KT & \sttodo \\
-Theorem A & selection uncomputability & KT & \sttodo \\
+Proposition 1 & existence of a bounded regulation-sufficient projection & KT & \stproved\ (\lean{existence}) \\
+Theorem A & selection uncomputability & KT & \stproved\ (\lean{theoremA}) \\
 Cor.\ C1--C3 & blanket uncomputability/fuzziness; acquisition; discovery & KT & \stna\ (interp.) \\
 \midrule
 \multicolumn{4}{@{}l}{\textit{World models / Lie groups --- Entropy 2025 (separate geometry track)}}\\

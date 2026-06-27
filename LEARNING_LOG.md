@@ -223,3 +223,20 @@ A 2–3 line note after each milestone: what we learned / what tripped us up.
   axioms — the reduction is pure logic; V–V is the named hypothesis.
 - ROADMAP COMPLETE (5/5). Whole KT corpus of WP0162/WP0192/WP0193 + the probabilistic ART
   is formalized; KT corollaries sorry-free, axioms = Lean core + named AIT facts.
+
+## Easy + medium batch (2026-06-27, after roadmap)
+
+- `Contrast.lean` (Q3, Eq. 26): `contrast_posterior_ranks_by_complexity` — the fiber posterior
+  ranks by joint simplicity, no `2^{−Δ}` tilt. First `Finset.sum` piece; key lemma names:
+  `Finset.sum_pos`, `div_le_div_iff_of_pos_right` (NOT `div_le_div_iff_right`, which is the
+  ordered-GROUP `/`), `zpow_le_zpow_iff_right₀ (1<2)`. Gotcha: do the `div` rewrite BEFORE
+  `unfold cweight`, else the denominator in the goal (`2^…`) no longer matches `hZ` (`cweight …`).
+- `OrbitLabel.lean` (App. C): `genEnergy_conserved` — generalized energy = conserved orbit label
+  of a bijective dynamics `F : Equiv.Perm X`; orbit Setoid + `Quotient.sound`. Axiom-free dynamics.
+- `Persistence.boundary_sufficient` (App. E): two one-sided conditional bounds → two-sided
+  sufficiency `|Δcond| ≤ slack` by `omega`.
+- `ART.low_complexity_shrinkage` (Thm A4): counting bound + `idx < K(W)` ⇒ strict shrinkage (`omega`).
+- `CoarseGraining.theoremA` (selection uncomputability, = the `theoremB` reduction) and
+  `CoarseGraining.existence` (WP0193 Prop 1, `∃` from the bounded self-code witness) — axiom-free.
+- All six `#print axioms` = Lean core (two axiom-free). Easy+medium batch done; only the geometry
+  track (Noether/Lie) and Level-2 grounding remain.

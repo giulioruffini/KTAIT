@@ -58,5 +58,21 @@ theorem corollaryB {sf0 : S → ℕ → S}
     {π : S → S → ℕ → S} (hcorrect : specialize π = sf0) : ¬ CompT π :=
   theoremB CompT CompS hred hvv hcorrect
 
+/-- **Theorem A (selection uncomputability).** Selecting an optimal sufficient regulator is
+    uncomputable — the same reduction to Vereshchagin–Vitányi as `theoremB` (a correct selection
+    solver, specialized to `y := x`, computes the structure function). -/
+theorem theoremA {sf0 : S → ℕ → S}
+    (hred : ReductionClosure CompT CompS) (hvv : VV CompS sf0)
+    {Sel : S → S → ℕ → S} (hcorrect : specialize Sel = sf0) : ¬ CompT Sel :=
+  theoremB CompT CompS hred hvv hcorrect
+
+/-- **WP0193 Proposition 1 (existence).** A persistent agent carrying a bounded,
+    regulation-sufficient self-code witnesses a bounded regulation-sufficient projection — so the
+    optimization of Definition 2 is over a non-empty set. -/
+theorem existence {Proj : Type} {RegSuff : Proj → Prop} {cost : Proj → ℕ} {K0 : ℕ}
+    (selfCode : Proj) (hsuff : RegSuff selfCode) (hbound : cost selfCode ≤ K0) :
+    ∃ π, RegSuff π ∧ cost π ≤ K0 :=
+  ⟨selfCode, hsuff, hbound⟩
+
 end CoarseGraining
 end KTAIT

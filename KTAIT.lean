@@ -7,5 +7,7 @@ import KTAIT.Persistence
 import KTAIT.RegulatorSelection
 import KTAIT.SelfModelLimits
 import KTAIT.CoarseGraining
+import KTAIT.Contrast
+import KTAIT.OrbitLabel
 import KTAIT.ToyModel
 import KTAIT.BadStatements

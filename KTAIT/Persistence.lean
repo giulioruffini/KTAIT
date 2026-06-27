@@ -77,4 +77,19 @@ theorem conservation_tradeoff (F : AITFrame) (OW R₁ R₂ : F.Obj)
   simp only [ConservationLedger] at h₁ h₂
   constructor <;> intro h <;> omega
 
+/-! ## Appendix E — the thin boundary as a compressed sufficient statistic -/
+
+/-- **WP0162 Appendix E.** If the boundary `∂` screens off the world's past `W_{≤t}` (the future
+    self-code is no more expensive given `∂` than given the full past, up to `slack`) AND the past
+    is at least as informative as the boundary (up to `slack`), then the boundary is a sufficient
+    statistic: the two conditional complexities agree up to `slack`. -/
+theorem boundary_sufficient (F : AITFrame) (Mfut Mt bdy Wpast C : F.Obj)
+    (hscreen : (F.cond Mfut (F.pair Mt (F.pair bdy C)) : ℤ)
+                ≤ (F.cond Mfut (F.pair Mt (F.pair Wpast C)) : ℤ) + (F.slack : ℤ))
+    (hpast : (F.cond Mfut (F.pair Mt (F.pair Wpast C)) : ℤ)
+                ≤ (F.cond Mfut (F.pair Mt (F.pair bdy C)) : ℤ) + (F.slack : ℤ)) :
+    ((F.cond Mfut (F.pair Mt (F.pair bdy C)) : ℤ)
+      - (F.cond Mfut (F.pair Mt (F.pair Wpast C)) : ℤ)).natAbs ≤ F.slack := by
+  omega
+
 end KTAIT

@@ -216,4 +216,15 @@ theorem theorem3_onoff_evidence {c1 c2 : ℝ}
 
 end AITProb
 
+/-! ## ART Theorem A4 — low-complexity output ⇒ strict (tiny) shrinkage -/
+
+/-- **ART Theorem A4 (single-episode identifiability).** If observing the low-complexity event
+    confines the world to a strict subset of the `m`-bit programs, the multiplicity-compression
+    bound (Lemma A1) gives an index cost `idx` for `K(W | R, E_a)` strictly below the
+    unconditioned `K(W)` — so a single low-complexity readout strictly lowers the world's
+    complexity. (The counting bound `hcount` and `idx < K(W)` are the assumed AIT facts; the
+    conclusion `K(W | R, E_a) < K(W)` is their consequence.) -/
+theorem low_complexity_shrinkage {KcondE Kw idx : ℕ}
+    (hcount : KcondE ≤ idx) (hidx : idx < Kw) : KcondE < Kw := by omega
+
 end KTAIT
