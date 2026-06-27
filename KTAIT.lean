@@ -5,5 +5,6 @@ import KTAIT.Probability
 import KTAIT.SelfModel
 import KTAIT.Persistence
 import KTAIT.RegulatorSelection
+import KTAIT.SelfModelLimits
 import KTAIT.ToyModel
 import KTAIT.BadStatements

@@ -197,3 +197,18 @@ A 2–3 line note after each milestone: what we learned / what tripped us up.
   condStar R₂` — maximizing shared structure = minimizing the conditional residual. `omega`.
 - Pattern noticed: WP0162 §D Props 1 & 2 are both "order-equivalence under an AIT identity"
   (chain rule / symmetry of info) + `omega` — the same proof shape as the self-model.
+
+## Phase 4 — self-model incompleteness (WP0192 Principle 1 / WP0162 Prop 4) (2026-06-27)
+
+- Three INDEPENDENT obstructions, each with a clean faithful core:
+  - `quine_floor`: a lossless self-model (`U selfA = A`) has `len selfA ≥ K A`, straight from
+    `KIsShortest` (the defining property of `K`). Completeness costs ≥ K(A).
+  - `self_prediction_dichotomy`: a genuine DIAGONALIZATION — if the agent acts to contravene
+    its consulted prediction (`act = flip`, `flip` fixed-point-free) then exactness
+    `act pred = pred` gives `flip pred = pred`, contradiction. AXIOM-FREE; the contravention
+    is witnessed by boolean `not` (no fixed point, `by decide`).
+  - `chaitin_blocks_minimality`: if certified lower bounds are capped at `c` (Chaitin), then
+    for `K x > c+1` the near-minimal bound `K x > K x − 1` is uncertifiable. `omega`.
+- Methodology held: the standard computability theorems (Kleene, Chaitin) enter as the
+  hypotheses (`KIsShortest`, the certifier ceiling); the KT content is their self-modeling
+  consequence. The diagonalization needing NO axioms is a nice surprise.
