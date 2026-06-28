@@ -74,5 +74,14 @@ theorem existence {Proj : Type} {RegSuff : Proj → Prop} {cost : Proj → ℕ} 
     ∃ π, RegSuff π ∧ cost π ≤ K0 :=
   ⟨selfCode, hsuff, hbound⟩
 
+/-- **Algorithmic emergence (WP0007), generic form.** A correct general coarse-graining solver
+    `G` — one that computes the (minimal-sufficient-statistic) structure function `sf0` — is not
+    computable: the optimal macro-model of a system is not derivable from its micro-description
+    ("reduction is not construction"). The substance is Vereshchagin–Vitányi (`hvv`); the
+    regulatory specialization is `corollaryB`. -/
+theorem algorithmic_emergence {sf0 : S → ℕ → S}
+    (hvv : VV CompS sf0) {G : S → ℕ → S} (hcorrect : G = sf0) : ¬ CompS G := by
+  rw [hcorrect]; exact hvv
+
 end CoarseGraining
 end KTAIT

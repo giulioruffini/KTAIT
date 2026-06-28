@@ -257,3 +257,11 @@ A 2–3 line note after each milestone: what we learned / what tripped us up.
   dim H` needs manifold dimension (deferred).
 - Remaining geometry (deferred): the manifold/dimension refinements, Lie pseudogroups, moduli
   stacks, Mostow rigidity (not in Mathlib); and Level-2 grounding.
+
+## Algorithmic-emergence hook (2026-06-28)
+
+- `CoarseGraining.algorithmic_emergence` (WP0007, generic form): a correct general coarse-graining
+  solver computing the structure function `sf0` cannot be computable — "reduction is not
+  construction." Substance is V–V (`hvv`); the regulatory specialization is `corollaryB` (WP0193).
+  A thin named hook so WP0007 can cite a machine-checked statement. KTAIT is now PUBLIC (Actions
+  free; CI already de-stacked).
