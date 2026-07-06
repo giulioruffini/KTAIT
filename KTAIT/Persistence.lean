@@ -92,4 +92,53 @@ theorem boundary_sufficient (F : AITFrame) (Mfut Mt bdy Wpast C : F.Obj)
       - (F.cond Mfut (F.pair Mt (F.pair Wpast C)) : ℤ)).natAbs ≤ F.slack := by
   omega
 
+/-! ## Meta-persistence — persistence one scale up (WP0162 §Evolving, Prop. 1)
+
+A collective of best-responding agents `A₁,…,A_N` has, under a coarse-graining `Φ` of its
+mesoscale configuration, a **collective submodel** `Sc : Time → Obj`. Collective persistence
+is the persistence equation one scale up, `Pers F Sc`. Two conditions on the pair
+`(𝒟, Φ)` — *closure* (`Sc` is an algorithmic Markov blanket) and a *Foster–Lyapunov
+contraction* of the constituent flow — deliver a bounded transient
+`K(Sc t | (Sc (t+τ))*) ≤ L` with `L = O(log τ)`, at stable complexity `K(Sc) = k`. The bound
+below follows. Its hypotheses mention only `Sc, k, L, slack`: **no property of the individual
+objectives enters** — the parts act only through the closed-loop dynamics that fix `Sc`, and
+need share no objective. -/
+
+/-- **WP0162 Proposition 1 (meta-persistence).** With the symmetry of algorithmic information,
+    a collective submodel `Sc` of stable complexity `k > 0` (`K(Sc t) = K(Sc (t+τ)) = k`), and a
+    bounded transient `K(Sc t | (Sc (t+τ))*) ≤ L`, collective persistence obeys
+    `1 − (L + slack)/k ≤ Pers F Sc t τ`. No constituent objective appears in the hypotheses. -/
+theorem meta_persistence (F : AITFrame) (hsym : SymmetryOfInformation F)
+    (Sc : Time → F.Obj) (t τ : Time) (k L : Nat) (hpos : 0 < k)
+    (hkt : F.K (Sc t) = k) (hktau : F.K (Sc (t + τ)) = k)
+    (hdrift : condStar F (Sc t) (Sc (t + τ)) ≤ L) :
+    (1 : ℚ) - ((L : ℚ) + (F.slack : ℚ)) / (k : ℚ) ≤ Pers F Sc t τ := by
+  -- symmetry of information + the transient bound give a lower bound on the shared information.
+  have hs := hsym (Sc t) (Sc (t + τ))
+  have hktZ : (F.K (Sc t) : ℤ) = (k : ℤ) := by exact_mod_cast hkt
+  have hcondZ : (condStar F (Sc t) (Sc (t + τ)) : ℤ) ≤ (L : ℤ) := by exact_mod_cast hdrift
+  have hIK : (k : ℤ) - (L : ℤ) - (F.slack : ℤ) ≤ IK F (Sc t) (Sc (t + τ)) := by omega
+  have hkQ : (0 : ℚ) < (k : ℚ) := by exact_mod_cast hpos
+  have hIKQ : (k : ℚ) - (L : ℚ) - (F.slack : ℚ) ≤ (IK F (Sc t) (Sc (t + τ)) : ℚ) := by
+    exact_mod_cast hIK
+  -- collapse the normalizer `max (K(Sc t)) (K(Sc (t+τ))) = k`, then a division bound.
+  unfold Pers NMAI
+  rw [hkt, hktau, max_self]
+  rw [show (1 : ℚ) - ((L : ℚ) + (F.slack : ℚ)) / (k : ℚ)
+        = ((k : ℚ) - (L : ℚ) - (F.slack : ℚ)) / (k : ℚ) from by field_simp; ring]
+  gcongr
+
+/-- **`K(S^C) → ∞` limit of Prop. 1.** If the transient is a vanishing fraction of the
+    collective complexity, `L + slack ≤ ε·k`, then collective persistence exceeds `1 − ε`. -/
+theorem meta_persistence_limit (F : AITFrame) (hsym : SymmetryOfInformation F)
+    (Sc : Time → F.Obj) (t τ : Time) (k L : Nat) (ε : ℚ) (hpos : 0 < k)
+    (hkt : F.K (Sc t) = k) (hktau : F.K (Sc (t + τ)) = k)
+    (hdrift : condStar F (Sc t) (Sc (t + τ)) ≤ L)
+    (hε : ((L : ℚ) + (F.slack : ℚ)) ≤ ε * (k : ℚ)) :
+    (1 : ℚ) - ε ≤ Pers F Sc t τ := by
+  have hk : (0 : ℚ) < (k : ℚ) := by exact_mod_cast hpos
+  have hbound := meta_persistence F hsym Sc t τ k L hpos hkt hktau hdrift
+  have hfrac : ((L : ℚ) + (F.slack : ℚ)) / (k : ℚ) ≤ ε := by rw [div_le_iff₀ hk]; exact hε
+  linarith
+
 end KTAIT

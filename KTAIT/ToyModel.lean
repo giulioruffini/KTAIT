@@ -8,6 +8,7 @@ import KTAIT.Basic
 import KTAIT.Ontology
 import KTAIT.Probability
 import KTAIT.SelfModel
+import KTAIT.Persistence
 
 /-!
 # KTAIT.ToyModel — satisfiability witnesses (M5)
@@ -68,6 +69,31 @@ theorem toy_self_model_fires : True := by
   have _h := self_regulation_temporal_model ToyGap (fun _ => (0 : Nat))
       (0 : Nat) (0 : Nat) (3 : Nat) (0 : Nat) 0 0 1
       (by decide) (by decide) (by decide)
+  trivial
+
+/-- A frame with a POSITIVE, self-consistent complexity: one object of complexity `3`,
+    with `I_K = K` exactly, so symmetry of information holds and `k > 0` is available
+    (unlike `Toy`, where `K ≡ 0`). -/
+def ToyMeta : AITFrame where
+  Obj := Unit
+  K := fun _ => 3
+  pair := fun _ _ => ()
+  cond := fun _ _ => 0
+  star := fun _ => ()
+  slack := 1
+
+/-- Symmetry of information holds for `ToyMeta`. -/
+theorem toyMeta_symmetry : SymmetryOfInformation ToyMeta := by
+  intro x y; simp [IK, condStar, ToyMeta]
+
+/-- **Meta-persistence fires non-vacuously.** On `ToyMeta`, a constant collective submodel
+    is perfectly persistent (`Pers = 1`) and Prop. 1 delivers the real lower bound
+    `1 − (0 + 1)/3 = 2/3`. That this application type-checks witnesses that the hypotheses of
+    `meta_persistence` — symmetry of information, stable complexity `k = 3 > 0`, and a bounded
+    transient `L = 0` — are jointly satisfiable. -/
+theorem toy_meta_persistence_fires : True := by
+  have _h := meta_persistence ToyMeta toyMeta_symmetry (fun _ => ()) 0 0 3 0
+      (by norm_num) rfl rfl (by decide)
   trivial
 
 end KTAIT

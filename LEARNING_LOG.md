@@ -265,3 +265,13 @@ A 2–3 line note after each milestone: what we learned / what tripped us up.
   construction." Substance is V–V (`hvv`); the regulatory specialization is `corollaryB` (WP0193).
   A thin named hook so WP0007 can cite a machine-checked statement. KTAIT is now PUBLIC (Actions
   free; CI already de-stacked).
+
+
+- `Persistence.meta_persistence` / `meta_persistence_limit` (WP0162 §6, meta-persistence Prop.):
+  "persistence one scale up." Symmetry of information + a stable-complexity collective submodel
+  (`K(Sc t)=K(Sc (t+τ))=k`) + bounded transient `condStar(Sc t, Sc(t+τ)) ≤ L` give
+  `Pers_C ≥ 1 − (L+slack)/k`. Proof = `omega` for the IK lower bound (natAbs from `SymmetryOfInformation`),
+  then `unfold Pers NMAI; rw [hkt,hktau,max_self]; rw [show 1-(…)/k = (k-L-slack)/k …]; gcongr`.
+  Key point: the hypotheses mention ONLY `Sc,k,L,slack` — no individual objective — so the parts
+  need share no goal. `toy_meta_persistence_fires` witnesses non-vacuity on `ToyMeta` (K≡3, so k>0,
+  unlike `Toy` where K≡0). `#print axioms` = Lean core only.
