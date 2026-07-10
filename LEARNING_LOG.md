@@ -275,3 +275,27 @@ A 2–3 line note after each milestone: what we learned / what tripped us up.
   Key point: the hypotheses mention ONLY `Sc,k,L,slack` — no individual objective — so the parts
   need share no goal. `toy_meta_persistence_fires` witnesses non-vacuity on `ToyMeta` (K≡3, so k>0,
   unlike `Toy` where K≡0). `#print axioms` = Lean core only.
+
+## M-Decoder — WP0058 Proposition 1: no universal decoder (2026-07-10)
+
+- `Decoder.no_universal_decoder` (WP0058 Prop. 1): a *total* computable inverse compiler `C` for a
+  developmental map `D` that also **recognizes its own domain** (`C a = none` exactly off
+  `Set.range D`) would decide membership in the achievable set — run it, test for `none`. Since a
+  computable `D` has an r.e.-but-undecidable range in general, no such `C` exists. Hence every
+  realized Lamarckian write-back channel is a *partial* map whose validity domain is fixed in
+  advance, which is what charges the domain to the heritable program.
+- Novel for this repo: the engine (`achievable_computable_of_inverse`) assumes **no AIT fact at
+  all** — it is unconditional, `#print axioms` = Lean core only. Only non-vacuity (that some
+  computable `D` really has an undecidable range) enters as a named `Prop`,
+  `ExistsUndecidableAchievableSet`. Rice is cited in the paper's prose but is *not needed* in the
+  Lean proof: the decidability contradiction is direct and cheaper.
+- Tripped us up briefly: framing. The naive statement "no computable inverse of `D`" is FALSE — a
+  partial inverse exists by dovetailing over `Set.range D`. The theorem must quantify over *total*
+  inverses that *recognize their domain*; that is exactly the distinction WP0058 needs (partial,
+  domain-restricted channels are precisely what biology has). Encoding it as the two fields of
+  `Inverts` (`sound` + `recognizes`) made the proof three lines.
+- Idiom: `Primrec.option_isSome.to_comp |>.comp hC` → `ComputablePred.computable_iff.mpr ⟨_, ·, rfl⟩`
+  → transfer along the characterization with `ComputablePred.of_eq`. `inverts_id` is the
+  satisfiability witness (`D = id`), guarding against a vacuous hypothesis.
+- Still open from WP0058: Prop. 1's AIT half (`K(C_𝒟) ≤ K(H) + O(1)`) and Prop. 2 (Darwinian gain
+  bounded by the entropy of the selection signal — a data-processing bound in the `AITFrame` style).
