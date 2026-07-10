@@ -299,3 +299,25 @@ A 2–3 line note after each milestone: what we learned / what tripped us up.
   satisfiability witness (`D = id`), guarding against a vacuous hypothesis.
 - Still open from WP0058: Prop. 1's AIT half (`K(C_𝒟) ≤ K(H) + O(1)`) and Prop. 2 (Darwinian gain
   bounded by the entropy of the selection signal — a data-processing bound in the `AITFrame` style).
+
+## M-WriteBack — WP0058 Prop. 1 (AIT half) + Prop. 2 (2026-07-10)
+
+- `WriteBack.bandwidth_le_cond` is the whole module in one line: with `λ_B := I(a : H'|H)`,
+  joint-dominates-marginal gives `λ_B ≤ K(H'|H) + slack`. **Nothing about `a` survives on the
+  right.** Both regimes are then corollaries that differ only in how `K(H'|H)` is bounded:
+  Darwinian by `K(σ)` (the selection signal), Lamarckian by `K(C(a)|H)` (the decoder image).
+  That asymmetry *is* WP0058 Prop. 2 (zeroth- vs first-order search) — it fell out of the
+  definition rather than needing a new hypothesis, which is the sign the definition was right.
+- `decoder_charged` (Prop. 1, AIT half): `K(C) ≤ K(H) + 2·slack` from conditional subadditivity
+  plus `RecoverableFrom`. Two AIT facts total, both named `Prop`s: `JointGeMarginal`,
+  `SubadditivityCond`.
+- `trivial_decoder_transmits_nothing` is the one worth quoting: a decoder with trivial image
+  transmits nothing *however much was acquired* — the bound never mentions `a`. That is
+  Corollary 1 (write-back cannot bootstrap novelty) with teeth.
+- `ToyWB` (`K := id`, `cond := (· - ·)`, `pair := max`, `slack := 0`) satisfies both hypotheses
+  AND **attains** the Darwinian bound (`toyWB_selection_bound_tight`: λ_B = K(σ) = 3). Tightness,
+  not just non-vacuity — worth doing, since a satisfiable-but-slack witness proves little.
+- Gotchas, both already in the skill and both still bit: numerals at `ToyWB.Obj` need `(4 : Nat)`;
+  and `simp only [ToyWB]` leaves `id 3` opaque to `omega` — must be `simp only [ToyWB, id]`.
+- WP0058's Lean track is now complete except Hypothesis 1 (λ_P* ~ τ_E), which is a conjecture and
+  is marked `n/a` in WP0195 rather than forced.
