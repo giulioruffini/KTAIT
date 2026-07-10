@@ -19,11 +19,14 @@ information that reaches the descendant beyond what the parent already carried,
 `λ_B := I(a : H' | H)` (WP0058 Definition 3), a rate in bits per generation.
 
 Scope. WP0058 indexes the write-back parameters by architectural layer *and* channel
-property, `λ_{ℓc}` with `ℓ ∈ {A, M, Π, O}` and `c ∈ {B, F, P}` — an indexed table of scalars,
-not a matrix in any operator sense (nothing acts, nothing composes, and the three entries of
-a row carry different units). What follows formalizes a *single entry* of that table: the
-bandwidth column, for one unnamed layer. Fidelity, persistence, and the layer index play no
-role in these bounds, which is itself informative — the results below hold entry by entry.
+property, `λ_{ℓc}` with `ℓ ∈ {A, M, Π, O}` and `c ∈ {B, F, P}`. That object is a *profile* —
+a point in `∏_ℓ (ℝ≥0 × [0,1] × ℝ>0)` — and neither a matrix nor a vector: nothing acts,
+nothing composes, and the three entries of a row carry different units. (The transmission
+operator `T` *is* an operator, being a Markov kernel; the write-back map `C` is a partial
+map. Three objects, three kinds.) What follows formalizes a *single coordinate* of the
+profile: the bandwidth `λ_B`, for one unnamed layer. Fidelity, persistence, and the layer
+index play no role in these bounds, which is itself informative — they hold coordinate by
+coordinate.
 
 The results all descend from one lemma, `bandwidth_le_cond`: bandwidth is capped by
 `K(H' | H)`, the novelty of the descendant program given the parent. Whatever channel
