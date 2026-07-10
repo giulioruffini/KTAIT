@@ -279,6 +279,12 @@ Mathlib~v4.31.0. Modules:
 \lean{ART.lean} & \lean{AITProb} (posterior), Theorem~2 & probabilistic regulator thm \\
 \lean{Persistence.lean} & \lean{Pers}, \lean{TemporalSelfInfo} & persistence lemmas \\
 \lean{SelfModel.lean} & \lean{DeltaSelf}, Proposition~3 & temporal self-model \\
+\lean{SelfModelLimits.lean} & quine floor, diagonalization, Chaitin ceiling & WP0192 Principle~1 \\
+\lean{RegulatorSelection.lean} & \lean{ChainRule} & WP0162 Prop.~1 (regulator selection) \\
+\lean{CoarseGraining.lean} & \lean{RegSuff}, structure function & WP0193 Thms~A/B; WP0007 emergence \\
+\lean{Contrast.lean} & contrast fibre posterior & WP0162 Q3 (Eq.~26) \\
+\lean{OrbitLabel.lean} & conserved orbit labels & WP0162 App.~C \\
+\lean{NoetherFlow.lean} & \lean{trajLabel}, flow symmetries & generalized Noether (abstract core) \\
 \lean{Decoder.lean} & \lean{Achievable}, \lean{Inverts} (inverse compiler) & WP0058 Prop.~1 (axiom-free) \\
 \lean{WriteBack.lean} & \lean{bandwidth}, \lean{Darwinian}, \lean{Lamarckian} & WP0058 Prop.~1 (AIT half), Prop.~2 \\
 \lean{ToyModel.lean} & \lean{Toy}, \lean{ToyMachine}, \lean{ToyGap} & satisfiability witnesses \\
@@ -295,7 +301,7 @@ $\Pr((W,R)\mid x,E)\le C\,2^{\,M(W:R)}2^{-\Delta}$.
 $\mathrm{post}(e,x)\le (1/c_1)2^{K(x)-K(e)}$.
 \item \lean{AITProb.probabilistic\_regulator\_theorem\_sharp} --- ART Theorem~2 \emph{sharp form}
 retaining the regulator cost: $\mathrm{post}\le C\,2^{M(W:R)}2^{-\Delta}2^{-K(R)}$ (no extra
-hypothesis; the headline drops $2^{-K(R)}\le 1$, \lean{...\_of\_sharp}).
+hypothesis; the headline drops $2^{-K(R)}\le 1$ via \lean{probabilistic\_regulator\_theorem\_of\_sharp}).
 \item \lean{AITProb.theorem1\_posterior\_tilt} --- ART Theorem~1, two-sided posterior tilt.
 \item \lean{AITProb.theorem3\_onoff\_evidence} --- ART Theorem~3, ON/OFF evidence ratio
 $\asymp 2^{\Delta}$ (log-free form).
@@ -348,6 +354,13 @@ the constituent flow) has collective persistence $\mathrm{Pers}_C\ge 1-(L+\mathr
 $\to 1$ as $k\to\infty$ --- with \emph{no} shared or compatible objective among the parts (the
 hypotheses mention only $S^C,k,L,\mathrm{slack}$). Non-vacuity: \lean{toy\_meta\_persistence\_fires}.
 \item \lean{regulator\_selection} --- WP0162 Proposition~1: $\argmin_R K(R\mid W)=\argmax_R[M(W{:}R)-K(R)]$.
+\item \lean{regulator\_selection\_order} --- the order form of the same proposition: under the chain
+rule, minimizing $K(R\mid W)$ is equivalent to maximizing $M(W{:}R)-K(R)$, as an order-equivalence
+rather than an argmin identity.
+\item \lean{algorithmic\_emergence} --- WP0007, generic form: a correct general coarse-graining
+solver (one computing the minimal-sufficient-statistic structure function) is not computable.
+``Reduction is not construction.'' The substance is Vereshchagin--Vitányi; \lean{corollaryB} is the
+regulatory specialization.
 \item \lean{AITProb.probabilistic\_regulator\_theorem\_conditional} --- ART sharp form in the
 $2^{-K(R\mid W)}$ reading (posterior favors regulators simple given the world).
 \item \lean{PrefixMachine.lemma1\_posterior\_bounds} --- the Bayes$\leftrightarrow$Kolmogorov bridge,

@@ -54,18 +54,41 @@ Almost every KT corollary = **rearrange an AIT identity, then close with `omega`
 - Unused-variable / unused-simp-arg warnings often reveal a cleaner, stronger statement — chase them.
 
 ## Conventions (do every milestone)
+**The Lean and the paper ship together. A theorem that is not in WP0195 does not exist.**
+This has been skipped before — six modules and two theorems (`algorithmic_emergence`,
+`regulator_selection_order`) were proved and pushed but absent from WP0195 for weeks. Don't
+add to that list.
+
 1. Append a 2–3 line note to `LEARNING_LOG.md` (what we learned / what tripped us up).
-2. Update **WP0195** (`../../BCOM WPs and Blogs/working_drafts/WP0195-Lean_KT_Formalization/main.tex`):
-   mark the result Proved in the inventory table + proved list; recompile with `latexmk -pdf`.
-3. Run `#print axioms` on the new KT theorem; record the result.
-4. Commit + push (`Co-Authored-By: Claude ...`). Branch off `main` only for larger work.
+2. Run `#print axioms` on the new KT theorem; expect Lean core only (`propext`,
+   `Classical.choice`, `Quot.sound`) — no `sorryAx`, no custom axioms. Record the result.
+3. Update **WP0195** — canonical path `docs/WP0195.tex`, *inside this repo*. Touch all three
+   places, not just one:
+   - the **module table** (add a row if you added a `.lean` file),
+   - the **proved-corollaries list** (a sentence saying what the theorem means),
+   - the **inventory longtable** (mark `\stproved` / `\staxiom`, or `\stna` for a conjecture
+     — mark honestly; do not promote a conjecture).
+   Rebuild in place: `cd docs && latexmk -pdf WP0195.tex && latexmk -c`.
+   Note: `BCOM WPs and Blogs/working_drafts/WP0195-Lean_KT_Formalization/main.tex` is a
+   **symlink** to `docs/WP0195.tex`. One file, two names. Never `cp` over the symlink.
+4. Verify with `./scripts/check_wp0195_sync.sh` — it fails if any module or non-helper
+   theorem is missing from WP0195. It must exit 0 before you commit.
+5. Commit **both** the Lean and `docs/WP0195.{tex,pdf}` in the same commit, then **push**
+   (`Co-Authored-By: Claude ...`). Branch off `main` only for larger work. A local commit is
+   not done; check `git status` shows nothing ahead of `origin/main`.
+6. If the result is a corollary of a KT paper (WP0058, WP0162, WP0193, …), add a line to that
+   paper's machine-checked-formalization appendix too, naming the Lean theorem. WP0162 and
+   WP0058 both carry such an appendix; keep them current.
 
 ## File map
 `Ontology` (typed roles, part-whole guard) · `Basic` (AITFrame, IK/NMAI/condStar, named AIT
 laws) · `Probability` (PrefixMachine, Bayes posterior, Lemma 1) · `ART` (AITProb, Theorems
-1/2/2-sharp/3, wrapper bound) · `Persistence` (Pers, conservation) · `SelfModel` (Prop 3) ·
-`RegulatorSelection` (Prop 1) · `SelfModelLimits` (Prop 4) · `CoarseGraining` (WP0193) ·
-`ToyModel` (satisfiability witnesses) · `BadStatements` (guards bite).
+1/2/2-sharp/3, wrapper bound) · `Persistence` (Pers, conservation, meta-persistence) ·
+`SelfModel` (Prop 3) · `RegulatorSelection` (Prop 1) · `SelfModelLimits` (Prop 4) ·
+`CoarseGraining` (WP0193; also WP0007 `algorithmic_emergence`) · `Contrast` (WP0162 Q3) ·
+`OrbitLabel` / `NoetherFlow` (conserved labels, abstract Noether core) · `Decoder` (WP0058
+Prop 1, computability half — axiom-free) · `WriteBack` (WP0058 Prop 1 AIT half + Prop 2;
+λ_B ≤ K(H'|H)) · `ToyModel` (satisfiability witnesses) · `BadStatements` (guards bite).
 
 ## Roadmap status
 Phases 1–5 DONE: WP0162 (Props 1–4) + WP0192 (Principle 1) + WP0193 (Thm B) + full
