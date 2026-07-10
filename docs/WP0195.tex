@@ -64,7 +64,7 @@
 \renewcommand{\headrulewidth}{0.4pt}
 \renewcommand{\footrulewidth}{0.4pt}
 \newcommand{\wpnumber}{WP0195}
-\newcommand{\wpdate}{June 2026}
+\newcommand{\wpdate}{July 2026}
 \newcommand{\wppillar}{Kolmogorov Theory (KT)}
 \fancyhead[L]{\small\sffamily\color{bcomblue}BCOM Working Paper \wpnumber}
 \fancyhead[R]{\small\sffamily\color{bcomblue}\wpdate}
@@ -279,6 +279,8 @@ Mathlib~v4.31.0. Modules:
 \lean{ART.lean} & \lean{AITProb} (posterior), Theorem~2 & probabilistic regulator thm \\
 \lean{Persistence.lean} & \lean{Pers}, \lean{TemporalSelfInfo} & persistence lemmas \\
 \lean{SelfModel.lean} & \lean{DeltaSelf}, Proposition~3 & temporal self-model \\
+\lean{Decoder.lean} & \lean{Achievable}, \lean{Inverts} (inverse compiler) & WP0058 Prop.~1 (axiom-free) \\
+\lean{WriteBack.lean} & \lean{bandwidth}, \lean{Darwinian}, \lean{Lamarckian} & WP0058 Prop.~1 (AIT half), Prop.~2 \\
 \lean{ToyModel.lean} & \lean{Toy}, \lean{ToyMachine}, \lean{ToyGap} & satisfiability witnesses \\
 \lean{BadStatements.lean} & guards bite & part-whole + $y$ vs $y^\ast$ \\
 \bottomrule
@@ -317,9 +319,34 @@ of the orbit-label theorem.)
 \item \lean{Homogeneous.homogeneousSpace} --- a transitive symmetry action makes the state space a
 homogeneous space, $X \simeq G/H_x$ (Theorem A4's algebraic core; the manifold/dimension layer
 remains future work).
+\item \lean{Decoder.achievable\_computable\_of\_inverse} / \lean{Decoder.no\_universal\_decoder}
+--- WP0058 Proposition~1: a \emph{total} computable inverse compiler that recognizes its own domain
+would decide membership in the achievable set of the developmental map; hence none exists, and every
+realized Lamarckian write-back channel is a partial map whose validity domain is fixed in advance.
+Notable as the one KT corollary here that assumes \emph{no} AIT fact at all --- the engine
+(\lean{achievable\_computable\_of\_inverse}) is unconditional, and only the non-vacuity of the
+undecidability hypothesis enters as a named \lean{Prop}
+(\lean{ExistsUndecidableAchievableSet}). Satisfiability witness: \lean{inverts\_id}.
+\item \lean{WriteBack.bandwidth\_le\_cond} and its two corollaries --- WP0058 Proposition~2. With
+$\lambda_B := \Ik(a : H'\mid H)$ the write-back bandwidth, joint-dominates-marginal gives
+$\lambda_B \le K(H'\mid H)+O(\log)$, in which \emph{no term involving the acquired state survives}.
+The regimes differ only in what bounds $K(H'\mid H)$: the selection signal $K(\sigma)$ in the
+Darwinian case (\lean{darwinian\_bandwidth\_le\_selection}, zeroth-order search), the decoder image
+$K(C(a)\mid H)$ in the Lamarckian (\lean{lamarckian\_bandwidth\_le\_decoder\_image}, first-order).
+Also \lean{decoder\_charged} ($K(C)\le K(H)+O(\log)$, Prop.~1's AIT half) and
+\lean{trivial\_decoder\_transmits\_nothing} (Corollary~1: a trivial decoder transmits nothing
+however much was acquired). Witness \lean{ToyWB} satisfies both named AIT hypotheses \emph{and
+attains} the Darwinian bound (\lean{toyWB\_selection\_bound\_tight}) --- the corollaries are tight,
+not merely non-vacuous.
 \item \lean{persistence\_conservation} / \lean{conservation\_tradeoff} --- WP0162 Proposition~2:
 the ledger $K(O_W)=\Ik(O_W{:}R)+K(O_W\mid R^\ast)$ (from symmetry of information), and at fixed
 $K(O_W)$, maximizing $\Ik$ $=$ minimizing the conditional residual.
+\item \lean{meta\_persistence} / \lean{meta\_persistence\_limit} --- WP0162 \S6 (meta-persistence):
+a collective submodel of stable complexity $k>0$ with a bounded transient
+$K(S^C_t\mid(S^C_{t+\tau})^\ast)\le L$ (delivered by closure $+$ a Foster--Lyapunov contraction of
+the constituent flow) has collective persistence $\mathrm{Pers}_C\ge 1-(L+\mathrm{slack})/k$, hence
+$\to 1$ as $k\to\infty$ --- with \emph{no} shared or compatible objective among the parts (the
+hypotheses mention only $S^C,k,L,\mathrm{slack}$). Non-vacuity: \lean{toy\_meta\_persistence\_fires}.
 \item \lean{regulator\_selection} --- WP0162 Proposition~1: $\argmin_R K(R\mid W)=\argmax_R[M(W{:}R)-K(R)]$.
 \item \lean{AITProb.probabilistic\_regulator\_theorem\_conditional} --- ART sharp form in the
 $2^{-K(R\mid W)}$ reading (posterior favors regulators simple given the world).
@@ -372,6 +399,7 @@ Thms A1--A3, Lem A1 & coding thm (uncond/cond), Kraft counting, excess-length de
 Proposition 3 & self-regulation $\Rightarrow$ temporal self-model (Eq.~44) & KT & \stproved\ (\lean{self\_reg\_...}) \\
 Proposition 1 & regulator selection $\argmin K(R\mid W)=\argmax[M-K(R)]$ & KT & \stproved\ (\lean{regulator\_selection}) \\
 Proposition 2 & persistence conservation ledger $K(O_W)=\Ik+K(O_W\mid R^\ast)\pm O(\log)$ & KT & \stproved\ (\lean{persistence\_...}) \\
+Meta-persistence & collective $\mathrm{Pers}_C\ge 1-(L{+}\mathrm{slack})/k$; parts need not align & KT & \stproved\ (\lean{meta\_persistence}) \\
 Proposition 4 & self-model incompleteness (3 obstructions) & KT & \stproved\ (\lean{quine\_floor},$\ldots$) \\
 Orbit-label thm & conserved orbit label = ``generalized energy'' & KT & \stproved\ (\lean{genEnergy\_conserved}) \\
 \midrule
@@ -389,6 +417,30 @@ Lemma 1 & uncomputability of $h_{x\to y}$ & STD & \staxiom\ (via V--V) \\
 Proposition 1 & existence of a bounded regulation-sufficient projection & KT & \stproved\ (\lean{existence}) \\
 Theorem A & selection uncomputability & KT & \stproved\ (\lean{theoremA}) \\
 Cor.\ C1--C3 & blanket uncomputability/fuzziness; acquisition; discovery & KT & \stna\ (interp.) \\
+\midrule
+\multicolumn{4}{@{}l}{\textit{Inheritance Architecture --- WP0058}}\\
+\midrule
+Proposition 1 & no universal decoder (no total domain-recognizing inverse compiler) & KT &
+  \stproved\ (\lean{no\_universal\_decoder}) \\
+--- engine & a total such inverse would decide achievability & KT &
+  \stproved\ (\lean{achievable\_computable\_of\_inverse}) \\
+--- non-vacuity & some computable $D$ has an undecidable achievable set & STD &
+  \staxiom\ (\lean{ExistsUndecidableAchievableSet}) \\
+Prop.\ 1 (2nd half) & decoder charged to the program, $K(C_\mathcal{D})\le K(H)+O(1)$ & KT &
+  \stproved\ (\lean{decoder\_charged}) \\
+Master bound & $\lambda_B \le K(H'\!\mid\! H) + O(\log)$; the acquired state drops out & KT &
+  \stproved\ (\lean{bandwidth\_le\_cond}) \\
+Prop.\ 2 (Darwinian) & zeroth-order: $\lambda_B \le K(\sigma)$, the selection signal & KT &
+  \stproved\ (\lean{darwinian\_bandwidth\_le\_selection}) \\
+Prop.\ 2 (Lamarckian) & first-order: $\lambda_B \le K(C(a)\!\mid\! H)$, the decoder image & KT &
+  \stproved\ (\lean{lamarckian\_bandwidth\_le\_decoder\_image}) \\
+--- joint $\ge$ marginal & $K(x\!\mid\! z)\le K(\langle x,y\rangle\!\mid\! z)+O(\log)$ & STD &
+  \staxiom\ (\lean{JointGeMarginal}) \\
+--- cond.\ subadditivity & $K(x)\le K(x\!\mid\! y)+K(y)+O(\log)$ & STD &
+  \staxiom\ (\lean{SubadditivityCond}) \\
+Corollary 1 & write-back cannot bootstrap novelty & KT &
+  \stproved\ (\lean{trivial\_decoder\_transmits\_nothing}) \\
+Hypothesis 1 & persistence matching, $\lambda_P^\ast \sim \tau_E$ & KT & \stna\ (conjecture) \\
 \midrule
 \multicolumn{4}{@{}l}{\textit{World models / Lie groups --- Entropy 2025 (separate geometry track)}}\\
 \midrule
