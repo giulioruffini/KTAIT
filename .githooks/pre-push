@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Blocks a push that would put KTAIT out of step with the papers that cite it.
+#
+# Enabled via a tracked hooks path, so every clone gets it:
+#     git config core.hooksPath .githooks
+#
+# Runs: lake build (proofs actually compile) + scripts/check_sync.sh (WP0195 and
+# every citing paper still resolve). Bypass with --no-verify only if you know why.
+set -uo pipefail
+cd "$(git rev-parse --show-toplevel)"
+
+echo "pre-push: building KTAIT…"
+if ! lake build >/tmp/ktait-prepush.log 2>&1; then
+  echo "pre-push: BUILD FAILED — push blocked."
+  tail -20 /tmp/ktait-prepush.log
+  exit 1
+fi
+echo "pre-push: build OK"
+
+if ! ./scripts/check_sync.sh; then
+  echo
+  echo "pre-push: BLOCKED — the Lean and its papers disagree."
+  echo "Update docs/WP0195.tex and any citing paper, then commit them WITH the Lean."
+  exit 1
+fi
+
+exit 0

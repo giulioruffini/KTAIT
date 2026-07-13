@@ -1,0 +1,15 @@
+# Papers that cite KTAIT declarations by name via \lean{...}.
+#
+# check_sync.sh verifies every cited name still resolves to a real declaration, so
+# renaming or restating a theorem cannot silently break a paper's "machine-checked"
+# claim. Papers live outside this repo; a path that is not present here is SKIPPED
+# (CI has no checkout of them), never a failure.
+#
+# Format:  TAG | path (relative to repo root, or absolute)
+#
+# When a new paper starts citing \lean{...} names, add it here.
+
+WP0058 | ../../BCOM WPs and Blogs/working_drafts/WP0058-Inheritance_Architecture/main.tex
+
+# WP0195 (docs/WP0195.tex) is the status paper itself and is covered by the
+# module/theorem coverage check above, not by this registry.

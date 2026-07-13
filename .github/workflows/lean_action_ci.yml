@@ -26,3 +26,9 @@ jobs:
       # (multi-hour) and we do not publish Pages. Re-add it, gated to a release or
       # workflow_dispatch trigger, only if/when docs hosting is wanted.
       - uses: leanprover/lean-action@v1
+      # The build proving is not enough: a renamed or restated theorem can leave the
+      # status paper (and the papers that cite KTAIT by name) claiming something the
+      # development no longer proves. This fails the run on that drift. Papers living
+      # outside the repo are skipped here and checked by the local pre-push hook.
+      - name: Lean / paper sync
+        run: ./scripts/check_sync.sh
