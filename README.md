@@ -92,6 +92,23 @@ echo 'import KTAIT.ART
 
 Use **VS Code / Cursor + the Lean 4 extension** for the interactive goal view.
 
+### Keep the Lean and the papers in step
+
+The papers that cite KTAIT say their results are "machine-checked in Lean 4" and point readers
+here. That claim is about *this repo*, not about anyone's laptop, so drift is a correctness bug.
+
+```sh
+git config core.hooksPath .githooks   # one-time: arms the pre-push guard
+./scripts/check_sync.sh               # sorry-free? WP0195 current? citing papers resolve?
+./scripts/check_sync.sh --released    # + tree clean and HEAD pushed — run before a paper goes public
+```
+
+`check_sync.sh` fails if a proof contains `sorry`, if `docs/WP0195.tex` is missing a module or
+theorem, or if any `\lean{...}` name cited by a paper in `docs/citing-papers.txt` no longer
+resolves. The pre-push hook and CI both run it, so a rename cannot silently break a paper's claim.
+**Register a paper in `docs/citing-papers.txt` when it starts citing `\lean{}` names** — otherwise
+nothing guards it. When you change the Lean, commit the Lean **and** the affected papers together.
+
 ## Repository layout
 
 ```
