@@ -32,13 +32,15 @@ The results all descend from one lemma, `bandwidth_le_cond`: bandwidth is capped
 `K(H' | H)`, the novelty of the descendant program given the parent. Whatever channel
 produces `H'` therefore fixes the cap:
 
-* **Darwinian** (`darwinian_bandwidth_le_selection`): `H'` is produced from `H` and a
-  selection signal `σ`, so `λ_B ≤ K(σ)`. Zeroth-order search — no matter how much the
-  agent learned, only the selection signal crosses.
-* **Lamarckian** (`lamarckian_bandwidth_le_decoder_image`): `H'` is produced from `H` and
-  the decoder output `C(a)`, so `λ_B ≤ K(C(a) | H)`. First-order search — the cap is the
-  decoder image, and `trivial_decoder_transmits_nothing` shows it binds: a decoder with
-  nothing to say transmits nothing, however much was acquired.
+* **Darwinian** (`darwinian_bandwidth_le_selection`): acquired information reaches `H'` only
+  through a scalar selection signal `σ` (variation is undirected), so by data processing
+  `λ_B ≤ I(a:σ|H) ≤ K(σ)`. Zeroth-order search — no matter how much the agent learned, only
+  the selection signal crosses. The bound is on the *mutual information*, not on `K(H'|H)`:
+  undirected mutation makes `K(H'|H)` large but carries nothing about `a`.
+* **Lamarckian** (`lamarckian_bandwidth_le_decoder_image`): acquired information reaches `H'`
+  only through the decoder output `C(a)`, so `λ_B ≤ I(a:C(a)|H) ≤ K(C(a) | H)`. First-order
+  search — the cap is the decoder image, and `trivial_decoder_transmits_nothing` shows it
+  binds: a decoder with nothing to say transmits nothing, however much was acquired.
 
 Separately, `decoder_charged` is the second half of Proposition 1: a decoder recoverable
 from the heritable program costs no more than that program, `K(C) ≤ K(H) + O(1)`. Together
@@ -80,6 +82,11 @@ def JointGeMarginal (F : AITFrame) : Prop :=
 def SubadditivityCond (F : AITFrame) : Prop :=
   ∀ x y : F.Obj, F.K x ≤ F.cond x y + F.K y + F.slack
 
+/-- **Conditioning does not increase complexity.** Extra context can only help:
+`K(x|y) ≤ K(x) + O(log)`. -/
+def CondLeUncond (F : AITFrame) : Prop :=
+  ∀ x y : F.Obj, (F.cond x y : Int) ≤ (F.K x : Int) + F.slack
+
 /-! ### The channel bound -/
 
 /-- **The master bound.** Write-back bandwidth is capped by the novelty of the descendant
@@ -91,57 +98,76 @@ theorem bandwidth_le_cond (hJ : JointGeMarginal F) (a H' H : F.Obj) :
   unfold bandwidth condIK
   omega
 
+/-- **Mutual information is bounded by the description length of either side.**
+`I(a : z | H) ≤ K(z | H) + O(log)`. This is the data-processing tool: whatever channel
+variable `z` the acquired state must pass through, the information it can carry is capped by
+the complexity of that channel — not by how much was acquired. -/
+theorem condIK_le_condRight (hJ : JointGeMarginal F) (a z H : F.Obj) :
+    condIK F a z H ≤ (F.cond z H : Int) + F.slack := by
+  have h := hJ a z H
+  unfold condIK
+  omega
+
 /-! ### Darwinian and Lamarckian regimes -/
 
-/-- The **Darwinian** transmission regime (WP0058 Definition 1): the descendant program is
-produced from the parent program together with a selection signal `σ` — a scalar viability
-readout — and nothing else. No inverse model is consulted. -/
-structure Darwinian (H' H σ : F.Obj) : Prop where
-  /-- `H'` is generated from `H` given `σ`, so it is cheap to describe from them. -/
-  generated : F.cond H' H ≤ F.K σ + F.slack
+/-- The **Darwinian** transmission regime (WP0058 Definition 1): variation is *undirected*.
+The descendant `H'` is produced from the parent `H`, a scalar selection signal `σ`, and
+variation randomness that carries no information about the acquired state `a`. So the only
+channel from `a` into `H'` is the selection signal, giving the data-processing bound
+`I(a : H' | H) ≤ I(a : σ | H)`. Note what is **not** claimed: `K(H'|H)` may be large —
+undirected mutation is incompressible — but none of that novelty is correlated with what was
+learned, so it does not enter the bandwidth. (The earlier `K(H'|H) ≤ K(σ)` form was false in
+exactly this regime, since it charged the mutation randomness to the scalar signal.) -/
+structure Darwinian (a H' H σ : F.Obj) : Prop where
+  /-- Data processing: acquired information reaches `H'` only through the selection signal. -/
+  undirected : bandwidth F a H' H ≤ condIK F a σ H + F.slack
 
-/-- The **Lamarckian** transmission regime (WP0058 Definition 2): the descendant program is
-produced from the parent program together with the decoder output `c = C(a)`, the acquired
-structure compiled back into program form. -/
-structure Lamarckian (H' H c : F.Obj) : Prop where
-  /-- `H'` is generated from `H` given the write-back `c`. -/
-  generated : F.cond H' H ≤ F.cond c H + F.slack
+/-- The **Lamarckian** transmission regime (WP0058 Definition 2): the acquired state `a`
+reaches the descendant only through the decoder output `c = C(a)`, the structure compiled
+back into program form, giving the data-processing bound `I(a : H' | H) ≤ I(a : c | H)`. As
+in the Darwinian case, undirected mutation may inflate `K(H'|H)` without contributing to the
+bandwidth; only the channel `c` carries information about `a`. -/
+structure Lamarckian (a H' H c : F.Obj) : Prop where
+  /-- Data processing: acquired information reaches `H'` only through the decoder output. -/
+  through_decoder : bandwidth F a H' H ≤ condIK F a c H + F.slack
 
 /-- **WP0058 Proposition 2, Darwinian half.** Darwinian search is *zeroth-order*: the
-acquired information crossing to the descendant is bounded by the complexity of the
-selection signal, `λ_B ≤ K(σ) + O(log)` — independently of how much the agent learned. -/
-theorem darwinian_bandwidth_le_selection (hJ : JointGeMarginal F)
-    {H' H σ : F.Obj} (hD : Darwinian F H' H σ) (a : F.Obj) :
-    bandwidth F a H' H ≤ (F.K σ : Int) + 2 * F.slack := by
-  have h₁ := bandwidth_le_cond F hJ a H' H
-  have h₂ := hD.generated
+acquired information crossing to the descendant is bounded by the complexity of the selection
+signal, `λ_B ≤ K(σ) + O(log)` — independently of how much the agent learned. The route is
+data processing (`undirected`) then `I(a:σ|H) ≤ K(σ|H) ≤ K(σ)`, never `K(H'|H) ≤ K(σ)`. -/
+theorem darwinian_bandwidth_le_selection (hJ : JointGeMarginal F) (hC : CondLeUncond F)
+    {a H' H σ : F.Obj} (hD : Darwinian F a H' H σ) :
+    bandwidth F a H' H ≤ (F.K σ : Int) + 3 * F.slack := by
+  have h₁ := hD.undirected
+  have h₂ := condIK_le_condRight F hJ a σ H
+  have h₃ := hC σ H
   omega
 
 /-- **WP0058 Proposition 2, Lamarckian half.** Lamarckian write-back is *first-order*: the
 acquired information crossing is bounded by the decoder image `K(C(a) | H)`. The channel can
 be wide, but only as wide as the decoder's output. -/
 theorem lamarckian_bandwidth_le_decoder_image (hJ : JointGeMarginal F)
-    {H' H c : F.Obj} (hL : Lamarckian F H' H c) (a : F.Obj) :
+    {a H' H c : F.Obj} (hL : Lamarckian F a H' H c) :
     bandwidth F a H' H ≤ (F.cond c H : Int) + 2 * F.slack := by
-  have h₁ := bandwidth_le_cond F hJ a H' H
-  have h₂ := hL.generated
+  have h₁ := hL.through_decoder
+  have h₂ := condIK_le_condRight F hJ a c H
   omega
 
 /-- A selection signal of trivial complexity transmits essentially nothing: the Darwinian
 limit `λ_B ≈ 0` of WP0058 §3.1. -/
-theorem null_selection_transmits_nothing (hJ : JointGeMarginal F)
-    {H' H σ : F.Obj} (hD : Darwinian F H' H σ) (hσ : F.K σ = 0) (a : F.Obj) :
-    bandwidth F a H' H ≤ 2 * F.slack := by
-  have h := darwinian_bandwidth_le_selection F hJ hD a
+theorem null_selection_transmits_nothing (hJ : JointGeMarginal F) (hC : CondLeUncond F)
+    {a H' H σ : F.Obj} (hD : Darwinian F a H' H σ) (hσ : F.K σ = 0) :
+    bandwidth F a H' H ≤ 3 * F.slack := by
+  have h := darwinian_bandwidth_le_selection F hJ hC hD
   omega
 
 /-- **The bite of Corollary 1.** A decoder whose output is trivial given the parent program
 transmits nothing, *however much was acquired* — the bound does not mention `a` at all.
 Write-back is capped by the decoder, not by the learner. -/
 theorem trivial_decoder_transmits_nothing (hJ : JointGeMarginal F)
-    {H' H c : F.Obj} (hL : Lamarckian F H' H c) (hc : F.cond c H ≤ F.slack) (a : F.Obj) :
+    {a H' H c : F.Obj} (hL : Lamarckian F a H' H c) (hc : F.cond c H ≤ F.slack) :
     bandwidth F a H' H ≤ 3 * F.slack := by
-  have h := lamarckian_bandwidth_le_decoder_image F hJ hL a
+  have h := lamarckian_bandwidth_le_decoder_image F hJ hL
   omega
 
 /-! ### The decoder is charged to the heritable program -/
@@ -183,6 +209,9 @@ theorem toyWB_jointGeMarginal : JointGeMarginal ToyWB := by
 theorem toyWB_subadditivityCond : SubadditivityCond ToyWB := by
   intro x y; simp only [ToyWB, id]; omega
 
+theorem toyWB_condLeUncond : CondLeUncond ToyWB := by
+  intro x y; simp only [ToyWB, id]; omega
+
 /-- The bandwidth is genuinely positive here: acquiring `a = 10` from a parent `H = 1`
 transmits `3` bits into `H' = 4`. The interface is not degenerate. -/
 theorem toyWB_bandwidth_pos :
@@ -190,20 +219,23 @@ theorem toyWB_bandwidth_pos :
   simp only [bandwidth, condIK, ToyWB]
   norm_num
 
-/-- The Darwinian bound is **attained**, not merely true: with a selection signal of
-complexity `3` the cap `λ_B ≤ K(σ)` is met with equality. The bound is tight. -/
+/-- The Darwinian bound is **attained**, not merely true: with acquired state `a = 5`,
+descendant `H' = 3`, empty parent `H = 0` and selection signal `σ = 3`, the data-processing
+regime holds and the cap `λ_B ≤ K(σ)` is met with equality (`λ_B = 3 = K(3)`). The bound is
+tight, so the corollaries are not vacuous. -/
 theorem toyWB_selection_bound_tight :
-    Darwinian ToyWB (4 : Nat) (1 : Nat) (3 : Nat) ∧
-      bandwidth ToyWB (10 : Nat) (4 : Nat) (1 : Nat) = ((3 : Nat) : Int) := by
-  refine ⟨⟨by simp only [ToyWB, id]; omega⟩, ?_⟩
-  simp only [bandwidth, condIK, ToyWB]
-  norm_num
+    Darwinian ToyWB (5 : Nat) (3 : Nat) (0 : Nat) (3 : Nat) ∧
+      bandwidth ToyWB (5 : Nat) (3 : Nat) (0 : Nat) = ((3 : Nat) : Int) := by
+  refine ⟨⟨?_⟩, ?_⟩
+  · simp only [bandwidth, condIK, ToyWB]; norm_num
+  · simp only [bandwidth, condIK, ToyWB]; norm_num
 
 /-- And the general theorem fires on the witness. -/
-theorem toyWB_darwinian_fires (a : ToyWB.Obj) :
-    bandwidth ToyWB a (4 : Nat) (1 : Nat) ≤ ((3 : Nat) : Int) :=
-  darwinian_bandwidth_le_selection ToyWB toyWB_jointGeMarginal
-    (H' := (4 : Nat)) (H := (1 : Nat)) (σ := (3 : Nat)) ⟨by simp only [ToyWB, id]; omega⟩ a
+theorem toyWB_darwinian_fires :
+    bandwidth ToyWB (5 : Nat) (3 : Nat) (0 : Nat) ≤ ((3 : Nat) : Int) :=
+  darwinian_bandwidth_le_selection ToyWB toyWB_jointGeMarginal toyWB_condLeUncond
+    (a := (5 : Nat)) (H' := (3 : Nat)) (H := (0 : Nat)) (σ := (3 : Nat))
+    ⟨by simp only [bandwidth, condIK, ToyWB]; norm_num⟩
 
 end WriteBack
 end KTAIT
