@@ -71,14 +71,21 @@ influences *who reproduces* and hence which program is transmitted. It is bounde
 (`darwinian_bandwidth_le_selection`), not by zero. WP0058 calls it `λ_sel + λ_B`. -/
 def bandwidth (a H' H : F.Obj) : Int := condIK F a H' H
 
-/-- **Write-back bandwidth** `λ_B := I(a : H' | H, σ)` (WP0058 Definition 3, revised).
+/-- **Write-back bandwidth** `λ_B := I(w : H' | H, σ)` (WP0058 Definition 3, revised).
 
-Conditioning on the selection signal `σ` blocks the causal path `a → σ → H'`, leaving exactly
-the path through the write-back term `C(a)`. This is the quantity that is genuinely zero in the
-Darwinian regime. Mutual information *cannot* isolate direct write-back on its own — directness
-is a property of the causal path, not of a correlation — so the conditioning is what does the
-work, and the regime itself must be posited (see `Darwinian.no_write_back`). -/
-def writeBack (a H' H σ : F.Obj) : Int := condIK F a H' (F.pair H σ)
+`w = C(a)` is the *write-back message*: the designated channel variable through which acquired
+structure — and nothing else — may enter the descendant program. Defining `λ_B` on `w` rather
+than on `a` attaches the quantity to the channel instead of inferring it from all residual
+dependence of `a`, and conditioning on `σ` blocks the selection path `a → σ → H'`.
+
+Two honesty notes. (1) Conditional mutual information still does not *identify* a causal path;
+it isolates the write-back channel only under the stipulated factorization
+`H' ~ T(H, σ, C(a), ξ)` with `ξ` independent of `a`, and with no other `a`-dependent path. That
+premise is architectural and is carried by `Darwinian`/`Lamarckian`, not derived here.
+(2) There is deliberately no `λ_sel := I(a:H'|H) − λ_B`: conditional mutual information is not
+additively decomposable, the difference can be negative under synergy or suppression, and it
+need not equal information carried through selection. The two channels are reported separately. -/
+def writeBack (w H' H σ : F.Obj) : Int := condIK F H' w (F.pair H σ)
 
 /-! ### The AIT facts, as named hypotheses -/
 
@@ -130,29 +137,13 @@ learned, so it does not enter the bandwidth. (The earlier `K(H'|H) ≤ K(σ)` fo
 exactly this regime, since it charged the mutation randomness to the scalar signal.) -/
 structure Darwinian (a H' H σ : F.Obj) : Prop where
   /-- Data processing: acquired information reaches `H'` only through the selection signal.
-  This bounds the *total* information (λ_sel), which is nonzero in general. -/
+  This bounds the *total* information, which is nonzero in general. -/
   undirected : bandwidth F a H' H ≤ condIK F a σ H + F.slack
-  /-- No write-back term: given the parent program *and the selection signal*, the descendant
-  carries no further information about what was acquired. This is the architectural premise
-  that defines the regime — it is posited, not derived, because directness is causal and
-  invisible to mutual information alone. -/
-  no_write_back : writeBack F a H' H σ ≤ F.slack
 
-/-- The **Lamarckian** transmission regime (WP0058 Definition 2): the acquired state `a`
-reaches the descendant only through the decoder output `c = C(a)`, the structure compiled
-back into program form, giving the data-processing bound `I(a : H' | H) ≤ I(a : c | H)`. As
-in the Darwinian case, undirected mutation may inflate `K(H'|H)` without contributing to the
-bandwidth; only the channel `c` carries information about `a`. -/
-structure Lamarckian (a H' H σ c : F.Obj) : Prop where
-  /-- Data processing on the *write-back* channel: with the selection path blocked by
-  conditioning on `σ`, whatever acquired information still reaches `H'` does so through the
-  decoder output `c = C(a)`. -/
-  through_decoder : writeBack F a H' H σ ≤ condIK F a c (F.pair H σ) + F.slack
-
-/-- **WP0058 Proposition 2, Darwinian half.** Darwinian search is *zeroth-order*: the
-acquired information crossing to the descendant is bounded by the complexity of the selection
-signal, `λ_B ≤ K(σ) + O(log)` — independently of how much the agent learned. The route is
-data processing (`undirected`) then `I(a:σ|H) ≤ K(σ|H) ≤ K(σ)`, never `K(H'|H) ≤ K(σ)`. -/
+/-- **WP0058 Proposition 2, Darwinian half (the substantive part).** The *total* acquired
+information reaching the descendant passes only through the scalar selection signal, so it is
+bounded by `K(σ)` — however much the agent learned. This is the zeroth-order search bound, and
+it is a genuine theorem. -/
 theorem darwinian_bandwidth_le_selection (hJ : JointGeMarginal F) (hC : CondLeUncond F)
     {a H' H σ : F.Obj} (hD : Darwinian F a H' H σ) :
     bandwidth F a H' H ≤ (F.K σ : Int) + 3 * F.slack := by
@@ -161,49 +152,35 @@ theorem darwinian_bandwidth_le_selection (hJ : JointGeMarginal F) (hC : CondLeUn
   have h₃ := hC σ H
   omega
 
-/-- **WP0058 Proposition 2, Darwinian half — the write-back channel proper.** In the Darwinian
-regime the *write-back* bandwidth is zero: `λ_B = I(a : H' | H, σ) ≤ O(log)`. Note this is
-essentially definitional, and deliberately so. Directness cannot be inferred from a
-correlation, so the absence of a write-back path is an architectural premise about the lineage
-(`no_write_back`), not a theorem. What *is* a theorem, and what carries the weight, is the
-selection bound above: whatever the organism learned, at most `K(σ)` bits of it can reach the
-descendant when selection is the only channel. -/
-theorem darwinian_write_back_zero {a H' H σ : F.Obj} (hD : Darwinian F a H' H σ) :
-    writeBack F a H' H σ ≤ F.slack :=
-  hD.no_write_back
+/-- **WP0058 Proposition 2, Lamarckian half.** The write-back bandwidth is bounded by the
+description length of the write-back message itself: `λ_B ≤ K(w | H, σ) + O(log)`. Because `λ_B`
+is *defined* on `w`, this needs no data-processing hypothesis — it is immediate. The channel can
+be wide, but only as wide as the message. -/
+theorem lamarckian_bandwidth_le_decoder_image (hJ : JointGeMarginal F) (w H' H σ : F.Obj) :
+    writeBack F w H' H σ ≤ (F.cond w (F.pair H σ) : Int) + F.slack :=
+  condIK_le_condRight F hJ H' w (F.pair H σ)
 
-/-- **WP0058 Proposition 2, Lamarckian half.** Lamarckian write-back is *first-order*: the
-acquired information crossing is bounded by the decoder image `K(C(a) | H)`. The channel can
-be wide, but only as wide as the decoder's output. -/
-theorem lamarckian_bandwidth_le_decoder_image (hJ : JointGeMarginal F)
-    {a H' H σ c : F.Obj} (hL : Lamarckian F a H' H σ c) :
-    writeBack F a H' H σ ≤ (F.cond c (F.pair H σ) : Int) + 2 * F.slack := by
-  have h₁ := hL.through_decoder
-  have h₂ := condIK_le_condRight F hJ a c (F.pair H σ)
+/-- **Darwinian: no write-back message, hence no write-back.** If there is no message to send —
+`K(w | H, σ) = O(log)`, the degenerate `w` of a lineage with no decoder — then `λ_B = O(log)`.
+
+The regime premise is the *absence of the message*, which is architectural and posited: an
+information measure cannot certify that a causal path is missing. -/
+theorem no_message_no_write_back (hJ : JointGeMarginal F) {w H' H σ : F.Obj}
+    (hw : (F.cond w (F.pair H σ) : Int) ≤ F.slack) :
+    writeBack F w H' H σ ≤ 2 * F.slack := by
+  have h := lamarckian_bandwidth_le_decoder_image F hJ w H' H σ
   omega
 
-/-- A selection signal of trivial complexity transmits essentially nothing: the Darwinian
-limit `λ_B ≈ 0` of WP0058 §3.1. -/
-theorem null_selection_transmits_nothing (hJ : JointGeMarginal F) (hC : CondLeUncond F)
-    {a H' H σ : F.Obj} (hD : Darwinian F a H' H σ) (hσ : F.K σ = 0) :
-    bandwidth F a H' H ≤ 3 * F.slack := by
-  have h := darwinian_bandwidth_le_selection F hJ hC hD
-  omega
+/-- **The bite of Corollary 1.** A write-back message that is trivial given the parent program
+and the selection signal transmits nothing — the bound never mentions the acquired state `a` at
+all. Write-back is capped by the message its decoder can form, not by how much was learned.
 
-/-- **The bite of Corollary 1.** A decoder whose image is trivial given the parent program and
-the selection signal transmits nothing *however much was acquired* — the bound does not mention
-`a` at all. Write-back is capped by the decoder's image, not by the learner.
-
-This is the whole of what is proved. It does **not** say that the decoder's representational
-axes were found by prior Darwinian search, nor that write-back cannot produce novelty; a fixed
-rule fed novel acquired states can produce combinations no ancestor held. What it cannot do is
-transmit distinctions outside its decoder's image. -/
-theorem trivial_decoder_transmits_nothing (hJ : JointGeMarginal F)
-    {a H' H σ c : F.Obj} (hL : Lamarckian F a H' H σ c)
-    (hc : F.cond c (F.pair H σ) ≤ F.slack) :
-    writeBack F a H' H σ ≤ 3 * F.slack := by
-  have h := lamarckian_bandwidth_le_decoder_image F hJ hL
-  omega
+This is the whole of what is proved. It does **not** say the decoder's representational axes were
+found by prior Darwinian search, nor that write-back cannot produce novelty. -/
+theorem trivial_decoder_transmits_nothing (hJ : JointGeMarginal F) {w H' H σ : F.Obj}
+    (hw : (F.cond w (F.pair H σ) : Int) ≤ F.slack) :
+    writeBack F w H' H σ ≤ 2 * F.slack :=
+  no_message_no_write_back F hJ hw
 
 /-! ### The decoder is charged to the heritable program -/
 
@@ -254,46 +231,34 @@ theorem toyWB_bandwidth_pos :
   simp only [bandwidth, condIK, ToyWB]
   norm_num
 
-/-- The Darwinian bound is **attained**, not merely true: with acquired state `a = 5`,
-descendant `H' = 3`, empty parent `H = 0` and selection signal `σ = 3`, the data-processing
-regime holds and the cap `λ_B ≤ K(σ)` is met with equality (`λ_B = 3 = K(3)`). The bound is
-tight, so the corollaries are not vacuous. -/
+/-- The Darwinian selection bound is **attained**: with `a = 5`, `H' = 3`, empty parent `H = 0`
+and selection signal `σ = 3`, the cap `total ≤ K(σ)` is met with equality. Not vacuous. -/
 theorem toyWB_selection_bound_tight :
     Darwinian ToyWB (5 : Nat) (3 : Nat) (0 : Nat) (3 : Nat) ∧
       bandwidth ToyWB (5 : Nat) (3 : Nat) (0 : Nat) = ((3 : Nat) : Int) := by
-  refine ⟨⟨?_, ?_⟩, ?_⟩
+  refine ⟨⟨?_⟩, ?_⟩
   · simp only [bandwidth, condIK, ToyWB]; norm_num
-  · simp only [writeBack, condIK, ToyWB]; norm_num
   · simp only [bandwidth, condIK, ToyWB]; norm_num
 
-/-- **The separation, machine-checked.** In this Darwinian witness the *write-back* bandwidth is
-zero while the *total* acquired information reaching the descendant is `3 ≠ 0`. So the two
-quantities genuinely differ, and defining "Darwinian" as `I(a : H' | H) = 0` would have been
-false: acquired structure does reach the descendant, through selection, without anything being
-written back. This is exactly why Definition 3 conditions on `σ`. -/
+/-- **The separation, machine-checked.** A Darwinian lineage has no write-back message (`w = 0`,
+trivial), so `λ_B = 0` — while the *total* acquired information reaching the descendant is `3 ≠ 0`,
+because acquired structure influenced who reproduced. The two quantities genuinely differ, which is
+exactly why Definition 3 is stated on the message `w` and conditioned on `σ`. Defining `λ_B` as
+`I(a : H' | H)` would have made the "Darwinian edge λ_B = 0" false. -/
 theorem toyWB_writeback_zero_but_total_positive :
-    writeBack ToyWB (5 : Nat) (3 : Nat) (0 : Nat) (3 : Nat) = 0 ∧
+    writeBack ToyWB (0 : Nat) (3 : Nat) (0 : Nat) (3 : Nat) = 0 ∧
       bandwidth ToyWB (5 : Nat) (3 : Nat) (0 : Nat) = ((3 : Nat) : Int) := by
   constructor
   · simp only [writeBack, condIK, ToyWB]; norm_num
   · simp only [bandwidth, condIK, ToyWB]; norm_num
 
-/-- And the general selection bound fires on the witness. -/
-theorem toyWB_darwinian_fires :
-    bandwidth ToyWB (5 : Nat) (3 : Nat) (0 : Nat) ≤ ((3 : Nat) : Int) :=
-  darwinian_bandwidth_le_selection ToyWB toyWB_jointGeMarginal toyWB_condLeUncond
-    (a := (5 : Nat)) (H' := (3 : Nat)) (H := (0 : Nat)) (σ := (3 : Nat))
-    ⟨by simp only [bandwidth, condIK, ToyWB]; norm_num,
-     by simp only [writeBack, condIK, ToyWB]; norm_num⟩
-
-/-- The Lamarckian write-back bound is attained: with `σ = 0` (nothing crosses by selection) and
-decoder image `c = 3`, the write-back channel carries exactly `3` bits. -/
+/-- The Lamarckian write-back bound is attained: message `w = 3` delivers exactly `3` bits. -/
 theorem toyWB_lamarckian_bound_tight :
-    Lamarckian ToyWB (5 : Nat) (3 : Nat) (0 : Nat) (0 : Nat) (3 : Nat) ∧
-      writeBack ToyWB (5 : Nat) (3 : Nat) (0 : Nat) (0 : Nat) = ((3 : Nat) : Int) := by
-  refine ⟨⟨?_⟩, ?_⟩
+    writeBack ToyWB (3 : Nat) (3 : Nat) (0 : Nat) (0 : Nat) = ((3 : Nat) : Int) ∧
+      (ToyWB.cond (3 : Nat) (ToyWB.pair (0 : Nat) (0 : Nat)) : Int) = ((3 : Nat) : Int) := by
+  constructor
   · simp only [writeBack, condIK, ToyWB]; norm_num
-  · simp only [writeBack, condIK, ToyWB]; norm_num
+  · simp only [ToyWB]; norm_num
 
 end WriteBack
 end KTAIT

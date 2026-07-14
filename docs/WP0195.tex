@@ -341,13 +341,11 @@ processing (\lean{condIK\_le\_condRight}): since $a$ reaches $H'$ only through a
 $\lambda_B \le \Ik(a:z\mid H) \le K(z\mid H)+O(\log)$. Crucially, the write-back bandwidth is \emph{not} $\Ik(a:H'\mid H)$: that quantity is nonzero even in a
 strictly Darwinian lineage, since acquired structure influences \emph{who reproduces}. Mutual information
 cannot isolate direct write-back --- directness is causal, not correlational --- so WP0058 conditions on the
-selection signal, $\lambda_B := \Ik(a : H'\mid H,\sigma)$, which blocks the path $a\to\sigma\to H'$ and leaves
-exactly the decoder path (\lean{writeBack}). Then: in the Darwinian regime $\lambda_B\le O(\log)$
-(\lean{darwinian\_write\_back\_zero}) --- definitional, as it must be, since the absence of a causal path is a
-premise about the lineage, not a theorem --- while the \emph{total} information crossing is bounded by the
+selection signal, $\lambda_B := \Ik(w : H'\mid H,\sigma)$ on the tagged write-back message $w=C(a)$, which attaches the quantity to the channel rather than inferring it from residual dependence, and blocks $a\to\sigma\to H'$ (\lean{writeBack}). No additive split $\lambda_{\rm sel}=\Ik(a:H'\mid H)-\lambda_B$ is defined: conditional mutual information is not additively decomposable. Then: in the Darwinian regime there is no message, so $\lambda_B\le O(\log)$
+(\lean{no\_message\_no\_write\_back}) --- the premise is the \emph{absence of the message}, architectural and posited, since no information measure certifies a missing causal path --- while the \emph{total} information crossing is bounded by the
 selection signal, $\Ik(a:H'\mid H)\le K(\sigma)+O(\log)$ (\lean{darwinian\_bandwidth\_le\_selection},
 zeroth-order): that bound is the substantive half. In the Lamarckian regime
-$\lambda_B \le K(C(a)\mid H,\sigma)+O(\log)$ (\lean{lamarckian\_bandwidth\_le\_decoder\_image}, first-order).
+$\lambda_B \le K(w\mid H,\sigma)+O(\log)$ (\lean{lamarckian\_bandwidth\_le\_decoder\_image}, first-order) --- immediate, since $\lambda_B$ is \emph{defined} on $w$.
 \lean{toyWB\_writeback\_zero\_but\_total\_positive} machine-checks that the two quantities genuinely differ:
 a witness with $\lambda_B=0$ and total $=3$. Also \lean{decoder\_charged} ($K(C)\le K(H)+O(\log)$, Prop.~1's AIT half) and
 \lean{trivial\_decoder\_transmits\_nothing} (Corollary~1: a trivial decoder transmits nothing
@@ -456,7 +454,7 @@ Master bound & $\lambda_B \le K(H'\!\mid\! H) + O(\log)$; the acquired state dro
 Data processing & $\Ik(a\!:\!z\!\mid\! H) \le K(z\!\mid\! H)+O(\log)$; info via the channel only & KT &
   \stproved\ (\lean{condIK\_le\_condRight}) \\
 Prop.\ 2 (Darwinian, $\lambda_B$) & write-back channel empty: $\lambda_B=\Ik(a:H'\!\mid\! H,\sigma)\le O(\log)$ & KT &
-  \stproved\ (\lean{darwinian\_write\_back\_zero}; definitional) \\
+  \stproved\ (\lean{no\_message\_no\_write\_back}) \\
 Prop.\ 2 (Darwinian, $\lambda_{\rm sel}$) & zeroth-order: total $\Ik(a:H'\!\mid\! H) \le K(\sigma)$ & KT &
   \stproved\ (\lean{darwinian\_bandwidth\_le\_selection}) \\
 Prop.\ 2 (Lamarckian) & first-order: $\lambda_B \le K(C(a)\!\mid\! H)$, the decoder image & KT &
