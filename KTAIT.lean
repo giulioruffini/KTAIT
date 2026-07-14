@@ -10,6 +10,7 @@ import KTAIT.CoarseGraining
 import KTAIT.Decoder
 import KTAIT.WriteBack
 import KTAIT.Contrast
+import KTAIT.ShiftInvariance
 import KTAIT.OrbitLabel
 import KTAIT.NoetherFlow
 import KTAIT.ToyModel

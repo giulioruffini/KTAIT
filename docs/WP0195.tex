@@ -283,6 +283,7 @@ Mathlib~v4.31.0. Modules:
 \lean{RegulatorSelection.lean} & \lean{ChainRule} & WP0162 Prop.~1 (regulator selection) \\
 \lean{CoarseGraining.lean} & \lean{RegSuff}, structure function & WP0193 Thms~A/B; WP0007 emergence \\
 \lean{Contrast.lean} & contrast fibre posterior & WP0162 Q3 (Eq.~26) \\
+\lean{ShiftInvariance.lean} & \lean{CheapTransform}, \lean{PairSymmetric} & WP0202 App.~A (the null-hypothesis error) \\
 \lean{OrbitLabel.lean} & conserved orbit labels & WP0162 App.~C \\
 \lean{NoetherFlow.lean} & \lean{trajLabel}, flow symmetries & generalized Noether (abstract core) \\
 \lean{Decoder.lean} & \lean{Achievable}, \lean{Inverts} (inverse compiler) & WP0058 Prop.~1 (axiom-free) \\
@@ -312,6 +313,20 @@ regulatory coarse-graining is uncomputable, by reduction to Vereshchagin--Vitán
 exact, certifiable self-model (the middle one is an axiom-free diagonalization).
 \item \lean{contrast\_posterior\_ranks\_by\_complexity} --- WP0162 Q3 (Eq.~26): the contrast-fiber
 posterior ranks by joint simplicity, with no $2^{-\Delta}$ tilt.
+\item \lean{transform\_preserves\_IK}, \lean{shift\_is\_not\_a\_null},
+\lean{cheap\_transform\_not\_null} --- WP0202 Appendix~A. If $y=T_i(x)$ is computable from $x^\ast$
+plus a short index, then $\Ik(x:T_i x)\ge K(T_i x)-K(\mathrm{code}\,i)-3\,\mathrm{slack}$: a
+\emph{cheaply-computable transform preserves algorithmic mutual information}. The corollary names an
+error that actually shipped into a draft --- a \textbf{circular shift is not a null} for whole-object
+MAI, since $K(\sigma_s(x)\mid x^\ast)\le K(s)+O(1)=O(\log n)$, so the shifted copy retains nearly all
+of its algorithmic information with the original. Using it as a surrogate subtracts the signal, and a
+real screening effect was consequently withdrawn as ``indistinguishable from noise''.
+\lean{cheap\_transform\_not\_null} states the contradiction directly: no $\varepsilon$ below
+$K(\sigma_s x)-K(s)-3\,\mathrm{slack}$ can satisfy \lean{IsNullFor}. (A time-aligned mutual
+information \emph{rate} is a different object, for which a shift \emph{is} a valid null; that object
+is not an AIT quantity and is not formalized here. Keeping the two apart is the whole point.)
+Satisfiability witness: \lean{ShiftFrame}, in which the bound is tight,
+$\Ik(x:\sigma_s x)=K(x)$.
 \item \lean{OrbitLabel.genEnergy\_conserved} --- WP0162 App.~C: generalized energy as a conserved
 orbit label (axiom-free).
 \item \lean{boundary\_sufficient} --- WP0162 App.~E: the thin boundary as a compressed sufficient
