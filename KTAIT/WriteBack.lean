@@ -73,8 +73,9 @@ def bandwidth (a H' H : F.Obj) : Int := condIK F a H' H
 
 /-- **Write-back bandwidth** `λ_B := I(w : H' | H, σ)` (WP0058 Definition 3, revised).
 
-`w = C(a)` is the *write-back message*: the designated channel variable through which acquired
-structure — and nothing else — may enter the descendant program. Defining `λ_B` on `w` rather
+`w = C(a)` is the *write-back program*: a program-level modification compiled from acquired
+structure — the output of an inverse compiler is a program, not a signal — and the only route by
+which acquired structure may enter the descendant's heritable program. Defining `λ_B` on `w` rather
 than on `a` attaches the quantity to the channel instead of inferring it from all residual
 dependence of `a`, and conditioning on `σ` blocks the selection path `a → σ → H'`.
 
@@ -153,34 +154,34 @@ theorem darwinian_bandwidth_le_selection (hJ : JointGeMarginal F) (hC : CondLeUn
   omega
 
 /-- **WP0058 Proposition 2, Lamarckian half.** The write-back bandwidth is bounded by the
-description length of the write-back message itself: `λ_B ≤ K(w | H, σ) + O(log)`. Because `λ_B`
+description length of the write-back program itself: `λ_B ≤ K(w | H, σ) + O(log)`. Because `λ_B`
 is *defined* on `w`, this needs no data-processing hypothesis — it is immediate. The channel can
-be wide, but only as wide as the message. -/
+be wide, but only as wide as the write-back program. -/
 theorem lamarckian_bandwidth_le_decoder_image (hJ : JointGeMarginal F) (w H' H σ : F.Obj) :
     writeBack F w H' H σ ≤ (F.cond w (F.pair H σ) : Int) + F.slack :=
   condIK_le_condRight F hJ H' w (F.pair H σ)
 
-/-- **Darwinian: no write-back message, hence no write-back.** If there is no message to send —
+/-- **Darwinian: no write-back program, hence no write-back.** If there is no write-back program to send —
 `K(w | H, σ) = O(log)`, the degenerate `w` of a lineage with no decoder — then `λ_B = O(log)`.
 
-The regime premise is the *absence of the message*, which is architectural and posited: an
+The regime premise is the *absence of the write-back program*, which is architectural and posited: an
 information measure cannot certify that a causal path is missing. -/
-theorem no_message_no_write_back (hJ : JointGeMarginal F) {w H' H σ : F.Obj}
+theorem no_program_no_write_back (hJ : JointGeMarginal F) {w H' H σ : F.Obj}
     (hw : (F.cond w (F.pair H σ) : Int) ≤ F.slack) :
     writeBack F w H' H σ ≤ 2 * F.slack := by
   have h := lamarckian_bandwidth_le_decoder_image F hJ w H' H σ
   omega
 
-/-- **The bite of Corollary 1.** A write-back message that is trivial given the parent program
+/-- **The bite of Corollary 1.** A write-back program that is trivial given the parent program
 and the selection signal transmits nothing — the bound never mentions the acquired state `a` at
-all. Write-back is capped by the message its decoder can form, not by how much was learned.
+all. Write-back is capped by the write-back program its decoder can form, not by how much was learned.
 
 This is the whole of what is proved. It does **not** say the decoder's representational axes were
 found by prior Darwinian search, nor that write-back cannot produce novelty. -/
 theorem trivial_decoder_transmits_nothing (hJ : JointGeMarginal F) {w H' H σ : F.Obj}
     (hw : (F.cond w (F.pair H σ) : Int) ≤ F.slack) :
     writeBack F w H' H σ ≤ 2 * F.slack :=
-  no_message_no_write_back F hJ hw
+  no_program_no_write_back F hJ hw
 
 /-! ### The decoder is charged to the heritable program -/
 
@@ -240,10 +241,10 @@ theorem toyWB_selection_bound_tight :
   · simp only [bandwidth, condIK, ToyWB]; norm_num
   · simp only [bandwidth, condIK, ToyWB]; norm_num
 
-/-- **The separation, machine-checked.** A Darwinian lineage has no write-back message (`w = 0`,
+/-- **The separation, machine-checked.** A Darwinian lineage has no write-back program (`w = 0`,
 trivial), so `λ_B = 0` — while the *total* acquired information reaching the descendant is `3 ≠ 0`,
 because acquired structure influenced who reproduced. The two quantities genuinely differ, which is
-exactly why Definition 3 is stated on the message `w` and conditioned on `σ`. Defining `λ_B` as
+exactly why Definition 3 is stated on the write-back program `w` and conditioned on `σ`. Defining `λ_B` as
 `I(a : H' | H)` would have made the "Darwinian edge λ_B = 0" false. -/
 theorem toyWB_writeback_zero_but_total_positive :
     writeBack ToyWB (0 : Nat) (3 : Nat) (0 : Nat) (3 : Nat) = 0 ∧
@@ -252,7 +253,7 @@ theorem toyWB_writeback_zero_but_total_positive :
   · simp only [writeBack, condIK, ToyWB]; norm_num
   · simp only [bandwidth, condIK, ToyWB]; norm_num
 
-/-- The Lamarckian write-back bound is attained: message `w = 3` delivers exactly `3` bits. -/
+/-- The Lamarckian write-back bound is attained: write-back program `w = 3` delivers exactly `3` bits. -/
 theorem toyWB_lamarckian_bound_tight :
     writeBack ToyWB (3 : Nat) (3 : Nat) (0 : Nat) (0 : Nat) = ((3 : Nat) : Int) ∧
       (ToyWB.cond (3 : Nat) (ToyWB.pair (0 : Nat) (0 : Nat)) : Int) = ((3 : Nat) : Int) := by
