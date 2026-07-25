@@ -4,9 +4,12 @@
 #
 #   1. SORRY-FREE   — a proof gap must never sit behind a "machine-checked" claim.
 #   2. WP0195       — the status paper must list every module and non-helper theorem.
-#   3. CITING PAPERS — every \lean{...} name a paper cites must resolve to a real
-#                     declaration. (2026-07: WP0058's Prop. 2 was rewritten and its
-#                     Appendix B cited two new lemmas; nothing checked that link.)
+#   3. CITING PAPERS — every \lean{...} and \ktait{...} name a paper cites must
+#                     resolve to a real declaration. (2026-07: WP0058's Prop. 2 was
+#                     rewritten and its Appendix B cited two new lemmas; nothing
+#                     checked that link.) \lean{} is incidental Lean text and admits
+#                     filenames and core axioms; \ktait{} asserts "machine-checked
+#                     as this KTAIT declaration" and admits declarations only.
 #   4. --released   — before a paper goes public: the tree is clean AND HEAD is pushed.
 #                     (2026-07: the Prop. 2 fix sat uncommitted while the paper claimed
 #                     it was machine-checked; GitHub still served the false hypothesis.)
@@ -93,7 +96,14 @@ else
       case "$base" in lean|'') continue ;; esac
       grep -qxF "$base" "$DECLS" || { echo "  $tag CITES MISSING: $name"; missing=1; status=1; }
     done < <(grep -oE '\\lean\{[^}]*\}' "$path" | sed 's/\\lean{//; s/}//; s/\\_/_/g' | sort -u)
-    [ "$missing" -eq 0 ] && echo "  OK $tag: all \\lean{} references resolve"
+    # \ktait{decl} is a machine-checked-claim citation: no filename, path, or core-
+    # axiom exemptions — every name must be a KTAIT declaration.
+    while read -r name; do
+      [ -z "$name" ] && continue
+      base=${name##*.}                                  # Agentoptosis.gap -> gap
+      grep -qxF "$base" "$DECLS" || { echo "  $tag \\ktait CITES MISSING: $name"; missing=1; status=1; }
+    done < <(grep -oE '\\ktait\{[^}]*\}' "$path" | sed 's/\\ktait{//; s/}//; s/\\_/_/g' | sort -u)
+    [ "$missing" -eq 0 ] && echo "  OK $tag: all \\lean{} and \\ktait{} references resolve"
   done < "$REGISTRY"
 fi
 

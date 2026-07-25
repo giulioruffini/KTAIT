@@ -1,13 +1,27 @@
-# Papers that cite KTAIT declarations by name via \lean{...}.
+# Papers that cite KTAIT declarations by name via \lean{...} or \ktait{...}.
 #
 # check_sync.sh verifies every cited name still resolves to a real declaration, so
 # renaming or restating a theorem cannot silently break a paper's "machine-checked"
 # claim. Papers live outside this repo; a path that is not present here is SKIPPED
 # (CI has no checkout of them), never a failure.
 #
+# Two macros, one guard:
+#
+#   \lean{...}   incidental Lean text — an identifier, a filename, a core axiom.
+#   \ktait{decl} a machine-checked-claim citation: the prose at that point asserts
+#                a result and names the KTAIT declaration that proves it. Names
+#                must be declarations — no filenames, paths, or core axioms.
+#
+# Use \ktait exactly where a claim is machine-checked; it is what makes "which
+# claims are machine-checked" a lookup (for readers and for Calliope's formal
+# anchors) rather than an interpretation. Canonical preamble definition, beside
+# the existing \lean:
+#
+#   \newcommand{\ktait}[1]{\texttt{\small #1}}
+#
 # Format:  TAG | path (relative to repo root, or absolute)
 #
-# When a new paper starts citing \lean{...} names, add it here.
+# When a new paper starts citing \lean{...} or \ktait{...} names, add it here.
 
 WP0058 | ../../BCOM WPs and Blogs/working_drafts/WP0058-Inheritance_Architecture/main.tex
 WP0186 | ../../BCOM WPs and Blogs/working_drafts/WP0186-Push_Pull_Motifs/WP0186-Push_Pull_Motifs.tex

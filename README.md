@@ -104,10 +104,21 @@ git config core.hooksPath .githooks   # one-time: arms the pre-push guard
 ```
 
 `check_sync.sh` fails if a proof contains `sorry`, if `docs/WP0195.tex` is missing a module or
-theorem, or if any `\lean{...}` name cited by a paper in `docs/citing-papers.txt` no longer
-resolves. The pre-push hook and CI both run it, so a rename cannot silently break a paper's claim.
-**Register a paper in `docs/citing-papers.txt` when it starts citing `\lean{}` names** — otherwise
-nothing guards it. When you change the Lean, commit the Lean **and** the affected papers together.
+theorem, or if any `\lean{...}` or `\ktait{...}` name cited by a paper in `docs/citing-papers.txt`
+no longer resolves. The pre-push hook and CI both run it, so a rename cannot silently break a
+paper's claim. **Register a paper in `docs/citing-papers.txt` when it starts citing `\lean{}` or
+`\ktait{}` names** — otherwise nothing guards it. When you change the Lean, commit the Lean **and**
+the affected papers together.
+
+Two macros carry the citations. `\lean{...}` is incidental Lean text — an identifier, a filename,
+a core axiom. `\ktait{decl}` is a machine-checked-claim citation: the prose at that point asserts
+a result and names the KTAIT declaration that proves it, so "which claims are machine-checked" is
+a lookup, not an interpretation. `\ktait{}` admits declarations only — the guard rejects filenames,
+paths, and core axioms inside it. Canonical preamble definition, beside the existing `\lean`:
+
+```latex
+\newcommand{\ktait}[1]{\texttt{\small #1}}
+```
 
 ## Repository layout
 
