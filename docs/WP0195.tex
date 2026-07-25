@@ -92,6 +92,9 @@
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator*{\argmax}{arg\,max}
 \newcommand{\lean}[1]{\texttt{\small #1}}
+% \ktait{decl}: machine-checked-claim citation — the prose asserts a result and
+% names the KTAIT declaration proving it (see \S\ref{sec:citing}).
+\newcommand{\ktait}[1]{\texttt{\small #1}}
 \newcommand{\Ik}{\mathrm{I}_K}
 \newcommand{\stproved}{\textcolor{ForestGreen}{\textbf{Proved}}}
 \newcommand{\staxiom}{\textcolor{bcomblue}{\textbf{Axiom}}}
@@ -224,6 +227,20 @@ The current effort is \textbf{Level~1} (a typed, axiomatic KT/AIT interface) plu
 the coding-theorem bridge). Out of scope for now: a computability-backed $K$ from a concrete
 universal machine (Level~2), and the differential-geometric (Lie-group / Noether) layer of the
 world-models paper,\cite{ruffini2025worldmodels} which is a separate track.
+
+\subsection{Citing the formalization}
+\label{sec:citing}
+Papers in the KT corpus cite this development with two macros. \lean{\textbackslash lean\{...\}}
+marks incidental Lean text: a module filename, a definition, one of Lean's core axioms.
+\ktait{\textbackslash ktait\{decl\}} is a machine-checked-claim citation: the prose at that
+point asserts a result and names the KTAIT declaration that proves it, so which claims are
+machine-checked is a lookup rather than an interpretation --- for a reader, and for any tool
+indexing the corpus. Names inside \ktait{\textbackslash ktait} must be declarations; the guard
+rejects filenames, paths, and core axioms there. Both macros are enforced: papers registered
+in \lean{docs/citing-papers.txt} have every cited name resolved against the current
+declarations by \lean{scripts/check\_sync.sh}, which the pre-push hook and CI run, so renaming
+or restating a theorem cannot silently break a citing paper's claim. The canonical preamble
+definition is \verb|\newcommand{\ktait}[1]{\texttt{\small #1}}|.
 
 % ══════════════════════════════════════════════════════════════════════
 \section{The standard AIT / probability axiom layer}

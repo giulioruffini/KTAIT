@@ -84,6 +84,10 @@ else
       continue
     fi
     missing=0
+    # Strip LaTeX comments first: a macro mentioned in a commented line (e.g. the
+    # preamble note explaining \ktait) is not a citation. \% is not a comment.
+    STRIPPED=$(mktemp)
+    sed -e 's/^%.*//' -e 's/\([^\\]\)%.*/\1/' "$path" > "$STRIPPED"
     # Papers also wrap \lean{} around Lean core axioms and commands. Those are not
     # KTAIT declarations and must not be reported as missing.
     CORE_RE='^(propext|Classical\.choice|Quot\.sound|sorryAx|sorry|Lean|Mathlib)$'
@@ -95,14 +99,15 @@ else
       base=${name##*.}                                  # WriteBack.foo -> foo
       case "$base" in lean|'') continue ;; esac
       grep -qxF "$base" "$DECLS" || { echo "  $tag CITES MISSING: $name"; missing=1; status=1; }
-    done < <(grep -oE '\\lean\{[^}]*\}' "$path" | sed 's/\\lean{//; s/}//; s/\\_/_/g' | sort -u)
+    done < <(grep -oE '\\lean\{[^}]*\}' "$STRIPPED" | sed 's/\\lean{//; s/}//; s/\\_/_/g' | sort -u)
     # \ktait{decl} is a machine-checked-claim citation: no filename, path, or core-
     # axiom exemptions — every name must be a KTAIT declaration.
     while read -r name; do
       [ -z "$name" ] && continue
       base=${name##*.}                                  # Agentoptosis.gap -> gap
       grep -qxF "$base" "$DECLS" || { echo "  $tag \\ktait CITES MISSING: $name"; missing=1; status=1; }
-    done < <(grep -oE '\\ktait\{[^}]*\}' "$path" | sed 's/\\ktait{//; s/}//; s/\\_/_/g' | sort -u)
+    done < <(grep -oE '\\ktait\{[^}]*\}' "$STRIPPED" | sed 's/\\ktait{//; s/}//; s/\\_/_/g' | sort -u)
+    rm -f "$STRIPPED"
     [ "$missing" -eq 0 ] && echo "  OK $tag: all \\lean{} and \\ktait{} references resolve"
   done < "$REGISTRY"
 fi
