@@ -72,7 +72,7 @@ file that imports KTAIT and is discarded immediately.
 Three properties follow, all of which matter for a librarian specifically:
 
 1. **One source of truth.** The GitHub repo stays the arbiter.
-2. **Attributable verdicts.** "Well-typed against KTAIT @ `3879b74`" is citable and
+2. **Attributable verdicts.** "Well-typed against KTAIT @ `e27559b`" is citable and
    reproducible. A verdict without a SHA is worthless six months later.
 3. **Pin moves are deliberate.** And re-running the accumulated query log against a new SHA
    is a free regression test on KT itself — it would have caught the WP0058 problem.
@@ -99,7 +99,9 @@ None of these are Lean theorems, so none creates a second ontology:
 - **The concept→declaration map.** Each ontology concept gains a `lean_name` field pointing
   at the KTAIT declaration that formalizes it. This is librarian work, hers by right. It also
   extends `check_sync`'s guarantee to the catalog: a concept whose Lean name stops resolving
-  gets flagged, so the ontology cannot drift from the formalization.
+  gets flagged, so the ontology cannot drift from the formalization. The paper-side anchor
+  already exists: `\ktait{decl}` (see `docs/citing-papers.txt`) marks a machine-checked claim
+  and is resolved by the same guard.
 - **The query log.** Candidate statements plus verdicts plus SHA. Nobody currently has this
   dataset, and it doubles as the regression suite in §3.
 - **The elaboration harness.** Shell-out, timeouts, sandboxing, caching.
@@ -140,7 +142,7 @@ on every verdict.
 | | |
 |---|---|
 | Remote | `https://github.com/giulioruffini/KTAIT.git` |
-| Pin at time of writing | `3879b741c5bf0076575ecca30f512d416b3bbfaf` (`3879b74`) |
+| Pin at time of writing | `e27559b24cab8ea5f3d9407ed9cde5bd9ba20e9a` (`e27559b`) |
 | Toolchain | `leanprover/lean4:v4.31.0` + Mathlib v4.31 |
 | Modules | 20 |
 | Build | `lake build` (full: ~8600 jobs) |
