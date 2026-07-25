@@ -57,34 +57,31 @@ theorem rawy_form_fails :
 
 /-! ## 3. WP0162 ontology guards (M6)
 
-Four statements about the observer-relative ontology that must NOT typecheck or
-must be refutable. See `KTAIT.PatternPersist`. -/
+Statements about the observer-relative ontology that must be refutable, or must fail to
+typecheck. See `KTAIT.PatternPersist`. -/
 
 namespace PP
 
 open KTAIT.PP
 
-/-- Persistence is not reflexive: it requires a strictly later world-model.
-    Comparing a pattern with itself is not a persistence claim. -/
-theorem no_self_persistence (num den : Nat) (_h : 0 < num) :
-    ¬ Persists F0 num den a_i a_i := by
-  rintro ⟨hlt, -⟩; exact absurd hlt (Nat.lt_irrefl _)
+/-- A pattern with no self-regulation gap is NOT an agent, however persistent it is and
+    however elaborately it is described. Agenthood is `0 < Δ_self`, a computed quantity,
+    so it cannot be asserted by fiat. -/
+theorem externally_regulated_not_agent' :
+    ¬ IsAgent (inertReg a_i) := externally_regulated_not_agent
 
--- THE GUARD BITES. A CONSTANT projection is inadmissible (WP0162 §4 names it as
--- the paradigm exclusion). `nonconst` cannot be discharged for `fun _ => 0`.
-#check_failure (⟨fun _ => 0, ⟨0, 1, by decide⟩⟩ : Projection F0)
+-- THE GUARD BITES 1. A `Pattern` cannot be built from a code that is not a submodel of
+-- its host: `isSub` has no proof when the code exceeds the world-model.
+#check_failure (cell 2000 (by decide) : Pattern F0)
 
-/-- A decoupled pattern — neither ablation matters — is not an agent.
-    Locus is derived from the ablation pair, so this cannot be asserted away. -/
-theorem decoupled_not_agent :
-    ¬ IsAgent (decoupledReg a_i) (obj T) := by
-  simp [IsAgent, locusOf, decoupledReg, Effect.matters]
+-- THE GUARD BITES 2. Agenthood is a PREDICATE on patterns, not a rival type. There is no
+-- `Agent` structure to pass a pattern to, so the v2 category error is unwritable.
+#check_failure (a_i : Agent)
 
-/-- The thermostat room: externally regulated, hence not an agent, however
-    persistent and however well regulated it is. -/
-theorem room_not_agent :
-    ¬ IsAgent (roomReg a_i) (obj T) := by
-  simp [IsAgent, locusOf, roomReg, Effect.matters]
+/-- Telehomeostasis is fixed by the objective alone, so a pattern whose objective targets
+    a different pattern is not telehomeostatic even though it IS an agent. -/
+theorem agent_need_not_be_telehomeostatic :
+    IsAgent (reg a_i) ∧ ¬ IsTelehomeostatic a_i (obj T) := agentoptosis_gap
 
 end PP
 

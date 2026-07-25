@@ -4,164 +4,181 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Giulio Ruffini (with Claude Code)
 -/
 import Mathlib
+import KTAIT.Basic
+import KTAIT.Ontology
+import KTAIT.Persistence
+import KTAIT.SelfModel
+
 /-!
 # KTAIT.PatternPersist — the WP0162 ontology as types (M6)
 
 The observer-relative ontology of *Pattern, Persist!* (WP0162 §4–§5), typed so the
 structural errors the theory attracts cannot compile.
 
-**Namespace note.** `KTAIT.Ontology` already defines a `Pattern` (a bare carrier
-wrapper, parent of `SelfCode`). The `Pattern` here is a different object — a
-*useful submodel of an observer's world-model* — so it lives in `KTAIT.PP` and the
-two never meet. Unifying them is deliberate future work, not an oversight.
+**Built on the existing machinery, not beside it.** `PPFrame` *extends* `AITFrame`
+(the pattern `AITProb` already uses), so `IK` and `NMAI` come from `Basic`,
+persistence from `Persistence.Pers`, and the self-regulation gap from
+`SelfModel.DeltaSelf`. An earlier draft carried its own opaque `mai` with three
+bolted-on laws and its own unnormalized persistence; both are gone. What remains
+frame-specific is exactly the two relations WP0162 needs and AIT does not supply:
+which descriptions are *submodels* of which, and which are *useful*.
 
 **The single carrier.** WP0162: "the agent A is a pattern on the internal tape —
-there is nothing else, no agent over and above the pattern." So `Pattern` is the
-one carrier and agenthood is a *predicate*, `IsAgent`, not a rival structure. This
-is what lets the four cells of WP0207 (token, constituent class, collective,
-collective kind) all be agents, which is the point of `token_is_agent` &c. below.
+there is nothing else, no agent over and above the pattern", and "the persistent
+patterns strictly *contain* the agents." So `Pattern` is the one carrier and
+agenthood is a *predicate*, `IsAgent`. This is what lets the four cells of WP0207
+(token, constituent class, collective, collective kind) all be agents.
 
-**The three questions WP0162 keeps apart** (§5): whether a pattern persists
-(`Persists`), where its regulator sits (`locusOf`, derived from a directional
-ablation pair), and whether the regulator's objective is the pattern's own
-continuation (`IsTelehomeostatic`, fixed by the objective *alone*, per §3).
+**Agenthood has content now.** `IsAgent` is a positive self-regulation gap
+`Δ_self = K(O_∅) − K(O_reg) > 0` — the paper's own quantity — not a hand-set tag.
+Proposition 3 (`self_regulation_temporal_model`) therefore applies to any agent,
+and `agent_has_temporal_self_model` below inherits it rather than restating it.
 
-Design points, each the repair of a real defect found by adversarial audit:
-  * K and DL are separate: K is the (uncomputable) ideal, DL the computable
-    proxy, related by an explicit slack.
-  * `mai` carries its laws: symmetry and mai <= min{K,K}.
-  * Persistence is NORMALIZED and CROSS-TIME: it relates submodels of two
-    different world-models, at strictly increasing time, comparing
-    NMAI >= num/den without division.
-  * Admissibility excludes CONSTANT MAPS, which v2's DL-monotone condition
-    wrongly admitted -- the paper's named exclusion.
-  * Locus is DERIVED from a directional ablation pair, with all four outcomes
-    including `decoupled`.
-  * PE is the ARGMAX of OF over predicted model states (Box 1), not a bare map.
-  * Telehomeostasis is fixed by the OBJECTIVE ALONE (WP0162 l.277:
-    "telehomeostatic exactly when its OF is its own persistence").
+**Namespace note.** `KTAIT.Ontology` already defines a `Pattern` (a bare carrier
+wrapper, parent of `SelfCode`). The `Pattern` here is a different object — a
+*useful submodel trajectory inside an observer's world-model* — so it lives in
+`KTAIT.PP`. Unifying them is deliberate future work.
 -/
+
 namespace KTAIT.PP
 
-abbrev Time := Nat
+open KTAIT
 
-/-- Description frame `C = (O, B_0)`. `K` is the ideal complexity, `DL` the
-    computable description length an observer actually runs. -/
-structure Frame where
-  Desc      : Type
-  K         : Desc → Nat
-  DL        : Desc → Nat
-  slack     : Nat
-  sub       : Desc → Desc → Prop
-  mai       : Desc → Desc → Nat
-  usefulFor : Desc → Prop
-  mai_symm  : ∀ x y, mai x y = mai y x
-  mai_le_l  : ∀ x y, mai x y ≤ K x
-  mai_le_r  : ∀ x y, mai x y ≤ K y
-  proxy     : ∀ x, K x ≤ DL x + slack
+/-! ## 1. The frame
 
-/-- Substrate with dynamics: `X_t`, indexed by time. -/
-structure Substrate (F : Frame) where
-  state : Time → F.Desc
+`AITFrame` supplies `Obj`, `K`, `pair`, `cond`, `star`, `slack`, and hence `IK`/`NMAI`.
+WP0162 needs two more relations that algorithmic information theory does not fix. -/
 
-/-- Coarse-graining. Admissibility here excludes the constant maps WP0162 names. -/
-structure Projection (F : Frame) where
-  rho      : F.Desc → F.Desc
-  nonconst : ∃ x y, rho x ≠ rho y
+/-- An `AITFrame` together with WP0162's two observer-relative relations. -/
+structure PPFrame extends AITFrame where
+  /-- `sub s m`: description `s` is a submodel of description `m`. -/
+  sub       : Obj → Obj → Prop
+  /-- Usefulness: predicts, explains, regulates, or supports action (WP0162 §4). -/
+  usefulFor : Obj → Prop
 
-/-- The observer's world-model at a time: `M_t = ME(P^rho_{<=t})`. -/
-structure WorldModel (F : Frame) where
-  time  : Time
-  model : F.Desc
+namespace PPFrame
+variable (F : PPFrame)
 
-/-- A PATTERN: a useful submodel of a world-model. THE single carrier. -/
-structure Pattern (F : Frame) where
-  code   : F.Desc
-  host   : WorldModel F
-  isSub  : F.sub code host.model
-  useful : F.usefulFor code
+/-- The observer's world-model trajectory `ℳ_t`. -/
+abbrev WorldModel := Time → F.Obj
 
-/-- QUESTION 1. Normalized, cross-time persistence: NMAI >= num/den, stated
-    without division, and requiring the later pattern to be strictly later. -/
-def Persists (F : Frame) (num den : Nat) (S S' : Pattern F) : Prop :=
-  S.host.time < S'.host.time ∧
-  num * (max (F.K S.code) (F.K S'.code)) ≤ den * F.mai S.code S'.code
+end PPFrame
 
-/-- What a directional ablation does to the pattern. -/
-inductive Effect | dissolves | raisesDL (n : Nat) | noEffect
-  deriving DecidableEq
+/-! ## 2. Patterns
 
-def Effect.matters : Effect → Bool
-  | .noEffect => false
-  | _         => true
+A pattern is a *trajectory* `S^α : Time → Obj` of useful submodels of the observer's
+world-model. Time-indexed because WP0162's persistence compares `S^α_t` with
+`S^α_{t+τ}`, which live in different world-models. -/
 
-/-- QUESTION 2. The four outcomes of WP0162 section 5. -/
-inductive Locus | selfRegulating | externallyRegulated | coRegulated | decoupled
-  deriving DecidableEq
+/-- A PATTERN: a useful submodel trajectory inside a world-model trajectory. -/
+structure Pattern (F : PPFrame) where
+  traj   : Time → F.Obj
+  host   : Time → F.Obj
+  isSub  : ∀ t, F.sub (traj t) (host t)
+  useful : ∀ t, F.usefulFor (traj t)
 
-/-- The directional ablation PAIR: null each channel in turn. -/
-structure Regulation (F : Frame) (_S : Pattern F) where
-  cutInternal : Effect
-  cutExternal : Effect
+/-! ## 3. Question 1 — persistence, inherited from `KTAIT.Persistence` -/
 
-/-- Locus is COMPUTED from the ablation pair, never asserted. -/
-def locusOf {F : Frame} {S : Pattern F} (R : Regulation F S) : Locus :=
-  match R.cutInternal.matters, R.cutExternal.matters with
-  | true,  false => .selfRegulating
-  | false, true  => .externallyRegulated
-  | true,  true  => .coRegulated
-  | false, false => .decoupled
+/-- Persistence of a pattern at `(t, τ)` against threshold `θ`. This is
+    `Persistence.Persistent` on the pattern's trajectory: normalized, rational-valued,
+    and lag-indexed. -/
+def Persists (F : PPFrame) (S : Pattern F) (t τ : Time) (θ : ℚ) : Prop :=
+  Persistent F.toAITFrame S.traj t τ θ
 
-/-- ME / OF / PE. PE is the argmax of OF over predicted model states (Box 1). -/
-structure Apparatus (F : Frame) (Act : Type) where
-  ME         : F.Desc → F.Desc → F.Desc
-  predict    : F.Desc → Act → F.Desc
-  OF         : F.Desc → Int
-  choose     : F.Desc → Act
+/-- Unfolding lemma: persistence really is WP0162's `NMAI(S_t, S_{t+τ})`. -/
+theorem persists_iff_nmai (F : PPFrame) (S : Pattern F) (t τ : Time) (θ : ℚ) :
+    Persists F S t τ θ ↔ θ ≤ NMAI F.toAITFrame (S.traj t) (S.traj (t + τ)) := Iff.rfl
+
+/-! ## 4. Questions 2 and 3 — regulation, agenthood, telehomeostasis -/
+
+/-- A regulatory situation for a pattern: the two readouts ART contrasts, with the
+    maintaining sub-pattern `E` ablated (`onull`) or running (`oreg`). -/
+structure Regulation (F : PPFrame) (_S : Pattern F) where
+  onull : F.Obj
+  oreg  : F.Obj
+  /-- The maintaining sub-pattern itself, needed to state the self-model corollary. -/
+  E     : F.Obj
+
+/-- The self-regulation gap `Δ_self`, from `KTAIT.SelfModel`. -/
+def selfGap {F : PPFrame} {S : Pattern F} (R : Regulation F S) : ℤ :=
+  DeltaSelf F.toAITFrame R.onull R.oreg
+
+/-- AGENTHOOD is a PREDICATE on patterns: the regulatory work is localized within,
+    measured by a positive self-regulation gap. WP0162 §5. -/
+def IsAgent {F : PPFrame} {S : Pattern F} (R : Regulation F S) : Prop :=
+  0 < selfGap R
+
+/-- ME / OF / PE. The Planning Engine is the argmax of the objective over predicted
+    model states (WP0162 Box 1), not a free-standing map. -/
+structure Apparatus (F : PPFrame) (Act : Type) where
+  ME         : F.Obj → F.Obj → F.Obj
+  predict    : F.Obj → Act → F.Obj
+  OF         : F.Obj → Int
+  choose     : F.Obj → Act
   isArgmax   : ∀ m a, OF (predict m a) ≤ OF (predict m (choose m))
   nontrivial : ∃ x y, OF x ≠ OF y
 
-/-- An agent's objective proxies the persistence of some named pattern. -/
-structure Objective (F : Frame) (Act : Type) where
+/-- An objective proxies the persistence of some named pattern. -/
+structure Objective (F : PPFrame) (Act : Type) where
   app    : Apparatus F Act
   target : Pattern F
 
-/-- AGENTHOOD is a PREDICATE on patterns: regulatory work localized within
-    (self- or co-regulation), plus the apparatus. -/
-def IsAgent {F : Frame} {Act : Type} {S : Pattern F}
-    (R : Regulation F S) (_O : Objective F Act) : Prop :=
-  locusOf R = Locus.selfRegulating ∨ locusOf R = Locus.coRegulated
-
-/-- TELEHOMEOSTATIC: fixed by the OBJECTIVE ALONE. -/
-def IsTelehomeostatic {F : Frame} {Act : Type}
+/-- TELEHOMEOSTATIC: fixed by the OBJECTIVE ALONE (WP0162 §3, "telehomeostatic exactly
+    when its OF is its own persistence"). Locus attaches to agenthood, not to this. -/
+def IsTelehomeostatic {F : PPFrame} {Act : Type}
     (S : Pattern F) (O : Objective F Act) : Prop :=
-  O.target.code = S.code
+  O.target.traj = S.traj
 
-/-! ### Witness frame -/
+/-! ## 5. What agenthood now buys: Proposition 3, inherited
 
-@[reducible] def F0 : Frame where
-  Desc := Nat
+Because `IsAgent` is a positive `DeltaSelf`, `SelfModel.self_regulation_temporal_model`
+applies verbatim. An agent's future self-code is cheap given its present organization. -/
+
+/-- **Any agent has a temporal self-model.** Proposition 3 of WP0162, specialized to a
+    pattern that is an agent in the sense above. Nothing is re-proved: the hypotheses are
+    the same named ones (`hSI`, `hART`) that Proposition 3 consumes. -/
+theorem agent_has_temporal_self_model
+    {F : PPFrame} {S : Pattern F} (R : Regulation F S) (C : F.Obj) (t τ : Time)
+    (cmi : ℤ) (hagent : IsAgent R)
+    (hSI : (F.cond (S.traj (t + τ)) C : ℤ)
+              - (F.cond (S.traj (t + τ)) (F.pair (S.traj t) (F.pair R.E C)) : ℤ)
+            ≥ cmi - (F.slack : ℤ))
+    (hART : 0 < DeltaSelf F.toAITFrame R.onull R.oreg →
+              cmi ≥ DeltaSelf F.toAITFrame R.onull R.oreg - (F.slack : ℤ)) :
+    (F.cond (S.traj (t + τ)) (F.pair (S.traj t) (F.pair R.E C)) : ℤ)
+      ≤ (F.cond (S.traj (t + τ)) C : ℤ)
+          - DeltaSelf F.toAITFrame R.onull R.oreg + 2 * (F.slack : ℤ) :=
+  self_regulation_temporal_model F.toAITFrame S.traj R.E C R.onull R.oreg t τ cmi
+    hagent hSI hART
+
+/-! ## 6. Witness: the four cells of WP0207
+
+A toy frame in which the four cells are distinct trajectories, each self-regulating. -/
+
+@[reducible] def F0 : PPFrame where
+  Obj := Nat
   K := id
-  DL := id
+  pair := fun x y => max x y
+  cond := fun x _ => x
+  star := id
   slack := 0
   sub := fun s m => s ≤ m
-  mai := fun x y => min x y
   usefulFor := fun _ => True
-  mai_symm := Nat.min_comm
-  mai_le_l := fun x y => Nat.min_le_left x y
-  mai_le_r := fun x y => Nat.min_le_right x y
-  proxy := fun x => by simp
 
-def W0 : WorldModel F0 := ⟨0, 1000⟩
+/-- Constant trajectories, one per cell; the tag distinguishes them. -/
+def cell (n : Nat) (h : n ≤ 1000) : Pattern F0 :=
+  { traj := fun _ => n, host := fun _ => 1000
+  , isSub := fun _ => h
+  , useful := fun _ => trivial }
 
-/-! ### The four cells of WP0207, ALL patterns -/
+def a_i : Pattern F0 := cell 10 (by decide)   -- the token
+def T   : Pattern F0 := cell 20 (by decide)   -- the constituent class
+def M   : Pattern F0 := cell 30 (by decide)   -- this collective
+def L   : Pattern F0 := cell 40 (by decide)   -- the collective kind
 
-def a_i : Pattern F0 := ⟨10, W0, by decide, trivial⟩   -- the token
-def T   : Pattern F0 := ⟨20, W0, by decide, trivial⟩   -- the constituent class
-def M   : Pattern F0 := ⟨30, W0, by decide, trivial⟩   -- this collective
-def L   : Pattern F0 := ⟨40, W0, by decide, trivial⟩   -- the collective kind
+/-- Every cell is self-regulating here: ablating its maintainer costs 5 bits. -/
+def reg (S : Pattern F0) : Regulation F0 S := ⟨7, 2, 1⟩
 
-/-- A minimal apparatus; every cell carries one, so every cell can be an agent. -/
 def app0 : Apparatus F0 Unit where
   ME := fun m _ => m
   predict := fun m _ => m
@@ -172,46 +189,50 @@ def app0 : Apparatus F0 Unit where
 
 def obj (target : Pattern F0) : Objective F0 Unit := ⟨app0, target⟩
 
-/-- All four are self-regulating: cutting the internal channel dissolves them. -/
-def selfReg (S : Pattern F0) : Regulation F0 S := ⟨Effect.dissolves, Effect.noEffect⟩
+/-! ### All four cells are agents -/
 
-/-! ### The claim: all four cells are agents -/
+theorem token_is_agent      : IsAgent (reg a_i) := by
+  simp [IsAgent, selfGap, DeltaSelf, reg]
+theorem class_is_agent      : IsAgent (reg T)   := by
+  simp [IsAgent, selfGap, DeltaSelf, reg]
+theorem collective_is_agent : IsAgent (reg M)   := by
+  simp [IsAgent, selfGap, DeltaSelf, reg]
+theorem kind_is_agent       : IsAgent (reg L)   := by
+  simp [IsAgent, selfGap, DeltaSelf, reg]
 
-theorem token_is_agent      : IsAgent (selfReg a_i) (obj T) := Or.inl rfl
-theorem class_is_agent      : IsAgent (selfReg T)   (obj T) := Or.inl rfl
-theorem collective_is_agent : IsAgent (selfReg M)   (obj L) := Or.inl rfl
-theorem kind_is_agent       : IsAgent (selfReg L)   (obj L) := Or.inl rfl
+/-! ### Telehomeostasis splits by column -/
 
-/-! ### Who is telehomeostatic: the objective decides, and it splits by column -/
+private theorem traj_ne {m n : Nat} {hm : m ≤ 1000} {hn : n ≤ 1000} (h : m ≠ n) :
+    (cell m hm).traj ≠ (cell n hn).traj :=
+  fun hEq => h (congrFun hEq 0)
 
 /-- In agentoptosis the token's objective proxies its CLASS, not itself. -/
-theorem token_not_telehomeostatic : ¬ IsTelehomeostatic a_i (obj T) := by
-  simp [IsTelehomeostatic, obj, a_i, T]
+theorem token_not_telehomeostatic : ¬ IsTelehomeostatic a_i (obj T) :=
+  traj_ne (by decide)
 
-/-- The class's objective is its own persistence. -/
 theorem class_is_telehomeostatic : IsTelehomeostatic T (obj T) := rfl
 
 /-- Snowflake yeast: the collective instance's objective proxies its LINEAGE. -/
-theorem collective_not_telehomeostatic : ¬ IsTelehomeostatic M (obj L) := by
-  simp [IsTelehomeostatic, obj, M, L]
+theorem collective_not_telehomeostatic : ¬ IsTelehomeostatic M (obj L) :=
+  traj_ne (by decide)
 
-/-- The collective kind's objective is its own persistence. -/
 theorem kind_is_telehomeostatic : IsTelehomeostatic L (obj L) := rfl
 
-/-- The payoff: a token can be a genuine agent AND not telehomeostatic. That is
-    exactly the room agentoptosis occupies. -/
+/-- The payoff: a token can be a genuine agent AND not telehomeostatic. -/
 theorem agentoptosis_gap :
-    IsAgent (selfReg a_i) (obj T) ∧ ¬ IsTelehomeostatic a_i (obj T) :=
+    IsAgent (reg a_i) ∧ ¬ IsTelehomeostatic a_i (obj T) :=
   ⟨token_is_agent, token_not_telehomeostatic⟩
 
-/-- Normally the proxy coincides with the token itself, and then it IS
-    telehomeostatic. Agentoptosis is the divergence, not the rule. -/
+/-- Normally the objective targets the token itself, and then it IS telehomeostatic.
+    The divergence is the exception, not the rule. -/
 theorem token_usually_telehomeostatic : IsTelehomeostatic a_i (obj a_i) := rfl
 
-/-- Neither ablation matters: the pattern is decoupled. -/
-def decoupledReg (S : Pattern F0) : Regulation F0 S := ⟨Effect.noEffect, Effect.noEffect⟩
+/-! ## 7. Guards -/
 
-/-- The thermostat room: only the EXTERNAL cut dissolves it. -/
-def roomReg (S : Pattern F0) : Regulation F0 S := ⟨Effect.noEffect, Effect.dissolves⟩
+/-- A pattern with no self-regulation gap is not an agent, however it is described. -/
+def inertReg (S : Pattern F0) : Regulation F0 S := ⟨2, 7, 1⟩
+
+theorem externally_regulated_not_agent : ¬ IsAgent (inertReg a_i) := by
+  simp [IsAgent, selfGap, DeltaSelf, inertReg]
 
 end KTAIT.PP

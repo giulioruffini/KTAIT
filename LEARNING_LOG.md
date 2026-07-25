@@ -347,3 +347,28 @@ A 2–3 line note after each milestone: what we learned / what tripped us up.
 - Namespace: `KTAIT.Ontology.Pattern` (bare carrier, parent of `SelfCode`) and `KTAIT.PP.Pattern`
   (useful submodel of a world-model) are different objects sharing a name. Kept apart by namespace;
   unifying them is real work, not a rename.
+
+## M6b — integrating PatternPersist with Basic / Persistence / SelfModel
+
+- The first cut of `PatternPersist` reinvented three things the repo already had, each time
+  worse. `Frame.mai` was an opaque field with three bolted-on laws (`mai_symm`, `mai_le_l`,
+  `mai_le_r`); `Basic.IK` is *defined* as `K x + K y − K (pair x y)`, so those are structural,
+  not assumptions. Making `PPFrame extend AITFrame` (the pattern `AITProb` already uses) took
+  the module's assumption count from **4 to 0** — `#print axioms` still shows Lean core only.
+- `Persists` was a cross-multiplied inequality on two loose patterns with a `time <` conjunct
+  faking the lag. `Persistence.Persistent` already does it properly: `ℚ`-valued, normalized,
+  indexed by a trajectory `S : Time → Obj` and a lag `τ`. Every complaint the adversarial audit
+  made about persistence was already answered upstream. Lesson: **audit the repo before
+  audit-driven repairs** — I fixed the paper-faithfulness and missed the duplication entirely.
+- The real prize was `SelfModel.DeltaSelf`. Defining `IsAgent := 0 < Δ_self` instead of a
+  hand-rolled `Locus` enum means `self_regulation_temporal_model` (Prop. 3) applies verbatim, so
+  `agent_has_temporal_self_model` is *inherited*, not restated. Agenthood stopped being a tag and
+  started having consequences.
+- Cost, and it is the right cost: with real content in the definitions the four-cell theorems are
+  no longer `Or.inl rfl`. When a proof gets harder because the definition got stronger, that is
+  the definition doing work.
+- `Pattern` now carries a trajectory `Time → Obj`, not a single code, because WP0162 compares
+  `S^α_t` with `S^α_{t+τ}` and those live in *different* world-models.
+- Gotchas: `simp [IsAgent, selfGap, DeltaSelf, reg]` is needed — `decide` cannot see through the
+  definitions to the numerals; and a `cell n` constructor needs `n ≤ 1000` as an argument, since
+  `isSub` is not provable for a free `n`.

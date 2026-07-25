@@ -291,7 +291,7 @@ Mathlib~v4.31.0. Modules:
 \lean{Decoder.lean} & \lean{Achievable}, \lean{Inverts} (inverse compiler) & WP0058 Prop.~1 (axiom-free) \\
 \lean{WriteBack.lean} & \lean{bandwidth}, \lean{Darwinian}, \lean{Lamarckian} & WP0058 Prop.~1 (AIT half), Prop.~2 \\
 \lean{ToyModel.lean} & \lean{Toy}, \lean{ToyMachine}, \lean{ToyGap} & satisfiability witnesses \\
-\lean{PatternPersist.lean} & WP0162 observer-relative ontology & four cells are agents; telehomeostasis by objective \\
+\lean{PatternPersist.lean} & WP0162 ontology on \lean{AITFrame} & four cells are agents; Prop.~3 inherited \\
 \lean{BadStatements.lean} & guards bite & part-whole; $y$ vs $y^\ast$; WP0162 ontology \\
 \bottomrule
 \end{tabular}
@@ -313,8 +313,17 @@ divergence is the exception and not the rule.
 \item \lean{PP.collective\_not\_telehomeostatic} --- the same divergence one grain up: a collective
 instance whose objective proxies its lineage, with \lean{PP.kind\_is\_telehomeostatic} closing the
 square. This is the snowflake-yeast sign anomaly as a typing fact rather than an exception.
-\item \lean{PP.no\_self\_persistence} --- persistence requires a strictly later world-model, so a
-pattern cannot persist against itself. Depends on \lean{propext} only.
+\item \lean{PP.persists\_iff\_nmai} --- the module's persistence predicate unfolds definitionally
+to WP0162's $\mathrm{NMAI}(S_t,S_{t+\tau})$. \lean{PP.Persists} is \lean{Persistence.Persistent} on
+the pattern's trajectory, so persistence is inherited from \lean{Persistence.lean} rather than
+restated: rational-valued, normalized, and lag-indexed.
+\item \lean{PP.agent\_has\_temporal\_self\_model} --- because \lean{PP.IsAgent} is a positive
+self-regulation gap $\Delta_{\mathrm{self}}$ (\lean{SelfModel.DeltaSelf}), Proposition~3 applies to
+any agent verbatim: its future self-code is cheap given its present organization. Nothing is
+re-proved; the same named hypotheses are consumed.
+\item \lean{PP.externally\_regulated\_not\_agent}, \lean{PP.agent\_need\_not\_be\_telehomeostatic}
+--- agenthood is computed from $\Delta_{\mathrm{self}}$, never asserted, so a pattern with no gap is
+refused agenthood; and an agent whose objective targets another pattern is not telehomeostatic.
 \item \lean{PP.room\_not\_agent}, \lean{PP.decoupled\_not\_agent} --- locus is \emph{derived} from a
 directional ablation pair, never asserted, so the externally regulated thermostat room and the
 decoupled pattern are refused agenthood by computation.
@@ -552,7 +561,10 @@ Proposition 4 & self-model incompleteness (3 obstructions) & KT & \stproved\ (\l
 WP0162 ontology & four cells (token, class, collective, collective kind) are all agents & KT & \stproved\ (\lean{PP.token\_is\_agent},$\ldots$) \\
 WP0162 \S3 & telehomeostasis is fixed by the objective alone & KT & \stproved\ (\lean{PP.class\_is\_telehomeostatic}) \\
 WP0207 & agentoptosis gap: agent $\wedge$ not telehomeostatic & KT & \stproved\ (\lean{PP.agentoptosis\_gap}) \\
-WP0162 \S5 & regulator locus derived from the ablation pair & KT & \stproved\ (\lean{PP.room\_not\_agent}) \\
+WP0162 \S5 & agenthood is a positive $\Delta_{\mathrm{self}}$, computed not asserted & KT & \stproved\ (\lean{PP.externally\_regulated\_not\_agent}) \\
+WP0162 \S4 & persistence unfolds to $\mathrm{NMAI}$, inherited from \lean{Persistence} & KT & \stproved\ (\lean{PP.persists\_iff\_nmai}) \\
+Proposition 3 (PP) & every agent has a temporal self-model & KT & \stproved\ (\lean{PP.agent\_has\_temporal\_self\_model}) \\
+WP0207 & agent yet not telehomeostatic & KT & \stproved\ (\lean{PP.agent\_need\_not\_be\_telehomeostatic}) \\
 Orbit-label thm & conserved orbit label = ``generalized energy'' & KT & \stproved\ (\lean{genEnergy\_conserved}) \\
 \midrule
 \multicolumn{4}{@{}l}{\textit{Agent Know Thyself --- WP0192}}\\
