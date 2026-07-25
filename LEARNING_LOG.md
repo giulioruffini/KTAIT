@@ -321,3 +321,29 @@ A 2–3 line note after each milestone: what we learned / what tripped us up.
   and `simp only [ToyWB]` leaves `id 3` opaque to `omega` — must be `simp only [ToyWB, id]`.
 - WP0058's Lean track is now complete except Hypothesis 1 (λ_P* ~ τ_E), which is a conjecture and
   is marked `n/a` in WP0195 rather than forced.
+
+## M6 — WP0162 observer-relative ontology (`PatternPersist.lean`)
+
+- The load-bearing repair was **one carrier**. An earlier draft had `Agent` and `Pattern` as
+  disjoint structures, which reads as the paper's "persistence is not agenthood" but actually
+  contradicts it: WP0162 says "the agent A is a **pattern** on the internal tape — there is nothing
+  else, no agent over and above the pattern," and "the persistent patterns strictly *contain* the
+  agents." That is an **extensional** claim on one collection, not a sortal one. Two structures made
+  it unstateable; `IsAgent : … → Prop` makes it a theorem. Guards that merely show two unrelated
+  Lean structures are unrelated prove nothing about KT — they are tautologies about the type former.
+- Adversarial audit against the paper found four inventions in the first draft, all plausible-looking:
+  a compression `margin` that appears nowhere in WP0162 (and is logically just `<`); a `covers` field
+  chosen by the constructor, which made the compression obligation vacuous; unnormalized MAI while the
+  docstring claimed NMAI (normalization is what makes θ frame-robust, and the paper says so); and an
+  `admissible` condition `DL (ρ x) ≤ DL x` that **admits constant maps** — the one exclusion WP0162
+  names by name. Writing a plausible obligation is easy; writing the paper's obligation is not.
+- Telehomeostasis is fixed by the **objective alone** (§3: "telehomeostatic exactly when its OF is its
+  own persistence"). Locus attaches to *agenthood*, not to telehomeostasis. Fusing them produced false
+  negatives on co-regulated and outsourced-computation cases the paper discusses at length.
+- Locus must be **derived** from the directional ablation pair, not carried as a field. A free `locus`
+  field lets the user assert the conclusion of the paper's flagship operational test.
+- Gotcha: `decide` fails on `¬ IsTelehomeostatic …` because the definition is not reducible —
+  `simp [IsTelehomeostatic, obj, a_i, T]` closes it. Same for `IsAgent` with `locusOf` unfolded.
+- Namespace: `KTAIT.Ontology.Pattern` (bare carrier, parent of `SelfCode`) and `KTAIT.PP.Pattern`
+  (useful submodel of a world-model) are different objects sharing a name. Kept apart by namespace;
+  unifying them is real work, not a rename.

@@ -6,11 +6,12 @@ Authors: Giulio Ruffini (with Claude Code)
 import Mathlib
 import KTAIT.Basic
 import KTAIT.Ontology
+import KTAIT.PatternPersist
 
 /-!
 # KTAIT.BadStatements — the guards biting (M5)
 
-Documentation-by-compilation of the two error classes the project exists to catch.
+Documentation-by-compilation of the error classes the project exists to catch.
 
 ## 1. Whole-vs-part (`IK(A : S)` with `S ⊂ A`)
 Handled by the typed ontology: `Pattern` and `SelfCode` are distinct types, so feeding a
@@ -53,5 +54,38 @@ theorem rawy_form_fails :
           - ((FrameYStar.K (10 : Nat) : ℤ)
               - (FrameYStar.cond (10 : Nat) (3 : Nat) : ℤ))).natAbs
         ≤ FrameYStar.slack) := by decide
+
+/-! ## 3. WP0162 ontology guards (M6)
+
+Four statements about the observer-relative ontology that must NOT typecheck or
+must be refutable. See `KTAIT.PatternPersist`. -/
+
+namespace PP
+
+open KTAIT.PP
+
+/-- Persistence is not reflexive: it requires a strictly later world-model.
+    Comparing a pattern with itself is not a persistence claim. -/
+theorem no_self_persistence (num den : Nat) (_h : 0 < num) :
+    ¬ Persists F0 num den a_i a_i := by
+  rintro ⟨hlt, -⟩; exact absurd hlt (Nat.lt_irrefl _)
+
+-- THE GUARD BITES. A CONSTANT projection is inadmissible (WP0162 §4 names it as
+-- the paradigm exclusion). `nonconst` cannot be discharged for `fun _ => 0`.
+#check_failure (⟨fun _ => 0, ⟨0, 1, by decide⟩⟩ : Projection F0)
+
+/-- A decoupled pattern — neither ablation matters — is not an agent.
+    Locus is derived from the ablation pair, so this cannot be asserted away. -/
+theorem decoupled_not_agent :
+    ¬ IsAgent (decoupledReg a_i) (obj T) := by
+  simp [IsAgent, locusOf, decoupledReg, Effect.matters]
+
+/-- The thermostat room: externally regulated, hence not an agent, however
+    persistent and however well regulated it is. -/
+theorem room_not_agent :
+    ¬ IsAgent (roomReg a_i) (obj T) := by
+  simp [IsAgent, locusOf, roomReg, Effect.matters]
+
+end PP
 
 end KTAIT
