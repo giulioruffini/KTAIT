@@ -1,0 +1,379 @@
+<title>KTLEAN — the Kolmogorov Theory formalization in Lean 4</title>
+
+<style>
+  :root {
+    --ground:#FBFCFE; --surface:#FFFFFF; --surface-2:#F1F4FA;
+    --ink:#131A28; --ink-2:#4B5668; --ink-3:#6E7A8D;
+    --rule:#DBE2ED; --rule-strong:#C3CDDD;
+    --accent:#002878; --accent-soft:#DDE7F6; --accent-ink:#002878;
+    --reject:#B8332A; --reject-soft:#FBE6E3;
+    --proof:#0E6353; --proof-soft:#DCEFE9;
+    --teach:#7A4B12; --teach-soft:#FBF0DF;
+    --serif:"Iowan Old Style",Charter,"Bitstream Charter",Georgia,serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+    --mono:Menlo,"SF Mono",SFMono-Regular,"DejaVu Sans Mono",Consolas,"Liberation Mono",monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --ground:#0A0F1C; --surface:#111A2B; --surface-2:#172034;
+      --ink:#E6EBF4; --ink-2:#9EAABF; --ink-3:#7C89A0;
+      --rule:#253048; --rule-strong:#33415E;
+      --accent:#8FB0EE; --accent-soft:#1A2846; --accent-ink:#B7CBF5;
+      --reject:#FF8D7F; --reject-soft:#38201D;
+      --proof:#5FCBAF; --proof-soft:#10332B;
+      --teach:#E8B96B; --teach-soft:#332618;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#0A0F1C; --surface:#111A2B; --surface-2:#172034;
+    --ink:#E6EBF4; --ink-2:#9EAABF; --ink-3:#7C89A0;
+    --rule:#253048; --rule-strong:#33415E;
+    --accent:#8FB0EE; --accent-soft:#1A2846; --accent-ink:#B7CBF5;
+    --reject:#FF8D7F; --reject-soft:#38201D;
+    --proof:#5FCBAF; --proof-soft:#10332B;
+    --teach:#E8B96B; --teach-soft:#332618;
+  }
+  :root[data-theme="light"]{
+    --ground:#FBFCFE; --surface:#FFFFFF; --surface-2:#F1F4FA;
+    --ink:#131A28; --ink-2:#4B5668; --ink-3:#6E7A8D;
+    --rule:#DBE2ED; --rule-strong:#C3CDDD;
+    --accent:#002878; --accent-soft:#DDE7F6; --accent-ink:#002878;
+    --reject:#B8332A; --reject-soft:#FBE6E3;
+    --proof:#0E6353; --proof-soft:#DCEFE9;
+    --teach:#7A4B12; --teach-soft:#FBF0DF;
+  }
+
+  body{background:var(--ground);color:var(--ink);font-family:var(--sans);
+    font-size:16.5px;line-height:1.62;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:53rem;margin:0 auto;padding:3rem 1.5rem 6rem;
+    display:flex;flex-direction:column;gap:2.75rem;}
+  p{max-width:66ch;}
+  a{color:var(--accent-ink);}
+
+  .mast{display:flex;flex-direction:column;gap:.9rem;
+    border-bottom:1px solid var(--rule-strong);padding-bottom:1.75rem;}
+  .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.13em;
+    text-transform:uppercase;color:var(--ink-3);}
+  h1{font-family:var(--mono);font-size:clamp(1.5rem,4vw,2.1rem);font-weight:600;
+    line-height:1.2;text-wrap:balance;margin:0;letter-spacing:-.01em;}
+  .sub{font-family:var(--serif);font-size:1.2rem;line-height:1.5;
+    color:var(--ink-2);max-width:60ch;text-wrap:balance;}
+  .chips{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.25rem;}
+  .chip{font-family:var(--mono);font-size:.72rem;letter-spacing:.04em;
+    padding:.28rem .6rem;border-radius:2px;border:1px solid var(--rule-strong);
+    color:var(--ink-2);background:var(--surface-2);}
+  .chip.ok{color:var(--proof);border-color:var(--proof);background:var(--proof-soft);}
+
+  section{display:flex;flex-direction:column;gap:1.1rem;}
+  h2{font-family:var(--serif);font-size:1.55rem;font-weight:600;line-height:1.25;
+    margin:0;text-wrap:balance;letter-spacing:-.005em;}
+  h2 .num{font-family:var(--mono);font-size:.8rem;font-weight:500;
+    color:var(--accent-ink);letter-spacing:.1em;display:block;margin-bottom:.4rem;}
+  h3{font-family:var(--sans);font-size:1rem;font-weight:650;margin:0;
+    letter-spacing:.005em;}
+
+  pre{margin:0;background:var(--surface);border:1px solid var(--rule);
+    border-left:3px solid var(--accent);border-radius:3px;
+    padding:1rem 1.1rem;overflow-x:auto;}
+  code{font-family:var(--mono);font-size:.83rem;line-height:1.62;}
+  p code,li code,td code,dd code,dt code{background:var(--surface-2);
+    padding:.1em .34em;border-radius:2px;font-size:.86em;}
+  .cm{color:var(--ink-3);}
+  .kw{color:var(--accent-ink);font-weight:600;}
+  .ob{color:var(--proof);font-weight:600;}
+
+  .decl{display:flex;flex-direction:column;gap:.7rem;
+    padding:1.15rem;background:var(--surface-2);
+    border:1px solid var(--rule);border-radius:4px;}
+  .decl-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:.7rem;}
+  .decl-name{font-family:var(--mono);font-size:.95rem;font-weight:600;}
+  .decl-role{font-family:var(--mono);font-size:.7rem;letter-spacing:.09em;
+    text-transform:uppercase;color:var(--ink-3);}
+  .decl p{margin:0;font-size:.95rem;color:var(--ink-2);max-width:64ch;}
+  .decl pre{background:var(--surface);}
+  .plain{font-family:var(--serif);font-size:1.02rem !important;
+    color:var(--ink) !important;border-left:2px solid var(--accent);
+    padding-left:.85rem;}
+  .plain b{font-family:var(--sans);font-size:.7rem;letter-spacing:.09em;
+    text-transform:uppercase;color:var(--ink-3);display:block;
+    margin-bottom:.2rem;font-weight:600;}
+  .stack{display:flex;flex-direction:column;gap:1.1rem;}
+
+  .tw{overflow-x:auto;border:1px solid var(--rule);border-radius:4px;
+    background:var(--surface);}
+  table{border-collapse:collapse;width:100%;min-width:34rem;}
+  th,td{text-align:left;padding:.7rem .85rem;border-bottom:1px solid var(--rule);
+    vertical-align:top;font-size:.9rem;}
+  th{font-family:var(--mono);font-size:.7rem;letter-spacing:.09em;
+    text-transform:uppercase;color:var(--ink-3);background:var(--surface-2);
+    white-space:nowrap;}
+  tbody tr:last-child td{border-bottom:none;}
+  .sym td:first-child{font-family:var(--mono);white-space:nowrap;font-size:1rem;}
+
+  .tag{font-family:var(--mono);font-size:.7rem;letter-spacing:.05em;
+    padding:.2rem .45rem;border-radius:2px;white-space:nowrap;}
+  .tag.rej{color:var(--reject);background:var(--reject-soft);}
+  .tag.prv{color:var(--proof);background:var(--proof-soft);}
+
+  .note{border:1px solid var(--rule);border-left:3px solid var(--rule-strong);
+    background:var(--surface);padding:1rem 1.15rem;border-radius:3px;
+    display:flex;flex-direction:column;gap:.6rem;}
+  .note.warn{border-left-color:var(--reject);}
+  .note.teach{border-left-color:var(--teach);background:var(--teach-soft);}
+  .note p{margin:0;font-size:.94rem;max-width:64ch;}
+  .note h3{font-size:.93rem;}
+
+  ul,ol{margin:0;padding-left:1.3rem;display:flex;flex-direction:column;gap:.5rem;}
+  li{max-width:64ch;font-size:.97rem;}
+  strong{font-weight:650;}
+  .lede{font-family:var(--serif);font-size:1.08rem;color:var(--ink-2);}
+  footer{color:var(--ink-3);font-size:.85rem;font-family:var(--mono);
+    border-top:1px solid var(--rule);padding-top:1.25rem;}
+</style>
+
+<div class="wrap">
+
+  <header class="mast">
+    <div class="eyebrow">github.com/giulioruffini/KTAIT &middot; Lean 4.31 + Mathlib</div>
+    <h1>KTLEAN</h1>
+    <div class="sub">Machine-checking Kolmogorov Theory: what the formalization assumes, what it
+      merely defines, what it actually proves &mdash; and what is in it today.</div>
+    <div class="chips">
+      <span class="chip ok">builds green</span>
+      <span class="chip ok">no <code>sorry</code></span>
+      <span class="chip">20 modules</span>
+      <span class="chip">~100 theorems</span>
+      <span class="chip">9 papers served</span>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">00</span>What the project is for</h2>
+    <p class="lede">One rule governs the whole repository: <strong>standard results of algorithmic
+      information theory may be assumed; every KT corollary must be proved from them, with no
+      <code>sorry</code>.</strong> The point is not to re-derive mathematics that is already
+      settled. It is to check that KT's own claims follow from what it says it assumes.</p>
+    <p>A second purpose emerged and is now arguably the more useful one: making the theory's
+      <em>structural</em> mistakes impossible rather than merely discouraged. Several errors that
+      reached drafts &mdash; treating a class as a rung of composition, an admissibility condition
+      that admitted precisely what its source paper excludes, an agent typed as a rival to a pattern
+      &mdash; are category errors. A type checker catches those on every build, without anyone
+      remembering to look.</p>
+
+    <div class="note teach">
+      <h3>The analogy: dimensional analysis</h3>
+      <p>A type system is dimensional analysis for concepts. You cannot add a length to a time
+        &mdash; not because it is discouraged, but because the expression is <em>meaningless</em>,
+        and the check catches it before any number is computed. Here the same check runs over
+        concepts like pattern, agent, regulator, kind, and collective.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">01</span>Reading Lean: three ideas</h2>
+    <p>Everything in the repository is built from these. The examples are self-contained &mdash; no
+      KT in them &mdash; so you can check each against your own intuition first.</p>
+
+    <div class="decl">
+      <div class="decl-head"><span class="decl-name">Idea 1</span>
+        <span class="decl-role">a structure is a record with named slots</span></div>
+<pre><code><span class="kw">structure</span> Point <span class="kw">where</span>
+  x : Nat
+  y : Nat
+
+<span class="kw">def</span> p : Point := &#10216;3, 4&#10217;</code></pre>
+      <p class="plain"><b>Reading it</b>The colon means "has type". The angle brackets mean "here are
+        the slot values, in order". This is a named tuple, exactly like writing a state as a list of
+        components.</p>
+    </div>
+
+    <div class="decl">
+      <div class="decl-head"><span class="decl-name">Idea 2</span>
+        <span class="decl-role">a slot can hold a proof, and then it constrains what exists</span></div>
+<pre><code><span class="kw">structure</span> EvenNumber <span class="kw">where</span>
+  val    : Nat
+  <span class="ob">isEven</span> : val % 2 = 0        <span class="cm">-- a STATEMENT, not data</span>
+
+<span class="kw">def</span> four : EvenNumber := &#10216;4, <span class="kw">by</span> decide&#10217;   <span class="cm">-- fine</span>
+
+<span class="cm">-- def five : EvenNumber := ...   IMPOSSIBLE: no proof exists</span></code></pre>
+      <p class="plain"><b>Reading it</b>The second slot's type is a claim, and the only thing that
+        fills such a slot is a <em>proof</em> of it. So there is no odd <code>EvenNumber</code>
+        &mdash; not by convention, but because the object cannot be built.</p>
+      <p>Green field names throughout this page are slots of this kind. The physics analogue: a
+        quantum-state record carrying its own normalization proof, so an unnormalized wavefunction
+        cannot be handed over as a state.</p>
+    </div>
+
+    <div class="decl">
+      <div class="decl-head"><span class="decl-name">Idea 3</span>
+        <span class="decl-role">a predicate over one carrier, versus two separate types</span></div>
+<pre><code><span class="cm">-- OPTION A: evens as their own type.</span>
+<span class="kw">structure</span> EvenNumber <span class="kw">where</span>
+  val : Nat
+  isEven : val % 2 = 0
+<span class="cm">-- "every even number is a number" CANNOT BE SAID: different types.</span>
+
+<span class="cm">-- OPTION B: evens as a predicate on the one carrier.</span>
+<span class="kw">def</span> IsEven (n : Nat) : Prop := n % 2 = 0
+<span class="cm">-- Now it is sayable, and provable.</span></code></pre>
+      <p class="plain"><b>Reading it</b>Option A looks tidier and is a trap. To say the evens are
+        <em>contained in</em> the naturals, they must share a carrier.</p>
+      <p>This is the most consequential decision in the newest module. <em>Pattern, Persist!</em>
+        says the agent <em>is</em> a pattern, there is nothing over and above it, and that the
+        persistent patterns strictly <em>contain</em> the agents. That is Option B. An earlier draft
+        used Option A, and the paper's own claim became unsayable.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>Assumed, defined, proved</h2>
+    <p>Three categories, kept strictly apart. Confusing them is how a formalization comes to look
+      more impressive than it is.</p>
+
+    <h3>Assumed &mdash; named hypotheses, never global axioms</h3>
+    <p>Invariance, symmetry of information, the coding theorem, Kraft counting, Bayes: standard, and
+      assumed. But <strong>how</strong> they are assumed matters. Each is stated as a named
+      proposition <em>about a frame</em> and passed to the theorems that need it, rather than
+      declared as a global axiom.</p>
+    <div class="note teach">
+      <h3>Why that distinction is not pedantry</h3>
+      <p>A global axiom asserting a law for <em>every</em> frame would be inconsistent here: one can
+        hand-build a frame with zero slack that violates it, and derive falsehood. Stating the laws
+        as hypotheses keeps every corollary a sound implication, and lets
+        <code>#print axioms</code> report Lean's core only. A toy model then witnesses that the
+        hypotheses are satisfiable, so the theorems are not vacuously true.</p>
+    </div>
+
+    <h3>Defined &mdash; where the content and the risk both sit</h3>
+    <p><strong>Definitions cannot be false.</strong> They can be <em>unfaithful</em> &mdash; a bad
+      rendering of what a paper says &mdash; and no theorem rescues a definition that mis-states its
+      source. This is the real failure mode. An adversarial audit of the newest module against its
+      paper found four unfaithful definitions, each individually plausible, including one whose
+      admissibility condition admitted the very case the paper excludes by name.</p>
+
+    <h3>Proved &mdash; and worth reading carefully</h3>
+    <p>Two kinds, and they are not equally strong. Some theorems are general, quantified over all
+      frames. Others are about hand-built toy witnesses, and establish that the definitions are
+      <em>coherent and inhabited</em> &mdash; that one <em>can</em> construct the intended object and
+      nothing contradicts. Both are worth having; only the first is a discovery.</p>
+
+    <div class="note teach">
+      <h3>Where the real teeth are</h3>
+      <p>Not in the theorems, but in the <strong>guards</strong> &mdash; statements recorded as ones
+        that must <em>fail</em> to compile. The build passes because Lean rejects them. If a future
+        edit ever made a bad statement legal, the build breaks and says so. Guards are the part that
+        keeps working while nobody is looking.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>The corpus today</h2>
+    <p>Twenty modules. The first group is the shared substrate; the rest formalize specific papers.</p>
+
+    <h3>Substrate</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Module</th><th>Contains</th><th>Role</th></tr></thead>
+        <tbody>
+          <tr><td><code>Ontology</code></td><td>typed KT roles, part-whole guard</td>
+            <td>The only Mathlib-free module. <code>SelfCode</code> cannot exist without proof it really is a sub-pattern.</td></tr>
+          <tr><td><code>Basic</code></td><td><code>AITFrame</code>, <code>IK</code>, <code>NMAI</code>, <code>condStar</code></td>
+            <td>The AIT interface. Complexity and pairing are opaque data; the laws are named hypotheses.</td></tr>
+          <tr><td><code>Probability</code></td><td>prefix machine, Bayes posterior, coding theorem</td>
+            <td>The bridge from code lengths to probabilities.</td></tr>
+          <tr><td><code>ToyModel</code></td><td>concrete frames</td>
+            <td>Satisfiability witnesses, so the hypotheses above are not vacuous.</td></tr>
+          <tr><td><code>BadStatements</code></td><td>the guards</td>
+            <td>Documentation by compilation: every line here must fail.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>The regulator line</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Module</th><th>Key results</th><th>Paper</th></tr></thead>
+        <tbody>
+          <tr><td><code>ART</code></td><td>the probabilistic regulator theorem, and its sharp form retaining regulator cost</td><td>ART</td></tr>
+          <tr><td><code>RegulatorSelection</code></td><td>regulator selection: minimizing description length equals maximizing shared information less regulator cost</td><td>WP0162 Prop. 1</td></tr>
+          <tr><td><code>Contrast</code></td><td>the contrast-fibre posterior</td><td>WP0162 Q3</td></tr>
+          <tr><td><code>ModelOrPay</code></td><td>a regulator simpler than the gap it opens cannot take the modelling disjunct &mdash; "be big, or be hot"</td><td>WP0203</td></tr>
+          <tr><td><code>PushPull</code></td><td>banded regulation: the sign conditions are arithmetic, not dynamics</td><td>WP0186</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Persistence, self-model, and the ontology</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Module</th><th>Key results</th><th>Paper</th></tr></thead>
+        <tbody>
+          <tr><td><code>Persistence</code></td><td>persistence as normalized temporal self-information; the conservation ledger; meta-persistence, where a collective persists though its parts need not align</td><td>WP0162</td></tr>
+          <tr><td><code>SelfModel</code></td><td>self-regulation requires a temporal self-model</td><td>WP0162 Prop. 3</td></tr>
+          <tr><td><code>SelfModelLimits</code></td><td>three obstructions: a quine floor, self-prediction diagonalization, a Chaitin ceiling</td><td>WP0192</td></tr>
+          <tr><td><code>PatternPersist</code></td><td>the observer-relative ontology; agenthood as a predicate on patterns; Prop. 3 inherited</td><td>WP0162, WP0207</td></tr>
+          <tr><td><code>CoarseGraining</code></td><td>regulatory sufficiency, the structure function, algorithmic emergence</td><td>WP0193, WP0007</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Symmetry and inheritance</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Module</th><th>Key results</th><th>Paper</th></tr></thead>
+        <tbody>
+          <tr><td><code>OrbitLabel</code>, <code>NoetherFlow</code></td><td>conserved orbit labels; an abstract Noether core over flow symmetries</td><td>WP0162 App. C</td></tr>
+          <tr><td><code>ShiftInvariance</code></td><td>cheap transforms and pair symmetry &mdash; formalizing a null-hypothesis error</td><td>WP0202</td></tr>
+          <tr><td><code>Decoder</code></td><td>the inverse compiler, axiom-free</td><td>WP0058 Prop. 1</td></tr>
+          <tr><td><code>WriteBack</code></td><td>write-back bandwidth is bounded by the conditional complexity of the heritable program; a trivial decoder transmits nothing however much was acquired</td><td>WP0058</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>How drift is prevented</h2>
+    <p>The discipline exists because it was once absent, and that had consequences. An adversarial
+      review found a published proposition proved from a hypothesis false in the regime it named.
+      Fixing it exposed two holes that had nothing to do with the mathematics: the fix sat
+      uncommitted while the paper publicly claimed the result was machine-checked and pointed
+      readers at the repository, which still served the false hypothesis; and nothing checked that
+      paper against the Lean at all.</p>
+    <p>So it is enforced rather than remembered. A sync script requires that proofs be
+      <code>sorry</code>-free, that the status paper list every module and non-helper theorem, and
+      that every declaration a paper cites by name still resolves. A pre-push hook runs it and
+      blocks the push on failure; CI runs it again on every push, so drift cannot land even if a
+      hook is bypassed.</p>
+    <div class="note">
+      <h3>The rule behind all of it</h3>
+      <p><em>The Lean and the paper ship together. A theorem that is not in the status paper does
+        not exist.</em> And "machine-checked" is a promise about the public repository, not about
+        somebody's laptop.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">05</span>What is deliberately absent</h2>
+    <ul>
+      <li><strong>Thermodynamics.</strong> The Landauer pricing of persistence needs a physical
+        model &mdash; a heat bath, a temperature, a notion of physical realization &mdash; that the
+        AIT frame does not supply. The relevant conjecture is recorded as <em>not stateable here</em>,
+        which is itself a finding, rather than quietly promoted.</li>
+      <li><strong>Substrate dynamics.</strong> Time is an index, not an evolution.</li>
+      <li><strong>Composition.</strong> There is no meta-agent operator yet, so the nested hierarchy
+        from particle to planetary system cannot be expressed &mdash; though meta-persistence is the
+        natural hook.</li>
+      <li><strong>Most of the graded coordinates.</strong> Regulator locus and objective
+        self-reference are represented; thermodynamic regime, plasticity, and counterfactual depth
+        are not.</li>
+    </ul>
+    <p>Listing these is part of the discipline. A formalization that does not say what it omits
+      invites the reader to assume it omits nothing.</p>
+  </section>
+
+  <footer>
+    KTLEAN &middot; github.com/giulioruffini/KTAIT &middot; status paper: WP0195
+  </footer>
+
+</div>
