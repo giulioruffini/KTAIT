@@ -284,6 +284,8 @@ Mathlib~v4.31.0. Modules:
 \lean{CoarseGraining.lean} & \lean{RegSuff}, structure function & WP0193 Thms~A/B; WP0007 emergence \\
 \lean{Contrast.lean} & contrast fibre posterior & WP0162 Q3 (Eq.~26) \\
 \lean{ShiftInvariance.lean} & \lean{CheapTransform}, \lean{PairSymmetric} & WP0202 App.~A (the null-hypothesis error) \\
+\lean{PushPull.lean} & \lean{Plant}, \lean{Admissible}, \lean{InwardOnBoundary} & WP0186 Thms~1--2, Cor.~1, gap Lemma~1 \\
+\lean{ModelOrPay.lean} & \lean{MAICapped}; multiplicity witnesses & WP0203 Props.~1--2 \\
 \lean{OrbitLabel.lean} & conserved orbit labels & WP0162 App.~C \\
 \lean{NoetherFlow.lean} & \lean{trajLabel}, flow symmetries & generalized Noether (abstract core) \\
 \lean{Decoder.lean} & \lean{Achievable}, \lean{Inverts} (inverse compiler) & WP0058 Prop.~1 (axiom-free) \\
@@ -347,6 +349,78 @@ information \emph{rate} is a different object, for which a shift \emph{is} a val
 is not an AIT quantity and is not formalized here. Keeping the two apart is the whole point.)
 Satisfiability witness: \lean{ShiftFrame}, in which the bound is tight,
 $\Ik(x:\sigma_s x)=K(x)$.
+\item \lean{PushPull.theorem1\_necessity} --- WP0186 Theorem~1. Against a free two-sided
+disturbance ($\underline{D}<0<\overline{D}$), holding a band $[x_-,x_+]$ requires pull authority at
+the upper edge at least $\overline{D}$ and push authority at the lower edge at least
+$-\underline{D}$. Its contrapositive, \lean{single\_signed\_cannot\_regulate}, is the paper's
+headline necessity claim: a single-signed controller cannot hold the band. Theorem~2
+(\lean{theorem2\_sufficiency}) shows the saturating edge rule attains those conditions, and
+\lean{regulation\_iff} assembles the two halves into the equivalence the paper states in pieces;
+\lean{inward\_iff} is the step that collapses the $\forall D$ condition to its two worst cases.
+Formalizing them showed these are \emph{not} dynamical theorems: their proofs evaluate the field
+only at $x_-$ and $x_+$, so their content is arithmetic on two boundary inequalities. The dynamics
+enter only through Nagumo's theorem, which is \emph{assumed} (see below) and is never used to
+derive the sign conditions.
+\item \lean{PushPull.nonstrict\_fails\_attraction} and its repair
+\lean{margin\_gives\_uniform\_decrease}
+--- a defect in WP0186's Theorem~2, and the fix. The first is a \emph{counterexample}: a plant
+meeting every hypothesis of the sufficiency theorem (band $[-1,1]$, disturbance range $[-1,1]$, unit
+authorities, saturating rule) whose closed-loop field vanishes at $x=5$ under the admissible
+realization $D\equiv\overline{D}$, so the constant trajectory $x(t)\equiv 5$ never enters the band.
+Invariance survives, ultimate boundedness fails: the escape clause ``strict inequality whenever
+$D<\overline{D}$'' is vacuous because $D\equiv\overline{D}$ is itself admissible. The repair supplies a strict
+off-band margin $\varepsilon>0$, giving $\dot x\le-\varepsilon$ and hence entry in
+time $\le(x_0-x_+)/\varepsilon$. The asymmetry is real: the necessary condition is tight and
+non-strict, while sufficiency for attraction needs one $\varepsilon$ of slack.
+\item \lean{PushPull.sign\_diverse\_card\_ge\_two}, \lean{PushPull.minimal\_is\_two} --- WP0186's
+cardinality claim, with the distinction Lean forced into the open: the theorems bound \emph{signs},
+not counts. A regulating flow set must contain at least one flow of each sign, whence
+$|S|\ge2$; and two flows, one of each sign, achieve it, so the bound is tight. Two pushes do not
+regulate however many there are.
+\item \lean{PushPull.restoring\_not\_single\_signed}, \lean{PushPull.restoring\_decomposition} ---
+WP0186 Corollary~1. For $\kappa>0$ the leaky-integrator field $-\kappa(x-x^\star)$ is strictly
+positive below $x^\star$ and strictly negative above it, so no single sign-constrained flow realizes
+it; and it decomposes explicitly into a non-negative push active below $x^\star$ and a non-negative
+pull active above. The single-term restoring law is a push--pull motif in collapsed notation, not a
+counterexample to one.
+\item \lean{PushPull.lemma1\_gap\_identity}, with its existential restatement
+\lean{lemma1\_gap\_is\_S\_existential} --- WP0186's complexity-gap lemma, against the opaque
+\lean{AITFrame} carrier. From (A2)$+$(A3) (\lean{OffSplit}: $K(x_{\rm OFF})=K(D_{\rm pred})+K(\eta)$
+within slack) and (A4) (\lean{OnResidual}: $K(x_{\rm ON})=K(\eta)$ within slack), the gap is
+$\Delta=S\pm2\,\mathrm{slack}$ with $S:=K(D_{\rm pred})$: the residual $K(\eta)$, possibly
+$\Theta(N)$, cancels. The regulator's dynamics play no role --- the assumptions, not the mechanism,
+carry the lemma. \lean{no\_structure\_no\_gap} is the degenerate case: if the predictable component
+is trivial ($S=0$) the gap vanishes up to slack, so a regulator that caps the amplitude of
+unpredictable disturbance claims no model content. \textbf{A retraction is recorded with these
+theorems.} An earlier draft chained the identity into ART to conclude that a sustained $\Delta$
+\emph{forces} model content $M(W{:}R)\gtrsim\Delta$. That inference is not licensed and the paper no
+longer makes it; the type-level tell is that $\Ik$ does not occur in the statement at all, and no
+arithmetic on \lean{OffSplit}/\lean{OnResidual} will introduce it. WP0186's Proposition~1 is now a
+selection claim, which belongs with \lean{RegulatorSelection.lean}.
+\item \lean{ModelOrPay.simple\_regulator\_cannot\_model} --- WP0203 Proposition~1, from the single
+AIT fact that module assumes, \lean{MAICapped} ($\Ik(x{:}y)\le K(y)+\mathrm{slack}$, a named
+hypothesis about a frame). If $K(R)+\mathrm{slack}<\Delta$ then $\Ik(W{:}R)<\Delta$ for
+\emph{every} world: a regulator simpler than the gap it opens cannot carry $\Delta$ bits of model.
+Contrapositively (\lean{model\_implies\_big}), a pair satisfying the modelling disjunct
+$\Delta\le\Ik(W{:}R)$ has $\Delta\le K(R)+\mathrm{slack}$ --- ``model it'' implies ``be big.'' The
+clamp then needs no special pleading: by
+\lean{clamp\_MAI\_bounded\_by\_own\_complexity}, $K(R)=O(1)$ alone caps its mutual algorithmic
+information with every world.
+\item \lean{ModelOrPay.perpair\_does\_not\_lift} and \lean{multiplicity\_cancels\_penalty}
+--- WP0203 Proposition~2, the multiplicity objection, as \emph{witnesses} rather than assertions.
+For every $k$ there is a family of $2^k$ terms each of weight at most $2^{-k}$ whose total is
+exactly $1$; and $2^{k}\cdot2^{-k}=1$. A per-pair bound therefore places no useful bound on a sum
+over a fiber of matching size --- the ART per-pair penalty is real and is exactly consumed by the
+multiplicity. These are counterexamples to the lifting step; they establish no forward tail bound
+and are not evidence for one.
+\item \lean{ModelOrPay.invertible\_bound\_insufficient} --- a second \emph{insufficiency} witness. The
+invertible-coupling inequality $\Ik(W{:}R)\ge K(R)-K(x_{\rm ON})-O(\log)$ bounds in
+$K(R)-K(x_{\rm ON})$, not in $\Delta=K(x_{\rm OFF})-K(x_{\rm ON})$: the values $K(R)=1$,
+$K(x_{\rm ON})=0$, $K(x_{\rm OFF})=100$, $\Ik=1$ satisfy it while leaving $\Ik$ far below the gap.
+The two bounds coincide exactly when $K(x_{\rm OFF})\le K(R)$
+(\lean{invertible\_reaches\_gap\_iff}), which is the hypothesis nothing supplies and a clamp
+violates. What is machine-checked is that the invertible-coupling bound is \emph{insufficient};
+nothing here establishes the positive claim it was meant to support.
 \item \lean{OrbitLabel.genEnergy\_conserved} --- WP0162 App.~C: generalized energy as a conserved
 orbit label (axiom-free).
 \item \lean{boundary\_sufficient} --- WP0162 App.~E: the thin boundary as a compressed sufficient
@@ -412,6 +486,24 @@ $\tfrac{1}{c_2}2^{K(x)-|p|}\le P(p\mid x)\le \tfrac{1}{c_1}2^{K(x)-|p|}$.
 $K(S_{t+\tau}\mid S_t,E,C)\le K(S_{t+\tau}\mid C)-\Delta_{\rm self}+2\,\mathrm{slack}$.
 \item \lean{pers\_eq\_nmai}, \lean{persistent\_pos} --- persistence as temporal self-information.
 \end{itemize}
+
+\noindent\textbf{Assumed bridges, and what is deliberately not formalized.}
+\lean{PushPull.lean} assumes one classical control-theory fact --- \emph{Nagumo's theorem}, that for
+a locally Lipschitz field on a closed interval an inward-pointing boundary condition is equivalent
+to forward invariance --- as the predicate \lean{NagumoBridge}. This is the dynamical counterpart of
+not re-proving the coding theorem. It is an assumed bridge, not a KT result, and nothing in the
+module derives the sign conditions from it. \lean{ModelOrPay.lean} assumes \lean{MAICapped} and
+nothing else. The headline conjecture it was written to check --- that a faithful regulator
+sustaining $\Delta_N$ either has
+$\Ik(W{:}R)=\Omega(\Delta_N)$ or dissipates $\Omega(\Delta_N)\,k_BT\ln 2$ --- is \emph{not
+stateable} in \lean{AITFrame}: $Q_{\rm diss}$ is a physical quantity and the frame has no bath, no
+temperature, and no notion of a physical realization of $W$ or $R$. The same holds for the escape
+dichotomy, which quantifies over ``any physical realization,'' and for the saturation claim, which
+quantifies over sinks of finite capacity. We record the absence as a specification of the work
+remaining --- it needs stochastic thermodynamics over a defined coupling --- and not as a result.
+The known theorem in that shape is Shannon-form
+($\langle W_{\rm ext}\rangle\le-\Delta F+k_BT\,I(W;R)$); whether it admits a single-sequence
+algorithmic strengthening with $\Ik$ in place of $I$ is open.
 
 \noindent\textbf{Satisfiability witnesses:} \lean{toy\_symmetry} (symmetry of information holds for
 \lean{Toy}), \lean{toyMachine\_coding} (coding theorem holds for \lean{ToyMachine}),
@@ -507,6 +599,54 @@ Prop.\ 2 (Lamarckian) & first-order: $\lambda_B \le K(C(a)\!\mid\! H)$, the deco
 Corollary 1 & write-back cannot bootstrap novelty & KT &
   \stproved\ (\lean{trivial\_decoder\_transmits\_nothing}) \\
 Hypothesis 1 & persistence matching, $\lambda_P^\ast \sim \tau_E$ & KT & \stna\ (conjecture) \\
+\midrule
+\multicolumn{4}{@{}l}{\textit{Push--Pull Motifs --- WP0186}}\\
+\midrule
+Theorem 1 & opposed flows necessary: $H(x_+)\ge\overline{D}$ and $G(x_-)\ge-\underline{D}$ & KT &
+  \stproved\ (\lean{theorem1\_necessity}) \\
+--- contrapositive & a single-signed controller cannot hold the band & KT &
+  \stproved\ (\lean{single\_signed\_...}) \\
+--- boundary step & the $\forall D$ condition collapses to two worst cases & KT &
+  \stproved\ (\lean{inward\_iff}) \\
+Nagumo's theorem & inward on $\partial B$ $\Leftrightarrow$ forward invariance & STD &
+  \staxiom\ (\lean{NagumoBridge}) \\
+Theorem 2 & saturating edge rule renders the band invariant & KT &
+  \stproved\ (\lean{theorem2\_sufficiency}) \\
+Thms 1$+$2 & sharp form: invariance $\Leftrightarrow$ both edge conditions & KT &
+  \stproved\ (\lean{regulation\_iff}) \\
+Remark 2 & non-strict off-band bound does \emph{not} give attraction (counterexample) & KT &
+  \stproved\ (\lean{nonstrict\_fails\_...}) \\
+--- repair & strict margin $\varepsilon$: $\dot x\le-\varepsilon$, finite-time entry & KT &
+  \stproved\ (\lean{margin\_gives\_...}) \\
+Minimality & sign-diverse $\Rightarrow|S|\ge2$; two flows attain it & KT &
+  \stproved\ (\lean{sign\_diverse\_...}, \lean{minimal\_is\_two}) \\
+Corollary 1 & $-\kappa(x-x^\star)$ is not single-signed; splits into push $+$ pull & KT &
+  \stproved\ (\lean{restoring\_not\_...}, \lean{restoring\_decomp...}) \\
+App.\ Lemma 1 & gap identity $\Delta=S\pm O(\log N)$ from (A2)--(A4) & KT &
+  \stproved\ (\lean{lemma1\_gap\_...}) \\
+--- (A2)--(A4) & OFF splits as $K(D_{\rm pred})+K(\eta)$; ON tracks $\eta$ & STD &
+  \staxiom\ (\lean{OffSplit}, \lean{OnResidual}) \\
+Remark 7 & $S=0\Rightarrow$ no gap (pure noise buys no model content) & KT &
+  \stproved\ (\lean{no\_structure\_no\_gap}) \\
+Prop.\ 1 (withdrawn) & sustained $\Delta$ \emph{forces} $M(W{:}R)\gtrsim\Delta$ & KT &
+  \stna\ (retracted; not entailed) \\
+\midrule
+\multicolumn{4}{@{}l}{\textit{The ART Tail Does Not Follow --- WP0203}}\\
+\midrule
+Proposition 1 & $\Ik(W{:}R)\le K(R)+O(\log)$: a cheap regulator cannot model & KT &
+  \stproved\ (\lean{simple\_regulator\_...}, \lean{model\_implies\_big}) \\
+--- clamp & $K(R)=O(1)\Rightarrow\Ik(W{:}R)=O(1)$ for \emph{every} world & KT &
+  \stproved\ (\lean{clamp\_MAI\_bounded\_...}) \\
+--- MAI cap & $\Ik(x{:}y)\le K(y)+O(\log)$ & STD &
+  \staxiom\ (\lean{MAICapped}) \\
+Proposition 2 & per-pair $2^{-k}$ does not lift to a fiber of size $2^{k}$ (witness) & KT &
+  \stproved\ (\lean{perpair\_does\_not\_lift}, \lean{multiplicity\_...}) \\
+Invertible coupling & $\Ik\ge K(R)-K(x_{\rm ON})$ holds with $\Ik\ll\Delta$ (witness of
+  insufficiency) & KT & \stproved\ (\lean{invertible\_bound\_...}) \\
+--- when it reaches $\Delta$ & exactly when $K(x_{\rm OFF})\le K(R)$ & KT &
+  \stproved\ (\lean{invertible\_reaches\_...}) \\
+``Model it or pay for it'' & $\Ik=\Omega(\Delta_N)$ or $Q_{\rm diss}=\Omega(\Delta_N)k_BT\ln2$ & KT &
+  \stna\ (conjecture; not stateable in \lean{AITFrame}) \\
 \midrule
 \multicolumn{4}{@{}l}{\textit{World models / Lie groups --- Entropy 2025 (separate geometry track)}}\\
 \midrule
