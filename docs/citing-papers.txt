@@ -10,6 +10,8 @@
 # When a new paper starts citing \lean{...} names, add it here.
 
 WP0058 | ../../BCOM WPs and Blogs/working_drafts/WP0058-Inheritance_Architecture/main.tex
+WP0186 | ../../BCOM WPs and Blogs/working_drafts/WP0186-Push_Pull_Motifs/WP0186-Push_Pull_Motifs.tex
+WP0203 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/WP0203-The_ART_Tail_Does_Not_Follow.tex
 
 # WP0195 (docs/WP0195.tex) is the status paper itself and is covered by the
 # module/theorem coverage check above, not by this registry.
