@@ -16,13 +16,14 @@ authors:
 version: "0.1.0"
 date-released: "2026-06-27"
 license: Apache-2.0
-doi: "10.5281/zenodo.20969562"
 url: "https://github.com/giulioruffini/KTAIT"
 repository-code: "https://github.com/giulioruffini/KTAIT"
-identifiers:
-  - type: doi
-    value: "10.5281/zenodo.20969562"
-    description: "Zenodo archive of the KTAIT formalization"
+# No software DOI yet. The Zenodo records under 10.5281/zenodo.21008868 (concept)
+# are deposits of the companion PAPER, WP0195 -- resource type Publication,
+# licensed CC-BY-4.0 -- not of this source tree, which is Apache-2.0. Citing a
+# paper DOI here would have misdescribed both the artifact and its licence. Mint a
+# software DOI via the GitHub-Zenodo release integration if one is wanted; it will
+# inherit Apache-2.0 from this repository.
 keywords:
   - Kolmogorov Theory
   - algorithmic information theory
@@ -40,3 +41,4 @@ references:
       name: Barcelona Computational Foundation
     number: "WP0195"
     year: 2026
+    doi: "10.5281/zenodo.21008868"
