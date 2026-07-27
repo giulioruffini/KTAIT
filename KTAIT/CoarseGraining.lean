@@ -36,7 +36,15 @@ variable (CompT : (S → S → ℕ → S) → Prop) (CompS : (S → ℕ → S) �
 def ReductionClosure : Prop := ∀ T, CompT T → CompS (specialize T)
 
 /-- **Vereshchagin–Vitányi** (the single axiom): the ordinary structure function / minimal
-    sufficient statistic `sf₀` is not computable. -/
+    sufficient statistic `sf₀` is not computable.
+
+    Read `sf₀ x α` as a witnessing minimal-log-cardinality model for `x` under the complexity
+    budget `α`. What VV04 give — and all this axiom asserts — is non-computability for each
+    fixed `α`, together with non-locatability of the minimal sufficient statistic. We do
+    *not* assume the stronger folklore form "computing it would decide the halting problem":
+    that reduction needs `α` to vary (via `K(x) = min {α | h_x α = 0} + O(1)`) and rests on
+    `K ≡_T ∅'`, which is textbook AIT rather than a VV04 theorem. Nothing downstream needs it.
+    Cf. `ERRATA_WP0007.md` (2026-07-27), items E1 and E5. -/
 def VV (sf0 : S → ℕ → S) : Prop := ¬ CompS sf0
 
 /-- **Theorem B (targeted sufficient projection is uncomputable).** Any *correct* targeted
