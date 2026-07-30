@@ -30,6 +30,7 @@ WP0203 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Fo
 WP0162 | ../../BCOM WPs and Blogs/working_drafts/WP0162-Pattern_Persist_Nature/appendix_formalization.tex
 WP0193 | ../../BCOM WPs and Blogs/working_drafts/WP0193-Regulatory_Coarse_Graining/WP0193-Regulatory_Coarse_Graining.tex
 WP0202 | ../../BCOM WPs and Blogs/working_drafts/WP0202-Exo_Daisy_Algorithmic/WP0202.tex
+WP0007 | ../../BCOM WPs and Blogs/working_drafts/WP0007 [PAPER]  From “More Is Different” to Algorithmic Emergence: Why Compression Is the Hard Part/main.tex
 
 # WP0195 (docs/WP0195.tex) is the status paper itself and is covered by the
 # module/theorem coverage check above, not by this registry.
