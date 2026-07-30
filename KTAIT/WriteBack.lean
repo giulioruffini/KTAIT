@@ -10,13 +10,21 @@ import KTAIT.Basic
 # KTAIT.WriteBack — WP0058: bandwidth of the write-back channel
 
 Companion to `KTAIT.Decoder`, which settles the *computability* half of WP0058
-Proposition 1 (no total, domain-recognizing inverse compiler). Here we do the
-*algorithmic-information* half, and Proposition 2.
+Proposition 1 (no total, domain-recognizing inverse of the developmental map). Here we do
+the *algorithmic-information* half, and Proposition 2.
+
+Naming. `C` is a **write-back encoder**, or credit-assignment operator: it maps acquired
+structure to a program-level modification. Calling it an *inverse compiler* is an analogy
+only, used nowhere in the formal statements — backpropagation and distillation produce
+heritable modifications without inverting the developmental map.
 
 Setting: a lineage transmits a heritable program `H`; the agent acquires structure `a`
-during life; the descendant program is `H'`. The **write-back bandwidth** is the acquired
-information that reaches the descendant beyond what the parent already carried,
-`λ_B := I(a : H' | H)` (WP0058 Definition 3), a rate in bits per generation.
+during life; the descendant program is `H'`. The **write-back bandwidth** is
+`λ_B := I(w : H' | H, σ)` (WP0058 Definition 3, revised), where `w = C(a)` is the
+write-back program and `σ` the selection signal (see `writeBack`). It is an information in
+bits carried across one generational transition, not a rate. The *total* acquired
+information reaching the descendant is the separate and larger quantity `I(a : H' | H)`
+(see `bandwidth`), which also counts what crosses through selection.
 
 Scope. WP0058 indexes the write-back parameters by architectural layer *and* channel
 property, `λ_{ℓc}` with `ℓ ∈ {A, M, Π, O}` and `c ∈ {B, F, P}`. That object is a *profile* —
@@ -42,15 +50,27 @@ produces `H'` therefore fixes the cap:
   search — the cap is the decoder image, and `trivial_decoder_transmits_nothing` shows it
   binds: a decoder with nothing to say transmits nothing, however much was acquired.
 
-Separately, `decoder_charged` is the second half of Proposition 1: a decoder recoverable
-from the heritable program costs no more than that program, `K(C) ≤ K(H) + O(1)`. Together
-with `Decoder.no_universal_decoder` this is the paper's Corollary 1 — the write-back
-channel is bounded by prior structure, so it cannot bootstrap novelty.
+Separately, `decoder_charged` is the second half of Proposition 1: an encoder recoverable
+from the heritable program costs no more than that program, `K(C) ≤ K(H) + O(log)`. That
+form silently charges the whole apparatus to `H`, so `decoder_charged_rel` gives the
+background-relative version: with part of the machinery supplied by a background `B` — the
+cell, the parent, the niche, an external training pipeline, an engineered optimizer — what
+the lineage must transmit is only `K(C | B) ≤ K(H | B) + O(log)`.
 
-Per the project methodology, the two AIT facts used (`JointGeMarginal`, `SubadditivityCond`)
-are named `Prop`s about a frame, never global axioms. `ToyWB` witnesses that they are
-satisfiable *and* that the bounds are attained (`toyWB_selection_bound_tight`), so the
-corollaries are not vacuous.
+Together with `Decoder.no_universal_decoder`, this is the paper's Corollary 1: the
+write-back channel is capped by the write-back program the encoder can form. It does *not*
+show that write-back cannot produce novelty, and it does *not* show that the encoder's
+representational axes were found by prior selection — that is a per-lineage evolutionary
+claim, and it is false for designed encoders such as language and backpropagation.
+
+`retention` and `retention_le_program` add the temporal coordinate: what survives `n`
+generations later never exceeds what was sent.
+
+Per the project methodology, the AIT facts used (`JointGeMarginal`, `SubadditivityCond`,
+`SubadditivityCondRel`, `CondLeUncond`) are named `Prop`s about a frame, never global
+axioms. `ToyWB` witnesses that they are satisfiable *and* that the bounds are attained
+(`toyWB_selection_bound_tight`, `toyWB_decoder_charged_rel_tight`), so the corollaries are
+not vacuous.
 -/
 
 namespace KTAIT
@@ -74,10 +94,10 @@ def bandwidth (a H' H : F.Obj) : Int := condIK F a H' H
 /-- **Write-back bandwidth** `λ_B := I(w : H' | H, σ)` (WP0058 Definition 3, revised).
 
 `w = C(a)` is the *write-back program*: a program-level modification compiled from acquired
-structure — the output of an inverse compiler is a program, not a signal — and the only route by
-which acquired structure may enter the descendant's heritable program. Defining `λ_B` on `w` rather
-than on `a` attaches the quantity to the channel instead of inferring it from all residual
-dependence of `a`, and conditioning on `σ` blocks the selection path `a → σ → H'`.
+structure by the write-back encoder `C` — its output is a program, not a signal — and the only
+route by which acquired structure may enter the descendant's heritable program. Defining `λ_B`
+on `w` rather than on `a` attaches the quantity to the channel instead of inferring it from all
+residual dependence of `a`, and conditioning on `σ` blocks the selection path `a → σ → H'`.
 
 Two honesty notes. (1) Conditional mutual information still does not *identify* a causal path;
 it isolates the write-back channel only under the stipulated factorization
@@ -185,22 +205,73 @@ theorem trivial_decoder_transmits_nothing (hJ : JointGeMarginal F) {w H' H σ : 
 
 /-! ### The decoder is charged to the heritable program -/
 
-/-- The decoder is **recoverable from** the heritable program: given `H`, describing the
-decoder costs only the `O(log)` slack. This is what it means for the write-back machinery to
+/-- The write-back encoder is **recoverable from** the heritable program: given `H`, describing
+the encoder costs only the `O(log)` slack. This is what it means for the write-back machinery to
 be specified by structure the lineage transmits. -/
 def RecoverableFrom (F : AITFrame) (Cprog H : F.Obj) : Prop := F.cond Cprog H ≤ F.slack
 
-/-- **WP0058 Proposition 1, AIT half.** A decoder recoverable from the heritable program is
-charged to it: `K(C) ≤ K(H) + O(log)`. Combined with `Decoder.no_universal_decoder` — which
-forces the decoder to be a partial map with a domain fixed in advance — this is the paper's
-Corollary 1: Lamarckian write-back is bounded by prior structure, hence parasitic on the
-Darwinian search that produced it, and cannot bootstrap novelty. -/
+/-- **WP0058 Proposition 1, AIT half.** A write-back encoder recoverable from the heritable
+program is charged to it: `K(C) ≤ K(H) + O(log)`. That is the whole claim. It says nothing
+about whether the channel can produce novelty, and the recoverability premise itself charges
+every part of the apparatus to `H` — see `decoder_charged_rel` for the version that lets a
+background `B` supply part of it. -/
 theorem decoder_charged (hS : SubadditivityCond F) {Cprog H : F.Obj}
     (h : RecoverableFrom F Cprog H) :
     F.K Cprog ≤ F.K H + 2 * F.slack := by
   have h₁ := hS Cprog H
   unfold RecoverableFrom at h
   omega
+
+/-! ### Charging the encoder net of a background
+
+`decoder_charged` bounds `K(C)` by `K(H)`, and in doing so charges the *whole* apparatus to
+the heritable program. Real write-back machinery is not all inherited: the cell, the parent's
+body, the niche, a teacher, an external training pipeline, an engineered optimizer all supply
+part of it. Conditioning on a background `B` measures only the part the lineage itself must
+carry. -/
+
+/-- **Conditional subadditivity relative to a background.** Describe `y` given the background
+`B`, then describe `x` given `y` and `B` together:
+`K(x | B) ≤ K(x | ⟨y, B⟩) + K(y | B) + O(log)`. -/
+def SubadditivityCondRel (F : AITFrame) : Prop :=
+  ∀ x y B : F.Obj, F.cond x B ≤ F.cond x (F.pair y B) + F.cond y B + F.slack
+
+/-- The write-back encoder is **recoverable from the heritable program together with the
+background**: given `H` and `B` jointly, describing the encoder costs only the `O(log)` slack.
+Weaker than `RecoverableFrom`, which demands `H` alone suffice. -/
+def RecoverableFromRel (F : AITFrame) (Cprog H B : F.Obj) : Prop :=
+  F.cond Cprog (F.pair H B) ≤ F.slack
+
+/-- **Background-relative encoder charging.** If the encoder is reconstructible from the
+heritable program together with the background, then the description-length burden the
+*lineage* carries — everything measured net of `B` — is bounded by that of the heritable
+program: `K(C | B) ≤ K(H | B) + O(log)`.
+
+This is the honest form of `decoder_charged`. It charges to the lineage only what the
+background does not already supply, and it says nothing about how the background came to
+supply it. -/
+theorem decoder_charged_rel (hS : SubadditivityCondRel F) {Cprog H B : F.Obj}
+    (h : RecoverableFromRel F Cprog H B) :
+    (F.cond Cprog B : Int) ≤ (F.cond H B : Int) + 2 * F.slack := by
+  have h₁ := hS Cprog H B
+  unfold RecoverableFromRel at h
+  omega
+
+/-! ### Retention: what survives, later -/
+
+/-- **The retention curve** `M(n) = I(w : H_{g+n} | H_g)`: how much of the write-back program
+`w` is still legible in the lineage's program `n` generations downstream, given the program at
+the time of writing. Here `Hn` stands for `H_{g+n}` and `H` for `H_g`; the argument order
+matches `writeBack`. -/
+def retention (w Hn H : F.Obj) : Int := condIK F Hn w H
+
+/-- **What survives never exceeds what was sent.** The retention curve is bounded, at every
+lag, by the description length of the write-back program given the program of the generation
+that wrote it: `M(n) ≤ K(w | H_g) + O(log)`. A retention measurement above this bound is
+measuring something other than the write-back channel. -/
+theorem retention_le_program (hJ : JointGeMarginal F) (w Hn H : F.Obj) :
+    retention F w Hn H ≤ (F.cond w H : Int) + F.slack :=
+  condIK_le_condRight F hJ Hn w H
 
 /-! ### Satisfiability witness
 
@@ -224,6 +295,33 @@ theorem toyWB_subadditivityCond : SubadditivityCond ToyWB := by
 
 theorem toyWB_condLeUncond : CondLeUncond ToyWB := by
   intro x y; simp only [ToyWB, id]; omega
+
+theorem toyWB_subadditivityCondRel : SubadditivityCondRel ToyWB := by
+  intro x y B; simp only [ToyWB]; omega
+
+/-- The background-relative charging bound is **attained**, and not at zero. Encoder `C = 9`,
+heritable program `H = 9`, background `B = 2`: the encoder is recoverable from the pair, and
+`K(C | B) = K(H | B) = 7`, so `decoder_charged_rel` is met with equality with both sides
+positive. -/
+theorem toyWB_decoder_charged_rel_tight :
+    RecoverableFromRel ToyWB (9 : Nat) (9 : Nat) (2 : Nat) ∧
+      (ToyWB.cond (9 : Nat) (2 : Nat) : Int)
+        = (ToyWB.cond (9 : Nat) (2 : Nat) : Int) + 2 * (ToyWB.slack : Int) ∧
+      (ToyWB.cond (9 : Nat) (2 : Nat) : Int) = 7 := by
+  refine ⟨?_, ?_, ?_⟩
+  · simp only [RecoverableFromRel, ToyWB]; omega
+  · simp only [ToyWB]; norm_num
+  · simp only [ToyWB]; norm_num
+
+/-- The background-relative hypothesis is **strictly weaker** than `RecoverableFrom`, so
+`decoder_charged_rel` is not a restatement of `decoder_charged`. Encoder `C = 7` with heritable
+program `H = 5` and background `B = 7`: recoverable from the pair, not from `H` alone. -/
+theorem toyWB_background_strictly_weaker :
+    RecoverableFromRel ToyWB (7 : Nat) (5 : Nat) (7 : Nat) ∧
+      ¬ RecoverableFrom ToyWB (7 : Nat) (5 : Nat) := by
+  refine ⟨?_, ?_⟩
+  · simp only [RecoverableFromRel, ToyWB]; omega
+  · simp only [RecoverableFrom, ToyWB]; omega
 
 /-- The bandwidth is genuinely positive here: acquiring `a = 10` from a parent `H = 1`
 transmits `3` bits into `H' = 4`. The interface is not degenerate. -/

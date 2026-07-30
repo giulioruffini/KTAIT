@@ -372,3 +372,25 @@ A 2–3 line note after each milestone: what we learned / what tripped us up.
 - Gotchas: `simp [IsAgent, selfGap, DeltaSelf, reg]` is needed — `decide` cannot see through the
   definitions to the numerals; and a `cell n` constructor needs `n ≤ 1000` as an argument, since
   `isSub` is not provable for a free `n`.
+
+## M-Retention — background-relative charging + the optimal retention kernel (2026-07-30)
+
+- WP0058's referee round retracted two claims the Lean docstrings still carried: that
+  `λ_B := I(a:H'|H)` (it is `I(w:H'|H,σ)`; `I(a:H'|H)` is the *total* acquired information) and
+  that the charging bound shows write-back "cannot bootstrap novelty". Both were prose-only, and
+  the file already contradicted itself — the definitions were right, the header was stale. Lesson:
+  a retraction has to be chased into every docstring, not only into the paper.
+- `decoder_charged` silently charges the *whole* apparatus to `H`. The honest version conditions on
+  a background `B` (cell, parent, niche, training pipeline): `SubadditivityCondRel` +
+  `RecoverableFromRel` give `K(C|B) ≤ K(H|B) + 2·slack`. `ToyWB` satisfies it (`omega` handles
+  truncated subtraction under `max`), and `toyWB_background_strictly_weaker` shows the new
+  hypothesis is *strictly* weaker — without that witness the new theorem could be a restatement.
+- `Retention.lean` derives what the paper had conjectured: the payoff is linear in a
+  box-constrained kernel, so the optimum is bang-bang (`Finset.sum_le_sum` termwise, `nlinarith`
+  per term); antitone net value makes the retained set an initial segment; and with `v = R − κ`
+  the optimal persistence is the first crossing of `R` through the cost `κ`. The empirical
+  matching claim `λ_P ~ τ_ρ` stays a conjecture — what is proved is the optimization.
+- Gotchas: `qStar` needs `open Classical in noncomputable def` (`Real.decidableLT` is
+  noncomputable), and every lemma about it wants a `classical` first. The exponential crossing
+  goes through `Real.log_lt_iff_lt_exp` after `div_lt_iff₀`; the last commutation
+  (`(a−b)·τ` vs `τ·(a−b)`) is `nlinarith`, not `rw`.

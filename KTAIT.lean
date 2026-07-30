@@ -9,6 +9,7 @@ import KTAIT.SelfModelLimits
 import KTAIT.CoarseGraining
 import KTAIT.Decoder
 import KTAIT.WriteBack
+import KTAIT.Retention
 import KTAIT.Contrast
 import KTAIT.ShiftInvariance
 import KTAIT.OrbitLabel

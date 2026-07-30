@@ -307,6 +307,7 @@ Mathlib~v4.31.0. Modules:
 \lean{NoetherFlow.lean} & \lean{trajLabel}, flow symmetries & generalized Noether (abstract core) \\
 \lean{Decoder.lean} & \lean{Achievable}, \lean{Inverts} (inverse compiler) & WP0058 Prop.~1 (axiom-free) \\
 \lean{WriteBack.lean} & \lean{bandwidth}, \lean{Darwinian}, \lean{Lamarckian} & WP0058 Prop.~1 (AIT half), Prop.~2 \\
+\lean{Retention.lean} & \lean{J}, \lean{qStar}, \lean{FirstCrossing} & WP0058: optimal retention kernel \\
 \lean{ToyModel.lean} & \lean{Toy}, \lean{ToyMachine}, \lean{ToyGap} & satisfiability witnesses \\
 \lean{PatternPersist.lean} & WP0162 ontology on \lean{AITFrame} & four cells are agents; Prop.~3 inherited \\
 \lean{BadStatements.lean} & guards bite & part-whole; $y$ vs $y^\ast$; WP0162 ontology \\
@@ -469,7 +470,8 @@ Notable as the one KT corollary here that assumes \emph{no} AIT fact at all --- 
 undecidability hypothesis enters as a named \lean{Prop}
 (\lean{ExistsUndecidableAchievableSet}). Satisfiability witness: \lean{inverts\_id}.
 \item \lean{WriteBack.bandwidth\_le\_cond}, the data-processing lemma, and the regime corollaries
---- WP0058 Proposition~2. With $\lambda_B := \Ik(a : H'\mid H)$ the write-back bandwidth, the master
+--- WP0058 Proposition~2. Writing $\lambda_B$ for the write-back bandwidth (defined below on the
+write-back program, \emph{not} as $\Ik(a:H'\mid H)$), the master
 bound $\lambda_B \le K(H'\mid H)+O(\log)$ holds but is weak in the Darwinian regime, where undirected
 mutation makes $K(H'\mid H)$ large without transmitting anything acquired. The sharp statement is data
 processing (\lean{condIK\_le\_condRight}): since $a$ reaches $H'$ only through a channel variable $z$,
@@ -483,10 +485,52 @@ zeroth-order): that bound is the substantive half. In the Lamarckian regime
 $\lambda_B \le K(w\mid H,\sigma)+O(\log)$ (\lean{lamarckian\_bandwidth\_le\_decoder\_image}, first-order) --- immediate, since $\lambda_B$ is \emph{defined} on $w$.
 \lean{toyWB\_writeback\_zero\_but\_total\_positive} machine-checks that the two quantities genuinely differ:
 a witness with $\lambda_B=0$ and total $=3$. Also \lean{decoder\_charged} ($K(C)\le K(H)+O(\log)$, Prop.~1's AIT half) and
-\lean{trivial\_decoder\_transmits\_nothing} (Corollary~1: a trivial decoder transmits nothing
-however much was acquired). Witness \lean{ToyWB} satisfies both named AIT hypotheses \emph{and
+\lean{trivial\_decoder\_transmits\_nothing} (Corollary~1: a trivial write-back program transmits
+nothing however much was acquired). Witness \lean{ToyWB} satisfies both named AIT hypotheses \emph{and
 attains} the Darwinian bound (\lean{toyWB\_selection\_bound\_tight}) --- the corollaries are tight,
 not merely non-vacuous.
+\item \lean{WriteBack.decoder\_charged\_rel} --- the background-relative form of Prop.~1's AIT half.
+\lean{decoder\_charged} charges the \emph{whole} write-back apparatus to the heritable program, but
+part of it is supplied by a background $B$: the cell, the parent, the niche, a teacher, an external
+training pipeline. Under conditional subadditivity relative to a background
+(\lean{SubadditivityCondRel}, a named \lean{Prop}) an encoder reconstructible from $H$ and $B$
+jointly (\lean{RecoverableFromRel}) costs the lineage only $K(C\mid B)\le K(H\mid B)+O(\log)$. The
+hypothesis is strictly weaker than \lean{RecoverableFrom} (\lean{toyWB\_background\_strictly\_weaker})
+and the bound is attained away from zero (\lean{toyWB\_decoder\_charged\_rel\_tight}); \lean{ToyWB}
+satisfies it (\lean{toyWB\_subadditivityCondRel}). What is \emph{not} shown, here or anywhere in the
+module: that write-back cannot produce novelty, or that the encoder's representational axes were
+found by prior selection.
+\item \lean{WriteBack.retention\_le\_program} --- the retention curve
+$M(n)=\Ik(w:H_{g+n}\mid H_g)$ (\lean{retention}) is bounded at every lag by $K(w\mid H_g)+O(\log)$:
+what survives never exceeds what was sent. A corollary of \lean{condIK\_le\_condRight}.
+\item \lean{Retention.bangbang\_optimal} --- the optimal inherited-memory kernel is a
+\emph{threshold rule}. With payoff $J=\sum_{n<N} q(n)\,v(n)$ linear in a box-constrained kernel
+$q:\mathbb N\to[0,1]$ (\lean{J}, \lean{Admissible}) and $v(n)$ the net value of still acting on
+$n$-generation-old information, every admissible kernel is dominated termwise by
+$q^\ast(n)=\mathbb 1[v(n)>0]$ (\lean{qStar}, with \lean{qStar\_of\_pos},
+\lean{qStar\_of\_nonpos}, \lean{qStar\_admissible}). If $v$ is antitone the retained set is an
+initial segment (\lean{optimal\_kernel\_antitone\_is\_initial\_segment}), so the optimum is
+``retain for $L$ generations, then drop'', and $L$ is the \emph{first crossing}:
+$q^\ast(n)=1 \iff n<L$ (\lean{qStar\_eq\_one\_iff\_lt\_first\_crossing},
+\lean{qStar\_eq\_zero\_of\_first\_crossing\_le}) for $L$ satisfying \lean{FirstCrossing}, which
+exists whenever $v$ is somewhere nonpositive (\lean{exists\_firstCrossing}).
+\item \lean{Retention.persistence\_is\_first\_crossing} --- the punchline. Instantiating
+$v(n)=R(n)-\kappa$ (\lean{netValue}, antitone by \lean{netValue\_antitone}) with $R$ the predictive
+information the environmental feature still carries at lag $n$ and $\kappa>0$ the per-generation cost
+of carrying it plus the mismatch loss, the optimum retains exactly the lags where $\kappa<R(n)$.
+Optimal persistence is therefore the first lag at which $R$ crosses the cost threshold --- WP0058's
+$\tau_{\rho,\theta}$ with $\theta=\kappa$. The matching relation is the \emph{solution} of a linear
+retention problem, not a modelling choice, and the threshold is set by the cost.
+\item \lean{Retention.exponential\_crossing} --- for $R(n)=R_0e^{-n/\tau}$ with $R_0,\tau>0$ and
+$\kappa>0$, $\kappa<R(n) \iff n < \tau\log(R_0/\kappa)$, so the optimal kernel is the indicator of
+that interval (\lean{qStar\_exponential}) and the crossing lag is \emph{proportional} to the
+environmental correlation time at fixed cost ratio
+(\lean{exponential\_persistence\_proportional\_to\_tau}). Non-vacuity: \lean{vTest\_antitone},
+\lean{vTest\_firstCrossing} and \lean{toyRetention\_qStar\_beats\_full} exhibit an antitone net value
+whose optimum is a nontrivial initial segment and strictly beats full retention ($3>2$).
+What is \emph{not} proved: that any real channel sits at this optimum, that the payoff is linear in
+$q$, that costs are constant in $n$, or that decay is exponential. The empirical matching claim
+remains Hypothesis~1.
 \item \lean{persistence\_conservation} / \lean{conservation\_tradeoff} --- WP0162 Proposition~2:
 the ledger $K(O_W)=\Ik(O_W{:}R)+K(O_W\mid R^\ast)$ (from symmetry of information), and at fixed
 $K(O_W)$, maximizing $\Ik$ $=$ minimizing the conditional residual.
@@ -607,8 +651,12 @@ Proposition 1 & no universal decoder (no total domain-recognizing inverse compil
   \stproved\ (\lean{achievable\_computable\_of\_inverse}) \\
 --- non-vacuity & some computable $D$ has an undecidable achievable set & STD &
   \staxiom\ (\lean{ExistsUndecidableAchievableSet}) \\
-Prop.\ 1 (2nd half) & decoder charged to the program, $K(C_\mathcal{D})\le K(H)+O(\log)$ & KT &
+Prop.\ 1 (2nd half) & encoder charged to the program, $K(C_\mathcal{D})\le K(H)+O(\log)$ & KT &
   \stproved\ (\lean{decoder\_charged}) \\
+--- net of background & $K(C\!\mid\! B)\le K(H\!\mid\! B)+O(\log)$: only what $B$ does not supply & KT &
+  \stproved\ (\lean{decoder\_charged\_rel}) \\
+--- cond.\ subadd.\ rel.\ $B$ & $K(x\!\mid\! B)\le K(x\!\mid\!\langle y,B\rangle)+K(y\!\mid\! B)+O(\log)$ & STD &
+  \staxiom\ (\lean{SubadditivityCondRel}) \\
 Master bound & $\lambda_B \le K(H'\!\mid\! H) + O(\log)$; the acquired state drops out & KT &
   \stproved\ (\lean{bandwidth\_le\_cond}) \\
 Data processing & $\Ik(a\!:\!z\!\mid\! H) \le K(z\!\mid\! H)+O(\log)$; info via the channel only & KT &
@@ -625,9 +673,30 @@ Prop.\ 2 (Lamarckian) & first-order: $\lambda_B \le K(C(a)\!\mid\! H)$, the deco
   \staxiom\ (\lean{SubadditivityCond}) \\
 --- conditioning $\le$ uncond.\ & $K(x\!\mid\! y)\le K(x)+O(\log)$ & STD &
   \staxiom\ (\lean{CondLeUncond}) \\
-Corollary 1 & write-back cannot bootstrap novelty & KT &
+Corollary 1 & write-back is capped by the write-back program the encoder can form & KT &
   \stproved\ (\lean{trivial\_decoder\_transmits\_nothing}) \\
-Hypothesis 1 & persistence matching, $\lambda_P^\ast \sim \tau_E$ & KT & \stna\ (conjecture) \\
+Retention bound & $M(n)=\Ik(w:H_{g+n}\!\mid\! H_g)\le K(w\!\mid\! H_g)+O(\log)$ & KT &
+  \stproved\ (\lean{retention\_le\_program}) \\
+Retention optimum & linear box-constrained kernel: the optimum is bang-bang & KT &
+  \stproved\ (\lean{bangbang\_optimal}) \\
+--- initial segment & antitone net value $\Rightarrow$ retained set is $[0,L)$ & KT &
+  \stproved\ (\lean{optimal\_kernel\_antitone\_is\_initial\_segment}) \\
+--- $L$ is first crossing & $q^\ast(n)=1 \iff n<L$ for \lean{FirstCrossing} $L$ & KT &
+  \stproved\ (\lean{qStar\_eq\_one\_iff\_lt\_first\_crossing}, \lean{qStar\_eq\_zero\_of\_first\_crossing\_le}) \\
+--- existence of $L$ & a first crossing exists if $v$ is somewhere nonpositive & KT &
+  \stproved\ (\lean{exists\_firstCrossing}) \\
+--- threshold rule & $q^\ast$ well defined and admissible & KT &
+  \stproved\ (\lean{qStar\_of\_pos}, \lean{qStar\_of\_nonpos}, \lean{qStar\_admissible}) \\
+Persistence $=\tau_{\rho,\theta}$ & $v=R-\kappa$: optimum retains exactly where $\kappa<R(n)$ & KT &
+  \stproved\ (\lean{persistence\_is\_first\_crossing}, \lean{netValue\_antitone}) \\
+--- exponential case & $\kappa<R_0e^{-n/\tau} \iff n<\tau\log(R_0/\kappa)$ & KT &
+  \stproved\ (\lean{exponential\_crossing}, \lean{qStar\_exponential}) \\
+--- proportionality & crossing lag $\propto \tau$ at fixed cost ratio & KT &
+  \stproved\ (\lean{exponential\_persistence\_proportional\_to\_tau}) \\
+--- non-vacuity & an antitone $v$ whose optimum is a nontrivial initial segment & KT &
+  \stproved\ (\lean{vTest\_antitone}, \lean{vTest\_firstCrossing}) \\
+Hypothesis 1 & persistence matching, $\lambda_P^\ast \sim \tau_E$, in real lineages & KT &
+  \stna\ (conjecture; the \emph{optimization} is proved above) \\
 \midrule
 \multicolumn{4}{@{}l}{\textit{Push--Pull Motifs --- WP0186}}\\
 \midrule
