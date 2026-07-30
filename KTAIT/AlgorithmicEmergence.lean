@@ -16,9 +16,10 @@ supplies a computable *embedding* `emb : Str → Exp` — the shift-and-read reg
 `y` — whose macrohistory is `y` itself (`Faithful`). Everything below is a reduction along
 that embedding.
 
-* `counting_bound` / `few_low_complexity_strings` — the counting step of WP0007 Theorem 1
-  (existence barrier). Genuinely proved here: distinct strings need distinct shortest
-  programs, so at most `|P|` strings have a shortest program in `P`.
+* `counting_bound` / `few_low_complexity_strings` / `most_states_incompressible` — WP0007
+  Theorem 1 (existence barrier), proved outright: distinct strings need distinct shortest
+  programs, so at most `|P|` strings have a shortest program in `P`, and the complement is
+  therefore a `1 - 2 ^ (-d)` fraction of the state space.
 * `no_compression_improver` / `no_compression_improver_micro` — WP0007 Theorem 2 (improvement
   barrier). No computable solver returns a description below a *supplied threshold* whenever
   one exists — a strictly weaker demand than optimality, and still impossible.
@@ -26,6 +27,20 @@ that embedding.
   returns a shortest program for the macrodata of every experiment.
 * `no_additive_approximation` — WP0007 Proposition 1. Relaxing "shortest" to "within a fixed
   additive constant `c` of shortest" does not help: every total extractor has unbounded regret.
+* `conditional_complexity_uncomputable` — WP0007 Corollary 1. Conditioning on the microlaw,
+  observation map and horizon does not help. The conditioning varies with the input, so this
+  needs its own diagonal argument rather than an appeal to a fixed conditioning string.
+* `chaitin_certification_ceiling` — WP0007 Proposition 2. Per-instance, what blocks an agent is
+  unprovability rather than uncomputability.
+
+**What is deliberately NOT formalized.** The companion observation to the improvement barrier —
+that `K x < b` is *semidecidable*, so dovetailing finds a shorter description whenever one
+exists — is a statement about a search that need not halt, and modelling it faithfully would need
+a computation model this development does not carry. It is argued in the paper and assumed
+nowhere here. Nothing downstream depends on it: the theorem denies termination, and the
+semidecidability only says what survives. Likewise `identification_barrier_conditional` is a
+variant kept for the development's own sake; the paper cites
+`conditional_complexity_uncomputable`.
 
 Computability is modeled abstractly, as in `KTAIT.CoarseGraining`: `CompE` / `CompN` are
 predicates "this solver is computable" on the two shapes, and `ReductionClosure` states the one
@@ -78,6 +93,18 @@ theorem few_low_complexity_strings {Str Prog : Type} {m : ℕ}
     (hmem : ∀ y ∈ S, p y ∈ P) (hinj : Set.InjOn p S) (hP : P.card < 2 ^ m) :
     S.card < 2 ^ m :=
   lt_of_le_of_lt (counting_bound S P p hmem hinj) hP
+
+/-- **WP0007 Theorem 1, fraction form.** If fewer than `2 ^ (n - d)` of the `2 ^ n` initial
+states are compressible past the margin, then more than `2 ^ n - 2 ^ (n - d)` are not: "at least a
+fraction `1 - 2 ^ (-d)` of initial microstates yield incompressible macrohistories". This is the
+step from the counting bound to the statement the paper makes. -/
+theorem most_states_incompressible {Str : Type} [Fintype Str] [DecidableEq Str] {n d : ℕ}
+    (S : Finset Str) (hcard : Fintype.card Str = 2 ^ n) (hS : S.card < 2 ^ (n - d)) :
+    2 ^ n - 2 ^ (n - d) < Sᶜ.card := by
+  have hle : S.card ≤ 2 ^ n := hcard ▸ Finset.card_le_univ S
+  have hpow : 2 ^ (n - d) ≤ 2 ^ n := Nat.pow_le_pow_right (by norm_num) (Nat.sub_le n d)
+  rw [Finset.card_compl, hcard]
+  omega
 
 /-! ## The improvement barrier
 
@@ -226,6 +253,51 @@ theorem identification_barrier_conditional (Kc : Str → ℕ)
   identification_barrier data emb Kc len CompE CompN hred hfaith hKc hA
 
 end Identification
+
+/-! ## The conditional form, and per-instance non-certifiability -/
+
+section Conditional
+
+/-- **WP0007 Corollary 1.** Conditional complexity relative to the microlaw, observation map and
+horizon is not computable either. The conditioning `z_n = (D_n, C_n, n)` *varies with the input*,
+so this does not follow from uncomputability at a fixed conditioning string; the paper gives a
+direct diagonal argument, and this is its skeleton.
+
+`Kc y` reads `K(y | z_{|y|})`. `sel n` is the search "the first `y` of length `n` with
+`Kc y ≥ n`". Two facts drive the contradiction:
+
+* `hsel` — the search succeeds, because at the *fixed* condition `z_n` a counting argument
+  supplies a witness of conditional complexity at least `n` (`few_low_complexity_strings`);
+* `hconst` — if `Kc` were computable then, given `z_n`, a program of constant size recovers `n`
+  (it is a component of `z_n`) and runs the search, so its output has conditional complexity
+  bounded by a constant `c` independent of `n`.
+
+Instantiating at `n = c + 1` gives `c + 1 ≤ Kc (sel (c+1)) ≤ c`. -/
+theorem conditional_complexity_uncomputable {Str : Type} {Kc : Str → ℕ}
+    {CompN : (Str → ℕ) → Prop} (sel : ℕ → Str) (hsel : ∀ n, n ≤ Kc (sel n)) {c : ℕ}
+    (hconst : CompN Kc → ∀ n, Kc (sel n) ≤ c) :
+    ¬ CompN Kc := by
+  intro h
+  have h1 := hsel (c + 1)
+  have h2 := hconst h (c + 1)
+  omega
+
+/-- **WP0007 Proposition 2 (per-instance non-certifiability).** Read `Cert x m` as "the formal
+theory `F` certifies the lower bound `K(x) > m`". Chaitin's incompleteness theorem caps such
+certificates at a constant `c_{F,U}` fixed by the theory and the reference machine. Hence no
+macromodel longer than that constant can be certified shortest for any record, however finite.
+
+The Chaitin bound is the assumed input, exactly as in `SelfModelLimits.chaitin_blocks_minimality`,
+which is the self-model form of the same obstruction. What is proved here is the consequence for
+macromodel optimality: uncomputability is uniform over the family, unprovability is per-instance. -/
+theorem chaitin_certification_ceiling {Str : Type} (Cert : Str → ℕ → Prop) {cF : ℕ}
+    (chaitin : ∀ x m, Cert x m → m ≤ cF) {x : Str} {p : ℕ} (hp : cF < p) :
+    ¬ Cert x p := by
+  intro h
+  have := chaitin x p h
+  omega
+
+end Conditional
 
 end AlgorithmicEmergence
 end KTAIT

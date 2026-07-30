@@ -299,7 +299,7 @@ Mathlib~v4.31.0. Modules:
 \lean{SelfModelLimits.lean} & quine floor, diagonalization, Chaitin ceiling & WP0192 Principle~1 \\
 \lean{RegulatorSelection.lean} & \lean{ChainRule} & WP0162 Prop.~1 (regulator selection) \\
 \lean{CoarseGraining.lean} & \lean{RegSuff}, structure function & WP0193 Thms~A/B \\
-\lean{AlgorithmicEmergence.lean} & counting bound, \lean{Faithful} embedding, threshold barrier & WP0007 Thms~1--3, Prop.~1 \\
+\lean{AlgorithmicEmergence.lean} & counting bound, \lean{Faithful} embedding, threshold barrier & WP0007 Thms~1--3, Props.~1--2, Cor.~1 \\
 \lean{Contrast.lean} & contrast fibre posterior & WP0162 Q3 (Eq.~26) \\
 \lean{ShiftInvariance.lean} & \lean{CheapTransform}, \lean{PairSymmetric} & WP0202 App.~A (the null-hypothesis error) \\
 \lean{PushPull.lean} & \lean{Plant}, \lean{Admissible}, \lean{InwardOnBoundary} & WP0186 Thms~1--2, Cor.~1, gap Lemma~1 \\
@@ -575,18 +575,32 @@ non-terminating search, and what the theorem denies is termination, not discover
 procedure returns, for every finite micro-experiment, a shortest program for its macrodata.
 ``Reduction is not construction.'' The reduction runs along the \lean{Faithful} shift-and-read
 embedding of WP0007 Theorem~1; the AIT input is the uncomputability of $K$, assumed as the named
-hypothesis \lean{KUncomputable}. \lean{identification\_barrier\_conditional} is the same statement
-with complexity taken conditional on the microlaw and observation map (WP0007 Corollary~1).
+hypothesis \lean{KUncomputable}. \lean{identification\_barrier\_conditional} is the same statement with
+complexity taken conditional on the microlaw and observation map; it is a variant kept for the
+development's own sake, and is \emph{not} what WP0007 Corollary~1 says --- that is
+\lean{conditional\_complexity\_uncomputable} above.
 \item \lean{AlgorithmicEmergence.no\_additive\_approximation} --- WP0007 Proposition~1: relaxing
 ``shortest'' to ``within a fixed additive constant $c$ of shortest'' does not restore
 computability, for any $c$. The AIT input here is \lean{KNotApproximable}, which is \emph{not}
 implied by \lean{KUncomputable} as stated --- it is the Berry argument run with slack, proved in
 WP0007 Proposition~1 and assumed here.
-\item \lean{AlgorithmicEmergence.counting\_bound} / \lean{few\_low\_complexity\_strings} --- the
-counting step of WP0007 Theorem~1 (existence barrier), proved outright rather than assumed:
-distinct strings need distinct shortest programs, so fewer than $2^{m}$ strings have a shortest
-conditional program of length $<m$. The bound does not mention the conditioning string, which is
-the point --- no choice of microlaw and observation map improves the fraction.
+\item \lean{AlgorithmicEmergence.counting\_bound} / \lean{few\_low\_complexity\_strings} /
+\lean{most\_states\_incompressible} --- WP0007 Theorem~1 (existence barrier), proved outright
+rather than assumed: distinct strings need distinct shortest programs, so fewer than $2^{m}$
+strings have a shortest conditional program of length $<m$, and the complement is therefore more
+than a $1-2^{-d}$ fraction of the state space. The bound holds for every \emph{fixed} conditioning
+string shared across the ensemble and does not depend on it --- no choice of a common microlaw and
+observation map improves the fraction.
+\item \lean{AlgorithmicEmergence.conditional\_complexity\_uncomputable} --- WP0007 Corollary~1:
+conditional complexity relative to $(D_n,C_n,n)$ is not computable. The conditioning
+\emph{varies with the input}, so this does not follow from uncomputability at a fixed conditioning
+string; the formalization carries the paper's diagonal argument, with the counting witness and the
+constant-size search as its two named hypotheses.
+\item \lean{AlgorithmicEmergence.chaitin\_certification\_ceiling} --- WP0007 Proposition~2:
+certified complexity lower bounds are capped at a constant fixed by the theory and the reference
+machine, so no macromodel longer than that constant is certifiably shortest for any record. Same
+obstruction as \lean{chaitin\_blocks\_minimality}, stated for macromodel optimality rather than
+self-models. Uncomputability is uniform over the family; unprovability is per-instance.
 \item \lean{algorithmic\_emergence} --- \textbf{superseded.} This declaration stated WP0007's
 former ``no algorithm finds the optimal coarse-graining'' result. WP0007~v0.3.0 withdrew that
 theorem: the objective is degenerate under a constant observation map, the target moves as $C$
