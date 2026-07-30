@@ -8,7 +8,7 @@ import Mathlib
 /-!
 # KTAIT.AlgorithmicEmergence — reduction is not construction (WP0007 v0.3.0)
 
-WP0007's two barriers between a microscopic generator and a compressive macroscopic model.
+WP0007's three barriers between a microscopic generator and a compressive macroscopic model.
 
 A *finite micro-experiment* `μ` carries an update rule, an initial microstate, an observation
 map and a horizon; `data μ` is the finite macrodata record it produces. WP0007 Theorem 1
@@ -19,10 +19,13 @@ that embedding.
 * `counting_bound` / `few_low_complexity_strings` — the counting step of WP0007 Theorem 1
   (existence barrier). Genuinely proved here: distinct strings need distinct shortest
   programs, so at most `|P|` strings have a shortest program in `P`.
-* `identification_barrier` — WP0007 Theorem 2. No computable solver returns a shortest
-  program for the macrodata of every experiment.
-* `no_additive_approximation` — WP0007 Proposition 3. Relaxing "shortest" to "within a fixed
-  additive constant `c` of shortest" does not help.
+* `no_compression_improver` / `no_compression_improver_micro` — WP0007 Theorem 2 (improvement
+  barrier). No computable solver returns a description below a *supplied threshold* whenever
+  one exists — a strictly weaker demand than optimality, and still impossible.
+* `identification_barrier` — WP0007 Theorem 3 (optimality barrier). No computable solver
+  returns a shortest program for the macrodata of every experiment.
+* `no_additive_approximation` — WP0007 Proposition 1. Relaxing "shortest" to "within a fixed
+  additive constant `c` of shortest" does not help: every total extractor has unbounded regret.
 
 Computability is modeled abstractly, as in `KTAIT.CoarseGraining`: `CompE` / `CompN` are
 predicates "this solver is computable" on the two shapes, and `ReductionClosure` states the one
@@ -30,14 +33,18 @@ closure property the reductions consume (post-composing a computable solver with
 embedding and the computable length function yields a computable numeric function).
 
 The AIT inputs enter as named hypotheses, never as global `axiom`s — the discipline of
-`KTAIT.Basic`. There are two, and they are different facts:
+`KTAIT.Basic`. There are three, and they are different facts:
 
 * `KUncomputable` — `K` is not computable. Berry/diagonal; WP0007 Appendix A,
   Li–Vitányi Thm 2.3.2.
 * `KNotApproximable c` — no computable `f` satisfies `K ≤ f ≤ K + c` everywhere. This is
   *not* implied by `KUncomputable` without argument; it is the Berry argument run with slack
-  `c`, proved in WP0007 Proposition 3. Assuming it here is the honest Level-1 reading: the
+  `c`, proved in WP0007 Proposition 1. Assuming it here is the honest Level-1 reading: the
   paper proves it, the Lean development reduces to it.
+* `KThresholdUndecidable` — the predicate `K x < b` is not decidable. Equivalent to
+  `KUncomputable` (deciding it for every `b` determines `K x`), but stated in the threshold
+  form the improvement barrier consumes. It *is* semidecidable, which is the whole point:
+  what the barrier denies is a procedure that always halts, not one that ever succeeds.
 
 What is NOT claimed: nothing here re-proves an AIT theorem, and nothing here concerns optimal
 *coarse-graining selection*. WP0007 v0.3.0 withdrew that theorem (degenerate objective, moving
@@ -71,6 +78,82 @@ theorem few_low_complexity_strings {Str Prog : Type} {m : ℕ}
     (hmem : ∀ y ∈ S, p y ∈ P) (hinj : Set.InjOn p S) (hP : P.card < 2 ^ m) :
     S.card < 2 ^ m :=
   lt_of_le_of_lt (counting_bound S P p hmem hinj) hP
+
+/-! ## The improvement barrier
+
+WP0007 Theorem 2. Weaker demand than optimality, and still impossible: a procedure asked only to
+return *some* description below a supplied threshold `b`, whenever one exists, cannot be total
+computable. The engine is that validity already gives `len (A x b) < b → K x < b`, so the
+threshold guarantee turns the undecidable predicate `K x < b` into a decidable one.
+
+The companion observation is not formalized because it is a statement about a search that need
+not halt: dovetailing the programs of length `< b` finds one whenever `K x < b`, so available
+compression is semidecidable. What fails is termination, not discovery. -/
+
+section Improvement
+
+variable {Exp Str Prog : Type}
+  (data : Exp → Str) (emb : Str → Exp) (K : Str → ℕ) (len : Prog → ℕ)
+  (DecR : (Str → ℕ → Prop) → Prop)
+
+/-- Validity: every program `A` returns for `x` is at least as long as a shortest one. This is
+`K`'s defining minimality, not an extra assumption. -/
+def LengthLowerBound (A : Str → ℕ → Prog) : Prop := ∀ x b, K x ≤ len (A x b)
+
+/-- The threshold guarantee: whenever `x` has a description shorter than `b`, `A` returns one. -/
+def BeatsThreshold (A : Str → ℕ → Prog) : Prop := ∀ x b, K x < b → len (A x b) < b
+
+/-- Reduction closure: a computable improver makes the length test `len (A x b) < b` decidable —
+run it and measure the output. -/
+def LengthTestDecidable (CompS2 : (Str → ℕ → Prog) → Prop) (A : Str → ℕ → Prog) : Prop :=
+  CompS2 A → DecR (fun x b => len (A x b) < b)
+
+/-- **AIT input 3.** The threshold predicate for `K` is not decidable. Deciding `K x < b` for
+every `b` determines `K x`, so this is the uncomputability of `K` in threshold form (WP0007
+Appendix A). It is semidecidable, which is exactly why the barrier is about termination. -/
+def KThresholdUndecidable : Prop := ¬ DecR (fun x b => K x < b)
+
+/-- **WP0007 Theorem 2 (improvement barrier).** No total computable procedure returns, for every
+string and threshold, a description below the threshold whenever one exists. -/
+theorem no_compression_improver {CompS2 : (Str → ℕ → Prog) → Prop} {A : Str → ℕ → Prog}
+    (hlb : LengthLowerBound K len A) (hbt : BeatsThreshold K len A)
+    (hdec : LengthTestDecidable len DecR CompS2 A)
+    (hund : KThresholdUndecidable K DecR) :
+    ¬ CompS2 A := by
+  intro hcomp
+  have hEq : (fun x b => len (A x b) < b) = (fun x b => K x < b) := by
+    funext x b
+    exact propext ⟨fun h => lt_of_le_of_lt (hlb x b) h, hbt x b⟩
+  have hD := hdec hcomp
+  rw [hEq] at hD
+  exact hund hD
+
+/-- The improver induced on strings by an experiment-level improver, along the embedding. -/
+def induced (A : Exp → ℕ → Prog) (emb : Str → Exp) : Str → ℕ → Prog := fun y b => A (emb y) b
+
+/-- **WP0007 Corollary (micro-to-macro form).** No total computable procedure returns, for every
+finite micro-experiment and threshold, a program for its macrodata below the threshold whenever
+one exists. The experiment-level hypotheses transport to the string level along the `Faithful`
+embedding of Theorem 1. -/
+theorem no_compression_improver_micro {CompE2 : (Exp → ℕ → Prog) → Prop} {A : Exp → ℕ → Prog}
+    (hfaith : ∀ y, data (emb y) = y)
+    (hlb : ∀ μ b, K (data μ) ≤ len (A μ b))
+    (hbt : ∀ μ b, K (data μ) < b → len (A μ b) < b)
+    (hdec : CompE2 A → DecR (fun y b => len (induced A emb y b) < b))
+    (hund : KThresholdUndecidable K DecR) :
+    ¬ CompE2 A := by
+  intro hcomp
+  have hEq : (fun y b => len (induced A emb y b) < b) = (fun y b => K y < b) := by
+    funext y b
+    have h1 := hlb (emb y) b
+    have h2 := hbt (emb y) b
+    rw [hfaith y] at h1 h2
+    exact propext ⟨fun h => lt_of_le_of_lt h1 h, h2⟩
+  have hD := hdec hcomp
+  rw [hEq] at hD
+  exact hund hD
+
+end Improvement
 
 /-! ## The identification barrier -/
 

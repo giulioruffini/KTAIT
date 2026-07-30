@@ -299,7 +299,7 @@ Mathlib~v4.31.0. Modules:
 \lean{SelfModelLimits.lean} & quine floor, diagonalization, Chaitin ceiling & WP0192 Principle~1 \\
 \lean{RegulatorSelection.lean} & \lean{ChainRule} & WP0162 Prop.~1 (regulator selection) \\
 \lean{CoarseGraining.lean} & \lean{RegSuff}, structure function & WP0193 Thms~A/B \\
-\lean{AlgorithmicEmergence.lean} & counting bound, \lean{Faithful} embedding & WP0007 Thm~1 (counting), Thm~2, Prop.~3 \\
+\lean{AlgorithmicEmergence.lean} & counting bound, \lean{Faithful} embedding, threshold barrier & WP0007 Thms~1--3, Prop.~1 \\
 \lean{Contrast.lean} & contrast fibre posterior & WP0162 Q3 (Eq.~26) \\
 \lean{ShiftInvariance.lean} & \lean{CheapTransform}, \lean{PairSymmetric} & WP0202 App.~A (the null-hypothesis error) \\
 \lean{PushPull.lean} & \lean{Plant}, \lean{Admissible}, \lean{InwardOnBoundary} & WP0186 Thms~1--2, Cor.~1, gap Lemma~1 \\
@@ -561,17 +561,27 @@ hypotheses mention only $S^C,k,L,\mathrm{slack}$). Non-vacuity: \lean{toy\_meta\
 \item \lean{regulator\_selection\_order} --- the order form of the same proposition: under the chain
 rule, minimizing $K(R\mid W)$ is equivalent to maximizing $M(W{:}R)-K(R)$, as an order-equivalence
 rather than an argmin identity.
-\item \lean{AlgorithmicEmergence.identification\_barrier} --- WP0007 Theorem~2: no computable
+\item \lean{AlgorithmicEmergence.no\_compression\_improver} /
+\lean{no\_compression\_improver\_micro} --- WP0007 Theorem~2 (improvement barrier): no computable
+procedure returns, for every string (resp.\ micro-experiment) and threshold $b$, a description
+shorter than $b$ whenever one exists. Strictly weaker a demand than optimality, and still
+impossible: validity already gives $\mathrm{len}(A(x,b))<b \Rightarrow K(x)<b$, so the threshold
+guarantee would make the undecidable predicate $K(x)<b$ decidable. The AIT input is
+\lean{KThresholdUndecidable}. The companion observation --- that the predicate is
+\emph{semidecidable}, so open-ended search finds a shorter description whenever one exists and
+only fails to halt otherwise --- is deliberately not formalized: it is a statement about a
+non-terminating search, and what the theorem denies is termination, not discovery.
+\item \lean{AlgorithmicEmergence.identification\_barrier} --- WP0007 Theorem~3: no computable
 procedure returns, for every finite micro-experiment, a shortest program for its macrodata.
 ``Reduction is not construction.'' The reduction runs along the \lean{Faithful} shift-and-read
 embedding of WP0007 Theorem~1; the AIT input is the uncomputability of $K$, assumed as the named
 hypothesis \lean{KUncomputable}. \lean{identification\_barrier\_conditional} is the same statement
 with complexity taken conditional on the microlaw and observation map (WP0007 Corollary~1).
-\item \lean{AlgorithmicEmergence.no\_additive\_approximation} --- WP0007 Proposition~3: relaxing
+\item \lean{AlgorithmicEmergence.no\_additive\_approximation} --- WP0007 Proposition~1: relaxing
 ``shortest'' to ``within a fixed additive constant $c$ of shortest'' does not restore
 computability, for any $c$. The AIT input here is \lean{KNotApproximable}, which is \emph{not}
 implied by \lean{KUncomputable} as stated --- it is the Berry argument run with slack, proved in
-WP0007 Proposition~3 and assumed here.
+WP0007 Proposition~1 and assumed here.
 \item \lean{AlgorithmicEmergence.counting\_bound} / \lean{few\_low\_complexity\_strings} --- the
 counting step of WP0007 Theorem~1 (existence barrier), proved outright rather than assumed:
 distinct strings need distinct shortest programs, so fewer than $2^{m}$ strings have a shortest
