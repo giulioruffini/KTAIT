@@ -10,8 +10,9 @@ import KTAIT.Basic
 # KTAIT.WriteBack — WP0058: bandwidth of the write-back channel
 
 Companion to `KTAIT.Decoder`, which settles the *computability* half of WP0058
-Proposition 1 (no total, domain-recognizing inverse of the developmental map). Here we do
-the *algorithmic-information* half, and Proposition 2.
+Proposition 1 (no total, domain-recognizing inverse of the developmental map, and the partial
+inverse that does exist). Here we do the algorithmic-information results: Proposition 2, the
+heritable description-length burden, and Proposition 3, the selection and write-back bounds.
 
 Naming. `C` is a **write-back encoder**, or credit-assignment operator: it maps acquired
 structure to a program-level modification. Calling it an *inverse compiler* is an analogy
@@ -50,7 +51,7 @@ produces `H'` therefore fixes the cap:
   search — the cap is the decoder image, and `trivial_decoder_transmits_nothing` shows it
   binds: a decoder with nothing to say transmits nothing, however much was acquired.
 
-Separately, `decoder_charged` is the second half of Proposition 1: an encoder recoverable
+Separately, `decoder_charged` is the background-free form of Proposition 2: an encoder recoverable
 from the heritable program costs no more than that program, `K(C) ≤ K(H) + O(log)`. That
 form silently charges the whole apparatus to `H`, so `decoder_charged_rel` gives the
 background-relative version: with part of the machinery supplied by a background `B` — the
@@ -66,11 +67,11 @@ claim, and it is false for designed encoders such as language and backpropagatio
 `retention` and `retention_le_program` add the temporal coordinate: what survives `n`
 generations later never exceeds what was sent.
 
-Per the project methodology, the AIT facts used (`JointGeMarginal`, `SubadditivityCond`,
-`SubadditivityCondRel`, `CondLeUncond`) are named `Prop`s about a frame, never global
-axioms. `ToyWB` witnesses that they are satisfiable *and* that the bounds are attained
-(`toyWB_selection_bound_tight`, `toyWB_decoder_charged_rel_tight`), so the corollaries are
-not vacuous.
+Per the project methodology, the facts used (`JointGeMarginal`, `SubadditivityCond`,
+`SubadditivityCondRel`, `CondLeUncond`, and `DataProcessingCond` for the data-processing
+inequality) are named `Prop`s about a frame, never global axioms. `ToyWB` witnesses that they
+are satisfiable *and* that the bounds are attained (`toyWB_selection_bound_tight`,
+`toyWB_decoder_charged_rel_tight`), so the corollaries are not vacuous.
 -/
 
 namespace KTAIT
@@ -125,6 +126,29 @@ def SubadditivityCond (F : AITFrame) : Prop :=
 def CondLeUncond (F : AITFrame) : Prop :=
   ∀ x y : F.Obj, (F.cond x y : Int) ≤ (F.K x : Int) + F.slack
 
+/-- The data-processing inequality **at one tuple**: given the context `w`, the acquired state
+`a` shares no more with `H'` than it shares with the channel variable `z`,
+`I(a : H' | w) ≤ I(a : z | w) + O(log)`. -/
+def DataProcessingAt (F : AITFrame) (a z H' w : F.Obj) : Prop :=
+  condIK F a H' w ≤ condIK F a z w + F.slack
+
+/-- **Data processing for algorithmic mutual information**, the first link of WP0058's
+channel-bound lemma, assumed as a named `Prop` like the AIT facts above.
+
+`Screens a z H' w` is the caller's **Markov premise**: given `w`, the acquired state `a`
+influences `H'` only through the channel variable `z`. Wherever it holds, routing through `z`
+cannot increase what is shared with `a`.
+
+Two honesty notes, and they are the reason this is a hypothesis rather than a theorem. The
+relation `Screens` is a *parameter*, not something a frame can supply: `condIK` is assembled
+from opaque complexities, so no frame-internal condition certifies that a causal path is
+missing. And the conclusion is false for the *unrestricted* relation in any frame with
+nontrivial `condIK` — see `toyWB_dataProcessing_needs_premise` — so the premise carries the
+content rather than decorating it. -/
+def DataProcessingCond (F : AITFrame)
+    (Screens : F.Obj → F.Obj → F.Obj → F.Obj → Prop) : Prop :=
+  ∀ a z H' w, Screens a z H' w → DataProcessingAt F a z H' w
+
 /-! ### The channel bound -/
 
 /-- **The master bound.** Write-back bandwidth is capped by the novelty of the descendant
@@ -146,6 +170,24 @@ theorem condIK_le_condRight (hJ : JointGeMarginal F) (a z H : F.Obj) :
   unfold condIK
   omega
 
+/-- **WP0058's channel-bound lemma, both links.** Under the caller's Markov premise
+`Screens a z H' w`,
+
+  `I(a : H' | w) ≤ I(a : z | w) ≤ K(z | w) + O(log)`.
+
+The right-hand link is `condIK_le_condRight`, a theorem from `JointGeMarginal`. The left-hand
+link is data processing, and it is *assumed* (`DataProcessingCond`); it was previously carried
+ad hoc inside the `Darwinian` structure, so the lemma as a whole had no name and the paper had
+to cite a declaration proving only its second half. Cite this one for the whole chain and
+`condIK_le_condRight` for the second link alone. -/
+theorem channel_bound (hJ : JointGeMarginal F)
+    {Screens : F.Obj → F.Obj → F.Obj → F.Obj → Prop} (hDP : DataProcessingCond F Screens)
+    {a z H' w : F.Obj} (hM : Screens a z H' w) :
+    condIK F a H' w ≤ (F.cond z w : Int) + 2 * F.slack := by
+  have h₁ : condIK F a H' w ≤ condIK F a z w + F.slack := hDP a z H' w hM
+  have h₂ := condIK_le_condRight F hJ a z w
+  omega
+
 /-! ### Darwinian and Lamarckian regimes -/
 
 /-- The **Darwinian** transmission regime (WP0058 Definition 1): variation is *undirected*.
@@ -157,23 +199,34 @@ undirected mutation is incompressible — but none of that novelty is correlated
 learned, so it does not enter the bandwidth. (The earlier `K(H'|H) ≤ K(σ)` form was false in
 exactly this regime, since it charged the mutation randomness to the scalar signal.) -/
 structure Darwinian (a H' H σ : F.Obj) : Prop where
-  /-- Data processing: acquired information reaches `H'` only through the selection signal.
-  This bounds the *total* information, which is nonzero in general. -/
-  undirected : bandwidth F a H' H ≤ condIK F a σ H + F.slack
+  /-- Data processing at the selection signal: acquired information reaches `H'` only through
+  `σ`, so it bounds the *total* information, which is nonzero in general. Stated as
+  `DataProcessingAt`, the very Prop the general `DataProcessingCond` hypothesis delivers, so
+  the regime no longer carries its own copy of data processing — see
+  `darwinian_of_dataProcessing`. -/
+  undirected : DataProcessingAt F a σ H' H
 
-/-- **WP0058 Proposition 2, Darwinian half (the substantive part).** The *total* acquired
+/-- A Darwinian regime is exactly the general data-processing hypothesis instantiated at the
+selection signal. `Darwinian` therefore assumes nothing beyond `DataProcessingCond` plus the
+caller's Markov premise that `σ` is the only route from `a` into `H'`. -/
+theorem darwinian_of_dataProcessing {Screens : F.Obj → F.Obj → F.Obj → F.Obj → Prop}
+    (hDP : DataProcessingCond F Screens) {a H' H σ : F.Obj} (hM : Screens a σ H' H) :
+    Darwinian F a H' H σ :=
+  ⟨hDP a σ H' H hM⟩
+
+/-- **WP0058 Proposition 3, Darwinian half (the substantive part).** The *total* acquired
 information reaching the descendant passes only through the scalar selection signal, so it is
 bounded by `K(σ)` — however much the agent learned. This is the zeroth-order search bound, and
 it is a genuine theorem. -/
 theorem darwinian_bandwidth_le_selection (hJ : JointGeMarginal F) (hC : CondLeUncond F)
     {a H' H σ : F.Obj} (hD : Darwinian F a H' H σ) :
     bandwidth F a H' H ≤ (F.K σ : Int) + 3 * F.slack := by
-  have h₁ := hD.undirected
+  have h₁ : bandwidth F a H' H ≤ condIK F a σ H + F.slack := hD.undirected
   have h₂ := condIK_le_condRight F hJ a σ H
   have h₃ := hC σ H
   omega
 
-/-- **WP0058 Proposition 2, Lamarckian half.** The write-back bandwidth is bounded by the
+/-- **WP0058 Proposition 3, Lamarckian half.** The write-back bandwidth is bounded by the
 description length of the write-back program itself: `λ_B ≤ K(w | H, σ) + O(log)`. Because `λ_B`
 is *defined* on `w`, this needs no data-processing hypothesis — it is immediate. The channel can
 be wide, but only as wide as the write-back program. -/
@@ -210,8 +263,8 @@ the encoder costs only the `O(log)` slack. This is what it means for the write-b
 be specified by structure the lineage transmits. -/
 def RecoverableFrom (F : AITFrame) (Cprog H : F.Obj) : Prop := F.cond Cprog H ≤ F.slack
 
-/-- **WP0058 Proposition 1, AIT half.** A write-back encoder recoverable from the heritable
-program is charged to it: `K(C) ≤ K(H) + O(log)`. That is the whole claim. It says nothing
+/-- **WP0058 Proposition 2, background-free form.** A write-back encoder recoverable from the
+heritable program is charged to it: `K(C) ≤ K(H) + O(log)`. That is the whole claim. It says nothing
 about whether the channel can produce novelty, and the recoverability premise itself charges
 every part of the apparatus to `H` — see `decoder_charged_rel` for the version that lets a
 background `B` supply part of it. -/
@@ -299,6 +352,41 @@ theorem toyWB_condLeUncond : CondLeUncond ToyWB := by
 theorem toyWB_subadditivityCondRel : SubadditivityCondRel ToyWB := by
   intro x y B; simp only [ToyWB]; omega
 
+/-- A **screening relation** for `ToyWB`: the channel variable dominates the descendant,
+`H' ≤ z`, and both descendant and acquired state sit above the conditioning context. In this
+frame `I(x : y | w) = min x y − w` whenever both arguments exceed `w`, so a dominating `z` does
+bound what `a` can share with `H'`. It is the toy analogue of "`z` is the bottleneck". -/
+def ToyWBScreens (a z H' w : Nat) : Prop := w ≤ a ∧ w ≤ H' ∧ H' ≤ z
+
+/-- **`ToyWB` satisfies `DataProcessingCond`** — for the screening relation `ToyWBScreens`, not
+unconditionally. That qualification is the whole point: no frame satisfies data processing for an
+arbitrary relation (`toyWB_dataProcessing_needs_premise`), so the witness has to name a premise,
+and this one is nontrivial (`toyWB_screens_nonvacuous`). -/
+theorem toyWB_dataProcessing : DataProcessingCond ToyWB ToyWBScreens := by
+  rintro a z H' w ⟨hwa, hwH, hHz⟩
+  simp only [DataProcessingAt, condIK, ToyWB]
+  omega
+
+/-- The Markov premise is **load-bearing**, not decoration: `ToyWB` does *not* satisfy
+`DataProcessingCond` for the unrestricted relation. With `w = 0`, `a = H' = 5` and a trivial
+channel `z = 0`, the acquired state shares `5` bits with the descendant and `0` with the
+channel. Any frame with nontrivial `condIK` refutes the unrestricted form the same way. -/
+theorem toyWB_dataProcessing_needs_premise :
+    ¬ DataProcessingCond ToyWB (fun _ _ _ _ => True) := by
+  intro h
+  have hbad := h (5 : Nat) (0 : Nat) (5 : Nat) (0 : Nat) trivial
+  simp only [DataProcessingAt, condIK, ToyWB] at hbad
+  norm_num at hbad
+
+/-- The screening relation is satisfiable with **positive** information on both sides, so
+`toyWB_dataProcessing` is not a statement about an empty premise: `a = 5`, `z = 4`, `H' = 3`,
+`w = 1` screens, and `I(a : H' | w) = 2`. -/
+theorem toyWB_screens_nonvacuous :
+    ToyWBScreens (5 : Nat) (4 : Nat) (3 : Nat) (1 : Nat) ∧
+      condIK ToyWB (5 : Nat) (3 : Nat) (1 : Nat) = 2 := by
+  refine ⟨⟨by norm_num, by norm_num, by norm_num⟩, ?_⟩
+  simp only [condIK, ToyWB]; norm_num
+
 /-- The background-relative charging bound is **attained**, and not at zero. Encoder `C = 9`,
 heritable program `H = 9`, background `B = 2`: the encoder is recoverable from the pair, and
 `K(C | B) = K(H | B) = 7`, so `decoder_charged_rel` is met with equality with both sides
@@ -331,12 +419,16 @@ theorem toyWB_bandwidth_pos :
   norm_num
 
 /-- The Darwinian selection bound is **attained**: with `a = 5`, `H' = 3`, empty parent `H = 0`
-and selection signal `σ = 3`, the cap `total ≤ K(σ)` is met with equality. Not vacuous. -/
+and selection signal `σ = 3`, the cap `total ≤ K(σ)` is met with equality. Not vacuous.
+
+The regime hypothesis is obtained from `toyWB_dataProcessing` through
+`darwinian_of_dataProcessing`, so the witness exercises the general data-processing hypothesis
+rather than re-proving an inlined copy of it. -/
 theorem toyWB_selection_bound_tight :
     Darwinian ToyWB (5 : Nat) (3 : Nat) (0 : Nat) (3 : Nat) ∧
       bandwidth ToyWB (5 : Nat) (3 : Nat) (0 : Nat) = ((3 : Nat) : Int) := by
-  refine ⟨⟨?_⟩, ?_⟩
-  · simp only [bandwidth, condIK, ToyWB]; norm_num
+  refine ⟨darwinian_of_dataProcessing ToyWB toyWB_dataProcessing ?_, ?_⟩
+  · exact ⟨by norm_num, by norm_num, by norm_num⟩
   · simp only [bandwidth, condIK, ToyWB]; norm_num
 
 /-- **The separation, machine-checked.** A Darwinian lineage has no write-back program (`w = 0`,

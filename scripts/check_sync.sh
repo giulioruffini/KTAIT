@@ -78,7 +78,10 @@ else
   while IFS= read -r line; do
     case "$line" in ''|'#'*) continue ;; esac
     tag=${line%%|*}; path=${line#*|}
-    tag=$(echo "$tag" | xargs); path=$(echo "$path" | xargs)
+    # Trim surrounding whitespace WITHOUT xargs: xargs word-splits, so it collapses
+    # runs of spaces and eats quotes/brackets — and real paper folders contain both.
+    tag="${tag#"${tag%%[![:space:]]*}"}"; tag="${tag%"${tag##*[![:space:]]}"}"
+    path="${path#"${path%%[![:space:]]*}"}"; path="${path%"${path##*[![:space:]]}"}"
     if [ ! -f "$path" ]; then
       echo "  SKIP $tag (not present here: $path)"
       continue

@@ -305,9 +305,9 @@ Mathlib~v4.31.0. Modules:
 \lean{ModelOrPay.lean} & \lean{MAICapped}; multiplicity witnesses & WP0203 Props.~1--2 \\
 \lean{OrbitLabel.lean} & conserved orbit labels & WP0162 App.~C \\
 \lean{NoetherFlow.lean} & \lean{trajLabel}, flow symmetries & generalized Noether (abstract core) \\
-\lean{Decoder.lean} & \lean{Achievable}, \lean{Inverts} (inverse compiler) & WP0058 Prop.~1 (axiom-free) \\
-\lean{WriteBack.lean} & \lean{bandwidth}, \lean{Darwinian}, \lean{Lamarckian} & WP0058 Prop.~1 (AIT half), Prop.~2 \\
-\lean{Retention.lean} & \lean{J}, \lean{qStar}, \lean{FirstCrossing} & WP0058: optimal retention kernel \\
+\lean{Decoder.lean} & \lean{Achievable}, \lean{Inverts}, \lean{dovetail} & WP0058 Prop.~1(i)--(iii), axiom-free \\
+\lean{WriteBack.lean} & \lean{bandwidth}, \lean{DataProcessingCond} & WP0058 Prop.~2--3, channel bound \\
+\lean{Retention.lean} & \lean{J}, \lean{qStar}, \lean{FirstCrossing} & WP0058 Prop.~4 (optimal retention kernel) \\
 \lean{ToyModel.lean} & \lean{Toy}, \lean{ToyMachine}, \lean{ToyGap} & satisfiability witnesses \\
 \lean{PatternPersist.lean} & WP0162 ontology on \lean{AITFrame} & four cells are agents; Prop.~3 inherited \\
 \lean{BadStatements.lean} & guards bite & part-whole; $y$ vs $y^\ast$; WP0162 ontology \\
@@ -462,15 +462,31 @@ of the orbit-label theorem.)
 homogeneous space, $X \simeq G/H_x$ (Theorem A4's algebraic core; the manifold/dimension layer
 remains future work).
 \item \lean{Decoder.achievable\_computable\_of\_inverse} / \lean{Decoder.no\_universal\_decoder}
---- WP0058 Proposition~1: a \emph{total} computable inverse compiler that recognizes its own domain
-would decide membership in the achievable set of the developmental map; hence none exists, and every
-realized Lamarckian write-back channel is a partial map whose validity domain is fixed in advance.
+--- WP0058 Proposition~1(i)--(ii): a \emph{total} computable write-back encoder that recognizes its
+own domain would decide membership in the achievable set of the developmental map; hence none exists
+(\lean{exists\_map\_without\_decoder}), and every realized write-back channel is a partial map whose
+validity domain must be supplied or learned rather than recognized by the encoder itself.
 Notable as the one KT corollary here that assumes \emph{no} AIT fact at all --- the engine
 (\lean{achievable\_computable\_of\_inverse}) is unconditional, and only the non-vacuity of the
 undecidability hypothesis enters as a named \lean{Prop}
 (\lean{ExistsUndecidableAchievableSet}). Satisfiability witness: \lean{inverts\_id}.
-\item \lean{WriteBack.bandwidth\_le\_cond}, the data-processing lemma, and the regime corollaries
---- WP0058 Proposition~2. Writing $\lambda_B$ for the write-back bandwidth (defined below on the
+\item \lean{Decoder.partial\_inverse\_exists} / \lean{Decoder.achievable\_rePred} --- the two
+positive halves of the same proposition, which locate exactly what the impossibility costs.
+Dovetailing search gives a \emph{partial} inverse that returns a genuine preimage wherever it is
+defined, so inversion as such is available; what is lost is the ability to \emph{refuse}, since
+the search diverges off the achievable set. Correspondingly the achievable set of a computable
+developmental map is recursively enumerable, which machine-checks the informal half of WP0058's
+proof (``enumerate programs, run $D$, collect outputs'') and leaves only undecidability assumed.
+\item \lean{WriteBack.channel\_bound} --- WP0058's channel-bound lemma as a single named result
+covering both links, $\Ik(a:H'\mid w)\le \Ik(a:z\mid w)\le K(z\mid w)+O(\log)$. The right link is
+\lean{condIK\_le\_condRight}; the left is data processing, assumed as \lean{DataProcessingCond}.
+Cite this for the whole chain and \lean{condIK\_le\_condRight} for the second link alone.
+\item \lean{WriteBack.darwinian\_of\_dataProcessing} --- a Darwinian regime is exactly the general
+data-processing hypothesis instantiated at the selection signal, so \lean{Darwinian} assumes
+nothing beyond \lean{DataProcessingCond} plus the caller's Markov premise that $\sigma$ is the
+only route from $a$ into $H'$.
+\item \lean{WriteBack.bandwidth\_le\_cond}, the channel bound, and the regime corollaries
+--- WP0058 Proposition~3. Writing $\lambda_B$ for the write-back bandwidth (defined below on the
 write-back program, \emph{not} as $\Ik(a:H'\mid H)$), the master
 bound $\lambda_B \le K(H'\mid H)+O(\log)$ holds but is weak in the Darwinian regime, where undirected
 mutation makes $K(H'\mid H)$ large without transmitting anything acquired. The sharp statement is data
@@ -484,12 +500,12 @@ selection signal, $\Ik(a:H'\mid H)\le K(\sigma)+O(\log)$ (\lean{darwinian\_bandw
 zeroth-order): that bound is the substantive half. In the Lamarckian regime
 $\lambda_B \le K(w\mid H,\sigma)+O(\log)$ (\lean{lamarckian\_bandwidth\_le\_decoder\_image}, first-order) --- immediate, since $\lambda_B$ is \emph{defined} on $w$.
 \lean{toyWB\_writeback\_zero\_but\_total\_positive} machine-checks that the two quantities genuinely differ:
-a witness with $\lambda_B=0$ and total $=3$. Also \lean{decoder\_charged} ($K(C)\le K(H)+O(\log)$, Prop.~1's AIT half) and
+a witness with $\lambda_B=0$ and total $=3$. Also \lean{decoder\_charged} ($K(C)\le K(H)+O(\log)$, Prop.~2's background-free form) and
 \lean{trivial\_decoder\_transmits\_nothing} (Corollary~1: a trivial write-back program transmits
 nothing however much was acquired). Witness \lean{ToyWB} satisfies both named AIT hypotheses \emph{and
 attains} the Darwinian bound (\lean{toyWB\_selection\_bound\_tight}) --- the corollaries are tight,
 not merely non-vacuous.
-\item \lean{WriteBack.decoder\_charged\_rel} --- the background-relative form of Prop.~1's AIT half.
+\item \lean{WriteBack.decoder\_charged\_rel} --- WP0058 Proposition~2 proper, the background-relative form.
 \lean{decoder\_charged} charges the \emph{whole} write-back apparatus to the heritable program, but
 part of it is supplied by a background $B$: the cell, the parent, the niche, a teacher, an external
 training pipeline. Under conditional subadditivity relative to a background
@@ -645,27 +661,41 @@ Cor.\ C1--C3 & blanket uncomputability/fuzziness; acquisition; discovery & KT & 
 \midrule
 \multicolumn{4}{@{}l}{\textit{Inheritance Architecture --- WP0058}}\\
 \midrule
-Proposition 1 & no universal decoder (no total domain-recognizing inverse compiler) & KT &
+Prop.\ 1(i) & no total, domain-recognizing write-back encoder & KT &
   \stproved\ (\lean{no\_universal\_decoder}) \\
 --- engine & a total such inverse would decide achievability & KT &
   \stproved\ (\lean{achievable\_computable\_of\_inverse}) \\
+Prop.\ 1(ii) & some computable $D$ admits no such encoder & KT &
+  \stproved\ (\lean{exists\_map\_without\_decoder}) \\
 --- non-vacuity & some computable $D$ has an undecidable achievable set & STD &
   \staxiom\ (\lean{ExistsUndecidableAchievableSet}) \\
-Prop.\ 1 (2nd half) & encoder charged to the program, $K(C_\mathcal{D})\le K(H)+O(\log)$ & KT &
-  \stproved\ (\lean{decoder\_charged}) \\
---- net of background & $K(C\!\mid\! B)\le K(H\!\mid\! B)+O(\log)$: only what $B$ does not supply & KT &
+Prop.\ 1(iii) & a \emph{partial} recursive inverse exists, with domain exactly $\mathcal{A}$ & KT &
+  \stproved\ (\lean{partial\_inverse\_exists}, \lean{dovetail}) \\
+--- $\mathcal{A}$ is r.e. & the achievable set of a computable $D$ is recursively enumerable & KT &
+  \stproved\ (\lean{achievable\_rePred}) \\
+--- unbounded in time & the dovetailing search has no bound on its running time & KT &
+  \stna\ (resource claim; no cost model in this development) \\
+Prop.\ 2 & heritable burden net of background, $K(C\!\mid\! B)\le K(H\!\mid\! B)+O(\log)$ & KT &
   \stproved\ (\lean{decoder\_charged\_rel}) \\
+--- background-free form & $K(C_\mathcal{D})\le K(H)+O(\log)$ & KT &
+  \stproved\ (\lean{decoder\_charged}) \\
 --- cond.\ subadd.\ rel.\ $B$ & $K(x\!\mid\! B)\le K(x\!\mid\!\langle y,B\rangle)+K(y\!\mid\! B)+O(\log)$ & STD &
   \staxiom\ (\lean{SubadditivityCondRel}) \\
+Channel bound (lemma) & both links: $\Ik(a\!:\!H'\!\mid\! w)\le\Ik(a\!:\!z\!\mid\! w)\le K(z\!\mid\! w)+O(\log)$ & KT &
+  \stproved\ (\lean{channel\_bound}) \\
+--- left link & data processing under the Markov premise $a\to z\to H'$ given $w$ & STD &
+  \staxiom\ (\lean{DataProcessingCond}) \\
+--- right link & $\Ik(a\!:\!z\!\mid\! w) \le K(z\!\mid\! w)+O(\log)$; info via the channel only & KT &
+  \stproved\ (\lean{condIK\_le\_condRight}) \\
 Master bound & $\lambda_B \le K(H'\!\mid\! H) + O(\log)$; the acquired state drops out & KT &
   \stproved\ (\lean{bandwidth\_le\_cond}) \\
-Data processing & $\Ik(a\!:\!z\!\mid\! H) \le K(z\!\mid\! H)+O(\log)$; info via the channel only & KT &
-  \stproved\ (\lean{condIK\_le\_condRight}) \\
-Prop.\ 2 (Darwinian, $\lambda_B$) & write-back channel empty: $\lambda_B=\Ik(a:H'\!\mid\! H,\sigma)\le O(\log)$ & KT &
+Prop.\ 3 (Darwinian, $\lambda_B$) & write-back channel empty: $\lambda_B=\Ik(a:H'\!\mid\! H,\sigma)\le O(\log)$ & KT &
   \stproved\ (\lean{no\_program\_no\_write\_back}) \\
-Prop.\ 2 (Darwinian, $\lambda_{\rm sel}$) & zeroth-order: total $\Ik(a:H'\!\mid\! H) \le K(\sigma)$ & KT &
+Prop.\ 3 (Darwinian, $\lambda_{\rm sel}$) & zeroth-order: total $\Ik(a:H'\!\mid\! H) \le K(\sigma)$ & KT &
   \stproved\ (\lean{darwinian\_bandwidth\_le\_selection}) \\
-Prop.\ 2 (Lamarckian) & first-order: $\lambda_B \le K(C(a)\!\mid\! H)$, the decoder image & KT &
+--- regime from data proc.\ & \lean{Darwinian} is \lean{DataProcessingCond} at the selection signal & KT &
+  \stproved\ (\lean{darwinian\_of\_dataProcessing}) \\
+Prop.\ 3 (Lamarckian) & first-order: $\lambda_B \le K(C(a)\!\mid\! H)$, the decoder image & KT &
   \stproved\ (\lean{lamarckian\_bandwidth\_le\_decoder\_image}) \\
 --- joint $\ge$ marginal & $K(x\!\mid\! z)\le K(\langle x,y\rangle\!\mid\! z)+O(\log)$ & STD &
   \staxiom\ (\lean{JointGeMarginal}) \\
@@ -677,9 +707,9 @@ Corollary 1 & write-back is capped by the write-back program the encoder can for
   \stproved\ (\lean{trivial\_decoder\_transmits\_nothing}) \\
 Retention bound & $M(n)=\Ik(w:H_{g+n}\!\mid\! H_g)\le K(w\!\mid\! H_g)+O(\log)$ & KT &
   \stproved\ (\lean{retention\_le\_program}) \\
-Retention optimum & linear box-constrained kernel: the optimum is bang-bang & KT &
+Prop.\ 4(i) & linear box-constrained kernel: the optimum is bang-bang & KT &
   \stproved\ (\lean{bangbang\_optimal}) \\
---- initial segment & antitone net value $\Rightarrow$ retained set is $[0,L)$ & KT &
+Prop.\ 4(ii) & antitone net value $\Rightarrow$ retained set is $[0,L)$ & KT &
   \stproved\ (\lean{optimal\_kernel\_antitone\_is\_initial\_segment}) \\
 --- $L$ is first crossing & $q^\ast(n)=1 \iff n<L$ for \lean{FirstCrossing} $L$ & KT &
   \stproved\ (\lean{qStar\_eq\_one\_iff\_lt\_first\_crossing}, \lean{qStar\_eq\_zero\_of\_first\_crossing\_le}) \\
@@ -687,9 +717,9 @@ Retention optimum & linear box-constrained kernel: the optimum is bang-bang & KT
   \stproved\ (\lean{exists\_firstCrossing}) \\
 --- threshold rule & $q^\ast$ well defined and admissible & KT &
   \stproved\ (\lean{qStar\_of\_pos}, \lean{qStar\_of\_nonpos}, \lean{qStar\_admissible}) \\
-Persistence $=\tau_{\rho,\theta}$ & $v=R-\kappa$: optimum retains exactly where $\kappa<R(n)$ & KT &
+Prop.\ 4(iii) & $v=R-\kappa$: optimum retains exactly where $\kappa<R(n)$, i.e.\ $\tau_{\rho,\theta}$ & KT &
   \stproved\ (\lean{persistence\_is\_first\_crossing}, \lean{netValue\_antitone}) \\
---- exponential case & $\kappa<R_0e^{-n/\tau} \iff n<\tau\log(R_0/\kappa)$ & KT &
+Prop.\ 4(iv) & $\kappa<R_0e^{-n/\tau} \iff n<\tau\log(R_0/\kappa)$ & KT &
   \stproved\ (\lean{exponential\_crossing}, \lean{qStar\_exponential}) \\
 --- proportionality & crossing lag $\propto \tau$ at fixed cost ratio & KT &
   \stproved\ (\lean{exponential\_persistence\_proportional\_to\_tau}) \\
