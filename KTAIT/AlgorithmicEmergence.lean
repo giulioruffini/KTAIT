@@ -27,7 +27,8 @@ that embedding.
   returns a shortest program for the macrodata of every experiment.
 * `no_additive_approximation` — WP0007 Proposition 1. Relaxing "shortest" to "within a fixed
   additive constant `c` of shortest" does not help: every total extractor has unbounded regret.
-* `conditional_complexity_uncomputable` — WP0007 Corollary 2. Conditioning on the microlaw,
+* `conditional_complexity_uncomputable` — WP0007's conditional-form corollary. Conditioning on
+  the microlaw,
   observation map and horizon does not help. The conditioning varies with the input, so this
   needs its own diagonal argument rather than an appeal to a fixed conditioning string.
 * `chaitin_certification_ceiling` — WP0007 Proposition 2. Per-instance, what blocks an agent is
@@ -46,7 +47,7 @@ possibly running forever on the negative ones — so it bounds what remains poss
 supporting any impossibility proved here.
 
 Likewise `identification_barrier_conditional` is a variant kept for the development's own sake;
-the paper's Corollary 2 is `conditional_complexity_uncomputable`.
+the paper's conditional-form corollary is `conditional_complexity_uncomputable`.
 
 Computability is modeled abstractly, as in `KTAIT.CoarseGraining`: `CompE` / `CompN` are
 predicates "this solver is computable" on the two shapes, and `ReductionClosure` states the one
@@ -66,6 +67,9 @@ The AIT inputs enter as named hypotheses, never as global `axiom`s — the disci
   `KUncomputable` (deciding it for every `b` determines `K x`), but stated in the threshold
   form the improvement barrier consumes. It *is* semidecidable, which is the whole point:
   what the barrier denies is a procedure that always halts, not one that ever succeeds.
+
+Results are named, not numbered. WP0007's numbering has shifted three times as statements were
+added ahead of others, and prose outside `main.tex` cannot track `\ref`. Cite by name.
 
 What is NOT claimed: nothing here re-proves an AIT theorem, and nothing here concerns optimal
 *coarse-graining selection*. WP0007 v0.3.0 withdrew that theorem (degenerate objective, moving
@@ -336,7 +340,7 @@ theorem no_additive_approximation {c : ℕ}
   rw [hfaith y] at h
   exact h
 
-/-- **WP0007, conditional-solver variant** (not the paper's Corollary 2 — that is
+/-- **WP0007, conditional-solver variant** (not the paper's conditional-form corollary — that is
 `conditional_complexity_uncomputable`). Stated for a solver whose target is complexity
 conditional on the fixed microlaw/observation data `z`: the same reduction applies verbatim,
 because the counting and diagonal arguments are uniform in the conditioning string. -/
@@ -352,7 +356,8 @@ end Identification
 
 section Conditional
 
-/-- **WP0007 Corollary 2.** Conditional complexity relative to the microlaw, observation map and
+/-- **WP0007's conditional-form corollary.** Conditional complexity relative to the microlaw,
+observation map and
 horizon is not computable either. The conditioning `z_n = (D_n, C_n, n)` *varies with the input*,
 so this does not follow from uncomputability at a fixed conditioning string; the paper gives a
 direct diagonal argument, and this is its skeleton.

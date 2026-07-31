@@ -602,8 +602,9 @@ procedure returns, for every finite micro-experiment, a shortest program for its
 embedding of WP0007 Theorem~1; the AIT input is the uncomputability of $K$, assumed as the named
 hypothesis \lean{KUncomputable}. \lean{identification\_barrier\_conditional} is the same statement with
 complexity taken conditional on the microlaw and observation map; it is a variant kept for the
-development's own sake, and is \emph{not} what WP0007 Corollary~2 says --- that is
-\lean{conditional\_complexity\_uncomputable} above.
+development's own sake, and is \emph{not} what WP0007's conditional-form corollary says --- that
+is \lean{conditional\_complexity\_uncomputable} above. WP0007's numbering has shifted three times
+as results were inserted ahead of others, so entries here name results rather than number them.
 \item \lean{AlgorithmicEmergence.no\_additive\_approximation} --- WP0007 Proposition~1: relaxing
 ``shortest'' to ``within a fixed additive constant $c$ of shortest'' does not restore
 computability, for any $c$. The AIT input here is \lean{KNotApproximable}, which is \emph{not}
@@ -616,7 +617,7 @@ strings have a shortest conditional program of length $<m$, and the complement i
 than a $1-2^{-d}$ fraction of the state space. The bound holds for every \emph{fixed} conditioning
 string shared across the ensemble and does not depend on it --- no choice of a common microlaw and
 observation map improves the fraction.
-\item \lean{AlgorithmicEmergence.conditional\_complexity\_uncomputable} --- WP0007 Corollary~2:
+\item \lean{AlgorithmicEmergence.conditional\_complexity\_uncomputable} --- WP0007's conditional-form corollary:
 conditional complexity relative to $(D_n,C_n,n)$ is not computable. The conditioning
 \emph{varies with the input}, so this does not follow from uncomputability at a fixed conditioning
 string; the formalization carries the paper's diagonal argument, with the counting witness and the
