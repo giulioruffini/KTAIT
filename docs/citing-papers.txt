@@ -31,6 +31,7 @@ WP0162 | ../../BCOM WPs and Blogs/working_drafts/WP0162-Pattern_Persist_Nature/a
 WP0193 | ../../BCOM WPs and Blogs/working_drafts/WP0193-Regulatory_Coarse_Graining/WP0193-Regulatory_Coarse_Graining.tex
 WP0202 | ../../BCOM WPs and Blogs/working_drafts/WP0202-Exo_Daisy_Algorithmic/WP0202.tex
 WP0007 | ../../BCOM WPs and Blogs/working_drafts/WP0007 [PAPER]  From “More Is Different” to Algorithmic Emergence: Why Compression Is the Hard Part/main.tex
+WP0007-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0007 [PAPER]  From “More Is Different” to Algorithmic Emergence: Why Compression Is the Hard Part/entropy_submission/wp0007_entropy.tex
 
 # WP0195 (docs/WP0195.tex) is the status paper itself and is covered by the
 # module/theorem coverage check above, not by this registry.
