@@ -632,6 +632,17 @@ conditional complexity relative to $(D_n,C_n,n)$ is not computable. The conditio
 \emph{varies with the input}, so this does not follow from uncomputability at a fixed conditioning
 string; the formalization carries the paper's diagonal argument, with the counting witness and the
 constant-size search as its two named hypotheses.
+\item \lean{AlgorithmicEmergence.compression\_of\_good\_model} /
+\lean{sequential\_codelength\_eq\_logloss} --- WP0007's bridge from exact description to
+scientific theory, which is asymmetric. A short program for one record need not be a useful
+generative model, and that direction is argued in the paper rather than formalized (``useful
+model'' is not a formal predicate). The direction the interpretation rests on is the two-part
+coding bound: a simple model assigning the data high probability \emph{witnesses} a short
+description of them, so a predictive macromodel must realize reusable compression and the limits
+on finding compression bound the substrate every such model needs. The bound is a named hypothesis
+(classical, Li--Vit\'anyi); the log-loss identity is proved outright, and is the precise sense in
+which prediction and compression coincide --- \emph{sequential probabilistic} compression, not
+compression in general.
 \item \lean{AlgorithmicEmergence.chaitin\_certification\_ceiling} --- WP0007 Proposition~2:
 certified complexity lower bounds are capped at a constant fixed by the theory and the reference
 machine, so no macromodel longer than that constant is certifiably shortest for any record. Same

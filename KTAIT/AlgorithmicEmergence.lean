@@ -41,6 +41,11 @@ that embedding.
   this needs its own diagonal argument rather than an appeal to a fixed conditioning string.
 * `chaitin_certification_ceiling` — per-instance, what blocks an agent is unprovability rather
   than uncomputability.
+* `compression_of_good_model` / `sequential_codelength_eq_logloss` — the bridge to scientific
+  theory. A simple model assigning the data high probability witnesses a short description of
+  them, so a predictive macromodel must realize reusable compression; and sequential code length
+  *is* cumulative predictive log-loss. The converse — that a short description yields a useful
+  generative model — is false and is not claimed.
 
 Results are named, not numbered: WP0007's numbering has shifted repeatedly as statements were
 inserted ahead of others, and prose here cannot track `\ref`.
@@ -440,6 +445,60 @@ theorem chaitin_certification_ceiling {Str : Type} (Cert : Str → ℕ → Prop)
   omega
 
 end Conditional
+
+/-! ## The bridge: reusable compression, and prediction as code length
+
+WP0007 proves things about exact descriptions of completed strings but is interpreted as being
+about scientific theories, which are reusable conditional generators. The bridge is asymmetric,
+and only one direction is needed.
+
+A short program for one record need not be a useful model — it may entangle law with initial
+condition, exploit hindsight, and expose no interface for varying a parameter. That direction is
+argued in the paper, not formalized: "useful model" is not a formal predicate here.
+
+The direction the interpretation rests on is the converse, and it is the two-part coding bound:
+a simple model that assigns the data high probability *witnesses* a short description of them.
+`compression_of_good_model` records it, with the coding bound as a named hypothesis (it is
+classical, Li–Vitányi). `sequential_codelength_eq_logloss` is proved outright: factoring a
+sequential likelihood turns its code length into cumulative predictive log-loss, which is the
+precise sense in which prediction and compression coincide. -/
+
+section Bridge
+
+/-- **The two-part coding bound**, as a named hypothesis: a computable model `M` assigning `D`
+probability `PM D` yields a description of `D` of length `K M + ⌈-log₂ (PM D)⌉`, up to a constant.
+Classical (Li–Vitányi); assumed here, not re-proved. -/
+def TwoPartCodingBound {Obj Model : Type} (K : Obj → ℕ) (KM : Model → ℕ)
+    (codelen : Model → Obj → ℕ) (c : ℕ) : Prop :=
+  ∀ (M : Model) (D : Obj), K D ≤ KM M + codelen M D + c
+
+/-- **A simple, accurate model witnesses compression.** If `M` is cheap to describe and codes `D`
+in few bits, then `D` itself has a short description. This is the implication WP0007's scientific
+interpretation rests on: a predictive macromodel must realize reusable compression of the data it
+explains, so limits on finding compression bound the substrate every such model needs.
+
+The converse is false and is not claimed: a short description of `D` need not be, or yield, a
+useful generative model. -/
+theorem compression_of_good_model {Obj Model : Type} {K : Obj → ℕ} {KM : Model → ℕ}
+    {codelen : Model → Obj → ℕ} {c : ℕ}
+    (hbound : TwoPartCodingBound K KM codelen c)
+    (M : Model) (D : Obj) {simple accurate : ℕ}
+    (hsimple : KM M ≤ simple) (haccurate : codelen M D ≤ accurate) :
+    K D ≤ simple + accurate + c :=
+  le_trans (hbound M D) (by omega)
+
+/-- **Sequential code length is cumulative predictive log-loss.** For a likelihood that factors
+into one-step conditionals, the code length of the whole sequence is the sum of the per-step
+losses. Proved outright, not assumed: it is the chain rule plus `Real.log_prod`.
+
+This is the sense in which prediction and compression are the same thing — *sequential
+probabilistic* compression, not compression in general. -/
+theorem sequential_codelength_eq_logloss {n : ℕ} (cond : Fin n → ℝ)
+    (hpos : ∀ t, 0 < cond t) :
+    -Real.log (∏ t, cond t) = ∑ t, -Real.log (cond t) := by
+  rw [Real.log_prod (fun t _ => ne_of_gt (hpos t)), Finset.sum_neg_distrib]
+
+end Bridge
 
 end AlgorithmicEmergence
 end KTAIT
