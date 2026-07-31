@@ -27,7 +27,7 @@ that embedding.
   returns a shortest program for the macrodata of every experiment.
 * `no_additive_approximation` — WP0007 Proposition 1. Relaxing "shortest" to "within a fixed
   additive constant `c` of shortest" does not help: every total extractor has unbounded regret.
-* `conditional_complexity_uncomputable` — WP0007 Corollary 1. Conditioning on the microlaw,
+* `conditional_complexity_uncomputable` — WP0007 Corollary 2. Conditioning on the microlaw,
   observation map and horizon does not help. The conditioning varies with the input, so this
   needs its own diagonal argument rather than an appeal to a fixed conditioning string.
 * `chaitin_certification_ceiling` — WP0007 Proposition 2. Per-instance, what blocks an agent is
@@ -35,12 +35,18 @@ that embedding.
 
 **What is deliberately NOT formalized.** The companion observation to the improvement barrier —
 that `K x < b` is *semidecidable*, so dovetailing finds a shorter description whenever one
-exists — is a statement about a search that need not halt, and modelling it faithfully would need
-a computation model this development does not carry. It is argued in the paper and assumed
-nowhere here. Nothing downstream depends on it: the theorem denies termination, and the
-semidecidability only says what survives. Likewise `identification_barrier_conditional` is a
-variant kept for the development's own sake; the paper cites
-`conditional_complexity_uncomputable`.
+exists — would need an explicit operational semantics for programs, a halting-in-`t`-steps
+predicate and the dovetailing construction itself, none of which this development carries. It is
+argued in the paper and assumed nowhere here.
+
+The omission does not touch `no_compression_improver`, which rules out a *total* procedure that
+halts on every input while exploiting every available compression. Semidecidability is the
+complementary *positive* fact — a partial search succeeds on each positive instance while
+possibly running forever on the negative ones — so it bounds what remains possible rather than
+supporting any impossibility proved here.
+
+Likewise `identification_barrier_conditional` is a variant kept for the development's own sake;
+the paper's Corollary 2 is `conditional_complexity_uncomputable`.
 
 Computability is modeled abstractly, as in `KTAIT.CoarseGraining`: `CompE` / `CompN` are
 predicates "this solver is computable" on the two shapes, and `ReductionClosure` states the one
@@ -243,7 +249,8 @@ theorem no_additive_approximation {c : ℕ}
   rw [hfaith y] at h
   exact h
 
-/-- **WP0007 Corollary 1 (conditional form).** Stated for a solver whose target is complexity
+/-- **WP0007, conditional-solver variant** (not the paper's Corollary 2 — that is
+`conditional_complexity_uncomputable`). Stated for a solver whose target is complexity
 conditional on the fixed microlaw/observation data `z`: the same reduction applies verbatim,
 because the counting and diagonal arguments are uniform in the conditioning string. -/
 theorem identification_barrier_conditional (Kc : Str → ℕ)
@@ -258,7 +265,7 @@ end Identification
 
 section Conditional
 
-/-- **WP0007 Corollary 1.** Conditional complexity relative to the microlaw, observation map and
+/-- **WP0007 Corollary 2.** Conditional complexity relative to the microlaw, observation map and
 horizon is not computable either. The conditioning `z_n = (D_n, C_n, n)` *varies with the input*,
 so this does not follow from uncomputability at a fixed conditioning string; the paper gives a
 direct diagonal argument, and this is its skeleton.
