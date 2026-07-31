@@ -308,7 +308,7 @@ Mathlib~v4.31.0. Modules:
 \lean{SelfModelLimits.lean} & quine floor, diagonalization, Chaitin ceiling & WP0192 Principle~1 \\
 \lean{RegulatorSelection.lean} & \lean{ChainRule} & WP0162 Prop.~1 (regulator selection) \\
 \lean{CoarseGraining.lean} & \lean{RegSuff}, structure function & WP0193 Thms~A/B \\
-\lean{AlgorithmicEmergence.lean} & counting bound, \lean{Faithful} embedding, threshold barrier & WP0007 Thms~1--3, Props.~1--2, Cors.~1--2 \\
+\lean{AlgorithmicEmergence.lean} & counting bound, raw-length and threshold barriers & WP0007 Thms~1--3, Props.~1--2, Cors.~1--3 \\
 \lean{Contrast.lean} & contrast fibre posterior & WP0162 Q3 (Eq.~26) \\
 \lean{ShiftInvariance.lean} & \lean{CheapTransform}, \lean{PairSymmetric} & WP0202 App.~A (the null-hypothesis error) \\
 \lean{PushPull.lean} & \lean{Plant}, \lean{Admissible}, \lean{InwardOnBoundary} & WP0186 Thms~1--2, Cor.~1, gap Lemma~1 \\
@@ -570,6 +570,19 @@ hypotheses mention only $S^C,k,L,\mathrm{slack}$). Non-vacuity: \lean{toy\_meta\
 \item \lean{regulator\_selection\_order} --- the order form of the same proposition: under the chain
 rule, minimizing $K(R\mid W)$ is equivalent to maximizing $M(W{:}R)-K(R)$, as an order-equivalence
 rather than an argmin identity.
+\item \lean{AlgorithmicEmergence.no\_universal\_compressor} /
+\lean{no\_universal\_compressor\_micro} --- WP0007 Theorem~2 (improvement barrier) in the form
+that carries the intuition: no total computable compressor returns, for every string admitting a
+description shorter than itself, such a description. Asks nothing about optimality. Consumes
+\lean{CompressibleUndecidable}, the undecidability of $\{x:K(x)<|x|\}$, which is a \emph{different}
+classical fact from \lean{KThresholdUndecidable} --- a diagonal slice of an undecidable set need
+not be undecidable.
+\item \lean{AlgorithmicEmergence.compressor\_of\_threshold} --- the hierarchy, recorded as a lemma
+because it is easy to assert backwards. A threshold procedure specializes at $b=|x|$ to a
+universal compressor, so ``no universal compressor'' \emph{implies} ``no threshold procedure''.
+The raw-length statement is the stronger one and is \textbf{not} a corollary of the
+arbitrary-$b$ theorem; the converse fails, since a procedure required to work only at $b=|x|$ is a
+weaker object than one required to work at every $b$.
 \item \lean{AlgorithmicEmergence.no\_compression\_improver} /
 \lean{no\_compression\_improver\_micro} --- WP0007 Theorem~2 (improvement barrier): no computable
 procedure returns, for every string (resp.\ micro-experiment) and threshold $b$, a description

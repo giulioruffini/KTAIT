@@ -188,6 +188,93 @@ theorem no_compression_improver_micro {CompE2 : (Exp → ℕ → Prog) → Prop}
 
 end Improvement
 
+/-! ## The raw-length form: no universal compressor
+
+WP0007 Theorem 2 in the form that carries the intuition. Ask nothing about optimality and nothing
+about a supplied threshold: ask only that a compressor shorten every string that is shortenable at
+all. It cannot be done by a total procedure.
+
+This is the **strongest** of the identification statements, not a corollary of the threshold one.
+A threshold procedure specializes at `b = rawlen x` to a universal compressor
+(`compressor_of_threshold`), so ruling out the compressor rules out the threshold procedure; the
+converse fails, because a procedure that works only at `b = rawlen x` is a weaker object than one
+that works at every `b`. It consumes its own undecidability input, `CompressibleUndecidable`
+(the set of compressible strings is not decidable), which is a different classical fact from
+`KThresholdUndecidable`. -/
+
+section RawLength
+
+variable {Str Prog : Type} (K : Str → ℕ) (len : Prog → ℕ) (rawlen : Str → ℕ)
+  (DecR₁ : (Str → Prop) → Prop)
+
+/-- Validity, one-argument form: any program the compressor returns is at least `K x` long. -/
+def LengthLowerBound₁ (C : Str → Prog) : Prop := ∀ x, K x ≤ len (C x)
+
+/-- The compression guarantee: whenever `x` has *any* description shorter than itself, `C`
+returns one. -/
+def BeatsRawLength (C : Str → Prog) : Prop := ∀ x, K x < rawlen x → len (C x) < rawlen x
+
+/-- Reduction closure: a computable compressor makes `len (C x) < rawlen x` decidable. -/
+def RawTestDecidable (CompS₁ : (Str → Prog) → Prop) (C : Str → Prog) : Prop :=
+  CompS₁ C → DecR₁ (fun x => len (C x) < rawlen x)
+
+/-- **AIT input 4.** The set of compressible strings `{x | K x < rawlen x}` is not decidable.
+Distinct from `KThresholdUndecidable`: a diagonal slice of an undecidable set need not itself be
+undecidable, so this needs its own argument (WP0007 Appendix A). -/
+def CompressibleUndecidable : Prop := ¬ DecR₁ (fun x => K x < rawlen x)
+
+/-- **WP0007 Theorem 2 (raw-length form).** No total computable compressor returns, for every
+string that admits a description shorter than itself, such a description. -/
+theorem no_universal_compressor {CompS₁ : (Str → Prog) → Prop} {C : Str → Prog}
+    (hlb : LengthLowerBound₁ K len C) (hbr : BeatsRawLength K len rawlen C)
+    (hdec : RawTestDecidable len rawlen DecR₁ CompS₁ C)
+    (hund : CompressibleUndecidable K rawlen DecR₁) :
+    ¬ CompS₁ C := by
+  intro h
+  have hEq : (fun x => len (C x) < rawlen x) = (fun x => K x < rawlen x) := by
+    funext x
+    exact propext ⟨fun hh => lt_of_le_of_lt (hlb x) hh, hbr x⟩
+  have hD := hdec h
+  rw [hEq] at hD
+  exact hund hD
+
+/-- Specializing a threshold procedure at `b = rawlen x`. -/
+def atRawLength (A : Str → ℕ → Prog) (rawlen : Str → ℕ) : Str → Prog := fun x => A x (rawlen x)
+
+/-- **The hierarchy, stated as a lemma.** A threshold procedure specializes to a universal
+compressor. Hence "no universal compressor" *implies* "no threshold procedure", and the raw-length
+barrier is the stronger statement. Recorded because the implication is easy to assert in the wrong
+direction: the `b = rawlen x` result is **not** a corollary of the arbitrary-`b` theorem. -/
+theorem compressor_of_threshold {A : Str → ℕ → Prog}
+    (hlb : LengthLowerBound K len A) (hbt : BeatsThreshold K len A) :
+    LengthLowerBound₁ K len (atRawLength A rawlen) ∧
+      BeatsRawLength K len rawlen (atRawLength A rawlen) :=
+  ⟨fun x => hlb x (rawlen x), fun x hx => hbt x (rawlen x) hx⟩
+
+/-- **WP0007 Corollary (micro-to-macro, raw-length form).** No total computable procedure returns,
+for every finite micro-experiment whose macrodata is compressible at all, a program shorter than
+that macrodata. -/
+theorem no_universal_compressor_micro {Exp : Type} (data : Exp → Str) (emb : Str → Exp)
+    {CompE₁ : (Exp → Prog) → Prop} {C : Exp → Prog}
+    (hfaith : ∀ y, data (emb y) = y)
+    (hlb : ∀ μ, K (data μ) ≤ len (C μ))
+    (hbr : ∀ μ, K (data μ) < rawlen (data μ) → len (C μ) < rawlen (data μ))
+    (hdec : CompE₁ C → DecR₁ (fun y => len (C (emb y)) < rawlen y))
+    (hund : CompressibleUndecidable K rawlen DecR₁) :
+    ¬ CompE₁ C := by
+  intro h
+  have hEq : (fun y => len (C (emb y)) < rawlen y) = (fun y => K y < rawlen y) := by
+    funext y
+    have h1 := hlb (emb y)
+    have h2 := hbr (emb y)
+    rw [hfaith y] at h1 h2
+    exact propext ⟨fun hh => lt_of_le_of_lt h1 hh, h2⟩
+  have hD := hdec h
+  rw [hEq] at hD
+  exact hund hD
+
+end RawLength
+
 /-! ## The identification barrier -/
 
 section Identification
