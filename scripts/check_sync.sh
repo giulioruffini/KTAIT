@@ -10,7 +10,16 @@
 #                     checked that link.) \lean{} is incidental Lean text and admits
 #                     filenames and core axioms; \ktait{} asserts "machine-checked
 #                     as this KTAIT declaration" and admits declarations only.
-#   4. --released   — before a paper goes public: the tree is clean AND HEAD is pushed.
+#   4. STATEMENT DRIFT — a declaration's statement must not change while the prose
+#                     describing it stands still. (2026-07: WP0007's conditional-form
+#                     corollary was rewritten and went on citing a declaration that says
+#                     something else; checks 1-3 were green throughout, because they
+#                     verify that NAMES resolve, not that statements still match.)
+#   5. NUMBERED REFS  — prose here must name results, not number them. WP0007's
+#                     conditional corollary renumbered three times as results were
+#                     inserted ahead of it, and the entries here kept the old number
+#                     each time. Numbers belong where \ref maintains them.
+#   6. --released   — before a paper goes public: the tree is clean AND HEAD is pushed.
 #                     (2026-07: the Prop. 2 fix sat uncommitted while the paper claimed
 #                     it was machine-checked; GitHub still served the false hypothesis.)
 #
@@ -115,7 +124,26 @@ else
   done < "$REGISTRY"
 fi
 
-# ── 4. released: committed and pushed ────────────────────────────────────────
+# ── 4. statement drift vs the prose that describes it ───────────────────────
+# check_sync verifies that cited names resolve. It cannot see a declaration whose
+# STATEMENT changed while its docstring and WP0195 entry stayed put -- which is
+# exactly how a paper came to cite a declaration saying something else. The
+# manifest pins all three, so a silent semantic change fails here.
+echo "== statement drift =="
+if ! python3 scripts/fingerprint.py --check; then
+  status=1
+fi
+
+# ── 5. results named, not numbered ──────────────────────────────────────────
+# A number in prose here cannot track \ref in a paper that inserts a result ahead
+# of it. Ratchet, not a wall: 111 legacy references describe results in papers whose
+# numbering has not been audited, so the check fails only on NEW ones.
+echo "== results named, not numbered =="
+if ! python3 scripts/numbered_refs.py --check; then
+  status=1
+fi
+
+# ── 6. released: committed and pushed ────────────────────────────────────────
 if [ "$RELEASED" -eq 1 ]; then
   echo "== released (tree clean, HEAD pushed) =="
   if [ -n "$(git status --porcelain)" ]; then

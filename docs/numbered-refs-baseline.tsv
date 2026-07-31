@@ -1,0 +1,117 @@
+# Legacy references-by-number in prose that cannot track \ref.
+# This file is a RATCHET, not an approval: no NEW ones may be added, and any
+# line touched for other reasons should be converted to a named reference while
+# you are in there. Regenerate only after deliberately converting entries:
+#     scripts/numbered_refs.py --rebaseline
+# WP0007's entries are already converted and deliberately absent.
+ART.lean	* `probabilistic_regulator_theorem` — Theorem 2: `post (W,R) x ≤ C·2^{M(W:R)}·2^{−Δ}`,
+ART.lean	* `theorem1_posterior_tilt` — Theorem 1: `post (W,R) x ∈ [1/c₂, 1/c₁]·2^{K(x)−K(W)−K(R)+M(W:R)}`.
+ART.lean	/-- **Theorem 1 (coupled-pair posterior tilt).** With `M(W:R) = IK W R`, the posterior is
+ART.lean	/-- **Theorem 2 (Probabilistic Regulator Theorem).** Now resting on the coding theorem
+ART.lean	/-- **Theorem 2 (sharp form), retaining the regulator cost `2^{−K(R)}`.**
+ART.lean	/-- **Theorem 3 (On/Off evidence equals the complexity gap).** The ON/OFF evidence ratio
+ART.lean	/-- The published headline (Theorem 2) follows from the sharp form by `2^{−K(R)} ≤ 1`. -/
+AlgorithmicEmergence.lean	/-- **Counting bound (WP0007 Theorem 1).** If every string in `S` is assigned a program in the
+AlgorithmicEmergence.lean	/-- **Few strings are compressible (WP0007 Theorem 1, eq. (2)).** Fewer than `2 ^ m` strings
+AlgorithmicEmergence.lean	/-- **WP0007 Proposition 2 (per-instance non-certifiability).** Read `Cert x m` as "the formal
+AlgorithmicEmergence.lean	/-- **WP0007 Proposition 3.** Relaxing optimality to within a fixed additive constant does not
+AlgorithmicEmergence.lean	/-- **WP0007 Theorem 1, fraction form.** If fewer than `2 ^ (n - d)` of the `2 ^ n` initial
+AlgorithmicEmergence.lean	/-- **WP0007 Theorem 2 (identification barrier).** No computable procedure returns, for every
+AlgorithmicEmergence.lean	/-- **WP0007 Theorem 2 (improvement barrier).** No total computable procedure returns, for every
+AlgorithmicEmergence.lean	/-- **WP0007 Theorem 2 (raw-length form).** No total computable compressor returns, for every
+AlgorithmicEmergence.lean	WP0007 Theorem 2 in the form that carries the intuition. Ask nothing about optimality and nothing
+AlgorithmicEmergence.lean	WP0007 Theorem 2. Weaker demand than optimality, and still impossible: a procedure asked only to
+CoarseGraining.lean	/-- **WP0193 Proposition 1 (existence).** A persistent agent carrying a bounded,
+Decoder.lean	/-! ### The partial inverse that does exist (Proposition 1(iii)) -/
+Decoder.lean	/-- **The engine of WP0058 Proposition 1.** A *total computable* write-back encoder that
+Decoder.lean	/-- **WP0058 Proposition 1(i).** If achievability is undecidable, then no total computable,
+Decoder.lean	/-- **WP0058 Proposition 1(ii).** Some computable developmental map admits no total,
+Decoder.lean	/-- **WP0058 Proposition 1(iii), existence half.** For any computable developmental map `D`
+PatternPersist.lean	/-! ## 5. What agenthood now buys: Proposition 3, inherited
+PatternPersist.lean	/-- **Any agent has a temporal self-model.** Proposition 3 of WP0162, specialized to a
+Persistence.lean	/-! ## Proposition 2 — persistence conservation (WP0162 Appendix D)
+Persistence.lean	/-- **Proposition 2 (persistence conservation), bounded form.** From the symmetry of
+Persistence.lean	/-- **WP0162 Proposition 1 (meta-persistence).** With the symmetry of algorithmic information,
+Probability.lean	**Lemma 1** then sandwiches the Bayesian posterior between complexity expressions:
+Probability.lean	/-- **Lemma 1 (Program posterior given x).** Under the Coding Theorem, the Bayesian
+PushPull.lean	* **Proved (no `sorry`):** the entire content of Theorems 1–2 and Corollary 1, which is
+PushPull.lean	/-! ## 2. Theorem 1 — necessity of opposed flows -/
+PushPull.lean	/-! ## 3. Theorem 2 — sufficiency
+PushPull.lean	/-! ## 5. Corollary 1 — the "restoring force" is already push–pull
+PushPull.lean	/-! ## 6. The GAR gap (Lemma 1) — axiom-backed, against the `AITFrame` interface
+PushPull.lean	/-! ### 3a. Attraction needs a strict margin — WP0186's Theorem 2 is defective here
+PushPull.lean	/-- **Corollary 1, WP0186.** For `κ > 0`, the restoring field is genuinely two-signed: it
+PushPull.lean	/-- **Corollary 1, constructive half.** The restoring field decomposes into a push flow
+PushPull.lean	/-- **Lemma 1 (Complexity-gap identity), WP0186.**
+PushPull.lean	/-- **Lemma 1, existential form:** the gap *is* `S` up to a `2·slack` error term.
+PushPull.lean	/-- **The repair of Theorem 2's attraction half.** With a strict margin and the saturating
+PushPull.lean	/-- **Theorem 1 (Necessity of opposed flows), WP0186.**
+PushPull.lean	/-- **Theorem 1, contrapositive form.** A single-signed controller cannot render the band
+PushPull.lean	/-- **Theorem 2 (Sufficiency), WP0186.**
+RegulatorSelection.lean	/-- **Proposition 1 (order form).** Under the chain rule, minimizing conditional simplicity
+RegulatorSelection.lean	/-- **Proposition 1 (selection form).** `R*` minimizes `K(·|W)` over the sufficiency set `S`
+RegulatorSelection.lean	WP0162 Appendix D, Proposition 1: under the universal conditional prior the preferred
+SelfModel.lean	/-- **Proposition 3 (Self-regulation requires a temporal self-model).**
+SelfModelLimits.lean	WP0192 Principle 1 / WP0162 Proposition 4: an embedded agent cannot jointly secure
+WP0195	--- WP0058 Proposition~1(i)--(ii): a \emph{total} computable write-back encoder that recognizes its
+WP0195	--- WP0058 Proposition~3. Writing $\lambda_B$ for the write-back bandwidth (defined below on the
+WP0195	--- WP0192 Principle~1 / WP0162 Proposition~4: the three independent obstructions to a complete,
+WP0195	--- WP0203 Proposition~2, the multiplicity objection, as \emph{witnesses} rather than assertions.
+WP0195	--- a defect in WP0186's Theorem~2, and the fix. The first is a \emph{counterexample}: a plant
+WP0195	ART \textbf{Theorem~1} (\lean{theorem1\_posterior\_tilt}) and \textbf{Theorem~3}
+WP0195	App.\ Lemma 1 & gap identity $\Delta=S\pm O(\log N)$ from (A2)--(A4) & KT &
+WP0195	Bayes$\leftrightarrow$Kolmogorov bridge (Lemma~1), the temporal self-model (Proposition~3), and
+WP0195	Corollary 1 & $-\kappa(x-x^\star)$ is not single-signed; splits into push $+$ pull & KT &
+WP0195	Corollary 1 & write-back is capped by the write-back program the encoder can form & KT &
+WP0195	Lemma 1 & $P(p\mid x)=2^{-|p|}/m(x)$; sandwiched by coding thm & STD & \stproved\ (\lean{lemma1\_...}) \\
+WP0195	Lemma 1 & uncomputability of $h_{x\to y}$ & STD & \staxiom\ (via V--V) \\
+WP0195	Lemma 2 & OFF run lower-bounds world: $K(O_{W,\varnothing})\le K(W)+c_0$ & KT & \staxiom\ (hyp.\ \lean{hoff}) \\
+WP0195	Proposition 1 & $\Ik(W{:}R)\le K(R)+O(\log)$: a cheap regulator cannot model & KT &
+WP0195	Proposition 1 & existence of a bounded regulation-sufficient projection & KT & \stproved\ (\lean{existence}) \\
+WP0195	Proposition 1 & regulator selection $\argmin K(R\mid W)=\argmax[M-K(R)]$ & KT & \stproved\ (\lean{regulator\_selection}) \\
+WP0195	Proposition 1 & temporal self-model (= WP0162 Prop.~3) & KT & \stproved\ (same) \\
+WP0195	Proposition 2 & per-pair $2^{-k}$ does not lift to a fiber of size $2^{k}$ (witness) & KT &
+WP0195	Proposition 2 & persistence conservation ledger $K(O_W)=\Ik+K(O_W\mid R^\ast)\pm O(\log)$ & KT & \stproved\ (\lean{persistence\_...}) \\
+WP0195	Proposition 3 & self-regulation $\Rightarrow$ temporal self-model (Eq.~44) & KT & \stproved\ (\lean{self\_reg\_...}) \\
+WP0195	Proposition 3 (PP) & every agent has a temporal self-model & KT & \stproved\ (\lean{PP.agent\_has\_temporal\_self\_model}) \\
+WP0195	Proposition 4 & self-model incompleteness (3 obstructions) & KT & \stproved\ (\lean{quine\_floor},$\ldots$) \\
+WP0195	Theorem 1 & coupled-pair posterior tilt $\in[\cdot]2^{K(x)-K(W)-K(R)+M}$ & KT & \stproved\ (\lean{theorem1\_...}) \\
+WP0195	Theorem 1 & opposed flows necessary: $H(x_+)\ge\overline{D}$ and $G(x_-)\ge-\underline{D}$ & KT &
+WP0195	Theorem 2 & $\Pr((W,R)\mid x,E)\le C\,2^{M(W:R)}2^{-\Delta}$ & KT & \stproved\ (\lean{prob\_reg\_thm}) \\
+WP0195	Theorem 2 & saturating edge rule renders the band invariant & KT &
+WP0195	Theorem 2 (sharp) & retains regulator cost: $\le C\,2^{M}2^{-\Delta}2^{-K(R)}$ & KT & \stproved\ (\lean{..\_sharp}) \\
+WP0195	Theorem 3 & $m(O_{W,R})/m(O_{W,\varnothing})\asymp 2^{\Delta}$ (as-if objective) & KT & \stproved\ (\lean{theorem3\_...}) \\
+WP0195	WP0007 Proposition~1 and assumed here.
+WP0195	WP0186 Corollary~1. For $\kappa>0$ the leaky-integrator field $-\kappa(x-x^\star)$ is strictly
+WP0195	We have a green, machine-checked Level-1/1.5 core: the probabilistic ART (Theorem~2), the
+WP0195	\item \lean{AITProb.probabilistic\_regulator\_theorem\_sharp} --- ART Theorem~2 \emph{sharp form}
+WP0195	\item \lean{AITProb.probabilistic\_regulator\_theorem} --- ART Theorem~2,
+WP0195	\item \lean{AITProb.theorem1\_posterior\_tilt} --- ART Theorem~1, two-sided posterior tilt.
+WP0195	\item \lean{AITProb.theorem3\_onoff\_evidence} --- ART Theorem~3, ON/OFF evidence ratio
+WP0195	\item \lean{AlgorithmicEmergence.chaitin\_certification\_ceiling} --- WP0007 Proposition~2:
+WP0195	\item \lean{AlgorithmicEmergence.identification\_barrier} --- WP0007 Theorem~3: no computable
+WP0195	\item \lean{AlgorithmicEmergence.no\_additive\_approximation} --- WP0007 Proposition~1: relaxing
+WP0195	\item \lean{ModelOrPay.simple\_regulator\_cannot\_model} --- WP0203 Proposition~1, from the single
+WP0195	\item \lean{PushPull.theorem1\_necessity} --- WP0186 Theorem~1. Against a free two-sided
+WP0195	\item \lean{WriteBack.decoder\_charged\_rel} --- WP0058 Proposition~2 proper, the background-relative form.
+WP0195	\item \lean{persistence\_conservation} / \lean{conservation\_tradeoff} --- WP0162 Proposition~2:
+WP0195	\item \lean{regulator\_selection} --- WP0162 Proposition~1: $\argmin_R K(R\mid W)=\argmax_R[M(W{:}R)-K(R)]$.
+WP0195	\item \lean{self\_regulation\_temporal\_model} --- Proposition~3,
+WP0195	\lean{ART.lean} & \lean{AITProb} (posterior), Theorem~2 & probabilistic regulator thm \\
+WP0195	\lean{CoarseGraining.existence} --- WP0193 Theorem~A and Proposition~1.
+WP0195	\lean{Probability.lean} & prefix machine, Bayes posterior, coding thm & Lemma~1 (bridge) \\
+WP0195	\lean{PushPull.lean} & \lean{Plant}, \lean{Admissible}, \lean{InwardOnBoundary} & WP0186 Thms~1--2, Cor.~1, gap Lemma~1 \\
+WP0195	\lean{SelfModel.lean} & \lean{DeltaSelf}, Proposition~3 & temporal self-model \\
+WP0195	\lean{most\_states\_incompressible} --- WP0007 Theorem~1 (existence barrier), proved outright
+WP0195	\lean{no\_compression\_improver\_micro} --- WP0007 Theorem~2 (improvement barrier): no computable
+WP0195	\lean{no\_universal\_compressor\_micro} --- WP0007 Theorem~2 (improvement barrier) in the form
+WP0195	\lean{trivial\_decoder\_transmits\_nothing} (Corollary~1: a trivial write-back program transmits
+WP0195	arithmetic on \lean{OffSplit}/\lean{OnResidual} will introduce it. WP0186's Proposition~1 is now a
+WP0195	embedding of WP0007 Theorem~1; the AIT input is the uncomputability of $K$, assumed as the named
+WP0195	headline necessity claim: a single-signed controller cannot hold the band. Theorem~2
+WP0195	now consumes \lean{wrapper\_bound} and rests on the coding theorem $+$ Lemma~2. All four
+WP0195	self-regulation gap $\Delta_{\mathrm{self}}$ (\lean{SelfModel.DeltaSelf}), Proposition~3 applies to
+WriteBack.lean	/-- **The bite of Corollary 1.** A write-back program that is trivial given the parent program
+WriteBack.lean	/-- **WP0058 Proposition 2, background-free form.** A write-back encoder recoverable from the
+WriteBack.lean	/-- **WP0058 Proposition 3, Darwinian half (the substantive part).** The *total* acquired
+WriteBack.lean	/-- **WP0058 Proposition 3, Lamarckian half.** The write-back bandwidth is bounded by the

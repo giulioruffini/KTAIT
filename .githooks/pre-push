@@ -5,7 +5,9 @@
 #     git config core.hooksPath .githooks
 #
 # Runs: lake build (proofs actually compile) + scripts/check_sync.sh (WP0195 and
-# every citing paper still resolve). Bypass with --no-verify only if you know why.
+# every citing paper still resolve; no declaration's statement moved while the prose
+# describing it stood still; no new references-by-number). Bypass with --no-verify
+# only if you know why.
 set -uo pipefail
 cd "$(git rev-parse --show-toplevel)"
 
