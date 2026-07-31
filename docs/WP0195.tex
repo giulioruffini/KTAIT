@@ -275,6 +275,15 @@ $P(x\mid p)=\mathbf{1}\{U(p)=x\}$, evidence $P(x)=m(x)$.\\
 \textbf{Chaitin's incompleteness} ($T$ proves no $K(x)>n$ for $n>c_T$; $K$ uncomputable);
 \textbf{Vereshchagin--Vitányi}: the Kolmogorov structure function $h_x(\alpha)$ is uncomputable
 and minimal sufficient statistics are not locatable.
+
+\smallskip
+WP0007 consumes three of these in distinct forms, and \lean{AlgorithmicEmergence} keeps them
+apart because they are not interchangeable: \lean{KUncomputable} ($K$ is not computable),
+\lean{KThresholdUndecidable} (the predicate $K(x)<b$ is not \emph{decidable} --- it is
+semidecidable, which is the whole content of the improvement barrier), and
+\lean{KNotApproximable} (no computable $f$ satisfies $K\le f\le K+c$, which does \emph{not}
+follow formally from the first as stated). \lean{chaitin\_certification\_ceiling} consumes the
+Chaitin bound in the ``certified lower bounds are capped'' form.
 \end{defbox}
 
 % ══════════════════════════════════════════════════════════════════════
