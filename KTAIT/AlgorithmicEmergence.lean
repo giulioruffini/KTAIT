@@ -16,23 +16,34 @@ supplies a computable *embedding* `emb : Str → Exp` — the shift-and-read reg
 `y` — whose macrohistory is `y` itself (`Faithful`). Everything below is a reduction along
 that embedding.
 
-* `counting_bound` / `few_low_complexity_strings` / `most_states_incompressible` — WP0007
-  Theorem 1 (existence barrier), proved outright: distinct strings need distinct shortest
-  programs, so at most `|P|` strings have a shortest program in `P`, and the complement is
-  therefore a `1 - 2 ^ (-d)` fraction of the state space.
-* `no_compression_improver` / `no_compression_improver_micro` — WP0007 Theorem 2 (improvement
-  barrier). No computable solver returns a description below a *supplied threshold* whenever
-  one exists — a strictly weaker demand than optimality, and still impossible.
-* `identification_barrier` — WP0007 Theorem 3 (optimality barrier). No computable solver
-  returns a shortest program for the macrodata of every experiment.
-* `no_additive_approximation` — WP0007 Proposition 1. Relaxing "shortest" to "within a fixed
-  additive constant `c` of shortest" does not help: every total extractor has unbounded regret.
-* `conditional_complexity_uncomputable` — WP0007's conditional-form corollary. Conditioning on
-  the microlaw,
-  observation map and horizon does not help. The conditioning varies with the input, so this
-  needs its own diagonal argument rather than an appeal to a fixed conditioning string.
-* `chaitin_certification_ceiling` — WP0007 Proposition 2. Per-instance, what blocks an agent is
-  unprovability rather than uncomputability.
+* `counting_bound` / `few_low_complexity_strings` / `most_states_incompressible` — the
+  **existence barrier**, proved outright: distinct strings need distinct shortest programs, so at
+  most `|P|` strings have a shortest program in `P`, and the complement is therefore a
+  `1 - 2 ^ (-d)` fraction of the state space.
+* `no_universal_compressor` / `no_universal_compressor_micro` — the **improvement barrier** in its
+  raw-length form, and the strongest of the identification statements: no total computable
+  compressor shortens every string that is shortenable at all. Asks nothing about optimality.
+* `no_compression_improver_of_raw` — the **arbitrary-threshold corollary**, derived from the
+  previous by specializing at `b = rawlen x` and consuming no undecidability input of its own.
+  `no_compression_improver` / `no_compression_improver_micro` prove the same conclusion directly
+  from `KThresholdUndecidable`; sound, but that hypothesis is not independent
+  (`threshold_undecidable_of_compressible`).
+* `compressor_of_threshold` — the hierarchy as a lemma, recorded because it is easy to assert
+  backwards: a threshold procedure specializes to a universal compressor, so the raw-length
+  statement is the stronger one and is *not* a corollary of the arbitrary-`b` theorem.
+* `identification_barrier` — the **optimality barrier**, which follows a fortiori: no computable
+  solver returns a shortest program for the macrodata of every experiment.
+* `no_additive_approximation` — relaxing "shortest" to "within a fixed additive constant `c` of
+  shortest" does not help: every total extractor has unbounded regret. Independent of the
+  improvement barrier in both directions.
+* `conditional_complexity_uncomputable` — the **conditional-form corollary**. Conditioning on the
+  microlaw, observation map and horizon does not help. The conditioning varies with the input, so
+  this needs its own diagonal argument rather than an appeal to a fixed conditioning string.
+* `chaitin_certification_ceiling` — per-instance, what blocks an agent is unprovability rather
+  than uncomputability.
+
+Results are named, not numbered: WP0007's numbering has shifted repeatedly as statements were
+inserted ahead of others, and prose here cannot track `\ref`.
 
 **What is deliberately NOT formalized.** The companion observation to the improvement barrier —
 that `K x < b` is *semidecidable*, so dovetailing finds a shorter description whenever one
@@ -40,7 +51,7 @@ exists — would need an explicit operational semantics for programs, a halting-
 predicate and the dovetailing construction itself, none of which this development carries. It is
 argued in the paper and assumed nowhere here.
 
-The omission does not touch `no_compression_improver`, which rules out a *total* procedure that
+The omission does not touch the improvement barrier, which rules out a *total* procedure that
 halts on every input while exploiting every available compression. Semidecidability is the
 complementary *positive* fact — a partial search succeeds on each positive instance while
 possibly running forever on the negative ones — so it bounds what remains possible rather than
@@ -67,9 +78,6 @@ The AIT inputs enter as named hypotheses, never as global `axiom`s — the disci
   `KUncomputable` (deciding it for every `b` determines `K x`), but stated in the threshold
   form the improvement barrier consumes. It *is* semidecidable, which is the whole point:
   what the barrier denies is a procedure that always halts, not one that ever succeeds.
-
-Results are named, not numbered. WP0007's numbering has shifted three times as statements were
-added ahead of others, and prose outside `main.tex` cannot track `\ref`. Cite by name.
 
 What is NOT claimed: nothing here re-proves an AIT theorem, and nothing here concerns optimal
 *coarse-graining selection*. WP0007 v0.3.0 withdrew that theorem (degenerate objective, moving
@@ -254,6 +262,41 @@ theorem compressor_of_threshold {A : Str → ℕ → Prog}
     LengthLowerBound₁ K len (atRawLength A rawlen) ∧
       BeatsRawLength K len rawlen (atRawLength A rawlen) :=
   ⟨fun x => hlb x (rawlen x), fun x hx => hbt x (rawlen x) hx⟩
+
+/-- Specializing the threshold argument to `b = rawlen x` is itself a computable operation on the
+solver, so a computable threshold procedure yields a computable universal compressor. -/
+def SpecializationComputable (CompS₂ : (Str → ℕ → Prog) → Prop) (CompS₁ : (Str → Prog) → Prop)
+    (A : Str → ℕ → Prog) : Prop := CompS₂ A → CompS₁ (atRawLength A rawlen)
+
+/-- **WP0007's arbitrary-threshold corollary, derived.** No total computable threshold procedure
+exists — proved *by specialization from* `no_universal_compressor`, consuming no undecidability
+input of its own.
+
+This is the version the paper's corollary states. `no_compression_improver` proves the same
+conclusion directly from `KThresholdUndecidable`; that route is sound but its hypothesis is not
+independent, as `threshold_undecidable_of_compressible` below records. -/
+theorem no_compression_improver_of_raw {CompS₁ : (Str → Prog) → Prop}
+    {CompS₂ : (Str → ℕ → Prog) → Prop} {A : Str → ℕ → Prog}
+    (hspec : SpecializationComputable rawlen CompS₂ CompS₁ A)
+    (hlb : LengthLowerBound K len A) (hbt : BeatsThreshold K len A)
+    (hdec : RawTestDecidable len rawlen DecR₁ CompS₁ (atRawLength A rawlen))
+    (hund : CompressibleUndecidable K rawlen DecR₁) :
+    ¬ CompS₂ A := fun hA =>
+  no_universal_compressor K len rawlen DecR₁
+    (compressor_of_threshold K len rawlen hlb hbt).1
+    (compressor_of_threshold K len rawlen hlb hbt).2 hdec hund (hspec hA)
+
+/-- **The two undecidability inputs are not independent.** Undecidability of the threshold relation
+`{(x,b) | K x < b}` *follows* from undecidability of its diagonal slice `{x | K x < rawlen x}`,
+along the computable map `x ↦ (x, rawlen x)`.
+
+The converse fails, which is exactly why the raw-length statement needs its own proof and cannot
+be read off the threshold one: an arbitrary diagonal slice of an undecidable set need not be
+undecidable. Once the slice is settled, the full relation costs nothing further. -/
+theorem threshold_undecidable_of_compressible {DecR : (Str → ℕ → Prop) → Prop}
+    (hslice : ∀ P : Str → ℕ → Prop, DecR P → DecR₁ (fun x => P x (rawlen x)))
+    (hund : CompressibleUndecidable K rawlen DecR₁) :
+    KThresholdUndecidable K DecR := fun hT => hund (hslice _ hT)
 
 /-- **WP0007 Corollary (micro-to-macro, raw-length form).** No total computable procedure returns,
 for every finite micro-experiment whose macrodata is compressible at all, a program shorter than

@@ -577,6 +577,16 @@ description shorter than itself, such a description. Asks nothing about optimali
 \lean{CompressibleUndecidable}, the undecidability of $\{x:K(x)<|x|\}$, which is a \emph{different}
 classical fact from \lean{KThresholdUndecidable} --- a diagonal slice of an undecidable set need
 not be undecidable.
+\item \lean{AlgorithmicEmergence.no\_compression\_improver\_of\_raw} --- WP0007's
+arbitrary-threshold corollary as the paper states it: derived from
+\lean{no\_universal\_compressor} by specializing at $b=|x|$, and consuming \emph{no} undecidability
+input of its own. \lean{no\_compression\_improver} proves the same conclusion directly from
+\lean{KThresholdUndecidable}; that route is sound but its hypothesis is not independent.
+\item \lean{AlgorithmicEmergence.threshold\_undecidable\_of\_compressible} --- why. Undecidability
+of the threshold relation $\{(x,b):K(x)<b\}$ \emph{follows} from undecidability of its diagonal
+slice $\{x:K(x)<|x|\}$ along the computable map $x\mapsto(x,|x|)$. The converse fails, which is
+why the raw-length statement needs its own proof; once the slice is settled the full relation
+costs nothing further. So the development rests on one classical input here, not two.
 \item \lean{AlgorithmicEmergence.compressor\_of\_threshold} --- the hierarchy, recorded as a lemma
 because it is easy to assert backwards. A threshold procedure specializes at $b=|x|$ to a
 universal compressor, so ``no universal compressor'' \emph{implies} ``no threshold procedure''.
