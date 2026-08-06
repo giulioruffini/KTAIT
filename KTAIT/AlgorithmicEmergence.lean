@@ -6,7 +6,7 @@ Authors: Giulio Ruffini (with Claude Code)
 import Mathlib
 
 /-!
-# KTAIT.AlgorithmicEmergence — reduction is not construction (WP0007 v0.3.0)
+# KTAIT.AlgorithmicEmergence — reduction is not construction (WP0007)
 
 WP0007's three barriers between a microscopic generator and a compressive macroscopic model.
 
@@ -17,12 +17,12 @@ supplies a computable *embedding* `emb : Str → Exp` — the shift-and-read reg
 that embedding.
 
 * `counting_bound` / `few_low_complexity_strings` / `most_states_incompressible` — the
-  **existence barrier**, proved outright: distinct strings need distinct shortest programs, so at
-  most `|P|` strings have a shortest program in `P`, and the complement is therefore a
-  `1 - 2 ^ (-d)` fraction of the state space.
-* `no_universal_compressor` / `no_universal_compressor_micro` — the **improvement barrier** in its
-  raw-length form, and the strongest of the identification statements: no total computable
-  compressor shortens every string that is shortenable at all. Asks nothing about optimality.
+  **residual-information barrier**, proved outright: distinct strings need distinct shortest
+  programs, so at most `|P|` strings have a shortest program in `P`, and the complement is
+  therefore a `1 - 2 ^ (-d)` fraction of the state space.
+* `no_universal_compressor` / `no_universal_compressor_micro` — the **discovery barrier** in its
+  raw-length form: no total computable compressor shortens every string that is shortenable at
+  all. Asks nothing about optimality.
 * `no_compression_improver_of_raw` — the **arbitrary-threshold corollary**, derived from the
   previous by specializing at `b = rawlen x` and consuming no undecidability input of its own.
   `no_compression_improver` / `no_compression_improver_micro` prove the same conclusion directly
@@ -35,7 +35,7 @@ that embedding.
   solver returns a shortest program for the macrodata of every experiment.
 * `no_additive_approximation` — relaxing "shortest" to "within a fixed additive constant `c` of
   shortest" does not help: every total extractor has unbounded regret. Independent of the
-  improvement barrier in both directions.
+  discovery barrier in both directions.
 * `conditional_complexity_uncomputable` — the **conditional-form corollary**. Conditioning on the
   microlaw, observation map and horizon does not help. The conditioning varies with the input, so
   this needs its own diagonal argument rather than an appeal to a fixed conditioning string.
@@ -50,13 +50,18 @@ that embedding.
 Results are named, not numbered: WP0007's numbering has shifted repeatedly as statements were
 inserted ahead of others, and prose here cannot track `\ref`.
 
-**What is deliberately NOT formalized.** The companion observation to the improvement barrier —
+**What is deliberately NOT formalized.** The observer-centric definitions of algorithmic
+emergence and its persistence-relevant strengthening—including the observer, admissible
+projection, prospective validation, policies, and persistence value—are paper-level formal
+content, not Lean theorems in this module.
+
+The companion observation to the discovery barrier —
 that `K x < b` is *semidecidable*, so dovetailing finds a shorter description whenever one
 exists — would need an explicit operational semantics for programs, a halting-in-`t`-steps
 predicate and the dovetailing construction itself, none of which this development carries. It is
 argued in the paper and assumed nowhere here.
 
-The omission does not touch the improvement barrier, which rules out a *total* procedure that
+The omission does not touch the discovery barrier, which rules out a *total* procedure that
 halts on every input while exploiting every available compression. Semidecidability is the
 complementary *positive* fact — a partial search succeeds on each positive instance while
 possibly running forever on the negative ones — so it bounds what remains possible rather than
@@ -81,19 +86,20 @@ The AIT inputs enter as named hypotheses, never as global `axiom`s — the disci
   paper proves it, the Lean development reduces to it.
 * `KThresholdUndecidable` — the predicate `K x < b` is not decidable. Equivalent to
   `KUncomputable` (deciding it for every `b` determines `K x`), but stated in the threshold
-  form the improvement barrier consumes. It *is* semidecidable, which is the whole point:
+  form the discovery barrier consumes. It *is* semidecidable, which is the whole point:
   what the barrier denies is a procedure that always halts, not one that ever succeeds.
 
 What is NOT claimed: nothing here re-proves an AIT theorem, and nothing here concerns optimal
-*coarse-graining selection*. WP0007 v0.3.0 withdrew that theorem (degenerate objective, moving
-target, missing reduction) and restated it as an open problem; see `KTAIT.CoarseGraining` for
+*coarse-graining selection*. WP0007 treats that claim as an open problem because the unconstrained
+objective is degenerate, the target changes with the projection, and no reduction has yet been
+supplied; see `KTAIT.CoarseGraining` for
 the regulatory case, which is WP0193's and fixes the target.
 -/
 
 namespace KTAIT
 namespace AlgorithmicEmergence
 
-/-! ## The existence barrier: the counting step -/
+/-! ## The residual-information barrier: the counting step -/
 
 /-- **Counting bound (WP0007 Theorem 1).** If every string in `S` is assigned a program in the
 finite set `P`, and distinct strings get distinct programs, then `|S| ≤ |P|`.
@@ -129,11 +135,11 @@ theorem most_states_incompressible {Str : Type} [Fintype Str] [DecidableEq Str] 
   rw [Finset.card_compl, hcard]
   omega
 
-/-! ## The improvement barrier
+/-! ## The discovery barrier
 
-WP0007 Theorem 2. Weaker demand than optimality, and still impossible: a procedure asked only to
-return *some* description below a supplied threshold `b`, whenever one exists, cannot be total
-computable. The engine is that validity already gives `len (A x b) < b → K x < b`, so the
+WP0007 discovery theorem. Weaker demand than optimality, and still impossible: a procedure asked
+only to return *some* description below a supplied threshold `b`, whenever one exists, cannot be
+total computable. The engine is that validity already gives `len (A x b) < b → K x < b`, so the
 threshold guarantee turns the undecidable predicate `K x < b` into a decidable one.
 
 The companion observation is not formalized because it is a statement about a search that need
@@ -163,7 +169,7 @@ every `b` determines `K x`, so this is the uncomputability of `K` in threshold f
 Appendix A). It is semidecidable, which is exactly why the barrier is about termination. -/
 def KThresholdUndecidable : Prop := ¬ DecR (fun x b => K x < b)
 
-/-- **WP0007 Theorem 2 (improvement barrier).** No total computable procedure returns, for every
+/-- **WP0007 discovery theorem (threshold form).** No total computable procedure returns, for every
 string and threshold, a description below the threshold whenever one exists. -/
 theorem no_compression_improver {CompS2 : (Str → ℕ → Prog) → Prop} {A : Str → ℕ → Prog}
     (hlb : LengthLowerBound K len A) (hbt : BeatsThreshold K len A)
@@ -207,11 +213,13 @@ end Improvement
 
 /-! ## The raw-length form: no universal compressor
 
-WP0007 Theorem 2 in the form that carries the intuition. Ask nothing about optimality and nothing
+WP0007 discovery theorem in the raw-length form that carries the intuition. Ask nothing about
+optimality and nothing
 about a supplied threshold: ask only that a compressor shorten every string that is shortenable at
 all. It cannot be done by a total procedure.
 
-This is the **strongest** of the identification statements, not a corollary of the threshold one.
+The raw-length statement is stronger than the arbitrary-threshold impossibility, not a corollary
+of it.
 A threshold procedure specializes at `b = rawlen x` to a universal compressor
 (`compressor_of_threshold`), so ruling out the compressor rules out the threshold procedure; the
 converse fails, because a procedure that works only at `b = rawlen x` is a weaker object than one
@@ -240,8 +248,8 @@ Distinct from `KThresholdUndecidable`: a diagonal slice of an undecidable set ne
 undecidable, so this needs its own argument (WP0007 Appendix A). -/
 def CompressibleUndecidable : Prop := ¬ DecR₁ (fun x => K x < rawlen x)
 
-/-- **WP0007 Theorem 2 (raw-length form).** No total computable compressor returns, for every
-string that admits a description shorter than itself, such a description. -/
+/-- **WP0007 discovery theorem (raw-length form).** No total computable compressor returns,
+for every string that admits a description shorter than itself, such a description. -/
 theorem no_universal_compressor {CompS₁ : (Str → Prog) → Prop} {C : Str → Prog}
     (hlb : LengthLowerBound₁ K len C) (hbr : BeatsRawLength K len rawlen C)
     (hdec : RawTestDecidable len rawlen DecR₁ CompS₁ C)
@@ -327,7 +335,7 @@ theorem no_universal_compressor_micro {Exp : Type} (data : Exp → Str) (emb : S
 
 end RawLength
 
-/-! ## The identification barrier -/
+/-! ## The optimality barrier -/
 
 section Identification
 
@@ -349,7 +357,7 @@ def KUncomputable : Prop := ¬ CompN K
 
 /-- **AIT input 2.** No computable function brackets `K` within the fixed additive constant
 `c`. Strictly stronger than `KUncomputable` as stated, and proved by the Berry argument run
-with slack (WP0007 Proposition 3). -/
+with slack (WP0007 Proposition 1). -/
 def KNotApproximable (c : ℕ) : Prop := ∀ f, CompN f → ¬ (∀ y, K y ≤ f y ∧ f y ≤ K y + c)
 
 /-- A solver is *optimal* when it returns a shortest program for every experiment's macrodata. -/
@@ -360,7 +368,7 @@ than `c` bits longer. -/
 def NearOptimal (c : ℕ) (A : Exp → Prog) : Prop :=
   ∀ μ, K (data μ) ≤ len (A μ) ∧ len (A μ) ≤ K (data μ) + c
 
-/-- **WP0007 Theorem 2 (identification barrier).** No computable procedure returns, for every
+/-- **WP0007 optimality barrier.** No computable procedure returns, for every
 finite micro-experiment, a shortest program for its macrodata. Complete knowledge of the
 microscopic generator — rule, initial microstate, observation map and horizon — does not yield
 the shortest macroscopic description. -/
@@ -375,7 +383,8 @@ theorem identification_barrier
   rw [h2] at h1
   exact hK h1
 
-/-- **WP0007 Proposition 3.** Relaxing optimality to within a fixed additive constant does not
+/-- **WP0007 additive-regret proposition.** Relaxing optimality to within a fixed additive
+constant does not
 restore computability, for any constant. -/
 theorem no_additive_approximation {c : ℕ}
     (hred : ReductionClosure emb len CompE CompN) (hfaith : Faithful data emb)

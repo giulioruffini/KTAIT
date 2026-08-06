@@ -394,3 +394,12 @@ A 2–3 line note after each milestone: what we learned / what tripped us up.
   noncomputable), and every lemma about it wants a `classical` first. The exponential crossing
   goes through `Real.log_lt_iff_lt_exp` after `div_lt_iff₀`; the last commutation
   (`(a−b)·τ` vs `τ·(a−b)`) is `nlinarith`, not `rw`.
+
+## 2026-08-06 — WP0007 rev3 (Entropy) docs sync
+The rev3 docs patch renamed the barriers (residual-information / discovery / optimality) and
+itself introduced two NEW references-by-number ("Theorem 3", "Proposition 1") that the
+numbered-refs ratchet caught — the very failure mode the module header warns about. Converted
+to named references in both the docstrings and WP0195; the citation guard's WP0007-entropy
+entry had also gone stale (old `entropy_submission/` path silently SKIPPED), now points at the
+rev3 manuscript. Lesson: a "docs-only" patch still has to pass the ratchet, and a moved paper
+folder unguards its citations without any check failing.

@@ -280,7 +280,7 @@ and minimal sufficient statistics are not locatable.
 WP0007 consumes three of these in distinct forms, and \lean{AlgorithmicEmergence} keeps them
 apart because they are not interchangeable: \lean{KUncomputable} ($K$ is not computable),
 \lean{KThresholdUndecidable} (the predicate $K(x)<b$ is not \emph{decidable} --- it is
-semidecidable, which is the whole content of the improvement barrier), and
+semidecidable, which is the whole content of the discovery barrier), and
 \lean{KNotApproximable} (no computable $f$ satisfies $K\le f\le K+c$, which does \emph{not}
 follow formally from the first as stated). \lean{chaitin\_certification\_ceiling} consumes the
 Chaitin bound in the ``certified lower bounds are capped'' form.
@@ -571,7 +571,7 @@ hypotheses mention only $S^C,k,L,\mathrm{slack}$). Non-vacuity: \lean{toy\_meta\
 rule, minimizing $K(R\mid W)$ is equivalent to maximizing $M(W{:}R)-K(R)$, as an order-equivalence
 rather than an argmin identity.
 \item \lean{AlgorithmicEmergence.no\_universal\_compressor} /
-\lean{no\_universal\_compressor\_micro} --- WP0007 Theorem~2 (improvement barrier) in the form
+\lean{no\_universal\_compressor\_micro} --- WP0007's discovery barrier in the form
 that carries the intuition: no total computable compressor returns, for every string admitting a
 description shorter than itself, such a description. Asks nothing about optimality. Consumes
 \lean{CompressibleUndecidable}, the undecidability of $\{x:K(x)<|x|\}$, which is a \emph{different}
@@ -594,7 +594,7 @@ The raw-length statement is the stronger one and is \textbf{not} a corollary of 
 arbitrary-$b$ theorem; the converse fails, since a procedure required to work only at $b=|x|$ is a
 weaker object than one required to work at every $b$.
 \item \lean{AlgorithmicEmergence.no\_compression\_improver} /
-\lean{no\_compression\_improver\_micro} --- WP0007 Theorem~2 (improvement barrier): no computable
+\lean{no\_compression\_improver\_micro} --- WP0007's discovery barrier: no computable
 procedure returns, for every string (resp.\ micro-experiment) and threshold $b$, a description
 shorter than $b$ whenever one exists. Strictly weaker a demand than optimality, and still
 impossible: validity already gives $\mathrm{len}(A(x,b))<b \Rightarrow K(x)<b$, so the threshold
@@ -606,7 +606,8 @@ semantics for programs, a halting-in-$t$-steps predicate and the dovetailing con
 theorem rules out a \emph{total} procedure that halts on every input while exploiting every
 available compression; semidecidability is the complementary positive fact about partial search,
 so nothing proved here rests on it.
-\item \lean{AlgorithmicEmergence.identification\_barrier} --- WP0007 Theorem~3: no computable
+\item \lean{AlgorithmicEmergence.identification\_barrier} --- WP0007's optimality barrier: no
+computable
 procedure returns, for every finite micro-experiment, a shortest program for its macrodata.
 ``Reduction is not construction.'' The reduction runs along the \lean{Faithful} shift-and-read
 embedding of WP0007 Theorem~1; the AIT input is the uncomputability of $K$, assumed as the named
@@ -621,7 +622,7 @@ computability, for any $c$. The AIT input here is \lean{KNotApproximable}, which
 implied by \lean{KUncomputable} as stated --- it is the Berry argument run with slack, proved in
 WP0007 Proposition~1 and assumed here.
 \item \lean{AlgorithmicEmergence.counting\_bound} / \lean{few\_low\_complexity\_strings} /
-\lean{most\_states\_incompressible} --- WP0007 Theorem~1 (existence barrier), proved outright
+\lean{most\_states\_incompressible} --- WP0007's residual-information barrier, proved outright
 rather than assumed: distinct strings need distinct shortest programs, so fewer than $2^{m}$
 strings have a shortest conditional program of length $<m$, and the complement is therefore more
 than a $1-2^{-d}$ fraction of the state space. The bound holds for every \emph{fixed} conditioning
