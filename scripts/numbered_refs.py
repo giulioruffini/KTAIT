@@ -49,7 +49,7 @@ def offenders() -> list[str]:
             if NUMBERED.search(line) and not VERSION_PINNED.search(line):
                 out.add("WP0195\t" + " ".join(line.split()))
 
-    for path in sorted((ROOT / "KTAIT").glob("*.lean")):
+    for path in sorted((ROOT / "KTAIT").rglob("*.lean")):
         for line in path.read_text(encoding="utf-8", errors="replace").splitlines():
             if not line.strip().startswith(PROSE_LINE):
                 continue  # code, not prose

@@ -99,7 +99,7 @@ def wp0195_entries() -> dict[str, str]:
 def collect() -> list[tuple[str, str, str, str]]:
     entries = wp0195_entries()
     rows = []
-    for path in sorted(LEAN_DIR.glob("*.lean")):
+    for path in sorted(LEAN_DIR.rglob("*.lean")):
         if path.name == "BadStatements.lean":
             continue
         src = path.read_text(encoding="utf-8", errors="replace")

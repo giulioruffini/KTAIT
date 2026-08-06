@@ -403,3 +403,28 @@ to named references in both the docstrings and WP0195; the citation guard's WP00
 entry had also gone stale (old `entropy_submission/` path silently SKIPPED), now points at the
 rev3 manuscript. Lesson: a "docs-only" patch still has to pass the ratchet, and a moved paper
 folder unguards its citations without any check failing.
+
+## 2026-08-06 — WP0215: `KTAIT/IS/`, the first subdirectory, and what the guards did not see
+The paper's three results went in as `KTAIT/IS/{CommonSemantics,Boundary,Unfolding}.lean` inside
+this repo rather than in a companion repo, because the sync machinery lives here and because the
+common-semantics bound must consume the existing `AITFrame` interface. Introducing a `class
+KolmogorovModel` — as the paper's work package suggested — would have duplicated `AITFrame` and
+reinstated the raw-`y` MAI form that `BadStatements.rawy_form_fails` already machine-checks as
+wrong; the bound is stated on `cond … (star …)` throughout.
+- **The guards globbed `KTAIT/*.lean`, not `KTAIT/**/*.lean`.** A subdirectory module would have
+  been invisible to all three checks: sorry-freedom, WP0195 coverage, and the fingerprint
+  manifest. Fixed in `check_sync.sh` (find), `fingerprint.py` and `numbered_refs.py` (`rglob`).
+  Worth remembering that a guard's blind spot is silent by construction — it reports OK.
+- `theorem Reach.step_of` is captured by the coverage regex as the name `Reach`, twice, because
+  the pattern stops at the dot. Dotted theorem names confuse the manifest; renamed to
+  `reach_step` / `reach_start`.
+- The common-semantics chain is four inequalities and therefore `4·slack`, not an unnamed
+  `O(log n)`. Stating the coefficient is the whole benefit of formalizing it.
+- Two toy frames, not one: `ToyIS` (`min`/`max` arithmetic) witnesses the three AIT laws and
+  makes the bound tight; `ToyIndep` (complexity ignoring the last bit, pairing that is
+  concatenation off the diagonal, `slack = 2`) is needed because `ToyIS` has `IK = min x y`, so
+  it cannot exhibit equal complexity with zero shared information.
+- `Layered X Y T` indexes layers by their own carrier type, so a feedback edge is unwritable
+  rather than rejected. The price is that "no single acyclic machine covers all horizons" cannot
+  be stated uniformly — the type depends on `T`. The statable refutation is per-machine: an echo
+  machine defeats any fixed depth at horizon `T+1`.

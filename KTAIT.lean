@@ -17,5 +17,8 @@ import KTAIT.OrbitLabel
 import KTAIT.NoetherFlow
 import KTAIT.PushPull
 import KTAIT.ModelOrPay
+import KTAIT.IS.CommonSemantics
+import KTAIT.IS.Boundary
+import KTAIT.IS.Unfolding
 import KTAIT.ToyModel
 import KTAIT.BadStatements

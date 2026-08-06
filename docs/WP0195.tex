@@ -259,7 +259,10 @@ $-\log_2 m(x)=K(x)\pm O(1)$.\\
 \textbf{Kraft--McMillan.} $\sum_p 2^{-|p|}\le 1$, hence $\sum_x m(x)\le 1$.\\
 \textbf{Symmetry of information.} $\Ik(x{:}y)=K(x)+K(y)-K(x,y)=K(x)-K(x\mid y^\ast)+O(\log)$;
 chain rule $K(x,y)=K(x)+K(y\mid x^\ast)+O(1)$.\\
-\textbf{Multiplicity compression.} $N_{\le L}(x)\ge 2^r \Rightarrow K(x)\le L-r+O(\log L)$.
+\textbf{Multiplicity compression.} $N_{\le L}(x)\ge 2^r \Rightarrow K(x)\le L-r+O(\log L)$.\\
+\textbf{Data processing (unconditional).} $\Ik(z{:}y)\le\Ik(x{:}y)+K(z\mid x^\ast)+O(\log)$:
+computing $z$ from $x$ creates no information about $y$ beyond the cost of the transformation.
+\textbf{Self-information.} $K(x)\le\Ik(x{:}x)+O(\log)$.
 \end{defbox}
 
 \begin{defbox}[Axiom layer B --- probability / Bayes]
@@ -318,6 +321,9 @@ Mathlib~v4.31.0. Modules:
 \lean{Decoder.lean} & \lean{Achievable}, \lean{Inverts}, \lean{dovetail} & WP0058 Prop.~1(i)--(iii), axiom-free \\
 \lean{WriteBack.lean} & \lean{bandwidth}, \lean{DataProcessingCond} & WP0058 Prop.~2--3, channel bound \\
 \lean{Retention.lean} & \lean{J}, \lean{qStar}, \lean{FirstCrossing} & WP0058 Prop.~4 (optimal retention kernel) \\
+\lean{CommonSemantics.lean} & \lean{DataProcessingIK}, \lean{SelfInfo} (in \lean{KTAIT/IS/}) & WP0215 common-semantics bound \\
+\lean{Boundary.lean} & \lean{Machine}, \lean{Reach}, \lean{InternalIso} (in \lean{KTAIT/IS/}) & WP0215 boundary vs.\ organization \\
+\lean{Unfolding.lean} & \lean{Recurrent}, \lean{Layered} (in \lean{KTAIT/IS/}) & WP0215 finite-horizon unfolding \\
 \lean{ToyModel.lean} & \lean{Toy}, \lean{ToyMachine}, \lean{ToyGap} & satisfiability witnesses \\
 \lean{PatternPersist.lean} & WP0162 ontology on \lean{AITFrame} & four cells are agents; Prop.~3 inherited \\
 \lean{BadStatements.lean} & guards bite & part-whole; $y$ vs $y^\ast$; WP0162 ontology \\
@@ -458,6 +464,49 @@ The two bounds coincide exactly when $K(x_{\rm OFF})\le K(R)$
 (\lean{invertible\_reaches\_gap\_iff}), which is the hypothesis nothing supplies and a clamp
 violates. What is machine-checked is that the invertible-coupling bound is \emph{insufficient};
 nothing here establishes the positive claim it was meant to support.
+\item \lean{IS.common\_semantics\_bound} --- WP0215's common-semantics lower bound. If a finite
+semantic object $F$ is recoverable from $p$ at cost $c_1$ and from $q$ at cost $c_2$, both
+conditioned on the shortest programs $p^\ast,q^\ast$, then
+$\Ik(p{:}q)\ge K(F)-c_1-c_2-4\,\mathrm{slack}$. Two descriptions of the same finite semantics
+cannot be algorithmically independent. The paper's $O(\log n)$ is the explicit \lean{slack} term
+and the coefficient $4$ counts the inequalities the chain actually pays: self-information
+(\lean{SelfInfo}), data processing twice (\lean{DataProcessingIK}), and one swap
+(\lean{PairSymmetric}). \lean{IS.common\_semantics\_bound\_raw} is the same bound with the
+recovery costs left as the frame's own conditional complexities, which is the form to quote for
+an intervention-response table. \textbf{Two guards bound the reading.}
+\lean{IS.common\_semantics\_does\_not\_give\_structure} exhibits a frame where the bound is
+attained exactly while $K(p\mid q^\ast)=97$ of $p$'s $100$ bits remain unrecoverable from $q$:
+shared semantics is not shared organization, and near-minimality --- a separate hypothesis, not
+assumed here --- would force shared \emph{information}, never shared causal form.
+\lean{IS.equal\_complexity\_is\_not\_shared\_information} exhibits two descriptions of equal
+complexity with $\Ik=0$, so equal description length is not a weak form of the hypothesis.
+\item \lean{IS.boundary\_eq\_of\_iso} --- WP0215's equivalence hierarchy, the direction that
+holds: an internal isomorphism restricted to reachable states implies equality of the boundary
+map, here the full output trace on every finite input word. The converse fails, and not by dead
+code: \lean{IS.parity4\_boundary\_eq\_parity2} and \lean{IS.parity4\_not\_internal\_iso} give
+parity computed by a counter modulo four and by a counter modulo two --- same boundary, every
+state of the four-state machine reachable (\lean{IS.parity4\_all\_reachable}), no isomorphism,
+because four reachable states do not inject into two. Supporting:
+\lean{IS.trace\_eq\_of\_iso}, \lean{IS.parity\_trace\_eq}, \lean{IS.red\_out},
+\lean{IS.red\_step}, \lean{IS.run\_append}, \lean{IS.reach\_step}, \lean{IS.reach\_start}.
+\item \lean{IS.finite\_unfolding} --- the correction WP0215 records to an earlier KT reply to
+the unfolding argument. For every deterministic recurrent machine and every finite horizon $T$
+there is an acyclic depth-$T$ layered evaluator computing the same map; the witness is
+constructed (\lean{IS.unfold}, \lean{IS.unfold\_valueAt}). The load-bearing modelling choice is
+that the state carries everything that changes, weights included, so adaptation is no obstacle:
+an adapting machine is a machine with a larger state. Acyclicity is typed rather than asserted,
+each layer producing only the next layer's carrier. \lean{IS.unfolding\_layers\_eq\_state}
+records the construction's shape definitionally and stops there --- this development has no cost
+model, so no size or depth growth is stated.
+\item \lean{IS.depth\_bounded\_ignores\_late\_input} --- the honest negative half. A depth-$T$
+layered evaluator is a function of the first $T$ inputs alone, whatever it computes;
+\lean{IS.evalHorizon\_ignores\_late\_input} is the same for the recurrent machine at a fixed
+horizon. Hence \lean{IS.no\_fixed\_unfolding\_covers\_all\_horizons}: for an echo machine no
+fixed depth and no evaluator of that depth reproduces the map at every horizon, since a
+candidate of depth $T$ is already wrong at $T+1$. The uniform statement --- one acyclic machine,
+all horizons --- is \emph{not written here and cannot be}: the type \lean{Layered X Y T} is
+indexed by $T$, so a single term of it has one fixed depth. What is proved is what the paper's
+argument needs, that the unfolding must be re-chosen as the horizon grows.
 \item \lean{OrbitLabel.genEnergy\_conserved} --- WP0162 App.~C: generalized energy as a conserved
 orbit label (axiom-free).
 \item \lean{boundary\_sufficient} --- WP0162 App.~E: the thin boundary as a compressed sufficient
@@ -867,6 +916,43 @@ Invertible coupling & $\Ik\ge K(R)-K(x_{\rm ON})$ holds with $\Ik\ll\Delta$ (wit
   \stproved\ (\lean{invertible\_reaches\_...}) \\
 ``Model it or pay for it'' & $\Ik=\Omega(\Delta_N)$ or $Q_{\rm diss}=\Omega(\Delta_N)k_BT\ln2$ & KT &
   \stna\ (conjecture; not stateable in \lean{AITFrame}) \\
+\midrule
+\multicolumn{4}{@{}l}{\textit{The Simulation Is Phenomenally Itself --- WP0215}}\\
+\midrule
+Common semantics & $\Ik(p{:}q)\ge K(F)-c_1-c_2-4\,\mathrm{slack}$ when $F$ is cheaply
+  recoverable from both & KT & \stproved\ (\lean{common\_semantics\_bound}) \\
+--- cost-free form & same, with the frame's own $K(F\mid p^\ast),K(F\mid q^\ast)$ & KT &
+  \stproved\ (\lean{common\_semantics\_bound\_raw}) \\
+--- data processing & $\Ik(z{:}y)\le\Ik(x{:}y)+K(z\mid x^\ast)+O(\log)$ & STD &
+  \staxiom\ (\lean{DataProcessingIK}) \\
+--- self-information & $K(x)\le\Ik(x{:}x)+O(\log)$ & STD &
+  \staxiom\ (\lean{SelfInfo}) \\
+--- not structure & bound attained while $K(p\mid q^\ast)=97$: shared semantics, no shared form
+  & KT & \stproved\ (\lean{common\_semantics\_does\_not\_give\_structure}) \\
+--- equal size is not it & equal $K$, zero $\Ik$, in a frame satisfying all three laws & KT &
+  \stproved\ (\lean{equal\_complexity\_is\_not\_shared\_information}) \\
+Equivalence hierarchy & internal isomorphism on reachable states $\Rightarrow$ equal boundary &
+  KT & \stproved\ (\lean{boundary\_eq\_of\_iso}) \\
+--- converse false & mod-4 and mod-2 parity: same trace, no isomorphism & KT &
+  \stproved\ (\lean{parity4\_boundary\_eq\_parity2}, \lean{parity4\_not\_internal\_iso}) \\
+--- no dead code & every state of the four-state machine is reachable & KT &
+  \stproved\ (\lean{parity4\_all\_reachable}) \\
+Finite unfolding & any recurrent machine, any horizon $T$: an acyclic depth-$T$ evaluator agrees
+  & KT & \stproved\ (\lean{finite\_unfolding}) \\
+--- shape of it & $T$ layers, each a copy of the state; no asymptotic claim & KT &
+  \stproved\ (\lean{unfolding\_layers\_eq\_state}) \\
+--- horizon bound & a depth-$T$ evaluator reads only the first $T$ inputs & KT &
+  \stproved\ (\lean{depth\_bounded\_ignores\_late\_input}, \lean{evalHorizon\_ignores\_late\_input}) \\
+--- no fixed cover & one evaluator of depth $T$ already fails at horizon $T+1$ & KT &
+  \stproved\ (\lean{no\_fixed\_unfolding\_covers\_all\_horizons}) \\
+--- uniform version & one acyclic machine, all horizons & KT &
+  \stna\ (unwritable: \lean{Layered X Y T} is indexed by $T$) \\
+--- unfolding size & growth of the unfolded family with $T$ & KT &
+  \stna\ (resource claim; no cost model in this development) \\
+Realization relation & $P\models_{\eta,\Omega}\mathcal{S}$ with commuting and counterfactual
+  conditions & KT & \sttodo\ (not yet formalized) \\
+Structured experience & experience $\Leftrightarrow$ implemented mathematical structure & KT &
+  \stna\ (not a proof target; no formal referent for experience) \\
 \midrule
 \multicolumn{4}{@{}l}{\textit{World models / Lie groups --- Entropy 2025 (separate geometry track)}}\\
 \midrule

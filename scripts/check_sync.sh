@@ -44,7 +44,7 @@ HELPER_RE='^(coflow_|rel_|toy[A-Za-z]*_|cweight_|contrast_Z_|mem_|exists_map_wit
 # That is the guard working, not a proof gap — so we look for real `sorry` tokens
 # in tactic/term position only.
 echo "== sorry-free =="
-if grep -rnE '(:=|by|;|^)[[:space:]]*sorry\b' KTAIT/*.lean | grep -v 'BadStatements.lean'; then
+if grep -rnE '(:=|by|;|^)[[:space:]]*sorry\b' --include='*.lean' KTAIT | grep -v 'BadStatements.lean'; then
   echo "  FAIL: a proof contains 'sorry'"; status=1
 else
   echo "  OK: no proof gaps"
@@ -58,7 +58,7 @@ else
   NORM=$(mktemp); trap 'rm -f "$NORM"' EXIT
   sed 's/\\_/_/g' "$WP" > "$NORM"           # WP0195 escapes underscores for LaTeX
 
-  for f in KTAIT/*.lean; do
+  for f in $(find KTAIT -name '*.lean' | sort); do
     m=$(basename "$f" .lean)
     grep -qF "\\lean{${m}.lean}" "$WP" || { echo "  MISSING module: ${m}.lean"; status=1; }
   done
@@ -66,7 +66,8 @@ else
   while read -r t; do
     [[ "$t" =~ $HELPER_RE ]] && continue
     grep -qF "$t" "$NORM" || { echo "  MISSING theorem: $t"; status=1; }
-  done < <(grep -hoE "^(theorem|lemma) [A-Za-z_0-9]+" KTAIT/*.lean | awk '{print $2}' | sort -u)
+  done < <(find KTAIT -name '*.lean' -exec grep -hoE "^(theorem|lemma) [A-Za-z_0-9]+" {} + \
+             | awk '{print $2}' | sort -u)
 
   [ "$status" -eq 0 ] && echo "  OK: every module and non-helper theorem is documented"
 fi
@@ -81,7 +82,8 @@ if [ ! -f "$REGISTRY" ]; then
 else
   # All declaration names KTAIT actually defines.
   DECLS=$(mktemp); trap 'rm -f "$NORM" "$DECLS"' EXIT
-  grep -hoE '^(theorem|lemma|def|structure|abbrev|instance) [A-Za-z_0-9]+' KTAIT/*.lean \
+  find KTAIT -name '*.lean' \
+    -exec grep -hoE '^(theorem|lemma|def|structure|abbrev|instance) [A-Za-z_0-9]+' {} + \
     | awk '{print $2}' | sort -u > "$DECLS"
 
   while IFS= read -r line; do
