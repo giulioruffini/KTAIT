@@ -472,8 +472,11 @@ cannot be algorithmically independent. The paper's $O(\log n)$ is the explicit \
 and the coefficient $4$ counts the inequalities the chain actually pays: self-information
 (\lean{SelfInfo}), data processing twice (\lean{DataProcessingIK}), and one swap
 (\lean{PairSymmetric}). \lean{IS.common\_semantics\_bound\_raw} is the same bound with the
-recovery costs left as the frame's own conditional complexities, which is the form to quote for
-an intervention-response table. \textbf{Two guards bound the reading.}
+recovery costs left as the frame's own conditional complexities; instantiating $F$ at an
+intervention-response table $T_D(f)$ gives the observer-relative reading. The paper's
+$D$-conditioned form $\Ik(p{:}q\mid D)\ge K(T_D(f)\mid D)-O(\log n)$ is \emph{not} proved here:
+it needs conditional analogues of the two AIT hypotheses, which are not stated.
+\textbf{Two guards bound the reading.}
 \lean{IS.common\_semantics\_does\_not\_give\_structure} exhibits a frame where the bound is
 attained exactly while $K(p\mid q^\ast)=97$ of $p$'s $100$ bits remain unrecoverable from $q$:
 shared semantics is not shared organization, and near-minimality --- a separate hypothesis, not
@@ -923,6 +926,8 @@ Common semantics & $\Ik(p{:}q)\ge K(F)-c_1-c_2-4\,\mathrm{slack}$ when $F$ is ch
   recoverable from both & KT & \stproved\ (\lean{common\_semantics\_bound}) \\
 --- cost-free form & same, with the frame's own $K(F\mid p^\ast),K(F\mid q^\ast)$ & KT &
   \stproved\ (\lean{common\_semantics\_bound\_raw}) \\
+--- conditioned on $D$ & $\Ik(p{:}q\mid D)\ge K(T_D(f)\mid D)-O(\log n)$ & KT &
+  \sttodo\ (needs conditional forms of both hypotheses) \\
 --- data processing & $\Ik(z{:}y)\le\Ik(x{:}y)+K(z\mid x^\ast)+O(\log)$ & STD &
   \staxiom\ (\lean{DataProcessingIK}) \\
 --- self-information & $K(x)\le\Ik(x{:}x)+O(\log)$ & STD &

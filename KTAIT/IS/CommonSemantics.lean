@@ -93,11 +93,15 @@ theorem common_semantics_bound (Fr : AITFrame)
   simp only [IK] at hA hB hC hD ⊢
   omega
 
-/-- **The observer-relative reading.** The same bound, stated with the recovery costs left as
-the frame's own conditional complexities rather than as stipulated budgets `c₁, c₂`. This is the
-form to quote when the semantic object is a finite intervention-response table `T_D(f)`: the
-common structure an experiment establishes grows with the repertoire `D` of interventions,
-because `K(Fo)` does. -/
+/-- **The bound with the costs left in place.** The same statement with the recovery costs as the
+frame's own conditional complexities rather than as stipulated budgets `c₁, c₂`.
+
+Instantiating `Fo` at a finite intervention-response table `T_D(f)` gives the reading the paper
+wants — the common structure an experiment establishes grows with the repertoire `D`, because
+`K(Fo)` does. What is *not* formalized here is the paper's `D`-conditioned inequality
+`I_K(p : q | D) ≥ K(T_D(f) | D) − O(log n)`: conditional mutual algorithmic information lives in
+`WriteBack.condIK`, and the conditional analogues of `DataProcessingIK` and `SelfInfo` would have
+to be stated and witnessed before that form could be proved. The bound below is unconditional. -/
 theorem common_semantics_bound_raw (Fr : AITFrame)
     (hDP : DataProcessingIK Fr) (hself : SelfInfo Fr) (hpair : PairSymmetric Fr)
     (p q Fo : Fr.Obj) :
