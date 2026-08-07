@@ -26,15 +26,16 @@
 WP0058 | ../../BCOM WPs and Blogs/working_drafts/WP0058-Inheritance_Architecture/main.tex
 WP0186 | ../../BCOM WPs and Blogs/working_drafts/WP0186-Push_Pull_Motifs/WP0186-Push_Pull_Motifs.tex
 WP0207 | ../../BCOM WPs and Blogs/working_drafts/WP0207-Subagent_Apoptosis/WP0207-Agentoptosis_v5.tex
-WP0203 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/WP0203-The_ART_Tail_Does_Not_Follow.tex
+WP0203-note | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v1/WP0203-The_ART_Tail_Does_Not_Follow.tex
+WP0203-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v3-entropy/wp0203_entropy.tex
 WP0162 | ../../BCOM WPs and Blogs/working_drafts/WP0162-Pattern_Persist_Nature/appendix_formalization.tex
 WP0193 | ../../BCOM WPs and Blogs/working_drafts/WP0193-Regulatory_Coarse_Graining/WP0193-Regulatory_Coarse_Graining.tex
 WP0202 | ../../BCOM WPs and Blogs/working_drafts/WP0202-Exo_Daisy_Algorithmic/WP0202.tex
 WP0007 | ../../BCOM WPs and Blogs/working_drafts/WP0007 [PAPER]  From “More Is Different” to Algorithmic Emergence: Why Compression Is the Hard Part/main.tex
 WP0215 | ../../BCOM WPs and Blogs/working_drafts/WP0215-Simulation-Phenomenally-Itself/WP0215.tex
-WP216-PLR-main | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/sections/04_regulation_agent.tex
-WP216-PLR-collectives | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/sections/07_collectives.tex
-WP216-PLR-status | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/sections/09_controversies.tex
+WP216-PLR-main | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/v4/sections/04_regulation_agent.tex
+WP216-PLR-collectives | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/v4/sections/07_collectives.tex
+WP216-PLR-status | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/v4/sections/09_controversies.tex
 WP0007-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0007 [PAPER]  From “More Is Different” to Algorithmic Emergence: Why Compression Is the Hard Part/v3 wp0007_algorithmic_emergence_rev3 Kaiti/wp0007_entropy.tex
 
 # WP0195 (docs/WP0195.tex) is the status paper itself and is covered by the
