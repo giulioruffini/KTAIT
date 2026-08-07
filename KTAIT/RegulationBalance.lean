@@ -229,5 +229,100 @@ theorem gap_forces_exhaust (W x y R Q Oact Sreg Exh : F.Obj)
   simp only [FlowSplit] at hsplit
   omega
 
+/-! ## Localization: what stops the accounting closing by fiat
+
+WP0203 v4 adds the load-bearing hypothesis. If the exhaust were an arbitrary auxiliary
+string, the choice `Ξ := y` would satisfy closure trivially and the balance would be
+vacuous. v4 forbids that by requiring `Ξ = π_Ξ(S)`, a fixed projection of the realized
+world-side record `S`, chosen independently of the null readout.
+
+The physical-state structure (what a "world-side record" is, and that the projection is
+fixed independently of `y`) is not expressible in an `AITFrame` and is not formalized. What
+*is* formalizable is the anti-vacuity content: a localized exhaust cannot manufacture
+recovery that the world record does not already support. -/
+
+/-- **Localization**, at frame level: the exhaust is recoverable from the realized
+    world-side record `S`, i.e. `K(Ξ | S) ≤ slack`. This is the frame-level shadow of
+    `Ξ = π_Ξ(S)`; it does not capture that the projection is fixed independently of `y`. -/
+def Localized (Exh S : F.Obj) : Prop := (F.cond Exh S : Int) ≤ (F.slack : Int)
+
+/-- Monotonicity of conditioning in the second argument, as a named hypothesis:
+    conditioning on more cannot cost more. -/
+def CondMonoMore (A B C : F.Obj) : Prop :=
+  (F.cond A (F.pair B C) : Int) ≤ (F.cond A B : Int)
+
+/-- Subadditivity through the exhaust: `K(y | ⟨S,C⟩) ≤ K(Ξ | ⟨S,C⟩) + K(y | ⟨Ξ,C⟩) + slack`. -/
+def SubaddVia (y Exh S C : F.Obj) : Prop :=
+  (F.cond y (F.pair S C) : Int)
+    ≤ (F.cond Exh (F.pair S C) : Int) + (F.cond y (F.pair Exh C) : Int) + (F.slack : Int)
+
+/-- **A localized exhaust cannot close the accounting by fiat.** If `Ξ` is a projection of
+    the world-side record `S`, and `Ξ` together with the visible episode `C` recovers `y`,
+    then `S` together with `C` already recovered `y`:
+
+    `K(y | ⟨S,C⟩) ≤ 3·slack`.
+
+    This is the formal content of v4's localization clause. Its contrapositive is the one
+    that bites, and is stated next. -/
+theorem localized_closure_needs_world_record (y Exh S C : F.Obj)
+    (hloc : Localized F Exh S)
+    (hmono : CondMonoMore F Exh S C)
+    (hsub : SubaddVia F y Exh S C)
+    (hclosed : (F.cond y (F.pair Exh C) : Int) ≤ (F.slack : Int)) :
+    (F.cond y (F.pair S C) : Int) ≤ 3 * (F.slack : Int) := by
+  simp only [Localized, CondMonoMore, SubaddVia] at hloc hmono hsub
+  omega
+
+/-- **Anti-vacuity.** If the realized world-side record, together with the visible episode,
+    does *not* determine the null readout, then no localized exhaust satisfies closure — so
+    the realization is not information-closed and the balance does not apply to it.
+
+    This is what rules out `Ξ := y` unless that information is genuinely instantiated in the
+    realized world. -/
+theorem no_localized_exhaust_of_world_record_insufficient (y Exh S C : F.Obj)
+    (hmono : CondMonoMore F Exh S C)
+    (hsub : SubaddVia F y Exh S C)
+    (hbad : 3 * (F.slack : Int) < (F.cond y (F.pair S C) : Int)) :
+    ¬ (Localized F Exh S ∧ (F.cond y (F.pair Exh C) : Int) ≤ (F.slack : Int)) := by
+  rintro ⟨hloc, hclosed⟩
+  have := localized_closure_needs_world_record F y Exh S C hloc hmono hsub hclosed
+  omega
+
+/-! ## The cyclic form
+
+WP0203 v4, Corollary (cyclic form): a regulator returning its private state to a standard
+state drops the memory channel, leaving the three-way statement of the title. -/
+
+/-- The private state is (nearly) determined by the visible episode: `K(σ | C) ≤ slack`. -/
+def CyclicMemory (Sreg C : F.Obj) : Prop := (F.cond Sreg C : Int) ≤ (F.slack : Int)
+
+/-- `M(y : B | C) ≤ K(B | C)`, since `y` is computable from `⟨y,B⟩`. Named hypothesis. -/
+def MutualBelowCond (y B C : F.Obj) : Prop :=
+  cIK F y B C ≤ (F.cond B C : Int)
+
+/-- **Cyclic form.** With a cyclic regulator the private-memory channel contributes only
+    `slack`, so the deficit is carried by model content, action, and exhaust alone —
+    *model it, transmit it, or leave it in the world*. -/
+theorem cyclic_form (W x y R Q Oact Sreg Exh : F.Obj)
+    (hmut : MutualChain F y R)
+    (hsub : CondSubadd F x y R)
+    (hmono : CondMono F x R)
+    (hchain : CondChain F y Q (F.pair x R))
+    (hclosed : InfoClosed F y Q (F.pair x R))
+    (hdp : DataProcessing F y W R)
+    (hsplit : FlowSplit F y Oact Sreg Exh Q (F.pair x R))
+    (hcyc : CyclicMemory F Sreg (F.pair Oact (F.pair x R)))
+    (hbound : MutualBelowCond F y Sreg (F.pair Oact (F.pair x R))) :
+    gap F x y
+      ≤ IK F W R
+        + cIK F y Oact (F.pair x R)
+        + cIK F y Exh (F.pair Sreg (F.pair Oact (F.pair x R)))
+        + 7 * (F.slack : Int) := by
+  have h := balance F W x y R Q hmut hsub hmono hchain hclosed hdp
+  simp only [FlowSplit] at hsplit
+  simp only [CyclicMemory] at hcyc
+  simp only [MutualBelowCond] at hbound
+  omega
+
 end RegulationBalance
 end KTAIT

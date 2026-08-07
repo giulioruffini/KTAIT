@@ -316,7 +316,7 @@ Mathlib~v4.31.0. Modules:
 \lean{ShiftInvariance.lean} & \lean{CheapTransform}, \lean{PairSymmetric} & WP0202 App.~A (the null-hypothesis error) \\
 \lean{PushPull.lean} & \lean{Plant}, \lean{Admissible}, \lean{InwardOnBoundary} & WP0186 Thms~1--2, Cor.~1, gap Lemma~1 \\
 \lean{ModelOrPay.lean} & \lean{MAICapped}; multiplicity witnesses & WP0203 Props.~1--2 \\
-\lean{RegulationBalance.lean} & \lean{cIK}, \lean{InfoClosed}, \lean{FlowSplit} & WP0203 v2, the regulation balance \\
+\lean{RegulationBalance.lean} & \lean{cIK}, \lean{InfoClosed}, \lean{Localized}, \lean{FlowSplit} & WP0203 v4, the regulation balance \\
 \lean{OrbitLabel.lean} & conserved orbit labels & WP0162 App.~C \\
 \lean{NoetherFlow.lean} & \lean{trajLabel}, flow symmetries & generalized Noether (abstract core) \\
 \lean{Decoder.lean} & \lean{Achievable}, \lean{Inverts}, \lean{dovetail} & WP0058 Prop.~1(i)--(iii), axiom-free \\
@@ -485,6 +485,21 @@ depth. And the paper's rate form --- a sustained extensive gap needs an extensiv
 analysis on top of \lean{balance\_rate\_finite} and is deliberately not formalized.
 \lean{residual\_in\_completion} is the supporting step converting ``there is a residual'' into
 ``the residual sits in $Q$.''
+\item \lean{RegulationBalance.localized\_closure\_needs\_world\_record} and
+\lean{no\_localized\_exhaust\_of\_world\_record\_insufficient} --- WP0203~v4's
+\emph{localization} clause, which is what stops the balance closing by fiat. If the exhaust
+were an arbitrary string the choice $\Xi:=y$ would satisfy recovery trivially; v4 requires
+$\Xi$ to be a fixed projection of the realized world-side record $S$. At frame level that
+shadow is \lean{Localized} ($K(\Xi\mid S)\le\mathrm{slack}$), and what is machine-checked is
+the anti-vacuity content: a localized exhaust cannot manufacture recovery the world record
+does not already support, so if $S$ with the visible episode fails to determine $y$, no
+localized $\Xi$ closes the accounting. The physical-state structure --- what a world-side
+record \emph{is}, and that the projection is fixed independently of $y$ --- is not
+expressible in an \lean{AITFrame} and is not formalized.
+\item \lean{RegulationBalance.cyclic\_form} --- WP0203~v4's cyclic corollary. A regulator
+returning its private state to a standard state drops the memory channel, leaving model
+content, action transcript, and world exhaust: \emph{model it, transmit it, or leave it in
+the world}.
 \item \lean{IS.common\_semantics\_bound} --- WP0215's common-semantics lower bound. If a finite
 semantic object $F$ is recoverable from $p$ at cost $c_1$ and from $q$ at cost $c_2$, both
 conditioned on the shortest programs $p^\ast,q^\ast$, then
