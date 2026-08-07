@@ -13,8 +13,8 @@ authors:
   - family-names: Ruffini
     given-names: Giulio
     affiliation: "Barcelona Computational Foundation; Neuroelectrics; Starlab"
-version: "0.1.0"
-date-released: "2026-06-27"
+# No release tags; cite by commit. Date is that of the last audited build.
+date-released: "2026-08-06"
 license: Apache-2.0
 url: "https://github.com/giulioruffini/KTAIT"
 repository-code: "https://github.com/giulioruffini/KTAIT"
@@ -33,7 +33,7 @@ keywords:
   - algorithmic regulator theorem
 references:
   - type: report
-    title: "A Lean 4 Formalization of Kolmogorov Theory: Axioms, Theorems, and Project Status"
+    title: "A Lean 4 Formalization of Kolmogorov Theory (KT-LEAN)"
     authors:
       - family-names: Ruffini
         given-names: Giulio

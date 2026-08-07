@@ -159,15 +159,30 @@ See `CITATION.cff` (GitHub shows a "Cite this repository" button). BibTeX:
 @software{ruffini2026ktait,
   author  = {Ruffini, Giulio},
   title   = {{KTAIT}: A {Lean}~4 Formalization of {Kolmogorov} {Theory}},
-  year    = {2026}, version = {0.1.0},
-  doi     = {10.5281/zenodo.20969562},
+  year    = {2026},
   url     = {https://github.com/giulioruffini/KTAIT},
-  note    = {Companion: BCOM Working Paper WP0195 (bundled in \texttt{docs/})}
+  note    = {Cite a specific commit; this source tree has no software DOI.
+             Companion paper: BCOM WP0195, doi:10.5281/zenodo.21008868}
 }
 ```
 
-Permanent archive (DOI): **[10.5281/zenodo.20969562](https://doi.org/10.5281/zenodo.20969562)**.
-The companion working paper **WP0195** is bundled in `docs/WP0195.pdf`.
+**This repository has no software DOI.** There is no Zenodo deposit of this
+source tree. Cite it by URL plus the commit hash you built against.
+
+The Zenodo records belong to the companion *paper*, WP0195 *A Lean 4
+Formalization of Kolmogorov Theory (KT-LEAN)* — resource type Preprint,
+CC-BY-4.0, not Apache-2.0, and not this code:
+
+| DOI | What it is |
+|---|---|
+| [10.5281/zenodo.21008868](https://doi.org/10.5281/zenodo.21008868) | **Concept DOI** — always resolves to the latest version of the paper. Cite this one. |
+| 10.5281/zenodo.21737260 | Version DOI, WP0195 v0.4.0 (2026-08-01) |
+| 10.5281/zenodo.21008869 | Version DOI, WP0195 v0.1.0 |
+| 10.5281/zenodo.20969562 | Superseded earlier deposit of the same paper. Do not cite. |
+
+The paper is also bundled in `docs/WP0195.pdf`. If a software DOI is ever
+wanted, mint it through the GitHub–Zenodo release integration so it inherits
+Apache-2.0.
 
 ## License
 
