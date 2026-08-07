@@ -316,6 +316,7 @@ Mathlib~v4.31.0. Modules:
 \lean{ShiftInvariance.lean} & \lean{CheapTransform}, \lean{PairSymmetric} & WP0202 App.~A (the null-hypothesis error) \\
 \lean{PushPull.lean} & \lean{Plant}, \lean{Admissible}, \lean{InwardOnBoundary} & WP0186 Thms~1--2, Cor.~1, gap Lemma~1 \\
 \lean{ModelOrPay.lean} & \lean{MAICapped}; multiplicity witnesses & WP0203 Props.~1--2 \\
+\lean{RegulationBalance.lean} & \lean{cIK}, \lean{InfoClosed}, \lean{FlowSplit} & WP0203 v2, the regulation balance \\
 \lean{OrbitLabel.lean} & conserved orbit labels & WP0162 App.~C \\
 \lean{NoetherFlow.lean} & \lean{trajLabel}, flow symmetries & generalized Noether (abstract core) \\
 \lean{Decoder.lean} & \lean{Achievable}, \lean{Inverts}, \lean{dovetail} & WP0058 Prop.~1(i)--(iii), axiom-free \\
@@ -464,6 +465,26 @@ The two bounds coincide exactly when $K(x_{\rm OFF})\le K(R)$
 (\lean{invertible\_reaches\_gap\_iff}), which is the hypothesis nothing supplies and a clamp
 violates. What is machine-checked is that the invertible-coupling bound is \emph{insufficient};
 nothing here establishes the positive claim it was meant to support.
+\item \lean{RegulationBalance.balance}, \lean{balance\_readout}, \lean{deficit},
+\lean{balance\_rate\_finite}, \lean{gap\_forces\_exhaust} --- WP0203~v2, the regulation balance:
+the positive replacement for the withdrawn concentration corollary. With $Q$ bundling the regulator's action transcript, its
+retained private state and the \emph{world exhaust}, and under an information-closure hypothesis
+$K(y\mid\langle Q,\langle x,R\rangle\rangle)\le\mathrm{slack}$ that makes $Q$ an admissible
+completion,
+\[
+  \Delta\;\le\;\Ik(W{:}R)+\mathrm{cIK}(y{:}Q\mid\langle x,R\rangle)+O(\mathrm{slack}).
+\]
+Equivalently (\lean{deficit}) the episode flow is bounded \emph{below} by
+$\Delta-\Ik(W{:}R)$: the distinctions removed from the scored readout do not disappear.
+\lean{gap\_forces\_exhaust} is the trichotomy --- no model content, no world-relevant action
+transcript and no retained state force the whole gap into the exhaust term, which is the regime
+the clamp family of \lean{ModelOrPay} occupies. Two scope notes belong with these. The first
+inequality is an \emph{accounting identity}: it is the chain rule together with a closure
+condition that defines the exhaust as whatever recovers $y$, so its content is localization, not
+depth. And the paper's rate form --- a sustained extensive gap needs an extensive flow --- is
+analysis on top of \lean{balance\_rate\_finite} and is deliberately not formalized.
+\lean{residual\_in\_completion} is the supporting step converting ``there is a residual'' into
+``the residual sits in $Q$.''
 \item \lean{IS.common\_semantics\_bound} --- WP0215's common-semantics lower bound. If a finite
 semantic object $F$ is recoverable from $p$ at cost $c_1$ and from $q$ at cost $c_2$, both
 conditioned on the shortest programs $p^\ast,q^\ast$, then
