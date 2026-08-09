@@ -130,7 +130,36 @@ theorem terminal_action_underdetermines_target :
     (obj T).app.choose = (obj L).app.choose ∧ (obj T).target.traj ≠ (obj L).target.traj :=
   ⟨rfl, fun hEq => (by decide : (20 : Nat) ≠ 40) (congrFun hEq 0)⟩
 
-/-! ## 6. The decision algebra of the boxed rule -/
+/-! ## 6. State dependence: the exception, not the rule
+
+WP0207's nested-mutualism reading: the constituent and the larger pattern are ordinarily
+mutualists, and agentoptosis is a state-dependent sign reversal, not standing hostility.
+That baseline is architectural and evolutionary, so no generic mutual-benefit theorem is
+stated or provable here; what CAN be witnessed is that a single other-directed objective
+is compatible with bearer-preserving action in ordinary states and bearer-terminating
+action in an exceptional one. -/
+
+/-- A state-dependent apparatus over the toy frame. Actions are `Bool`, `true` meaning
+terminate; the chosen action flips only when the state crosses `100`. -/
+def stateApp : Apparatus F0 Bool where
+  ME := fun m _ => m
+  predict := fun m a => if a = decide (100 ≤ m) then 1 else 0
+  OF := fun x => (x : Int)
+  choose := fun m => decide (100 ≤ m)
+  isArgmax := fun m a => by by_cases h : a = decide (100 ≤ m) <;> simp [h]
+  nontrivial := ⟨0, 1, by decide⟩
+
+/-- One objective, targeting the constituent class throughout. -/
+def stateObj : Objective F0 Bool := ⟨stateApp, T⟩
+
+/-- Under a single class-targeting objective, the ordinary state retains the bearer and
+the exceptional state terminates it. Higher-scale targeting is compatible with keeping
+the constituent alive almost everywhere; agentoptosis is the reversal region. -/
+theorem ordinary_retains_exceptional_terminates :
+    stateObj.app.choose 10 = false ∧ stateObj.app.choose 200 = true := by
+  constructor <;> decide
+
+/-! ## 7. The decision algebra of the boxed rule -/
 
 /-- **WP0207 deletion threshold.** For positive misclassification costs, the expected
 event-level effect `p·C_FN − (1−p)·C_FP` is positive exactly when the evidence `p`
