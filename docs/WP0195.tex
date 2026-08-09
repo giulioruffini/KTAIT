@@ -326,7 +326,8 @@ Mathlib~v4.31.0. Modules:
 \lean{Boundary.lean} & \lean{Machine}, \lean{Reach}, \lean{InternalIso} (in \lean{KTAIT/IS/}) & WP0215 boundary vs.\ organization \\
 \lean{Unfolding.lean} & \lean{Recurrent}, \lean{Layered} (in \lean{KTAIT/IS/}) & WP0215 finite-horizon unfolding \\
 \lean{ToyModel.lean} & \lean{Toy}, \lean{ToyMachine}, \lean{ToyGap} & satisfiability witnesses \\
-\lean{PatternPersist.lean} & WP0162 ontology on \lean{AITFrame} & four cells are agents; Prop.~3 inherited \\
+\lean{PatternPersist.lean} & PP! ontology on \lean{AITFrame} & agenthood per cell, not automatic; Prop.~3 inherited \\
+\lean{Agentoptosis.lean} & \lean{AgentoptoticEvent}, bearer/target split & WP0207 v0.8 ontology; deletion threshold \\
 \lean{BadStatements.lean} & guards bite & part-whole; $y$ vs $y^\ast$; WP0162 ontology \\
 \bottomrule
 \end{tabular}
@@ -334,11 +335,33 @@ Mathlib~v4.31.0. Modules:
 
 \noindent\textbf{Proved KT corollaries (no \lean{sorry}; \lean{\#print axioms} = Lean core only):}
 \begin{itemize}[leftmargin=1.4em,itemsep=1pt]
-\item \lean{PP.token\_is\_agent}, \lean{PP.class\_is\_agent}, \lean{PP.collective\_is\_agent},
-\lean{PP.kind\_is\_agent} --- the four cells of the WP0207 square (token $a_i$, constituent class
-$\mathcal T$, collective $M$, collective kind $\mathcal L(M)$) are all agents. Possible only because
-agenthood is a \emph{predicate} on the single carrier \lean{Pattern}, following WP0162's
-``no agent over and above the pattern''.
+\item \lean{PP.token\_is\_agent}, \lean{PP.class\_not\_agent\_here}, \lean{PP.kind\_not\_agent\_here},
+\lean{PP.collective\_can\_be\_agent}, \lean{PP.collective\_not\_agent\_here} --- the four cells of the
+WP0207 square (token $a_i$, constituent class $\mathcal T$, collective $M$, collective kind
+$\mathcal L(M)$) are all \emph{patterns}; agenthood is decided cell by cell on regulatory evidence
+and follows from patternhood for none of them. The witnesses exhibit a token that is a genuine
+agent, recurring kinds that are targets without being agents, and a collective shown both ways ---
+composition settles nothing. Possible because agenthood is a \emph{predicate} on the single carrier
+\lean{Pattern}, following WP0162's ``no agent over and above the pattern''; the per-cell reading is
+WP0207~v0.8's, after the PP!\ synchronization review.
+\item \lean{PP.other\_target\_not\_telehomeostatic} (general, definitional),
+\lean{PP.AgentoptoticEvent}, \lean{PP.event\_agent\_not\_telehomeostatic},
+\lean{PP.targeted\_class\_not\_agent}, \lean{PP.composition\_does\_not\_imply\_agenthood},
+\lean{PP.CollectiveTelehomeostasis} with its projection lemmas
+\lean{PP.collective\_telehomeostasis\_requires\_agent} and
+\lean{PP.collective\_telehomeostasis\_requires\_self\_target}, and
+\lean{PP.terminal\_action\_underdetermines\_target} --- the WP0207 v0.8 ontology in
+\lean{Agentoptosis.lean}: an agentoptotic event requires constituent agenthood and internal
+selection of the terminal action, and deliberately carries no target or beneficiary field; an
+other-directed objective is not telehomeostatic for its bearer; naming a pattern as target promotes
+nothing; higher-scale telehomeostasis is by definition collective agenthood plus a self-targeting
+collective objective; and the same terminal action arises under objectives with distinct targets,
+so self-termination alone cannot identify the persistence target.
+\item \lean{PP.deletion\_threshold} --- WP0207's boxed decision rule as elementary algebra over
+$\mathbb Q$: for positive costs, $0 < p\,C_{\mathrm{FN}} - (1-p)\,C_{\mathrm{FP}}$ exactly when
+$p > C_{\mathrm{FP}}/(C_{\mathrm{FP}}+C_{\mathrm{FN}})$. The biological and evolutionary content of
+WP0207 ($\Psi$, $\Delta J$, $\chi$, the filter operator, release, enforceability) is deliberately
+not formalized.
 \item \lean{PP.token\_not\_telehomeostatic}, \lean{PP.class\_is\_telehomeostatic} --- telehomeostasis
 is fixed by the objective alone (WP0162 \S3), so a token whose objective proxies its class is a
 genuine agent that is not telehomeostatic. \lean{PP.agentoptosis\_gap} states the conjunction: that
@@ -815,9 +838,13 @@ Proposition 1 & regulator selection $\argmin K(R\mid W)=\argmax[M-K(R)]$ & KT & 
 Proposition 2 & persistence conservation ledger $K(O_W)=\Ik+K(O_W\mid R^\ast)\pm O(\log)$ & KT & \stproved\ (\lean{persistence\_...}) \\
 Meta-persistence & collective $\mathrm{Pers}_C\ge 1-(L{+}\mathrm{slack})/k$; parts need not align & KT & \stproved\ (\lean{meta\_persistence}) \\
 Proposition 4 & self-model incompleteness (3 obstructions) & KT & \stproved\ (\lean{quine\_floor},$\ldots$) \\
-WP0162 ontology & four cells (token, class, collective, collective kind) are all agents & KT & \stproved\ (\lean{PP.token\_is\_agent},$\ldots$) \\
+PP! ontology & four cells are patterns; agenthood per cell, composition settles nothing & KT & \stproved\ (\lean{PP.token\_is\_agent}, \lean{PP.collective\_not\_agent\_here},$\ldots$) \\
 WP0162 \S3 & telehomeostasis is fixed by the objective alone & KT & \stproved\ (\lean{PP.class\_is\_telehomeostatic}) \\
 WP0207 & agentoptosis gap: agent $\wedge$ not telehomeostatic & KT & \stproved\ (\lean{PP.agentoptosis\_gap}) \\
+WP0207 v0.8 & event requires agenthood + internal selection; no target/beneficiary field & KT & \stproved\ (\lean{PP.AgentoptoticEvent}, \lean{PP.other\_target\_not\_telehomeostatic}) \\
+WP0207 v0.8 & target/composition promote nothing; collective telehomeostasis conditional & KT & \stproved\ (\lean{PP.targeted\_class\_not\_agent}, \lean{PP.composition\_does\_not\_imply\_agenthood}, \lean{PP.CollectiveTelehomeostasis}) \\
+WP0207 v0.8 & terminal action underdetermines target & KT & \stproved\ (\lean{PP.terminal\_action\_underdetermines\_target}) \\
+WP0207 v0.8 & deletion threshold $0<p\,C_{\mathrm{FN}}-(1-p)\,C_{\mathrm{FP}} \iff p>\vartheta$ & KT & \stproved\ (\lean{PP.deletion\_threshold}) \\
 WP0162 \S5 & agenthood is a positive $\Delta_{\mathrm{self}}$, computed not asserted & KT & \stproved\ (\lean{PP.externally\_regulated\_not\_agent}) \\
 WP0162 \S4 & persistence unfolds to $\mathrm{NMAI}$, inherited from \lean{Persistence} & KT & \stproved\ (\lean{PP.persists\_iff\_nmai}) \\
 Proposition 3 (PP) & every agent has a temporal self-model & KT & \stproved\ (\lean{PP.agent\_has\_temporal\_self\_model}) \\

@@ -428,3 +428,14 @@ wrong; the bound is stated on `cond … (star …)` throughout.
   rather than rejected. The price is that "no single acyclic machine covers all horizons" cannot
   be stated uniformly — the type depends on `T`. The statable refutation is per-machine: an echo
   machine defeats any fixed depth at horizon `T+1`.
+
+## 2026-08-09 — WP0207 v0.8: agenthood per cell, not automatic
+Kaiti's PP!-sync review was right that `class_is_agent`/`kind_is_agent` encoded the retracted
+"four cells are four agents" reading — they were toy witnesses, but the toy plus the module
+docstring asserted exactly the ontology v0.8 withdraws. Restructured: token agent, kinds
+targets-not-agents, collective both ways; new `Agentoptosis.lean` holds the event structure
+(no target/beneficiary fields), the bearer/target lemmas, guards, and the ϑ algebra. Two
+lessons: grep for LaTeX-escaped `\_` names before declaring a declaration uncited (the guard
+caught WP0207 v5 citing the removed names after my plain grep said "uncited"); and Kaiti's
+notation table itself had one error — PP! v11 uses calligraphic 𝒜 and 𝒲_t, not plain A/W_t —
+so a sync review's own claims need checking against the canonical source, not trusted.

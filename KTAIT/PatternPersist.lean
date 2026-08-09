@@ -26,8 +26,10 @@ which descriptions are *submodels* of which, and which are *useful*.
 **The single carrier.** WP0162: "the agent A is a pattern on the internal tape —
 there is nothing else, no agent over and above the pattern", and "the persistent
 patterns strictly *contain* the agents." So `Pattern` is the one carrier and
-agenthood is a *predicate*, `IsAgent`. This is what lets the four cells of WP0207
-(token, constituent class, collective, collective kind) all be agents.
+agenthood is a *predicate*, `IsAgent`. WP0207's four cells (token, constituent
+class, collective, collective kind) are all *patterns*; any of them MAY additionally
+be an agent, but patternhood alone implies nothing — agenthood is asserted per cell,
+on regulatory evidence (WP0207 v0.8, following PP! §7).
 
 **Agenthood has content now.** `IsAgent` is a positive self-regulation gap
 `Δ_self = K(O_∅) − K(O_reg) > 0` — the paper's own quantity — not a hand-set tag.
@@ -153,7 +155,10 @@ theorem agent_has_temporal_self_model
 
 /-! ## 6. Witness: the four cells of WP0207
 
-A toy frame in which the four cells are distinct trajectories, each self-regulating. -/
+A toy frame in which the four cells are distinct trajectories. Agenthood is decided
+cell by cell: the token self-regulates; the recurring kinds, under the regulations
+given here, do not — patternhood without agenthood. The collective is exhibited both
+ways, because composition settles nothing (WP0207 v0.8 §Formalization). -/
 
 @[reducible] def F0 : PPFrame where
   Obj := Nat
@@ -176,8 +181,11 @@ def T   : Pattern F0 := cell 20 (by decide)   -- the constituent class
 def M   : Pattern F0 := cell 30 (by decide)   -- this collective
 def L   : Pattern F0 := cell 40 (by decide)   -- the collective kind
 
-/-- Every cell is self-regulating here: ablating its maintainer costs 5 bits. -/
+/-- A self-regulating situation: ablating the maintainer costs 5 bits. -/
 def reg (S : Pattern F0) : Regulation F0 S := ⟨7, 2, 1⟩
+
+/-- A situation with no self-regulation gap: maintained from outside, or not at all. -/
+def inertReg (S : Pattern F0) : Regulation F0 S := ⟨2, 7, 1⟩
 
 def app0 : Apparatus F0 Unit where
   ME := fun m _ => m
@@ -189,16 +197,29 @@ def app0 : Apparatus F0 Unit where
 
 def obj (target : Pattern F0) : Objective F0 Unit := ⟨app0, target⟩
 
-/-! ### All four cells are agents -/
+/-! ### Agenthood is per-cell, not automatic -/
 
-theorem token_is_agent      : IsAgent (reg a_i) := by
+theorem token_is_agent : IsAgent (reg a_i) := by
   simp [IsAgent, selfGap, DeltaSelf, reg]
-theorem class_is_agent      : IsAgent (reg T)   := by
+
+/-- The recurring constituent class is a pattern and a persistence target; under its
+inert regulation it is no agent. Naming a pattern as target promotes nothing. -/
+theorem class_not_agent_here : ¬ IsAgent (inertReg T) := by
+  simp [IsAgent, selfGap, DeltaSelf, inertReg]
+
+/-- Likewise the collective kind: pattern, target, not an agent here. -/
+theorem kind_not_agent_here : ¬ IsAgent (inertReg L) := by
+  simp [IsAgent, selfGap, DeltaSelf, inertReg]
+
+/-- The collective CAN be an agent — when a positive self-regulation gap is
+independently established at that scale... -/
+theorem collective_can_be_agent : IsAgent (reg M) := by
   simp [IsAgent, selfGap, DeltaSelf, reg]
-theorem collective_is_agent : IsAgent (reg M)   := by
-  simp [IsAgent, selfGap, DeltaSelf, reg]
-theorem kind_is_agent       : IsAgent (reg L)   := by
-  simp [IsAgent, selfGap, DeltaSelf, reg]
+
+/-- ...and can equally fail to be one, in the same frame in which its constituent is
+a genuine agent. Composition does not decide the question. -/
+theorem collective_not_agent_here : ¬ IsAgent (inertReg M) := by
+  simp [IsAgent, selfGap, DeltaSelf, inertReg]
 
 /-! ### Telehomeostasis splits by column -/
 
@@ -230,8 +251,6 @@ theorem token_usually_telehomeostatic : IsTelehomeostatic a_i (obj a_i) := rfl
 /-! ## 7. Guards -/
 
 /-- A pattern with no self-regulation gap is not an agent, however it is described. -/
-def inertReg (S : Pattern F0) : Regulation F0 S := ⟨2, 7, 1⟩
-
 theorem externally_regulated_not_agent : ¬ IsAgent (inertReg a_i) := by
   simp [IsAgent, selfGap, DeltaSelf, inertReg]
 
