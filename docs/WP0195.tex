@@ -552,6 +552,15 @@ opening an extensive grounded gap is \emph{forced} into an extensive counterfact
 residual --- the blind clamp/AC regime classified, and the structural reason no
 horizon-uniform $\Ik(W{:}R)\asymp\Delta_N$ can hold for fixed finite $R$: static model
 content is reusable, cumulative regulation benefit is not.
+\item \lean{GroundedRegulation.closure\_by\_construction} --- WP0203 v10's Remark
+(automatic closure). In the deterministic Turing-pair idealization the persistent world
+description is instantiated in the realized world-side record $S$ and the null readout is
+computable from it, so $K(y\mid S,C)\le 3\,\mathrm{slack}$ for any visible episode $C$: an
+information-closing record exists \emph{by construction}, via the named conditional
+composition fact \lean{CondCompose} ($K(y|S)\le K(W|S)+K(y|W)+\mathrm{slack}$) and
+conditioning monotonicity. Closure is therefore automatic in abstract ART and becomes a
+substantive hypothesis only for physically bounded realizations; localization and
+minimality retain the substantive bookkeeping role.
 \item \lean{GroundedRegulation.residual\_is\_completion} and \lean{grounded\_balance} ---
 the bridge back to the balance. Under the reguland-level closure with completion
 $Q=\langle O_R,\sigma_R,\Xi\rangle$,
@@ -1033,6 +1042,8 @@ Forced residual & $\Ik\le K R+\mathrm{slack}$ $\Rightarrow$ $L_Z\ge\Delta_Z-K R-
   \stproved\ (\lean{simple\_regulator\_forces\_residual}) \\
 Residual = completion & closure: $|L_Z-\mathrm{cIK}(z_0{:}Q\mid\langle z,R\rangle)|\le2\,\mathrm{slack}$ & KT &
   \stproved\ (\lean{residual\_is\_completion}, \lean{grounded\_balance}) \\
+Automatic closure & abstract ART: world record closes the accounting by construction & KT &
+  \stproved\ (\lean{closure\_by\_construction}) \\
 --- asymptotic form & $\Ik(W{:}R)\ge(1-o(1))\Delta$ for $\varepsilon,\lambda=o(\Delta)$ & KT &
   \stna\ (analysis on top of the finite inequalities) \\
 \midrule

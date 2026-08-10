@@ -166,6 +166,33 @@ theorem simple_regulator_forces_residual (W z z0 R : F.Obj)
   simp only [IKCeiling] at hceil
   omega
 
+/-! ## Closure holds by construction in abstract ART
+
+WP0203 v10, Remark (automatic closure): in the deterministic Turing-pair idealization the
+persistent world description is instantiated in the realized world-side record `S`, and the
+null readout is computable from that description. An information-closing record therefore
+exists by construction; closure becomes a substantive physical hypothesis only when ART is
+instantiated with a chosen boundary that may omit an information-bearing degree. -/
+
+/-- **Conditional composition**: `K(y|S) ≤ K(W|S) + K(y|W) + slack` — describe `W` from
+    `S`, then `y` from `W`. Standard; named hypothesis. -/
+def CondCompose (y W S : F.Obj) : Prop :=
+  (F.cond y S : Int) ≤ (F.cond W S : Int) + (F.cond y W : Int) + (F.slack : Int)
+
+/-- **Remark (closure by construction).** If the world description `W` is instantiated in
+    the realized world-side record `S` (`K(W|S) ≤ slack`) and the null readout is computable
+    from it (`K(y|W) ≤ slack`), then the record closes the accounting even after
+    conditioning on the visible episode `C`: `K(y | ⟨S,C⟩) ≤ 3·slack`. Localization and
+    minimality still govern which part of `S` may be charged as exhaust. -/
+theorem closure_by_construction (y W S C : F.Obj)
+    (hinst : (F.cond W S : Int) ≤ (F.slack : Int))
+    (hcomp : (F.cond y W : Int) ≤ (F.slack : Int))
+    (hchain : CondCompose F y W S)
+    (hmono : CondMonoMore F y S C) :
+    (F.cond y (F.pair S C) : Int) ≤ 3 * (F.slack : Int) := by
+  simp only [CondCompose, CondMonoMore] at hchain hmono
+  omega
+
 /-! ## The residual is the WP0203 completion term -/
 
 /-- **Pair monotonicity**: `K(B|C) ≤ K(⟨A,B⟩|C) + slack`, since `B` is computable from the

@@ -449,3 +449,11 @@ eight proofs `simp only [...] ; omega`. New trick: `|·|` goals over `Int` close
 two-sided `residual_is_completion` needed one genuinely new hypothesis, `PairMono`
 (`K(B|C) ≤ K(⟨A,B⟩|C) + slack`) — the existing `MutualBelowCond` bounds by the wrong
 marginal.
+
+## 2026-08-10 (later) — closure_by_construction (WP0203 v10 Remark)
+The v10 Remark "closure holds by construction in abstract ART" is a two-hypothesis chain
+(world description instantiated in the record + null readout computable from it) closed by
+one new named fact, `CondCompose` (K(y|S) ≤ K(W|S) + K(y|W) + slack), plus the existing
+`CondMonoMore`. Lesson: when a paper remark says "by construction", the construction is
+still one or two named AIT facts — formalize them or the remark is the weakest link in an
+otherwise fully anchored section.
