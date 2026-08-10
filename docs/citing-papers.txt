@@ -33,6 +33,7 @@ WP0203-v7 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not
 WP0203-v8 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v8/wp0203_preprint.tex
 WP0203-v9 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v9/wp0203_preprint.tex
 WP0203-v10 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v10/wp0203_preprint.tex
+WP0203-v11 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v11/wp0203_preprint.tex
 WP0162 | ../../BCOM WPs and Blogs/working_drafts/WP0162-Pattern_Persist_Nature/appendix_formalization.tex
 WP0193 | ../../BCOM WPs and Blogs/working_drafts/WP0193-Regulatory_Coarse_Graining/WP0193-Regulatory_Coarse_Graining.tex
 WP0202 | ../../BCOM WPs and Blogs/working_drafts/WP0202-Exo_Daisy_Algorithmic/WP0202.tex
