@@ -18,6 +18,7 @@ import KTAIT.NoetherFlow
 import KTAIT.PushPull
 import KTAIT.ModelOrPay
 import KTAIT.RegulationBalance
+import KTAIT.GroundedRegulation
 import KTAIT.PatternPersist
 import KTAIT.Agentoptosis
 import KTAIT.IS.CommonSemantics

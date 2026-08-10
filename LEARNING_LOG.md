@@ -439,3 +439,13 @@ lessons: grep for LaTeX-escaped `\_` names before declaring a declaration uncite
 caught WP0207 v5 citing the removed names after my plain grep said "uncited"); and Kaiti's
 notation table itself had one error — PP! v11 uses calligraphic 𝒜 and 𝒲_t, not plain A/W_t —
 so a sync review's own claims need checking against the canonical source, not trusted.
+
+## 2026-08-10 — GroundedRegulation (WP0203 grounded exposition)
+The repaired static-MAI corollary formalized in one pass: every theorem is the
+`balance_readout` chain-rule spine with a different stopping point, so reusing
+`RegulationBalance`'s hypothesis shapes (`MutualChain`/`CondSubadd`/`CondMono`) made all
+eight proofs `simp only [...] ; omega`. New trick: `|·|` goals over `Int` close with
+`rw [abs_le]` before `omega` (this pulls in `Classical.choice`, still Lean core). The
+two-sided `residual_is_completion` needed one genuinely new hypothesis, `PairMono`
+(`K(B|C) ≤ K(⟨A,B⟩|C) + slack`) — the existing `MutualBelowCond` bounds by the wrong
+marginal.

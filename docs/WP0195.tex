@@ -317,6 +317,7 @@ Mathlib~v4.31.0. Modules:
 \lean{PushPull.lean} & \lean{Plant}, \lean{Admissible}, \lean{InwardOnBoundary} & WP0186 Thms~1--2, Cor.~1, gap Lemma~1 \\
 \lean{ModelOrPay.lean} & \lean{MAICapped}; multiplicity witnesses & WP0203 Props.~1--2 \\
 \lean{RegulationBalance.lean} & \lean{cIK}, \lean{InfoClosed}, \lean{Localized}, \lean{FlowSplit} & WP0203 v4, the regulation balance \\
+\lean{GroundedRegulation.lean} & \lean{Grounded}, \lean{residual}, \lean{IKCeiling}, \lean{PairMono} & WP0203 grounded exposition, repaired corollary \\
 \lean{OrbitLabel.lean} & conserved orbit labels & WP0162 App.~C \\
 \lean{NoetherFlow.lean} & \lean{trajLabel}, flow symmetries & generalized Noether (abstract core) \\
 \lean{Decoder.lean} & \lean{Achievable}, \lean{Inverts}, \lean{dovetail} & WP0058 Prop.~1(i)--(iii), axiom-free \\
@@ -529,6 +530,39 @@ expressible in an \lean{AITFrame} and is not formalized.
 returning its private state to a standard state drops the memory channel, leaving model
 content, action transcript, and world exhaust: \emph{model it, transmit it, or leave it in
 the world}.
+\item \lean{GroundedRegulation.grounded\_readout}, \lean{grounded\_inequality},
+\lean{repaired\_corollary}, \lean{repaired\_good\_regulator} --- WP0203's grounded
+exposition, the repaired static-MAI corollary. A designated reguland trajectory $z$ (ON) and
+$z_0$ (OFF) replaces the scored readouts; \lean{Grounded} ties $x\leftrightarrow z$ and
+$y\leftrightarrow z_0$ up to tolerance $\varepsilon$ in algorithmic information distance
+(\lean{gap\_transfer}: the readout gap and the reguland gap $\Delta_Z=K z_0-K z$ then agree
+up to $2\varepsilon+O(\mathrm{slack})$, which blocks the thermometer hack). With the
+counterfactual residual $L_Z=K(z_0\mid\langle z,R\rangle)$ (\lean{residual}),
+\[
+  \Delta_Z\;\le\;\Ik(z_0{:}R)+L_Z+O(\mathrm{slack})\;\le\;\Ik(W{:}R)+L_Z+O(\mathrm{slack}),
+\]
+so under grounding $\Ik(W{:}R)\ge\Delta-L_Z-2\varepsilon-O(\mathrm{slack})$: the original
+Good-Regulator reading is recovered exactly when the readout is grounded and the
+intervention is counterfactually non-collapsing ($L_Z$ small). The proof spine is
+\lean{RegulationBalance.balance\_readout} stopped at the residual instead of closed by $Q$.
+\item \lean{GroundedRegulation.simple\_regulator\_forces\_residual} --- the ceiling
+$\Ik(W{:}R)\le K R+\mathrm{slack}$ (\lean{IKCeiling}, standard, named hypothesis) turns the
+grounded inequality around: $L_Z\ge\Delta_Z-K R-O(\mathrm{slack})$. A fixed simple regulator
+opening an extensive grounded gap is \emph{forced} into an extensive counterfactual
+residual --- the blind clamp/AC regime classified, and the structural reason no
+horizon-uniform $\Ik(W{:}R)\asymp\Delta_N$ can hold for fixed finite $R$: static model
+content is reusable, cumulative regulation benefit is not.
+\item \lean{GroundedRegulation.residual\_is\_completion} and \lean{grounded\_balance} ---
+the bridge back to the balance. Under the reguland-level closure with completion
+$Q=\langle O_R,\sigma_R,\Xi\rangle$,
+$|L_Z-\mathrm{cIK}(z_0{:}Q\mid\langle z,R\rangle)|\le 2\,\mathrm{slack}$ (the second
+direction needs \lean{PairMono}, $K(B\mid C)\le K(\langle A,B\rangle\mid C)+\mathrm{slack}$):
+the residual is not a new sink but exactly the completion term, so the repaired corollary
+(when $L_Z$ is small) and the WP0203 balance (where $L_Z$ goes when it is not) are two views
+of the same accounting. \lean{grounded\_balance} is \lean{RegulationBalance.balance}
+instantiated at $x:=z$, $y:=z_0$, recorded to show the constructions compose. The
+asymptotic $(1-o(1))\Delta$ form and the $\Theta(N)$ readings are analysis on top of these
+finite inequalities and are deliberately not formalized.
 \item \lean{IS.common\_semantics\_bound} --- WP0215's common-semantics lower bound. If a finite
 semantic object $F$ is recoverable from $p$ at cost $c_1$ and from $q$ at cost $c_2$, both
 conditioned on the shortest programs $p^\ast,q^\ast$, then
@@ -989,6 +1023,18 @@ Invertible coupling & $\Ik\ge K(R)-K(x_{\rm ON})$ holds with $\Ik\ll\Delta$ (wit
   \stproved\ (\lean{invertible\_reaches\_...}) \\
 ``Model it or pay for it'' & $\Ik=\Omega(\Delta_N)$ or $Q_{\rm diss}=\Omega(\Delta_N)k_BT\ln2$ & KT &
   \stna\ (conjecture; not stateable in \lean{AITFrame}) \\
+Gap transfer & grounding $\Rightarrow|\Delta-\Delta_Z|\le2\varepsilon+O(\mathrm{slack})$ & KT &
+  \stproved\ (\lean{gap\_transfer}) \\
+Grounded inequality & $\Delta_Z\le\Ik(z_0{:}R)+L_Z\le\Ik(W{:}R)+L_Z+O(\mathrm{slack})$ & KT &
+  \stproved\ (\lean{grounded\_readout}, \lean{grounded\_inequality}) \\
+Repaired corollary & grounded, non-collapsing: $\Ik(W{:}R)\ge\Delta-L_Z-2\varepsilon-O(\mathrm{slack})$ & KT &
+  \stproved\ (\lean{repaired\_corollary}, \lean{repaired\_good\_regulator}) \\
+Forced residual & $\Ik\le K R+\mathrm{slack}$ $\Rightarrow$ $L_Z\ge\Delta_Z-K R-O(\mathrm{slack})$ & KT &
+  \stproved\ (\lean{simple\_regulator\_forces\_residual}) \\
+Residual = completion & closure: $|L_Z-\mathrm{cIK}(z_0{:}Q\mid\langle z,R\rangle)|\le2\,\mathrm{slack}$ & KT &
+  \stproved\ (\lean{residual\_is\_completion}, \lean{grounded\_balance}) \\
+--- asymptotic form & $\Ik(W{:}R)\ge(1-o(1))\Delta$ for $\varepsilon,\lambda=o(\Delta)$ & KT &
+  \stna\ (analysis on top of the finite inequalities) \\
 \midrule
 \multicolumn{4}{@{}l}{\textit{The Simulation Is Phenomenally Itself --- WP0215}}\\
 \midrule
