@@ -20,7 +20,7 @@ import KTAIT.ModelOrPay
 import KTAIT.RegulationBalance
 import KTAIT.GroundedRegulation
 import KTAIT.PatternPersist
-import KTAIT.PersistenceAccounting
+import KTAIT.PersistenceFlow
 import KTAIT.Agentoptosis
 import KTAIT.IS.CommonSemantics
 import KTAIT.IS.Boundary

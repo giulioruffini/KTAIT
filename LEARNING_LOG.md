@@ -465,3 +465,10 @@ description D). Two lessons: (i) RegulationBalance's defs live in KTAIT.Regulati
 so new sibling modules need `open RegulationBalance`, not just the import; (ii) the sketch's
 "conditional symmetry of information" is not needed — CondChain + InfoClosed suffice, so
 the Lean proof is leaner than the paper sketch. Axioms: [propext, Quot.sound] only.
+
+2026-08-12 (PersistenceFlow): APAT renamed APB per roadmap v2; module renamed
+PersistenceAccounting -> PersistenceFlow same day (nothing external cited the old names —
+rename early or never). The negative-gap witness closed with plain simp on a hand-built
+Nat frame (Nat.pair values dodge code collisions: pair 2 2 = 8, pair 2 3 = 11); no decide
+or native_decide needed, axioms stay Lean-core. Int max in flow_pigeonhole: omega can't
+see through max — rcases le_total + max_eq_left/right first.

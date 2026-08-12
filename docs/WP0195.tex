@@ -328,7 +328,7 @@ Mathlib~v4.31.0. Modules:
 \lean{Unfolding.lean} & \lean{Recurrent}, \lean{Layered} (in \lean{KTAIT/IS/}) & WP0215 finite-horizon unfolding \\
 \lean{ToyModel.lean} & \lean{Toy}, \lean{ToyMachine}, \lean{ToyGap} & satisfiability witnesses \\
 \lean{PatternPersist.lean} & PP! ontology on \lean{AITFrame} & agenthood per cell, not automatic; Prop.~3 inherited \\
-\lean{PersistenceAccounting.lean} & \lean{apatTuple}, \lean{PersistenceSplit} & APAT: persistence reading of the balance (worldview doc v0.1) \\
+\lean{PersistenceFlow.lean} & \lean{flowTuple}, \lean{FlowSplit5}, \lean{CIKCeiling}, \lean{noGapFrame} & APB suite: persistence balance, flow corollaries, self-code overload, no-gap witness (roadmap v2) \\
 \lean{Agentoptosis.lean} & \lean{AgentoptoticEvent}, bearer/target split & WP0207 v0.8 ontology; deletion threshold \\
 \lean{BadStatements.lean} & guards bite & part-whole; $y$ vs $y^\ast$; WP0162 ontology \\
 \bottomrule
@@ -531,25 +531,31 @@ expressible in an \lean{AITFrame} and is not formalized.
 returning its private state to a standard state drops the memory channel, leaving model
 content, action transcript, and world exhaust: \emph{model it, transmit it, or leave it in
 the world}.
-\item \lean{PersistenceAccounting.algorithmic\_persistence\_accounting} and
-\lean{no\_unmanaged\_novelty} --- the Algorithmic Persistence Accounting Theorem (APAT),
-Phase~I of the KT worldview-document theorem programme (2026-08-12). The persistence
-reading of the regulation balance: the completion is enlarged to five components (later
-self-code $Z'$, later model $M'$, retained state $\sigma$, action transcript $a$,
-complementary world record $\Xi$) and the conditioning object becomes the \emph{initial
-controlled description} $D_t=(Z_t,\mathcal W_t,C)$, so the left side is exactly the
-identity-relevant boundary novelty the current organization fails to predict. Under
-information closure and a declared five-way ordered split,
+\item \lean{PersistenceFlow.algorithmic\_persistence\_balance} and its suite --- the
+\textbf{Algorithmic Persistence Balance (APB)}, per the KT Persistence Theorem Roadmap v2
+(2026-08-12; renames and supersedes the previous day's APAT). The persistence reading of the
+regulation balance: with completion $(Z^+,\mathcal W^+,\sigma,a,\Xi)$ and conditioning on the
+initial context $\mathsf{Ctx}=(C,Z_t,\mathcal W_t)$, information closure and a declared
+five-way ordered split (\lean{FlowSplit5}) give
 \[
-  K(B\mid D)\;\le\;M(B{:}Z'\mid D)+M(B{:}M'\mid\cdots)+M(B{:}\sigma\mid\cdots)
-  +M(B{:}a\mid\cdots)+M(B{:}\Xi\mid\cdots)+O(\mathrm{slack}),
+  K(\iota\mid \mathsf{Ctx})\;\le\;M(\iota{:}Z^+\mid\cdot)+M(\iota{:}\mathcal W^+\mid\cdot)
+  +M(\iota{:}\sigma\mid\cdot)+M(\iota{:}a\mid\cdot)+M(\iota{:}\Xi\mid\cdot)+O(\mathrm{slack}):
 \]
-so identity-relevant novelty is predicted-away, kept, consolidated, acted out, or left in
-the world --- never unaccounted. The pigeonhole corollary bounds the world-record term
-below when the four internal/action channels are bounded: the finite core of the
-worldview document's no-unmanaged-novelty rate corollary. Proof:
-\lean{residual\_in\_completion} plus the declared split; the chain order is fixed for
-interpretation and no orthogonal decomposition is claimed.
+identity-relevant novelty is predicted-away, kept, consolidated, acted out, or left in the
+world --- never unaccounted. \lean{bounded\_persistence\_forces\_flow} caps the three internal
+channels by their conditional descriptions (\lean{CIKCeiling}) and forces the remainder
+through interface flow or world complement; \lean{flow\_pigeonhole} is its finite max-form
+(one flow channel carries half the load; no limsup). \lean{self\_code\_overload} shows
+novelty recoverable from the later self-code forces a self-code update of the same size
+(subadditivity through $Z_1$), and \lean{bounded\_self\_code\_capacity} caps novelty storable
+in a budgeted identity at $K_0+\delta+O(\mathrm{slack})$: a bounded identity cannot be an
+indefinitely growing memory. Finally \lean{persistence\_does\_not\_imply\_gap} is the
+claim-discipline witness (\lean{noGapFrame}): perfect persistence of an incompressible
+identity versus annihilation to $0^n$ has $\mathrm{NMAI}(z,z)=1$, $\mathrm{NMAI}(z,0^n)=0$,
+yet raw gap $\Delta=K(0^n)-K(z)<0$ --- simple destruction is simpler than survival, so no
+universal theorem takes a persistence advantage to a positive ART/GART gap. The universal
+statement is APB's accounting; GART remains the counterfactual refinement when a meaningful
+positive gap exists.
 \item \lean{GroundedRegulation.grounded\_readout}, \lean{grounded\_inequality},
 \lean{repaired\_corollary}, \lean{repaired\_good\_regulator} --- WP0203's grounded
 exposition, the repaired static-MAI corollary. A designated reguland trajectory $z$ (ON) and
@@ -1067,16 +1073,24 @@ Automatic closure & abstract ART: world record closes the accounting by construc
 --- asymptotic form & $\Ik(W{:}R)\ge(1-o(1))\Delta$ for $\varepsilon,\lambda=o(\Delta)$ & KT &
   \stna\ (analysis on top of the finite inequalities) \\
 \midrule
-\multicolumn{4}{@{}l}{\textit{Algorithmic Persistence Worldview --- APAT programme (Phase I)}}\\
+\multicolumn{4}{@{}l}{\textit{Algorithmic Persistence Balance --- roadmap v2 (PersistenceFlow)}}\\
 \midrule
-APAT & $K(B|D)\le M(B{:}Z'|D)+M(B{:}M'|\cdots)+M(B{:}\sigma|\cdots)+M(B{:}a|\cdots)+M(B{:}\Xi|\cdots)+O(\mathrm{slack})$ & KT &
-  \stproved\ (\lean{algorithmic\_persistence\_accounting}) \\
-No unmanaged novelty & bounded $Z',M',\sigma,a$ channels force the world-record term & KT &
-  \stproved\ (\lean{no\_unmanaged\_novelty}) \\
+APB & $K(\iota|\mathsf{Ctx})\le\sum_5 M(\iota{:}\cdot|\cdots)+O(\mathrm{slack})$ & KT &
+  \stproved\ (\lean{algorithmic\_persistence\_balance}) \\
+Forces flow & bounded $Z^+,\mathcal W^+,\sigma$ channels force $J_a+J_\Xi$ & KT &
+  \stproved\ (\lean{bounded\_persistence\_forces\_flow}) \\
+Flow pigeonhole & $2\max\{J_a,J_\Xi\}\ge\nu-\sum d-O(\mathrm{slack})$, finite & KT &
+  \stproved\ (\lean{flow\_pigeonhole}) \\
+Self-code overload & recoverable novelty forces $K(Z_1|Z_0,C)\ge\nu-\delta-O(\mathrm{slack})$ & KT &
+  \stproved\ (\lean{self\_code\_overload}) \\
+Self-code capacity & budget $K_0$ caps storable novelty at $K_0+\delta+O(\mathrm{slack})$ & KT &
+  \stproved\ (\lean{bounded\_self\_code\_capacity}) \\
+No positive gap & witness: $\mathrm{NMAI}=1$ persistence, $\Delta<0$ raw gap & KT &
+  \stproved\ (\lean{persistence\_does\_not\_imply\_gap}) \\
 --- rate corollary & asymptotic $\nu_P\le r_Z+r_M+r_\sigma+r_a+r_\Xi$ & KT &
-  \stna\ (analysis on top of the finite form) \\
---- identity-grounded bridge & NMAI drop $\Rightarrow$ grounded gap, via admissible $\zeta_P$ & KT &
-  \stna\ (readout definition open; worldview doc \S9.5) \\
+  \stna\ (analysis on top of the finite forms) \\
+--- identity-grounded bridge & restricted persistence-to-GART score & KT &
+  \stna\ (readout definition open; roadmap \S3 Cor.~2 is existing GART re-instantiated) \\
 \midrule
 \multicolumn{4}{@{}l}{\textit{The Simulation Is Phenomenally Itself --- WP0215}}\\
 \midrule
