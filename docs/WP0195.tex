@@ -346,12 +346,12 @@ agent, recurring kinds that are targets without being agents, and a collective s
 composition settles nothing. Possible because agenthood is a \emph{predicate} on the single carrier
 \lean{Pattern}, following WP0162's ``no agent over and above the pattern''; the per-cell reading is
 WP0207~v0.8's, after the PP!\ synchronization review.
-\item \lean{PP.other\_target\_not\_telehomeostatic} (general, definitional),
-\lean{PP.AgentoptoticEvent}, \lean{PP.event\_agent\_not\_telehomeostatic},
+\item \lean{PP.other\_target\_not\_self\_targeting} (general, definitional),
+\lean{PP.AgentoptoticEvent}, \lean{PP.event\_agent\_not\_self\_targeting},
 \lean{PP.targeted\_class\_not\_agent}, \lean{PP.composition\_does\_not\_imply\_agenthood},
-\lean{PP.CollectiveTelehomeostasis} with its projection lemmas
-\lean{PP.collective\_telehomeostasis\_requires\_agent} and
-\lean{PP.collective\_telehomeostasis\_requires\_self\_target}, and
+\lean{PP.CollectiveSelfTargeting} with its projection lemmas
+\lean{PP.collective\_self\_targeting\_requires\_agent} and
+\lean{PP.collective\_self\_targeting\_requires\_target}, and
 \lean{PP.terminal\_action\_underdetermines\_target} --- the WP0207 v0.8 ontology in
 \lean{Agentoptosis.lean}: an agentoptotic event requires constituent agenthood and internal
 selection of the terminal action, and deliberately carries no target or beneficiary field; an
@@ -370,14 +370,14 @@ $\mathbb Q$: for positive costs, $0 < p\,C_{\mathrm{FN}} - (1-p)\,C_{\mathrm{FP}
 $p > C_{\mathrm{FP}}/(C_{\mathrm{FP}}+C_{\mathrm{FN}})$. The biological and evolutionary content of
 WP0207 ($\Psi$, $\Delta J$, $\chi$, the filter operator, release, enforceability) is deliberately
 not formalized.
-\item \lean{PP.token\_not\_telehomeostatic}, \lean{PP.class\_is\_telehomeostatic} --- telehomeostasis
+\item \lean{PP.token\_not\_self\_targeting}, \lean{PP.class\_is\_self\_targeting} --- telehomeostasis
 is fixed by the objective alone (WP0162 \S3), so a token whose objective proxies its class is a
 genuine agent that is not telehomeostatic. \lean{PP.agentoptosis\_gap} states the conjunction: that
-gap is the room agentoptosis occupies (WP0207). \lean{PP.token\_usually\_telehomeostatic} records the
+gap is the room agentoptosis occupies (WP0207). \lean{PP.token\_usually\_self\_targeting} records the
 default case: when the objective targets the token itself, it \emph{is} telehomeostatic, so the
 divergence is the exception and not the rule.
-\item \lean{PP.collective\_not\_telehomeostatic} --- the same divergence one grain up: a collective
-instance whose objective proxies its lineage, with \lean{PP.kind\_is\_telehomeostatic} closing the
+\item \lean{PP.collective\_not\_self\_targeting} --- the same divergence one grain up: a collective
+instance whose objective proxies its lineage, with \lean{PP.kind\_is\_self\_targeting} closing the
 square. This is the snowflake-yeast sign anomaly as a typing fact rather than an exception.
 \item \lean{PP.persists\_iff\_nmai} --- the module's persistence predicate unfolds definitionally
 to WP0162's $\mathrm{NMAI}(S_t,S_{t+\tau})$. \lean{PP.Persists} is \lean{Persistence.Persistent} on
@@ -387,7 +387,7 @@ restated: rational-valued, normalized, and lag-indexed.
 self-regulation gap $\Delta_{\mathrm{self}}$ (\lean{SelfModel.DeltaSelf}), Proposition~3 applies to
 any agent verbatim: its future self-code is cheap given its present organization. Nothing is
 re-proved; the same named hypotheses are consumed.
-\item \lean{PP.externally\_regulated\_not\_agent}, \lean{PP.agent\_need\_not\_be\_telehomeostatic}
+\item \lean{PP.externally\_regulated\_not\_agent}, \lean{PP.agent\_need\_not\_be\_self\_targeting}
 --- agenthood is computed from $\Delta_{\mathrm{self}}$, never asserted, so a pattern with no gap is
 refused agenthood; and an agent whose objective targets another pattern is not telehomeostatic.
 \item \lean{PP.room\_not\_agent}, \lean{PP.decoupled\_not\_agent} --- locus is \emph{derived} from a
@@ -914,17 +914,17 @@ Proposition 2 & persistence conservation ledger $K(O_W)=\Ik+K(O_W\mid R^\ast)\pm
 Meta-persistence & collective $\mathrm{Pers}_C\ge 1-(L{+}\mathrm{slack})/k$; parts need not align & KT & \stproved\ (\lean{meta\_persistence}) \\
 Proposition 4 & self-model incompleteness (3 obstructions) & KT & \stproved\ (\lean{quine\_floor},$\ldots$) \\
 PP! ontology & four cells are patterns; agenthood per cell, composition settles nothing & KT & \stproved\ (\lean{PP.token\_is\_agent}, \lean{PP.collective\_not\_agent\_here},$\ldots$) \\
-WP0162 \S3 & telehomeostasis is fixed by the objective alone & KT & \stproved\ (\lean{PP.class\_is\_telehomeostatic}) \\
+WP0162 \S3 & telehomeostasis is fixed by the objective alone & KT & \stproved\ (\lean{PP.class\_is\_self\_targeting}) \\
 WP0207 & agentoptosis gap: agent $\wedge$ not telehomeostatic & KT & \stproved\ (\lean{PP.agentoptosis\_gap}) \\
-WP0207 v0.8 & event requires agenthood + internal selection; no target/beneficiary field & KT & \stproved\ (\lean{PP.AgentoptoticEvent}, \lean{PP.other\_target\_not\_telehomeostatic}) \\
-WP0207 v0.8 & target/composition promote nothing; collective telehomeostasis conditional & KT & \stproved\ (\lean{PP.targeted\_class\_not\_agent}, \lean{PP.composition\_does\_not\_imply\_agenthood}, \lean{PP.CollectiveTelehomeostasis}) \\
+WP0207 v0.8 & event requires agenthood + internal selection; no target/beneficiary field & KT & \stproved\ (\lean{PP.AgentoptoticEvent}, \lean{PP.other\_target\_not\_self\_targeting}) \\
+WP0207 v0.8 & target/composition promote nothing; collective telehomeostasis conditional & KT & \stproved\ (\lean{PP.targeted\_class\_not\_agent}, \lean{PP.composition\_does\_not\_imply\_agenthood}, \lean{PP.CollectiveSelfTargeting}) \\
 WP0207 v0.8 & terminal action underdetermines target & KT & \stproved\ (\lean{PP.terminal\_action\_underdetermines\_target}) \\
 WP0207 v0.8 & one other-directed objective: retains in ordinary state, terminates in exceptional & KT & \stproved\ (\lean{PP.ordinary\_retains\_exceptional\_terminates}) \\
 WP0207 v0.8 & deletion threshold $0<p\,C_{\mathrm{FN}}-(1-p)\,C_{\mathrm{FP}} \iff p>\vartheta$ & KT & \stproved\ (\lean{PP.deletion\_threshold}) \\
 WP0162 \S5 & agenthood is a positive $\Delta_{\mathrm{self}}$, computed not asserted & KT & \stproved\ (\lean{PP.externally\_regulated\_not\_agent}) \\
 WP0162 \S4 & persistence unfolds to $\mathrm{NMAI}$, inherited from \lean{Persistence} & KT & \stproved\ (\lean{PP.persists\_iff\_nmai}) \\
 Proposition 3 (PP) & every agent has a temporal self-model & KT & \stproved\ (\lean{PP.agent\_has\_temporal\_self\_model}) \\
-WP0207 & agent yet not telehomeostatic & KT & \stproved\ (\lean{PP.agent\_need\_not\_be\_telehomeostatic}) \\
+WP0207 & agent yet not telehomeostatic & KT & \stproved\ (\lean{PP.agent\_need\_not\_be\_self\_targeting}) \\
 Orbit-label thm & conserved orbit label = ``generalized energy'' & KT & \stproved\ (\lean{genEnergy\_conserved}) \\
 \midrule
 \multicolumn{4}{@{}l}{\textit{Agent Know Thyself --- WP0192}}\\

@@ -91,7 +91,7 @@ def Persists (F : PPFrame) (S : Pattern F) (t τ : Time) (θ : ℚ) : Prop :=
 theorem persists_iff_nmai (F : PPFrame) (S : Pattern F) (t τ : Time) (θ : ℚ) :
     Persists F S t τ θ ↔ θ ≤ NMAI F.toAITFrame (S.traj t) (S.traj (t + τ)) := Iff.rfl
 
-/-! ## 4. Questions 2 and 3 — regulation, agenthood, telehomeostasis -/
+/-! ## 4. Questions 2 and 3 — regulation, agenthood, self-targeting -/
 
 /-- A regulatory situation for a pattern: the two readouts ART contrasts, with the
     maintaining sub-pattern `E` ablated (`onull`) or running (`oreg`). -/
@@ -125,9 +125,9 @@ structure Objective (F : PPFrame) (Act : Type) where
   app    : Apparatus F Act
   target : Pattern F
 
-/-- TELEHOMEOSTATIC: fixed by the OBJECTIVE ALONE (WP0162 §3, "telehomeostatic exactly
+/-- SELF-TARGETING: fixed by the OBJECTIVE ALONE (WP0162 §3, formerly "telehomeostatic exactly
     when its OF is its own persistence"). Locus attaches to agenthood, not to this. -/
-def IsTelehomeostatic {F : PPFrame} {Act : Type}
+def IsSelfTargeting {F : PPFrame} {Act : Type}
     (S : Pattern F) (O : Objective F Act) : Prop :=
   O.target.traj = S.traj
 
@@ -221,32 +221,32 @@ a genuine agent. Composition does not decide the question. -/
 theorem collective_not_agent_here : ¬ IsAgent (inertReg M) := by
   simp [IsAgent, selfGap, DeltaSelf, inertReg]
 
-/-! ### Telehomeostasis splits by column -/
+/-! ### Self-targeting splits by column -/
 
 private theorem traj_ne {m n : Nat} {hm : m ≤ 1000} {hn : n ≤ 1000} (h : m ≠ n) :
     (cell m hm).traj ≠ (cell n hn).traj :=
   fun hEq => h (congrFun hEq 0)
 
 /-- In agentoptosis the token's objective proxies its CLASS, not itself. -/
-theorem token_not_telehomeostatic : ¬ IsTelehomeostatic a_i (obj T) :=
+theorem token_not_self_targeting : ¬ IsSelfTargeting a_i (obj T) :=
   traj_ne (by decide)
 
-theorem class_is_telehomeostatic : IsTelehomeostatic T (obj T) := rfl
+theorem class_is_self_targeting : IsSelfTargeting T (obj T) := rfl
 
 /-- Snowflake yeast: the collective instance's objective proxies its LINEAGE. -/
-theorem collective_not_telehomeostatic : ¬ IsTelehomeostatic M (obj L) :=
+theorem collective_not_self_targeting : ¬ IsSelfTargeting M (obj L) :=
   traj_ne (by decide)
 
-theorem kind_is_telehomeostatic : IsTelehomeostatic L (obj L) := rfl
+theorem kind_is_self_targeting : IsSelfTargeting L (obj L) := rfl
 
-/-- The payoff: a token can be a genuine agent AND not telehomeostatic. -/
+/-- The payoff: a token can be a genuine agent AND not self-targeting. -/
 theorem agentoptosis_gap :
-    IsAgent (reg a_i) ∧ ¬ IsTelehomeostatic a_i (obj T) :=
-  ⟨token_is_agent, token_not_telehomeostatic⟩
+    IsAgent (reg a_i) ∧ ¬ IsSelfTargeting a_i (obj T) :=
+  ⟨token_is_agent, token_not_self_targeting⟩
 
-/-- Normally the objective targets the token itself, and then it IS telehomeostatic.
+/-- Normally the objective targets the token itself, and then it IS self-targeting.
     The divergence is the exception, not the rule. -/
-theorem token_usually_telehomeostatic : IsTelehomeostatic a_i (obj a_i) := rfl
+theorem token_usually_self_targeting : IsSelfTargeting a_i (obj a_i) := rfl
 
 /-! ## 7. Guards -/
 

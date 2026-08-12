@@ -78,10 +78,11 @@ theorem externally_regulated_not_agent' :
 -- `Agent` structure to pass a pattern to, so the v2 category error is unwritable.
 #check_failure (a_i : Agent)
 
-/-- Telehomeostasis is fixed by the objective alone, so a pattern whose objective targets
-    a different pattern is not telehomeostatic even though it IS an agent. -/
-theorem agent_need_not_be_telehomeostatic :
-    IsAgent (reg a_i) ∧ ¬ IsTelehomeostatic a_i (obj T) := agentoptosis_gap
+/-- Self-targeting is fixed by the objective alone, so a pattern whose objective targets
+    a different pattern is not self-targeting even though it IS an agent. (WP0216 v13
+    reserves *telehomeostasis* for the pattern-centered closure, not formalized here.) -/
+theorem agent_need_not_be_self_targeting :
+    IsAgent (reg a_i) ∧ ¬ IsSelfTargeting a_i (obj T) := agentoptosis_gap
 
 end PP
 

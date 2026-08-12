@@ -24,16 +24,18 @@ selection of the terminal action, and carries no target or beneficiary field. Th
 guards below witness, in `PatternPersist`'s toy frame `F0`, that the deliberately
 absent implications really are absent:
 
-* `other_target_not_telehomeostatic` — a general, definitional fact: an objective
-  whose target differs from the bearer is not telehomeostatic for the bearer.
-* `event_agent_not_telehomeostatic` — an agentoptotic event whose objective targets
+* `other_target_not_self_targeting` — a general, definitional fact: an objective
+  whose target differs from the bearer is not self-targeting for the bearer. (WP0216 v13
+  reserves *telehomeostasis* for the pattern-centered closure; the predicates here are the
+  self-targeting/internalized case.)
+* `event_agent_not_self_targeting` — an agentoptotic event whose objective targets
   the class leaves the constituent a genuine agent with an other-directed objective
   (`PP.agentoptosis_gap` is the underlying conjunction).
 * `targeted_class_not_agent` — being a persistence target does not make the class an
   agent (`PP.class_not_agent_here` supplies the witness).
 * `composition_does_not_imply_agenthood` — a collective whose constituent is a
   genuine agent can itself fail the agent criterion.
-* `CollectiveTelehomeostasis` — higher-scale telehomeostasis is by definition the
+* `CollectiveSelfTargeting` — higher-scale self-targeting is by definition the
   conjunction of collective agenthood and a self-targeting collective objective;
   the two projection lemmas make each requirement citable on its own.
 * `terminal_action_underdetermines_target` — the same terminal action is selected
@@ -52,11 +54,11 @@ namespace KTAIT.PP
 /-! ## 1. Bearer/target separation (general, definitional) -/
 
 /-- An objective borne against pattern `S` but targeting a pattern with a different
-trajectory is not telehomeostatic for `S`. Definitional: telehomeostasis is exactly
+trajectory is not self-targeting for `S`. Definitional: self-targeting is exactly
 target–bearer coincidence. -/
-theorem other_target_not_telehomeostatic {F : PPFrame} {Act : Type}
+theorem other_target_not_self_targeting {F : PPFrame} {Act : Type}
     (S : Pattern F) (O : Objective F Act) (h : O.target.traj ≠ S.traj) :
-    ¬ IsTelehomeostatic S O :=
+    ¬ IsSelfTargeting S O :=
   fun hEq => h hEq
 
 /-! ## 2. The event -/
@@ -86,10 +88,10 @@ def toyEvent : AgentoptoticEvent F0 Unit a_i :=
   ⟨reg a_i, obj T, token_is_agent, (), ⟨0, rfl⟩⟩
 
 /-- Agenthood survives an other-directed objective: the event's bearer is an agent
-and its objective is not telehomeostatic for it. -/
-theorem event_agent_not_telehomeostatic :
-    IsAgent toyEvent.R ∧ ¬ IsTelehomeostatic a_i toyEvent.O :=
-  ⟨token_is_agent, token_not_telehomeostatic⟩
+and its objective is not self-targeting for it. -/
+theorem event_agent_not_self_targeting :
+    IsAgent toyEvent.R ∧ ¬ IsSelfTargeting a_i toyEvent.O :=
+  ⟨token_is_agent, token_not_self_targeting⟩
 
 /-- Being the persistence target promotes nothing: the class targeted by the toy
 event's objective is, under its regulation, no agent. -/
@@ -102,23 +104,23 @@ theorem composition_does_not_imply_agenthood :
     IsAgent (reg a_i) ∧ ¬ IsAgent (inertReg M) :=
   ⟨token_is_agent, collective_not_agent_here⟩
 
-/-! ## 4. Higher-scale telehomeostasis is conditional -/
+/-! ## 4. Higher-scale self-targeting is conditional -/
 
-/-- COLLECTIVE TELEHOMEOSTASIS at pattern `S`: the collective independently satisfies
+/-- COLLECTIVE SELF-TARGETING at pattern `S`: the collective independently satisfies
 the agent criterion AND its objective targets `S` itself. Both conjuncts are required
 by definition; neither follows from the other or from properties of the parts. -/
-def CollectiveTelehomeostasis {F : PPFrame} {Act : Type}
+def CollectiveSelfTargeting {F : PPFrame} {Act : Type}
     (S : Pattern F) (R : Regulation F S) (O : Objective F Act) : Prop :=
-  IsAgent R ∧ IsTelehomeostatic S O
+  IsAgent R ∧ IsSelfTargeting S O
 
-theorem collective_telehomeostasis_requires_agent {F : PPFrame} {Act : Type}
+theorem collective_self_targeting_requires_agent {F : PPFrame} {Act : Type}
     {S : Pattern F} {R : Regulation F S} {O : Objective F Act}
-    (h : CollectiveTelehomeostasis S R O) : IsAgent R :=
+    (h : CollectiveSelfTargeting S R O) : IsAgent R :=
   h.1
 
-theorem collective_telehomeostasis_requires_self_target {F : PPFrame} {Act : Type}
+theorem collective_self_targeting_requires_target {F : PPFrame} {Act : Type}
     {S : Pattern F} {R : Regulation F S} {O : Objective F Act}
-    (h : CollectiveTelehomeostasis S R O) : IsTelehomeostatic S O :=
+    (h : CollectiveSelfTargeting S R O) : IsSelfTargeting S O :=
   h.2
 
 /-! ## 5. Self-termination does not identify the target -/
