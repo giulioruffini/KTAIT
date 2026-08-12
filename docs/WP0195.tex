@@ -328,6 +328,7 @@ Mathlib~v4.31.0. Modules:
 \lean{Unfolding.lean} & \lean{Recurrent}, \lean{Layered} (in \lean{KTAIT/IS/}) & WP0215 finite-horizon unfolding \\
 \lean{ToyModel.lean} & \lean{Toy}, \lean{ToyMachine}, \lean{ToyGap} & satisfiability witnesses \\
 \lean{PatternPersist.lean} & PP! ontology on \lean{AITFrame} & agenthood per cell, not automatic; Prop.~3 inherited \\
+\lean{PersistenceAccounting.lean} & \lean{apatTuple}, \lean{PersistenceSplit} & APAT: persistence reading of the balance (worldview doc v0.1) \\
 \lean{Agentoptosis.lean} & \lean{AgentoptoticEvent}, bearer/target split & WP0207 v0.8 ontology; deletion threshold \\
 \lean{BadStatements.lean} & guards bite & part-whole; $y$ vs $y^\ast$; WP0162 ontology \\
 \bottomrule
@@ -530,6 +531,25 @@ expressible in an \lean{AITFrame} and is not formalized.
 returning its private state to a standard state drops the memory channel, leaving model
 content, action transcript, and world exhaust: \emph{model it, transmit it, or leave it in
 the world}.
+\item \lean{PersistenceAccounting.algorithmic\_persistence\_accounting} and
+\lean{no\_unmanaged\_novelty} --- the Algorithmic Persistence Accounting Theorem (APAT),
+Phase~I of the KT worldview-document theorem programme (2026-08-12). The persistence
+reading of the regulation balance: the completion is enlarged to five components (later
+self-code $Z'$, later model $M'$, retained state $\sigma$, action transcript $a$,
+complementary world record $\Xi$) and the conditioning object becomes the \emph{initial
+controlled description} $D_t=(Z_t,\mathcal W_t,C)$, so the left side is exactly the
+identity-relevant boundary novelty the current organization fails to predict. Under
+information closure and a declared five-way ordered split,
+\[
+  K(B\mid D)\;\le\;M(B{:}Z'\mid D)+M(B{:}M'\mid\cdots)+M(B{:}\sigma\mid\cdots)
+  +M(B{:}a\mid\cdots)+M(B{:}\Xi\mid\cdots)+O(\mathrm{slack}),
+\]
+so identity-relevant novelty is predicted-away, kept, consolidated, acted out, or left in
+the world --- never unaccounted. The pigeonhole corollary bounds the world-record term
+below when the four internal/action channels are bounded: the finite core of the
+worldview document's no-unmanaged-novelty rate corollary. Proof:
+\lean{residual\_in\_completion} plus the declared split; the chain order is fixed for
+interpretation and no orthogonal decomposition is claimed.
 \item \lean{GroundedRegulation.grounded\_readout}, \lean{grounded\_inequality},
 \lean{repaired\_corollary}, \lean{repaired\_good\_regulator} --- WP0203's grounded
 exposition, the repaired static-MAI corollary. A designated reguland trajectory $z$ (ON) and
@@ -1046,6 +1066,17 @@ Automatic closure & abstract ART: world record closes the accounting by construc
   \stproved\ (\lean{closure\_by\_construction}) \\
 --- asymptotic form & $\Ik(W{:}R)\ge(1-o(1))\Delta$ for $\varepsilon,\lambda=o(\Delta)$ & KT &
   \stna\ (analysis on top of the finite inequalities) \\
+\midrule
+\multicolumn{4}{@{}l}{\textit{Algorithmic Persistence Worldview --- APAT programme (Phase I)}}\\
+\midrule
+APAT & $K(B|D)\le M(B{:}Z'|D)+M(B{:}M'|\cdots)+M(B{:}\sigma|\cdots)+M(B{:}a|\cdots)+M(B{:}\Xi|\cdots)+O(\mathrm{slack})$ & KT &
+  \stproved\ (\lean{algorithmic\_persistence\_accounting}) \\
+No unmanaged novelty & bounded $Z',M',\sigma,a$ channels force the world-record term & KT &
+  \stproved\ (\lean{no\_unmanaged\_novelty}) \\
+--- rate corollary & asymptotic $\nu_P\le r_Z+r_M+r_\sigma+r_a+r_\Xi$ & KT &
+  \stna\ (analysis on top of the finite form) \\
+--- identity-grounded bridge & NMAI drop $\Rightarrow$ grounded gap, via admissible $\zeta_P$ & KT &
+  \stna\ (readout definition open; worldview doc \S9.5) \\
 \midrule
 \multicolumn{4}{@{}l}{\textit{The Simulation Is Phenomenally Itself --- WP0215}}\\
 \midrule

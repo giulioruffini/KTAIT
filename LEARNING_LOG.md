@@ -457,3 +457,11 @@ one new named fact, `CondCompose` (K(y|S) ≤ K(W|S) + K(y|W) + slack), plus the
 `CondMonoMore`. Lesson: when a paper remark says "by construction", the construction is
 still one or two named AIT facts — formalize them or the remark is the weakest link in an
 otherwise fully anchored section.
+
+2026-08-12 (PersistenceAccounting): APAT Phase I was, as predicted by the worldview doc,
+a 5-component re-instantiation of residual_in_completion + a declared ordered split
+(FlowSplit idiom, two more components, conditioning moved to the initial controlled
+description D). Two lessons: (i) RegulationBalance's defs live in KTAIT.RegulationBalance,
+so new sibling modules need `open RegulationBalance`, not just the import; (ii) the sketch's
+"conditional symmetry of information" is not needed — CondChain + InfoClosed suffice, so
+the Lean proof is leaner than the paper sketch. Axioms: [propext, Quot.sound] only.
