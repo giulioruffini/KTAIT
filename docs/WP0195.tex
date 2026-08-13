@@ -317,7 +317,7 @@ Mathlib~v4.31.0. Modules:
 \lean{PushPull.lean} & \lean{Plant}, \lean{Admissible}, \lean{InwardOnBoundary} & WP0186 Thms~1--2, Cor.~1, gap Lemma~1 \\
 \lean{ModelOrPay.lean} & \lean{MAICapped}; multiplicity witnesses & WP0203 Props.~1--2 \\
 \lean{RegulationBalance.lean} & \lean{cIK}, \lean{InfoClosed}, \lean{Localized}, \lean{FlowSplit} & WP0203 v4, the regulation balance \\
-\lean{GroundedRegulation.lean} & \lean{Grounded}, \lean{residual}, \lean{IKCeiling}, \lean{PairMono} & WP0203 grounded exposition, repaired corollary \\
+\lean{GroundedRegulation.lean} & \lean{Grounded}, \lean{residual}, \lean{IKCeiling}, \lean{PairMono} & WP0203 grounded exposition, repaired corollary, self-regulation/implicit-self-model corollary \\
 \lean{OrbitLabel.lean} & conserved orbit labels & WP0162 App.~C \\
 \lean{NoetherFlow.lean} & \lean{trajLabel}, flow symmetries & generalized Noether (abstract core) \\
 \lean{Decoder.lean} & \lean{Achievable}, \lean{Inverts}, \lean{dovetail} & WP0058 Prop.~1(i)--(iii), axiom-free \\
@@ -598,6 +598,20 @@ of the same accounting. \lean{grounded\_balance} is \lean{RegulationBalance.bala
 instantiated at $x:=z$, $y:=z_0$, recorded to show the constructions compose. The
 asymptotic $(1-o(1))\Delta$ form and the $\Theta(N)$ readings are analysis on top of these
 finite inequalities and are deliberately not formalized.
+\item \lean{GroundedRegulation.self\_regulation\_forces\_self\_model} and
+\lean{self\_regulation\_forces\_self\_model\_grounded} --- WP0203 v13's self-regulation
+corollary. The query is role-relative: the focal pattern decomposes as $P=R\cup H$
+($R\cap H=\varnothing$) and the reguland projection $\zeta^P$ tracks the self-side region
+$H$, so the implicit task-relevant self-model content
+$\mathsf{SM}^{\mathrm{imp}}_{P,N}(R):=\Ik(\zeta^P_\varnothing{:}R\mid C)$ is the
+\lean{IK}~$(z_0{:}R)$ of the grounded inequality read at $z:=\zeta^P_R$,
+$z_0:=\zeta^P_\varnothing$. The reguland form rearranges \lean{grounded\_readout} to
+$\mathsf{SM}^{\mathrm{imp}}\ge\Delta_Z-L_Z-O(\mathrm{slack})$; the grounded form composes
+with \lean{gap\_transfer} to give
+$\mathsf{SM}^{\mathrm{imp}}\ge\Delta-L_Z-2\varepsilon-O(\mathrm{slack})$ against the scored
+gap. The decomposition of $P$ and the word ``self'' are manuscript semantics layered over
+the same string inequality --- no new ontology, no new axiom, and no claim of explicit
+symbolic self-representation or self-targeting.
 \item \lean{IS.common\_semantics\_bound} --- WP0215's common-semantics lower bound. If a finite
 semantic object $F$ is recoverable from $p$ at cost $c_1$ and from $q$ at cost $c_2$, both
 conditioned on the shortest programs $p^\ast,q^\ast$, then
@@ -1068,6 +1082,8 @@ Forced residual & $\Ik\le K R+\mathrm{slack}$ $\Rightarrow$ $L_Z\ge\Delta_Z-K R-
   \stproved\ (\lean{simple\_regulator\_forces\_residual}) \\
 Residual = completion & closure: $|L_Z-\mathrm{cIK}(z_0{:}Q\mid\langle z,R\rangle)|\le2\,\mathrm{slack}$ & KT &
   \stproved\ (\lean{residual\_is\_completion}, \lean{grounded\_balance}) \\
+Implicit self-model & self-regulation query: $\mathsf{SM}^{\mathrm{imp}}\ge\Delta_Z-L_Z-O(\mathrm{slack})$; grounded: $\ge\Delta-L_Z-2\varepsilon-O(\mathrm{slack})$ & KT &
+  \stproved\ (\lean{self\_regulation\_forces\_self\_model}, \lean{..\_grounded}) \\
 Automatic closure & abstract ART: world record closes the accounting by construction & KT &
   \stproved\ (\lean{closure\_by\_construction}) \\
 --- asymptotic form & $\Ik(W{:}R)\ge(1-o(1))\Delta$ for $\varepsilon,\lambda=o(\Delta)$ & KT &

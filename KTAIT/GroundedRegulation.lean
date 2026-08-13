@@ -144,6 +144,50 @@ theorem repaired_good_regulator (W x y z z0 R : F.Obj) (eps lam : Int)
   have h := repaired_corollary F W x y z z0 R eps hg hzx hxz hz0y hyz0 hmut hsub hmono hdp
   omega
 
+/-! ## Self-regulation: grounded self-regulation forces an implicit self-model
+
+WP0203 v13, Corollary (implicit self-model from grounded self-regulation). The query is
+role-relative: the focal agent pattern decomposes as `P = R ∪ H` with `R ∩ H = ∅`, the
+reguland projection `ζ^P` tracks the self-side region `H`, and
+`SM^imp_{P,N}(R) := M(ζ^P_∅ : R | C)` is the implicit task-relevant self-model content.
+At the AIT-shadow level this is the same string inequality as the grounded regulator
+inequality with `z := ζ^P_R`, `z₀ := ζ^P_∅`, and `IK z₀ R` read as `SM^imp`; the
+decomposition of `P` and the word "self" are manuscript semantics and are deliberately not
+encoded as new ontology. No new axiom, and no claim of explicit symbolic
+self-representation. -/
+
+/-- **Corollary (implicit self-model from grounded self-regulation), reguland form.**
+    `SM^imp ≥ Δ_Z − L_Z − 2·slack`: reading `z, z₀` as the regulated and matched-null
+    self-side reguland trajectories `ζ^P_R, ζ^P_∅`, successful self-regulation with a small
+    counterfactual residual forces reusable information about the focal pattern's own
+    counterfactual trajectory into the regulating organization. A rearrangement of
+    `grounded_readout`; nothing here says the self-model is explicit, complete, or
+    self-targeting. -/
+theorem self_regulation_forces_self_model (z z0 R : F.Obj)
+    (hmut : MutualChain F z0 R)
+    (hsub : CondSubadd F z z0 R)
+    (hmono : CondMono F z R) :
+    IK F z0 R ≥ gap F z z0 - residual F z z0 R - 2 * (F.slack : Int) := by
+  have h := grounded_readout F z z0 R hmut hsub hmono
+  omega
+
+/-- **Corollary, grounded form.** If the scored readout `x, y` is additionally `ε`-grounded
+    in the self-side reguland `z, z₀`, the bound transfers to the scored gap:
+    `SM^imp ≥ Δ − L_Z − 2ε − 4·slack`. Composition of
+    `self_regulation_forces_self_model` with `gap_transfer`. -/
+theorem self_regulation_forces_self_model_grounded (x y z z0 R : F.Obj) (eps : Int)
+    (hg : Grounded F x y z z0 eps)
+    (hzx : Subadd F z x) (hxz : Subadd F x z)
+    (hz0y : Subadd F z0 y) (hyz0 : Subadd F y z0)
+    (hmut : MutualChain F z0 R)
+    (hsub : CondSubadd F z z0 R)
+    (hmono : CondMono F z R) :
+    IK F z0 R ≥ gap F x y - residual F z z0 R - 2 * eps - 4 * (F.slack : Int) := by
+  have htr := gap_transfer F x y z z0 eps hg hzx hxz hz0y hyz0
+  have h := grounded_readout F z z0 R hmut hsub hmono
+  rw [abs_le] at htr
+  omega
+
 /-! ## The ceiling: a simple regulator is forced into an extensive residual -/
 
 /-- **MAI ceiling**: `I_K(W:R) ≤ K R + slack`, since `K(⟨W,R⟩) ≥ K W − O(1)`.

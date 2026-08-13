@@ -472,3 +472,11 @@ rename early or never). The negative-gap witness closed with plain simp on a han
 Nat frame (Nat.pair values dodge code collisions: pair 2 2 = 8, pair 2 3 = 11); no decide
 or native_decide needed, axioms stay Lean-core. Int max in flow_pigeonhole: omega can't
 see through max — rcases le_total + max_eq_left/right first.
+
+## 2026-08-13 — WP0203 v13 self-regulation wrapper
+`self_regulation_forces_self_model(_grounded)` are pure rearrangements of `grounded_readout`
+(+ `gap_transfer`): the manuscript's SM^imp is `IK z₀ R` read at `z := ζ^P_R`, `z₀ := ζ^P_∅`.
+Kept `P = R ∪ H` and "self" as manuscript semantics per the handoff — no new ontology, and the
+docstring is where that boundary is recorded. Audit of WP0207 v9 found the citing-papers WP0207
+entry pointed at a nonexistent path (missing `v6/`), so the guard had been silently SKIPPING it
+— a registered path that vanishes is invisible; consider making check 3 warn on missing paths.
