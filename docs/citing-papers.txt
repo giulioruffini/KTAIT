@@ -28,7 +28,8 @@ WP0058-v2 | ../../BCOM WPs and Blogs/working_drafts/WP0058-Inheritance_Architect
 WP0058 | ../../BCOM WPs and Blogs/working_drafts/WP0058-Inheritance_Architecture/v3/WP0058_Persistence_Architectures_v05.tex
 WP0186 | ../../BCOM WPs and Blogs/working_drafts/WP0186-Push_Pull_Motifs/WP0186-Push_Pull_Motifs.tex
 WP0207-v6 | ../../BCOM WPs and Blogs/working_drafts/WP0207-Subagent_Apoptosis/v6/WP0207-Agentoptosis_v6.tex
-WP0207 | ../../BCOM WPs and Blogs/working_drafts/WP0207-Subagent_Apoptosis/v9/WP0207-Agentoptosis_v9.tex
+WP0207-v9 | ../../BCOM WPs and Blogs/working_drafts/WP0207-Subagent_Apoptosis/v9/WP0207-Agentoptosis_v9.tex
+WP0207 | ../../BCOM WPs and Blogs/working_drafts/WP0207-Subagent_Apoptosis/v10/WP0207-Agentoptosis_v10.tex
 WP0203-note | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v1/WP0203-The_ART_Tail_Does_Not_Follow.tex
 WP0203-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v4_entropy/wp0203_entropy.tex
 WP0203-v5 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v5/wp0203_preprint.tex
@@ -38,6 +39,7 @@ WP0203-v9 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not
 WP0203-v10 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v10/wp0203_preprint.tex
 WP0203-v11 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v11/wp0203_preprint.tex
 WP0203-v13 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v13/wp0203_preprint.tex
+WP0203-v14 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v14/wp0203_preprint.tex
 WP0162 | ../../BCOM WPs and Blogs/working_drafts/WP0162-Pattern_Persist_Nature/appendix_formalization.tex
 WP0193 | ../../BCOM WPs and Blogs/working_drafts/WP0193-Regulatory_Coarse_Graining/WP0193-Regulatory_Coarse_Graining.tex
 WP0202 | ../../BCOM WPs and Blogs/working_drafts/WP0202-Exo_Daisy_Algorithmic/WP0202.tex
@@ -53,8 +55,14 @@ WP216-PLR-v13.1-collectives | ../../BCOM WPs and Blogs/working_drafts/WP216-Patt
 WP216-PLR-v13.1-status | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/v13.1/09_controversies.tex
 WP216-PLR-v13.1-formalization | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/v13.1/12_formalization.tex
 WP216-PLR-v13.1-endmatter | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/v13.1/10_endmatter.tex
+WP216-PLR-v13.2-main | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/v13.2/04_regulation_agent.tex
+WP216-PLR-v13.2-collectives | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/v13.2/07_collectives.tex
+WP216-PLR-v13.2-status | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/v13.2/09_controversies.tex
+WP216-PLR-v13.2-formalization | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/v13.2/12_formalization.tex
+WP216-PLR-v13.2-endmatter | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/v13.2/10_endmatter.tex
 WP0007-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0007 [PAPER]  From “More Is Different” to Algorithmic Emergence: Why Compression Is the Hard Part/v3 wp0007_algorithmic_emergence_rev3 Kaiti/wp0007_entropy.tex
-WP0218 | ../../BCOM WPs and Blogs/working_drafts/WP0218-Algorithmic information conservation/WP0218_v0_2_ATTACKED_SOURCE/source/WP0218.tex
+WP0218-v0.2 | ../../BCOM WPs and Blogs/working_drafts/WP0218-Algorithmic information conservation/WP0218_v0_2_ATTACKED_SOURCE/source/WP0218.tex
+WP0218 | ../../BCOM WPs and Blogs/working_drafts/WP0218-Algorithmic information conservation/v0.3/WP0218.tex
 
 # WP0195 (docs/WP0195.tex) is the status paper itself and is covered by the
 # module/theorem coverage check above, not by this registry.
