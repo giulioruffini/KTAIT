@@ -21,6 +21,8 @@ import KTAIT.RegulationBalance
 import KTAIT.GroundedRegulation
 import KTAIT.PatternPersist
 import KTAIT.PersistenceFlow
+import KTAIT.Localization
+import KTAIT.TokenTransport
 import KTAIT.Agentoptosis
 import KTAIT.IS.CommonSemantics
 import KTAIT.IS.Boundary

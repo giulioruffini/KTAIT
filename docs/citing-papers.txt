@@ -54,6 +54,7 @@ WP216-PLR-v13.1-status | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_P
 WP216-PLR-v13.1-formalization | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/v13.1/12_formalization.tex
 WP216-PLR-v13.1-endmatter | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/v13.1/10_endmatter.tex
 WP0007-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0007 [PAPER]  From “More Is Different” to Algorithmic Emergence: Why Compression Is the Hard Part/v3 wp0007_algorithmic_emergence_rev3 Kaiti/wp0007_entropy.tex
+WP0218 | ../../BCOM WPs and Blogs/working_drafts/WP0218-Algorithmic information conservation/WP0218_v0_2_ATTACKED_SOURCE/source/WP0218.tex
 
 # WP0195 (docs/WP0195.tex) is the status paper itself and is covered by the
 # module/theorem coverage check above, not by this registry.

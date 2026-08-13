@@ -480,3 +480,13 @@ Kept `P = R ∪ H` and "self" as manuscript semantics per the handoff — no new
 docstring is where that boundary is recorded. Audit of WP0207 v9 found the citing-papers WP0207
 entry pointed at a nonexistent path (missing `v6/`), so the guard had been silently SKIPPING it
 — a registered path that vanishes is invisible; consider making check 3 warn on missing paths.
+
+## 2026-08-13 — WP0218 Localization + TokenTransport
+Northwest-corner transport over Nat: define t i j = min(cum_i, cum'_j) − max(before_i, before'_j)
+and omega eats each row/column goal — but only if nwPlan stays OPAQUE in the min-moved-plan
+proof; fully unfolding the residual composition blows the omega case split past 200k heartbeats.
+Extract the row/col equations as hypotheses and let omega treat plan entries as atoms.
+gcongr on NMAI bounds discharges BOTH the cast side goal and the numerator via its assumption
+discharger — a trailing exact_mod_cast then errors with "no goals". WP0218's overlap lemma is
+the plain-cond sibling of IS.common_semantics_bound (condStar) — recorded in both docstrings
+to preempt a duplication flag.

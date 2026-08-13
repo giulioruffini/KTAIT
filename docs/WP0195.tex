@@ -329,6 +329,8 @@ Mathlib~v4.31.0. Modules:
 \lean{ToyModel.lean} & \lean{Toy}, \lean{ToyMachine}, \lean{ToyGap} & satisfiability witnesses \\
 \lean{PatternPersist.lean} & PP! ontology on \lean{AITFrame} & agenthood per cell, not automatic; Prop.~3 inherited \\
 \lean{PersistenceFlow.lean} & \lean{flowTuple}, \lean{FlowSplit5}, \lean{CIKCeiling}, \lean{noGapFrame} & APB suite: persistence balance, flow corollaries, self-code overload, no-gap witness (roadmap v2) \\
+\lean{Localization.lean} & \lean{localization\_left/mutual/right}, \lean{CondDataProcessing} & WP0218 localization algebra, reversible balance, recoverable-description overlap, persistence bound \\
+\lean{TokenTransport.lean} & \lean{Mode}, \lean{LocalizationProfile}, \lean{LocalizationPlan}, \lean{nwPlan}, \lean{natAbsDiff} & WP0218 canonical token transport: gates, plans, minimum moved mass (finite, Mathlib-free) \\
 \lean{Agentoptosis.lean} & \lean{AgentoptoticEvent}, bearer/target split & WP0207 v0.8 ontology; deletion threshold \\
 \lean{BadStatements.lean} & guards bite & part-whole; $y$ vs $y^\ast$; WP0162 ontology \\
 \bottomrule
@@ -612,6 +614,48 @@ $\mathsf{SM}^{\mathrm{imp}}\ge\Delta-L_Z-2\varepsilon-O(\mathrm{slack})$ against
 gap. The decomposition of $P$ and the word ``self'' are manuscript semantics layered over
 the same string inequality --- no new ontology, no new axiom, and no claim of explicit
 symbolic self-representation or self-targeting.
+\item \lean{Localization.localization\_sum\_exact}, \lean{localization\_delta\_exact},
+\lean{marginal\_delta\_exact}, \lean{localization\_conserved\_exact} --- WP0218's Level-1
+algebra. The localization coordinates $L_A=K(A,W)-K W$, $I_K$, $L_W=K(A,W)-K A$ are an
+invertible reparameterization of the standard pair complexity profile with
+$L_A+I_K+L_W=K(A,W)$ exactly; between endpoints the coordinate sum changes exactly by the
+joint-budget change, equivalently $\Delta K_A+\Delta K_W-\Delta I_K=\Delta K(A,W)$ (the
+Ebtekar--Hutter two-system decomposition), and a fixed joint budget conserves the sum
+exactly. Abstract \lean{Int} identities --- notation checks, deliberately claiming no new
+invariant; \lean{localization\_mutual\_eq\_IK} ties the abstract mutual coordinate to the
+frame's \lean{IK} definitionally.
+\item \lean{Localization.reversible\_complexity\_invariance} and
+\lean{localization\_balance\_reversible} --- the reversible wrapper and WP0218's
+Algorithmic Localization Balance (reversible specialization). Mutual $\varepsilon$-bit
+reconstruction plus plain subadditivity both ways gives $|K y-K x|\le\varepsilon+
+\mathrm{slack}$; applied to a fixed partition's paired endpoints, the localization sum
+moves by at most $\varepsilon+\mathrm{slack}$ while the marginals redistribute freely.
+\item \lean{Localization.recoverable\_description\_overlap},
+\lean{recurrent\_recoverability\_implies\_mai\_bound},
+\lean{recurrent\_recoverability\_persistence\_bound} --- WP0218's overlap lemma and its
+temporal instantiation. From \lean{MutualChain} and the new named standard fact
+\lean{CondDataProcessing} ($\Ik(D{:}Y)\le\Ik(X{:}Y)+K(D|X)+\mathrm{slack}$),
+$\Ik(X{:}Y)\ge K D-K(D|X)-K(D|Y)-2\,\mathrm{slack}$: a description cheaply recoverable
+from both sides is paid for by their MAI. Instantiated at pattern descriptions at two
+times with $\varepsilon$-recoverability of a named $D_P$, this lower-bounds cross-time
+MAI and (dividing by the larger endpoint complexity) the WP0216 persistence score. One
+direction only: no converse extraction of generic MAI is stated, and recurrent
+recoverability is a sufficient mechanism for persistence, not its definition. The
+plain-conditioned sibling of \lean{IS.common\_semantics\_bound} (which conditions on
+shortest programs); the two consume different named hypotheses and are kept separate.
+\item \lean{TokenTransport} --- WP0218's canonical token transport calculus, finite and
+Mathlib-free. \lean{cnotAW\_involutive}, \lean{cnotWA\_involutive},
+\lean{swap\_involutive}, and \lean{gateFor\_involutive} check the reversible gate
+vocabulary; \lean{canonical\_mode\_reachable} shows one gate converts any canonical mode
+$\mathsf A(x)=(x,0)$, $\mathsf{AB}(x)=(x,x)$, $\mathsf W(x)=(0,x)$ into any other;
+\lean{transport\_plan\_exists} builds the northwest-corner $3\times3$ plan between any
+equal-total profiles; \lean{transport\_plan\_realizable} realizes any plan entrywise by
+disjoint token-pair gates (an involution, \lean{applyGates\_involutive}, so the circuit
+is reversible); \lean{diag\_le\_min}, \lean{exists\_min\_moved\_plan}, and
+\lean{minimum\_moved\_mass} give the minimum moved token mass
+$N-\sum_i\min(p_i,p_i')=\tfrac12\lVert p-p'\rVert_1$, the $\ell_1$ identity stated in
+doubled \lean{Nat} form. Scope guard: canonical independent-token sector only --- nothing
+says an arbitrary pair with a given profile factors into such tokens.
 \item \lean{IS.common\_semantics\_bound} --- WP0215's common-semantics lower bound. If a finite
 semantic object $F$ is recoverable from $p$ at cost $c_1$ and from $q$ at cost $c_2$, both
 conditioned on the shortest programs $p^\ast,q^\ast$, then
@@ -1107,6 +1151,39 @@ No positive gap & witness: $\mathrm{NMAI}=1$ persistence, $\Delta<0$ raw gap & K
   \stna\ (analysis on top of the finite forms) \\
 --- identity-grounded bridge & restricted persistence-to-GART score & KT &
   \stna\ (readout definition open; roadmap \S3 Cor.~2 is existing GART re-instantiated) \\
+\midrule
+\multicolumn{4}{@{}l}{\textit{Algorithmic localization dynamics --- WP0218 (Localization, TokenTransport)}}\\
+\midrule
+Sum identity & $L_A+I_K+L_W=K(A,W)$, exact on abstract coordinates & KT &
+  \stproved\ (\lean{localization\_sum\_exact}) \\
+Delta identities & coordinate-sum change $=\Delta K(A,W)$; $\Delta K_A+\Delta K_W-\Delta I_K=\Delta K(A,W)$ & KT &
+  \stproved\ (\lean{localization\_delta\_exact}, \lean{marginal\_delta\_exact}) \\
+Exact conservation & fixed joint budget $\Rightarrow$ conserved coordinate sum & KT &
+  \stproved\ (\lean{localization\_conserved\_exact}) \\
+Reversible invariance & mutual $\varepsilon$-reconstruction: $|K y-K x|\le\varepsilon+\mathrm{slack}$ & STD &
+  \stproved\ (\lean{reversible\_complexity\_invariance}) \\
+ALB (reversible) & localization sum moves $\le\varepsilon+\mathrm{slack}$ under fixed partition & KT &
+  \stproved\ (\lean{localization\_balance\_reversible}) \\
+--- cond.\ data processing & $\Ik(D{:}Y)\le\Ik(X{:}Y)+K(D|X)+\mathrm{slack}$ & STD &
+  \staxiom\ (\lean{CondDataProcessing}) \\
+Overlap lemma & $\Ik(X{:}Y)\ge K D-K(D|X)-K(D|Y)-2\,\mathrm{slack}$ & KT &
+  \stproved\ (\lean{recoverable\_description\_overlap}) \\
+Recurrent recoverability & $\varepsilon$-recoverable $D_P$ at two times bounds cross-time $\Ik$, $\mathrm{Pers}$ & KT &
+  \stproved\ (\lean{recurrent\_recoverability\_implies\_mai\_bound}, \lean{..\_persistence\_bound}) \\
+Gates involutive & $C_{A\to W}$, $C_{W\to A}$, SWAP, and mode gates self-inverse & KT &
+  \stproved\ (\lean{cnotAW\_involutive}, \lean{cnotWA\_involutive}, \lean{swap\_involutive}, \lean{gateFor\_involutive}) \\
+Mode reachability & one gate converts any canonical mode into any other & KT &
+  \stproved\ (\lean{canonical\_mode\_reachable}) \\
+Transport plans exist & equal-total profiles admit a $3\times3$ plan (northwest corner) & KT &
+  \stproved\ (\lean{transport\_plan\_exists}) \\
+Plans realizable & disjoint token-pair gates realize every entry, reversibly & KT &
+  \stproved\ (\lean{transport\_plan\_realizable}, \lean{applyGates\_involutive}) \\
+Minimum moved mass & $N-\sum_i\min(p_i,p_i')=\tfrac12\lVert p-p'\rVert_1$ (doubled \lean{Nat} form) & KT &
+  \stproved\ (\lean{diag\_le\_min}, \lean{exists\_min\_moved\_plan}, \lean{minimum\_moved\_mass}) \\
+--- canonical realizability & incompressible-block representative of any profile & KT &
+  \stna\ (standard AIT existence argument; manuscript Prop.) \\
+--- token--profile bridge & $O(\log N)$ translation from token lengths to $K$ coordinates & KT &
+  \stna\ (manuscript-level; deliberately not formalized) \\
 \midrule
 \multicolumn{4}{@{}l}{\textit{The Simulation Is Phenomenally Itself --- WP0215}}\\
 \midrule
