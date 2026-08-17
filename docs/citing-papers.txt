@@ -67,3 +67,10 @@ WP0218 | ../../BCOM WPs and Blogs/working_drafts/WP0218-Algorithmic information 
 # WP0195 (docs/WP0195.tex) is the status paper itself and is covered by the
 # module/theorem coverage check above, not by this registry.
 WP0203-v16 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v16/wp0203_preprint.tex
+WP216-PLR-v17-main | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/v17/04_regulation_agent.tex
+WP216-PLR-v17-collectives | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/v17/07_collectives.tex
+WP216-PLR-v17-status | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/v17/09_controversies.tex
+WP216-PLR-v17-formalization | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/v17/12_formalization.tex
+WP216-PLR-v17-endmatter | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/v17/10_endmatter.tex
+WP216-PLR-v17-apb | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/v17/supp_formal_apb.tex
+WP0218-v0.6 | ../../BCOM WPs and Blogs/working_drafts/WP0218-Algorithmic information conservation/v0.6/WP0218.tex
