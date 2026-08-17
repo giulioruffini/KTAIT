@@ -498,3 +498,6 @@ suite is `rw [abs_le]` + `simp only [defs]` + `omega`. Trap: `residual_is_comple
 different omega atoms until `residual` is unfolded in *every* hypothesis — a one-word
 `at h1 ⊢` vs `at h1 h2 ⊢` failure. `residualC` defined as `residual` at base `⟨R,C⟩` made
 the closed form a two-line substitution.
+
+## 2026-08-17 — no_computable_schedule (WP0007 Prop 3)
+Schedule refinement of the discovery barrier: step-indexed search abstracted as `find : Str → ℕ → ℕ → Option Prog`, promise-halting and soundness as hypotheses, no dovetailer built. Lesson: `Option.noConfusion` on `none = some p` trips motive elaboration under section variables — `simp at hp` after the rewrite is the robust close. Axioms: [propext, Quot.sound].

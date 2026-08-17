@@ -31,6 +31,10 @@ that embedding.
 * `compressor_of_threshold` — the hierarchy as a lemma, recorded because it is easy to assert
   backwards: a threshold procedure specializes to a universal compressor, so the raw-length
   statement is the stronger one and is *not* a corollary of the arbitrary-`b` theorem.
+* `no_computable_schedule` — the **schedule refinement**: even under a promise `K x < b` that
+  makes an open-ended search halt, no total computable clock bounds its halting time on every
+  positive instance. Consumes `KThresholdUndecidable`; the step-indexed search and its
+  promise-halting enter as hypotheses (`SearchSound`, `IsSchedule`), not as constructions.
 * `identification_barrier` — the **optimality barrier**, which follows a fortiori: no computable
   solver returns a shortest program for the macrodata of every experiment.
 * `no_additive_approximation` — relaxing "shortest" to "within a fixed additive constant `c` of
@@ -65,7 +69,9 @@ The omission does not touch the discovery barrier, which rules out a *total* pro
 halts on every input while exploiting every available compression. Semidecidability is the
 complementary *positive* fact — a partial search succeeds on each positive instance while
 possibly running forever on the negative ones — so it bounds what remains possible rather than
-supporting any impossibility proved here.
+supporting any impossibility proved here. Its *negative* companion is formalized:
+`no_computable_schedule` abstracts the search as a step-indexed function and shows no total
+computable clock bounds its success time on positive instances, without building the dovetailer.
 
 Likewise `identification_barrier_conditional` is a variant kept for the development's own sake;
 the paper's conditional-form corollary is `conditional_complexity_uncomputable`.
@@ -205,6 +211,55 @@ theorem no_compression_improver_micro {CompE2 : (Exp → ℕ → Prog) → Prop}
     have h2 := hbt (emb y) b
     rw [hfaith y] at h1 h2
     exact propext ⟨fun h => lt_of_le_of_lt h1 h, h2⟩
+  have hD := hdec hcomp
+  rw [hEq] at hD
+  exact hund hD
+
+
+/-! ### The schedule refinement: termination without a clock
+
+WP0007's no-computable-schedule proposition. Under a simplicity promise `K x < b`, an open-ended
+search is guaranteed to halt --- but nothing computable bounds *when*. The search is abstracted
+as a step-indexed function `find x b t`: the outcome after `t` steps, `none` while nothing has
+been returned. This does not formalize the dovetailing construction or semidecidability itself:
+the search and its promise-halting enter as hypotheses, and the theorem shows that no total
+computable clock is compatible with them and with `K`'s minimality. -/
+
+/-- Step-indexed soundness: on instances with no description below the threshold, the search
+never returns. This is `K`'s defining minimality in step-indexed dress, not an extra
+assumption: no program shorter than `b` outputs `x` when `b ≤ K x`. -/
+def SearchSound (find : Str → ℕ → ℕ → Option Prog) : Prop :=
+  ∀ x b t, b ≤ K x → find x b t = none
+
+/-- `τ` schedules `find`: on every positive instance the search has returned by step `τ x b`. -/
+def IsSchedule (find : Str → ℕ → ℕ → Option Prog) (τ : Str → ℕ → ℕ) : Prop :=
+  ∀ x b, K x < b → ∃ p, find x b (τ x b) = some p
+
+/-- Reduction closure: a computable schedule for a computable search makes the outcome test
+decidable --- run the search for the scheduled number of steps and look. -/
+def ScheduleTestDecidable (CompN2 : (Str → ℕ → ℕ) → Prop)
+    (find : Str → ℕ → ℕ → Option Prog) (τ : Str → ℕ → ℕ) : Prop :=
+  CompN2 τ → DecR (fun x b => ∃ p, find x b (τ x b) = some p)
+
+/-- **WP0007 Proposition (no computable schedule).** No total computable function bounds the
+halting time of a sound step-indexed search on every positive instance: the promise `K x < b`
+guarantees termination, and no computable clock announces it. A schedule would decide the
+threshold predicate --- run the search for the scheduled time and report whether anything was
+returned. -/
+theorem no_computable_schedule {CompN2 : (Str → ℕ → ℕ) → Prop}
+    {find : Str → ℕ → ℕ → Option Prog} {τ : Str → ℕ → ℕ}
+    (hsound : SearchSound K find) (hsched : IsSchedule K find τ)
+    (hdec : ScheduleTestDecidable DecR CompN2 find τ)
+    (hund : KThresholdUndecidable K DecR) :
+    ¬ CompN2 τ := by
+  intro hcomp
+  have hEq : (fun x b => ∃ p, find x b (τ x b) = some p) = (fun x b => K x < b) := by
+    funext x b
+    refine propext ⟨?_, hsched x b⟩
+    rintro ⟨p, hp⟩
+    by_contra hnot
+    rw [hsound x b (τ x b) (Nat.le_of_not_lt hnot)] at hp
+    simp at hp
   have hD := hdec hcomp
   rw [hEq] at hD
   exact hund hD
