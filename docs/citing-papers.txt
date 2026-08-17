@@ -74,3 +74,11 @@ WP216-PLR-v17-formalization | ../../BCOM WPs and Blogs/working_drafts/WP216-Patt
 WP216-PLR-v17-endmatter | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/v17/10_endmatter.tex
 WP216-PLR-v17-apb | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/v17/supp_formal_apb.tex
 WP0218-v0.6 | ../../BCOM WPs and Blogs/working_drafts/WP0218-Algorithmic information conservation/v0.6/WP0218.tex
+WP0203-v16.2 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v16.2/wp0203_preprint.tex
+WP0218-v0.6.2 | ../../BCOM WPs and Blogs/working_drafts/WP0218-Algorithmic information conservation/v0.6.2/WP0218.tex
+WP216-PLR-v17.2-main | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/v17.2/04_regulation_agent.tex
+WP216-PLR-v17.2-collectives | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/v17.2/07_collectives.tex
+WP216-PLR-v17.2-status | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/v17.2/09_controversies.tex
+WP216-PLR-v17.2-formalization | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/v17.2/12_formalization.tex
+WP216-PLR-v17.2-endmatter | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/v17.2/10_endmatter.tex
+WP216-PLR-v17.2-apb | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/v17.2/supp_formal_apb.tex
