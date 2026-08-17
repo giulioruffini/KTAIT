@@ -276,5 +276,129 @@ theorem grounded_balance (W z z0 R Q : F.Obj)
     gap F z z0 ≤ IK F W R + cIK F z0 Q (F.pair z R) + 5 * (F.slack : Int) :=
   balance F W z z0 R Q hmut hsub hmono hchain hclosed hdp
 
+/-! ## The exact counterfactual balance (WP0203 v16): the conservation seam
+
+WP0203 v16 foregrounds the equality-level local ledger *before* the GART inequality: the
+reguland gap is not merely bounded, it has a full local account,
+
+  `Δ_N^ζ = M(ζ∅:R|C) + L_cf − M(ζR:R|C) − K(ζR|ζ∅,R,C) + O(log N)`,
+
+with `L_cf = K(ζ∅|ζR,R,C)`. Algebraically this is finite-string chain-rule bookkeeping —
+two applications of conditional symmetry of information plus the conditional chain-rule
+exchange — and it deliberately carries **no reversibility premise**: WP0218's reversible
+conservation/localization supplies the physical complete-ledger reading in the manuscripts,
+not an algebraic hypothesis here. All quantities are conditioned on the declared common
+frame `C`, so the earlier unconditional statements are the same identities read at a
+trivial frame. The GART inequality is then re-derived as a *projection* of the equality
+(drop the two regulated-branch correction terms, apply conditional data processing), so the
+formal dependency graph matches the manuscript narrative: equality → projection →
+inequality. -/
+
+/-- **Conditional symmetry of information** (two-sided): `K(a|C)` splits into conditional
+    mutual information with `R` plus the doubly-conditioned remainder,
+    `|K(a|C) − M(a:R|C) − K(a|⟨R,C⟩)| ≤ slack`. Standard; named hypothesis. -/
+def CondSI (a R C : F.Obj) : Prop :=
+  |(F.cond a C : Int) - cIK F a R C - (F.cond a (F.pair R C) : Int)| ≤ (F.slack : Int)
+
+/-- **Conditional chain-rule exchange** (two-sided): describing `a` then `b` given `D`
+    accounts for the pair the same way as describing `b` then `a`,
+    `|(K(a|D) − K(b|D)) − (K(a|⟨b,D⟩) − K(b|⟨a,D⟩))| ≤ slack`. Standard; named
+    hypothesis (the "conditional chain-rule symmetry" step of the manuscript proof). -/
+def CondExchange (a b D : F.Obj) : Prop :=
+  |((F.cond a D : Int) - (F.cond b D : Int))
+    - ((F.cond a (F.pair b D) : Int) - (F.cond b (F.pair a D) : Int))| ≤ (F.slack : Int)
+
+/-- **Frame-conditional counterfactual residual** `L_cf = K(z₀|⟨z,⟨R,C⟩⟩)`:
+    `GroundedRegulation.residual` with the common frame `C` carried explicitly.
+    Definitionally `residual F z z0 (F.pair R C)`; the subtracted regulated-branch term
+    `K(ζR|ζ∅,R,C)` of the manuscript is `residualC` with `z` and `z0` exchanged. -/
+def residualC (z z0 R C : F.Obj) : Int := residual F z z0 (F.pair R C)
+
+/-- **Proposition (exact counterfactual balance).** Up to ordinary finite-string
+    chain-rule slack,
+
+    `Δ_N^ζ = M(ζ∅:R|C) + L_cf − M(ζR:R|C) − K(ζR|ζ∅,R,C)`,
+
+    with `Δ_N^ζ = K(ζ∅|C) − K(ζR|C)` read as `z := ζR`, `z0 := ζ∅`. The equality-level
+    local ledger for the declared counterfactual query: nothing vanishes merely because
+    the chosen reguland projection has become simpler. Two-sided finite-slack form; no
+    reversibility premise. -/
+theorem exact_counterfactual_balance (z z0 R C : F.Obj)
+    (hz0 : CondSI F z0 R C)
+    (hz : CondSI F z R C)
+    (hex : CondExchange F z0 z (F.pair R C)) :
+    |((F.cond z0 C : Int) - (F.cond z C : Int))
+      - (cIK F z0 R C + residualC F z z0 R C
+         - cIK F z R C - residualC F z0 z R C)| ≤ 3 * (F.slack : Int) := by
+  simp only [CondSI, CondExchange, residualC, residual] at hz0 hz hex ⊢
+  rw [abs_le] at hz0 hz hex ⊢
+  omega
+
+/-- **Conditional MAI nonnegativity**: `M(a:R|C) ≥ −slack`. Standard; named hypothesis. -/
+def MutualNonnegC (a R C : F.Obj) : Prop := -(F.slack : Int) ≤ cIK F a R C
+
+/-- **Conditional data processing**: `ζ∅` computable from `W` at fixed horizon and fixed
+    reguland projection gives `M(ζ∅:R|C) ≤ M(W:R|C) + slack`. Standard; named hypothesis. -/
+def DataProcessingC (y W R C : F.Obj) : Prop :=
+  cIK F y R C ≤ cIK F W R C + (F.slack : Int)
+
+/-- **GART, reguland form, as a projection of the exact balance.** Dropping the two
+    regulated-branch correction terms (the residual `K(ζR|ζ∅,R,C) ≥ 0` and, up to slack,
+    `M(ζR:R|C) ≥ −slack`) in `exact_counterfactual_balance` yields
+    `Δ_N^ζ ≤ M(ζ∅:R|C) + L_cf + 4·slack`. -/
+theorem gart_reguland_from_exact_balance (z z0 R C : F.Obj)
+    (hz0 : CondSI F z0 R C)
+    (hz : CondSI F z R C)
+    (hex : CondExchange F z0 z (F.pair R C))
+    (hnn : MutualNonnegC F z R C) :
+    (F.cond z0 C : Int) - (F.cond z C : Int)
+      ≤ cIK F z0 R C + residualC F z z0 R C + 4 * (F.slack : Int) := by
+  have h := exact_counterfactual_balance F z z0 R C hz0 hz hex
+  rw [abs_le] at h
+  simp only [MutualNonnegC] at hnn
+  simp only [residualC, residual] at h ⊢
+  omega
+
+/-- **GART, world form, as a projection of the exact balance.** Composing with
+    conditional data processing for `ζ∅ = f(W)`:
+    `Δ_N^ζ ≤ M(W:R|C) + L_cf + 5·slack`. This re-derives the grounded regulator
+    inequality from the equality-level ledger, making the formal dependency path match
+    the manuscript narrative (`grounded_inequality` remains the C-free statement). -/
+theorem grounded_inequality_from_exact_balance (W z z0 R C : F.Obj)
+    (hz0 : CondSI F z0 R C)
+    (hz : CondSI F z R C)
+    (hex : CondExchange F z0 z (F.pair R C))
+    (hnn : MutualNonnegC F z R C)
+    (hdp : DataProcessingC F z0 W R C) :
+    (F.cond z0 C : Int) - (F.cond z C : Int)
+      ≤ cIK F W R C + residualC F z z0 R C + 5 * (F.slack : Int) := by
+  have h := gart_reguland_from_exact_balance F z z0 R C hz0 hz hex hnn
+  simp only [DataProcessingC] at hdp
+  omega
+
+/-- **The closed exact ledger.** Substituting `residual_is_completion` (at conditioning
+    base `⟨R,C⟩`) into the exact balance: under reguland-level closure with completion
+    `Q`, up to `5·slack`,
+
+    `Δ_N^ζ = M(ζ∅:R|C) + M(ζ∅:Q|⟨ζR,R,C⟩) − M(ζR:R|C) − K(ζR|ζ∅,R,C)`.
+
+    The strongest checked expression of "the residual is not a sink": it is exactly the
+    matched-null information localized in the complementary realized records. -/
+theorem exact_counterfactual_balance_closed (z z0 R C Q : F.Obj)
+    (hz0 : CondSI F z0 R C)
+    (hz : CondSI F z R C)
+    (hex : CondExchange F z0 z (F.pair R C))
+    (hchain : CondChain F z0 Q (F.pair z (F.pair R C)))
+    (hclosed : InfoClosed F z0 Q (F.pair z (F.pair R C)))
+    (hpm : PairMono F z0 Q (F.pair z (F.pair R C))) :
+    |((F.cond z0 C : Int) - (F.cond z C : Int))
+      - (cIK F z0 R C + cIK F z0 Q (F.pair z (F.pair R C))
+         - cIK F z R C - residualC F z0 z R C)| ≤ 5 * (F.slack : Int) := by
+  have h1 := exact_counterfactual_balance F z z0 R C hz0 hz hex
+  have h2 := residual_is_completion F z z0 (F.pair R C) Q hchain hclosed hpm
+  rw [abs_le] at h1 h2 ⊢
+  simp only [residualC, residual] at h1 h2 ⊢
+  omega
+
 end GroundedRegulation
 end KTAIT

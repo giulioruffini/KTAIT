@@ -490,3 +490,11 @@ gcongr on NMAI bounds discharges BOTH the cast side goal and the numerator via i
 discharger — a trailing exact_mod_cast then errors with "no goals". WP0218's overlap lemma is
 the plain-cond sibling of IS.common_semantics_bound (condStar) — recorded in both docstrings
 to preempt a duplication flag.
+
+## 2026-08-17 — WP0203 v16 exact counterfactual balance (P1)
+The equality-level ledger needed only two new named facts (CondSI, CondExchange); the whole
+suite is `rw [abs_le]` + `simp only [defs]` + `omega`. Trap: `residual_is_completion`'s
+`residual F z z0 (F.pair R C)` and the unfolded `F.cond z0 (F.pair z (F.pair R C))` are
+different omega atoms until `residual` is unfolded in *every* hypothesis — a one-word
+`at h1 ⊢` vs `at h1 h2 ⊢` failure. `residualC` defined as `residual` at base `⟨R,C⟩` made
+the closed form a two-line substitution.

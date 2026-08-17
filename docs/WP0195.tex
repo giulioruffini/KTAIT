@@ -600,6 +600,30 @@ of the same accounting. \lean{grounded\_balance} is \lean{RegulationBalance.bala
 instantiated at $x:=z$, $y:=z_0$, recorded to show the constructions compose. The
 asymptotic $(1-o(1))\Delta$ form and the $\Theta(N)$ readings are analysis on top of these
 finite inequalities and are deliberately not formalized.
+\item \lean{GroundedRegulation.exact\_counterfactual\_balance},
+\lean{gart\_reguland\_from\_exact\_balance},
+\lean{grounded\_inequality\_from\_exact\_balance},
+\lean{exact\_counterfactual\_balance\_closed} --- WP0203 v16's equality-level ledger, the
+conservation seam. With all quantities conditioned on the declared common frame $C$ and
+$L_{\mathrm{cf}}=K(\zeta_\varnothing\mid\zeta_R,R,C)$ (\lean{residualC}),
+\[
+  \Delta_N^\zeta=\Ik(\zeta_\varnothing{:}R\mid C)+L_{\mathrm{cf}}
+    -\Ik(\zeta_R{:}R\mid C)-K(\zeta_R\mid\zeta_\varnothing,R,C)+O(\mathrm{slack}),
+\]
+a two-sided finite-slack identity assembled from conditional symmetry of information
+(\lean{CondSI}) and the conditional chain-rule exchange (\lean{CondExchange}) --- pure
+finite-string bookkeeping, deliberately carrying \emph{no} reversibility premise (WP0218
+supplies the physical complete-ledger reading in the manuscripts, not an algebraic
+hypothesis here). The GART inequality is then re-derived as its \emph{projection}:
+dropping the two regulated-branch correction terms ($K(\zeta_R\mid\zeta_\varnothing,R,C)\ge
+0$ and $\Ik(\zeta_R{:}R\mid C)\ge-\mathrm{slack}$, \lean{MutualNonnegC}) and composing with
+conditional data processing (\lean{DataProcessingC}) gives
+$\Delta_N^\zeta\le\Ik(W{:}R\mid C)+L_{\mathrm{cf}}+O(\mathrm{slack})$, so the formal
+dependency graph matches the manuscript narrative equality $\to$ projection $\to$
+inequality. Substituting \lean{residual\_is\_completion} at conditioning base
+$\langle R,C\rangle$ closes the ledger: under reguland-level closure the residual term
+\emph{is} $\mathrm{cIK}(\zeta_\varnothing{:}Q\mid\zeta_R,R,C)$ --- the residual is not a
+sink but the matched-null information localized in the complementary realized records.
 \item \lean{GroundedRegulation.self\_regulation\_forces\_self\_model} and
 \lean{self\_regulation\_forces\_self\_model\_grounded} --- WP0203 v13's self-regulation
 corollary. The query is role-relative: the focal pattern decomposes as $P=R\cup H$
@@ -1126,6 +1150,12 @@ Forced residual & $\Ik\le K R+\mathrm{slack}$ $\Rightarrow$ $L_Z\ge\Delta_Z-K R-
   \stproved\ (\lean{simple\_regulator\_forces\_residual}) \\
 Residual = completion & closure: $|L_Z-\mathrm{cIK}(z_0{:}Q\mid\langle z,R\rangle)|\le2\,\mathrm{slack}$ & KT &
   \stproved\ (\lean{residual\_is\_completion}, \lean{grounded\_balance}) \\
+Exact balance (v16) & $\Delta_N^\zeta=\Ik(\zeta_\varnothing{:}R\mid C)+L_{\mathrm{cf}}-\Ik(\zeta_R{:}R\mid C)-K(\zeta_R\mid\zeta_\varnothing,R,C)\pm O(\mathrm{slack})$ & KT &
+  \stproved\ (\lean{exact\_counterfactual\_balance}) \\
+--- GART as projection & drop regulated-branch terms + data processing $\Rightarrow$ $\Delta_N^\zeta\le\Ik(W{:}R\mid C)+L_{\mathrm{cf}}+O(\mathrm{slack})$ & KT &
+  \stproved\ (\lean{gart\_reguland\_from\_exact\_balance}, \lean{grounded\_inequality\_from\_exact\_balance}) \\
+--- closed ledger & closure: residual term $=\mathrm{cIK}(\zeta_\varnothing{:}Q\mid\zeta_R,R,C)$ in the equality & KT &
+  \stproved\ (\lean{exact\_counterfactual\_balance\_closed}) \\
 Implicit self-model & self-regulation query: $\mathsf{SM}^{\mathrm{imp}}\ge\Delta_Z-L_Z-O(\mathrm{slack})$; grounded: $\ge\Delta-L_Z-2\varepsilon-O(\mathrm{slack})$ & KT &
   \stproved\ (\lean{self\_regulation\_forces\_self\_model}, \lean{..\_grounded}) \\
 Automatic closure & abstract ART: world record closes the accounting by construction & KT &

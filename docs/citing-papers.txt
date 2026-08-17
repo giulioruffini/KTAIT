@@ -66,3 +66,4 @@ WP0218 | ../../BCOM WPs and Blogs/working_drafts/WP0218-Algorithmic information 
 
 # WP0195 (docs/WP0195.tex) is the status paper itself and is covered by the
 # module/theorem coverage check above, not by this registry.
+WP0203-v16 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v16/wp0203_preprint.tex
