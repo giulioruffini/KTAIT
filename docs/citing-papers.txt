@@ -45,7 +45,8 @@ WP0193 | ../../BCOM WPs and Blogs/working_drafts/WP0193-Regulatory_Coarse_Graini
 WP0202 | ../../BCOM WPs and Blogs/working_drafts/WP0202-Exo_Daisy_Algorithmic/WP0202.tex
 WP0007-v1 | ../../BCOM WPs and Blogs/working_drafts/WP0007 [PAPER]  From “More Is Different” to Algorithmic Emergence: Why Compression Is the Hard Part/v1/main.tex
 WP0007-v2 | ../../BCOM WPs and Blogs/working_drafts/WP0007 [PAPER]  From “More Is Different” to Algorithmic Emergence: Why Compression Is the Hard Part/v2/main.tex
-WP0007 | ../../BCOM WPs and Blogs/working_drafts/WP0007 [PAPER]  From “More Is Different” to Algorithmic Emergence: Why Compression Is the Hard Part/v4/main.tex
+WP0007-v4 | ../../BCOM WPs and Blogs/working_drafts/WP0007 [PAPER]  From “More Is Different” to Algorithmic Emergence: Why Compression Is the Hard Part/v4/main.tex
+WP0007 | ../../BCOM WPs and Blogs/working_drafts/WP0007 [PAPER]  From “More Is Different” to Algorithmic Emergence: Why Compression Is the Hard Part/v5/main.tex
 WP0215 | ../../BCOM WPs and Blogs/working_drafts/WP0215-Simulation-Phenomenally-Itself/WP0215.tex
 WP216-PLR-main | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/v13/04_regulation_agent.tex
 WP216-PLR-collectives | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/v13/07_collectives.tex
