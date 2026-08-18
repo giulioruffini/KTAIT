@@ -470,7 +470,7 @@ section Conditional
 
 /-- **WP0007's conditional-form corollary.** Conditional complexity relative to the microlaw,
 observation map and
-horizon is not computable either. The conditioning `z_n = (D_n, C_n, n)` *varies with the input*,
+horizon is not computable either. The conditioning `z_n = (D_n, ρ_n, n, C)` *varies with the input*,
 so this does not follow from uncomputability at a fixed conditioning string; the paper gives a
 direct diagonal argument, and this is its skeleton.
 
@@ -493,7 +493,8 @@ theorem conditional_complexity_uncomputable {Str : Type} {Kc : Str → ℕ}
   have h2 := hconst h (c + 1)
   omega
 
-/-- **WP0007 Proposition 2 (per-instance non-certifiability).** Read `Cert x m` as "the formal
+/-- **WP0007, per-instance non-certifiability (a classical remark in the paper's Appendix B
+since the 2026-08-18 restructure).** Read `Cert x m` as "the formal
 theory `F` certifies the lower bound `K(x) > m`". Chaitin's incompleteness theorem caps such
 certificates at a constant `c_{F,U}` fixed by the theory and the reference machine. Hence no
 macromodel longer than that constant can be certified shortest for any record, however finite.
