@@ -920,11 +920,13 @@ on finding compression bound the substrate every such model needs. The bound is 
 (classical, Li--Vit\'anyi); the log-loss identity is proved outright, and is the precise sense in
 which prediction and compression coincide --- \emph{sequential probabilistic} compression, not
 compression in general.
-\item \lean{AlgorithmicEmergence.chaitin\_certification\_ceiling} --- WP0007 Proposition~2:
-certified complexity lower bounds are capped at a constant fixed by the theory and the reference
-machine, so no macromodel longer than that constant is certifiably shortest for any record. Same
-obstruction as \lean{chaitin\_blocks\_minimality}, stated for macromodel optimality rather than
-self-models. Uncomputability is uniform over the family; unprovability is per-instance.
+\item \lean{AlgorithmicEmergence.chaitin\_certification\_ceiling} --- WP0007's classical
+certification limit (an appendix remark since the 2026-08-18 restructure; the paper claims
+exactly three barriers and bills this as classical): certified complexity lower bounds are
+capped at a constant fixed by the theory and the reference machine, so no macromodel longer
+than that constant is certifiably shortest for any record. Same obstruction as
+\lean{chaitin\_blocks\_minimality}, stated for macromodel optimality rather than self-models.
+Uncomputability is uniform over the family; unprovability is per-instance.
 \item \lean{algorithmic\_emergence} --- \textbf{superseded.} This declaration stated WP0007's
 former ``no algorithm finds the optimal coarse-graining'' result. WP0007~v0.3.0 withdrew that
 theorem: the objective is degenerate under a constant observation map, the target moves as $C$
