@@ -501,3 +501,6 @@ the closed form a two-line substitution.
 
 ## 2026-08-17 — no_computable_schedule (WP0007 Prop 3)
 Schedule refinement of the discovery barrier: step-indexed search abstracted as `find : Str → ℕ → ℕ → Option Prog`, promise-halting and soundness as hypotheses, no dovetailer built. Lesson: `Option.noConfusion` on `none = some p` trips motive elaboration under section variables — `simp at hp` after the rewrite is the robust close. Axioms: [propext, Quot.sound].
+
+## 2026-08-19 — Palomar wrapper (palomar/)
+Palomar registry requires proofs over Lean core axioms only — KTAIT already complies (hypotheses-not-axioms paid off; audit in docs/axiom-audit.md). Built a thin Comparator wrapper: Challenge/Solution share a byte-identical definition preamble because comparator demands term-level identity for every constant reachable from a compared statement (read its Compare.lean to learn this); Solution-only aux lemmas are fine. Guard: scripts/check_palomar.sh.

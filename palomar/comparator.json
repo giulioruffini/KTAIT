@@ -1,0 +1,13 @@
+{
+    "challenge_module": "Challenge",
+    "solution_module": "Solution",
+    "theorem_names": [
+        "KTAIT.persistence_conservation",
+        "KTAIT.conservation_tradeoff",
+        "KTAIT.Localization.localization_balance_reversible",
+        "KTAIT.Localization.recurrent_recoverability_persistence_bound",
+        "KTAIT.meta_persistence"
+    ],
+    "permitted_axioms": ["propext", "Quot.sound", "Classical.choice"],
+    "enable_nanoda": false
+}

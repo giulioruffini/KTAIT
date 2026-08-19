@@ -1,0 +1,170 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+version: "v0.4"
+
+project:
+  name: "KTAIT — Kolmogorov Theory conservation–localization–persistence spine"
+  authors: ["Giulio Ruffini", "Claude (Anthropic), AI assistant"]
+  responsible_maintainers: ["Giulio Ruffini"]
+  license: "Apache-2.0"
+
+repository:
+  substantive_formalization:
+    id: "https://github.com/giulioruffini/KTAIT"
+    revision: ""  # pinned at submission; this palomar/ directory is a thin
+                  # Comparator wrapper restating five theorems of the KTAIT
+                  # library over Mathlib alone, with proofs carried over.
+
+sources:
+  - title: "Pattern Persistence (BCOM WP0162)"
+    authors: ["Giulio Ruffini"]
+    id: "BCOM WP0162"
+    type: "article"
+    location: "Proposition 1 (meta-persistence), Proposition 2 and Appendix D (persistence conservation)"
+    relationship: "formalizes"
+    author_endorsement: "participated"
+  - title: "What Flows When Information Is Conserved? Algorithmic information conservation (BCOM WP0218)"
+    authors: ["Giulio Ruffini"]
+    id: "BCOM WP0218"
+    type: "article"
+    location: "Localization coordinates, Algorithmic Localization Balance (reversible case), recoverable-description overlap and persistence bound"
+    relationship: "formalizes"
+    author_endorsement: "participated"
+  - title: "An Introduction to Kolmogorov Complexity and Its Applications"
+    authors: ["Ming Li", "Paul Vitányi"]
+    id: "ISBN 978-3-030-11298-1"
+    type: "book"
+    location: "Symmetry of information, subadditivity, chain rule, data processing (standard AIT identities used as named hypotheses)"
+    relationship: "background"
+    author_endorsement: "not-contacted"
+
+related_formalizations: []
+
+classification:
+  arxiv: ["cs.IT", "math.DS"]
+  msc2020: ["68Q30", "94A17"]
+
+status:
+  scope: >
+    Five theorems forming the KT conservation–localization–persistence spine,
+    stated over an abstract algorithmic-information frame. Standard AIT facts
+    (symmetry of information, subadditivity, mutual-information chain rule,
+    conditional data processing) enter as named Prop hypotheses in each
+    theorem signature — never as global axioms — so every proof depends only
+    on Lean's standard three axioms. The substantive development (the KTAIT
+    library at the repository root) proves the wider theorem inventory
+    tracked in BCOM WP0195.
+  sorry_count: 0
+  sorry_in_definitions: 0
+  axioms: ["propext", "Quot.sound", "Classical.choice"]
+  main_results:
+    - declaration: "KTAIT.persistence_conservation"
+      file: "palomar/Solution.lean"
+      sorry_count: 0
+      axioms: ["propext"]
+      comparator_config: "palomar/comparator.json"
+      literature_dependencies:
+        - statement: "Symmetry of algorithmic information, I_K(x:y) = K(x) − K(x|y*) + O(log), carried as the explicit hypothesis `SymmetryOfInformation F`"
+          source: "An Introduction to Kolmogorov Complexity and Its Applications"
+    - declaration: "KTAIT.conservation_tradeoff"
+      file: "palomar/Solution.lean"
+      sorry_count: 0
+      axioms: ["propext", "Quot.sound"]
+      comparator_config: "palomar/comparator.json"
+      literature_dependencies:
+        - statement: "Exact conservation ledger K(O_W) = I_K(O_W:R) + K(O_W|R*), carried as the explicit hypothesis `ConservationLedger`"
+          source: "Pattern Persistence (BCOM WP0162)"
+    - declaration: "KTAIT.Localization.localization_balance_reversible"
+      file: "palomar/Solution.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "palomar/comparator.json"
+      literature_dependencies:
+        - statement: "Plain subadditivity K(a) ≤ K(b) + K(a|b) + O(log), carried as the explicit hypothesis `Subadd` (both directions)"
+          source: "An Introduction to Kolmogorov Complexity and Its Applications"
+    - declaration: "KTAIT.Localization.recurrent_recoverability_persistence_bound"
+      file: "palomar/Solution.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "palomar/comparator.json"
+      literature_dependencies:
+        - statement: "Mutual-information chain rule and conditional data processing, carried as the explicit hypotheses `MutualChain` and `CondDataProcessing`"
+          source: "An Introduction to Kolmogorov Complexity and Its Applications"
+    - declaration: "KTAIT.meta_persistence"
+      file: "palomar/Solution.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "palomar/comparator.json"
+      literature_dependencies:
+        - statement: "Symmetry of algorithmic information, carried as the explicit hypothesis `SymmetryOfInformation F`"
+          source: "An Introduction to Kolmogorov Complexity and Its Applications"
+
+automation:
+  methods:
+    - method: "agent"
+      models: ["claude-opus-4", "claude-fable-5"]
+      framework: "Claude Code"
+      tool_setup: >
+        Human-directed sessions: the author specifies the target statement
+        from the source paper; the agent drafts Lean statements and proofs,
+        builds, and runs #print axioms; the author reviews statements against
+        the papers. A repo sync guard (scripts/check_sync.sh, enforced by
+        pre-push hook and CI) requires sorry-free proofs and keeps the paper
+        inventory (BCOM WP0195) aligned with the Lean source.
+      cost:
+        wall_time: "part-time over several months (whole KTAIT library)"
+        spend_usd: "subscription-based usage"
+        hardware: "laptop, API-only"
+  spend_usd: "subscription-based usage"
+  notes: >
+    All statements were human-reviewed against the source papers. Proofs are
+    short (integer/rational rearrangements closed by omega/gcongr on top of
+    the named hypotheses); the mathematical content lies in the statements
+    and the explicit assumption interfaces.
+
+fidelity:
+  divergences: >
+    O(log)/O(1) correction terms of the classical AIT identities are modeled
+    by a single per-frame `slack : Nat`, so the formal statements are bounded
+    (…≤ slack) rather than asymptotic. The AIT facts are hypotheses about an
+    abstract frame, not theorems about a concrete universal machine: the
+    registered claim is that the KT statements follow from the stated
+    assumptions, not a ground-up development of AIT. The library's ToyModel
+    module witnesses that the hypothesis set is satisfiable.
+
+review:
+  status: "self-assessed"
+  reviewers: ["Giulio Ruffini"]
+  notes: >
+    Statements checked by the author against BCOM WP0162/WP0218; the library
+    has undergone adversarial review passes (documented in the repository)
+    and continuous integration with an axiom/sorry sync guard. No external
+    peer review of the formalization itself yet.
+
+alignment:
+  namespace: "KTAIT"
+  statements:
+    - source: "WP0162 Prop. 2 (persistence conservation, bounded form)"
+      lean: "KTAIT.persistence_conservation"
+      module: "palomar/Solution.lean"
+      status: "proved"
+    - source: "WP0162 conservation trade-off"
+      lean: "KTAIT.conservation_tradeoff"
+      module: "palomar/Solution.lean"
+      status: "proved"
+    - source: "WP0218 Algorithmic Localization Balance, reversible specialization"
+      lean: "KTAIT.Localization.localization_balance_reversible"
+      module: "palomar/Solution.lean"
+      status: "proved"
+    - source: "WP0218 recoverable-description persistence bound"
+      lean: "KTAIT.Localization.recurrent_recoverability_persistence_bound"
+      module: "palomar/Solution.lean"
+      status: "proved"
+    - source: "WP0162 Prop. 1 (meta-persistence)"
+      lean: "KTAIT.meta_persistence"
+      module: "palomar/Solution.lean"
+      status: "proved"
+
+acknowledgements: >
+  Built on Mathlib (leanprover-community) and the Lean 4 toolchain; Comparator
+  and the Palomar registry infrastructure by the Lean FRO and the Palomar
+  team. KTAIT status tracking lives in BCOM WP0195.
