@@ -876,13 +876,17 @@ available compression; semidecidability is the complementary positive fact about
 so nothing proved here rests on it.
 \item \lean{AlgorithmicEmergence.no\_universal\_emergence\_constructor} --- WP0007's
 inheritance proposition: on the unrestricted computable-generator class, a total constructor
-guaranteed to return a qualifying emergent generator whenever one exists decides raw-length
-compressibility. The compression-to-emergence embedding enters as named hypotheses
-(\lean{WrapExists}, \lean{UnwrapValid}, \lean{UnwrapBeats}, \lean{ConstructorGuarantee});
-the AIT input is \lean{CompressibleUndecidable}, with the raw-length function instantiable as
-$|x|-c$ to absorb the paper's fixed framing overhead. The proposition's scope note --- restricted
-classes inherit only when the wrapped generators lie inside them --- is carried by the hypotheses,
-not by the theorem.
+guaranteed to return a qualifying emergent generator whenever one exists decides a set sandwiched
+between two compressibility classes, and no decidable set separates them. The
+compression-to-emergence embedding enters as named hypotheses at two raw-length thresholds
+(\lean{WrapExists} at the tighter $|x|-c$, since wrapping needs headroom for framing overhead
+and margins; \lean{UnwrapBeats} at the looser $|x|$, since unwrapping leaks overhead; plus
+\lean{UnwrapValid} and \lean{ConstructorGuarantee}); the AIT input is
+\lean{SeparatorUndecidable}, the fixed-slack diagonal in separator form. The two-threshold
+sandwich replaced an earlier same-threshold statement whose paper-level wrapper could not meet
+the unwrap bound (2026-08-21 repair). The proposition's scope note --- restricted classes
+inherit only when the wrapped generators lie inside them --- is carried by the hypotheses, not
+by the theorem.
 \item \lean{AlgorithmicEmergence.no\_computable\_schedule} --- WP0007's no-computable-schedule
 proposition, the schedule refinement of the discovery barrier: no total computable function bounds the halting
 time of a sound step-indexed search on every positive instance $K(x)<b$. A schedule would decide

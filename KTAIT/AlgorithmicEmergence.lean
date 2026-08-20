@@ -35,9 +35,10 @@ that embedding.
   computable-generator class, a total constructor guaranteed to return a qualifying emergent
   generator whenever one exists would decide raw-length compressibility. The wrap/unwrap
   embedding enters as hypotheses (`WrapExists`, `UnwrapValid`, `UnwrapBeats`,
-  `ConstructorGuarantee`); consumes `CompressibleUndecidable` with `rawlen` instantiable as
-  `|x| - c` for the paper's fixed-slack form. Restricted classes inherit only when the wrapped
-  generators lie inside them.
+  `ConstructorGuarantee`) at two raw-length thresholds — wrapping needs headroom
+  (`rawlen₁ = |x| - c`) while unwrapping only lands below the looser `rawlen₂ = |x|` — and the
+  classical input is `SeparatorUndecidable`: no decidable set separates the two compressibility
+  classes. Restricted classes inherit only when the wrapped generators lie inside them.
 * `no_computable_schedule` — the **schedule refinement**: even under a promise `K x < b` that
   makes an open-ended search halt, no total computable clock bounds its halting time on every
   positive instance. Consumes `KThresholdUndecidable`; the step-indexed search and its
@@ -415,58 +416,69 @@ undecidability input for that instantiation is classical (same diagonal). -/
 
 section EmergenceInheritance
 
-variable {Str Prog Gen : Type} (K : Str → ℕ) (len : Prog → ℕ) (rawlen : Str → ℕ)
+variable {Str Prog Gen : Type} (K : Str → ℕ) (len : Prog → ℕ) (rawlen₁ rawlen₂ : Str → ℕ)
   (DecR₁ : (Str → Prop) → Prop)
 
-/-- Wrap direction of the embedding: every positive instance of raw-length compression admits a
-qualifying generator — built by the fixed frame from a sufficiently short program. -/
+/-- Wrap direction of the embedding: every instance compressible below the tighter threshold
+`rawlen₁` admits a qualifying generator — built by the fixed frame from a sufficiently short
+program. The wrapper needs this headroom to pay its framing overhead and margins. -/
 def WrapExists (Qual : Str → Gen → Prop) : Prop :=
-  ∀ x, K x < rawlen x → ∃ g, Qual x g
+  ∀ x, K x < rawlen₁ x → ∃ g, Qual x g
 
 /-- Unwrap validity: whatever generator the constructor returns, its unwrapping is a program for
 the record — `K`'s minimality in acquired-code dress. -/
 def UnwrapValid (unwrap : Gen → Prog) (E : Str → Gen) : Prop :=
   ∀ x, K x ≤ len (unwrap (E x))
 
-/-- Unwrap direction of the embedding: a qualifying generator's two-part code is a description
-below the raw length. -/
+/-- Unwrap direction of the embedding: a qualifying generator's two-part code unwraps to a
+description below the looser threshold `rawlen₂`. Unwrapping leaks overhead, so it cannot be
+required to land back below `rawlen₁`; the sandwich between the two thresholds is exactly what
+the separator hypothesis consumes. -/
 def UnwrapBeats (Qual : Str → Gen → Prop) (unwrap : Gen → Prog) : Prop :=
-  ∀ x g, Qual x g → len (unwrap g) < rawlen x
+  ∀ x g, Qual x g → len (unwrap g) < rawlen₂ x
 
 /-- The constructor's guarantee: it returns a qualifying generator whenever one exists. -/
 def ConstructorGuarantee (Qual : Str → Gen → Prop) (E : Str → Gen) : Prop :=
   ∀ x, (∃ g, Qual x g) → Qual x (E x)
 
 /-- Reduction closure: a computable constructor composed with the fixed unwrapping makes the
-raw-length test decidable — run it and measure. -/
+looser-threshold test decidable — run it and measure. -/
 def EmergenceTestDecidable (CompG : (Str → Gen) → Prop)
     (unwrap : Gen → Prog) (E : Str → Gen) : Prop :=
-  CompG E → DecR₁ (fun x => len (unwrap (E x)) < rawlen x)
+  CompG E → DecR₁ (fun x => len (unwrap (E x)) < rawlen₂ x)
+
+/-- The classical input in separator form: no decidable set contains every instance compressible
+below `rawlen₁` while containing only instances compressible below `rawlen₂`. For
+`rawlen₁ = |x| - c`, `rawlen₂ = |x|` this is the fixed-slack diagonal of WP0007
+Appendix B: the first length-`n` string outside such a set is computable, exists because
+incompressible strings lie outside it, and has `K ≥ n - c` while being describable in
+`O(log n)` bits. -/
+def SeparatorUndecidable : Prop :=
+  ∀ P : Str → Prop,
+    (∀ x, K x < rawlen₁ x → P x) → (∀ x, P x → K x < rawlen₂ x) → ¬ DecR₁ P
 
 /-- **WP0007 inheritance proposition (no universal emergence constructor).** On the unrestricted
 computable-generator class, no total computable procedure is guaranteed to construct a qualifying
 emergent generator whenever one exists: composed with the fixed unwrapping, such a constructor
-would decide raw-length compressibility. Consumes `CompressibleUndecidable`, the same classical
-input as the raw-length discovery barrier; a restricted class inherits the conclusion only when
-the wrapped generators lie inside it (the embedding hypotheses are about the unrestricted
-class). -/
+would decide a set sandwiched between compressibility below `rawlen₁` and compressibility below
+`rawlen₂`, and no decidable set separates the two. The two thresholds are forced by the
+asymmetry of the embedding — wrapping needs headroom, unwrapping leaks overhead — which is why
+the same-threshold reduction is not available. A restricted class inherits the conclusion only
+when the wrapped generators lie inside it. -/
 theorem no_universal_emergence_constructor {CompG : (Str → Gen) → Prop}
     {Qual : Str → Gen → Prop} {E : Str → Gen} {unwrap : Gen → Prog}
-    (hwrap : WrapExists K rawlen Qual)
+    (hwrap : WrapExists K rawlen₁ Qual)
     (hguar : ConstructorGuarantee Qual E)
     (hvalid : UnwrapValid K len unwrap E)
-    (hbeats : UnwrapBeats len rawlen Qual unwrap)
-    (hdec : EmergenceTestDecidable len rawlen DecR₁ CompG unwrap E)
-    (hund : CompressibleUndecidable K rawlen DecR₁) :
+    (hbeats : UnwrapBeats len rawlen₂ Qual unwrap)
+    (hdec : EmergenceTestDecidable len rawlen₂ DecR₁ CompG unwrap E)
+    (hund : SeparatorUndecidable K rawlen₁ rawlen₂ DecR₁) :
     ¬ CompG E := by
   intro hcomp
-  have hEq : (fun x => len (unwrap (E x)) < rawlen x) = (fun x => K x < rawlen x) := by
-    funext x
-    refine propext ⟨fun h => lt_of_le_of_lt (hvalid x) h, fun h => ?_⟩
-    exact hbeats x (E x) (hguar x (hwrap x h))
-  have hD := hdec hcomp
-  rw [hEq] at hD
-  exact hund hD
+  exact hund (fun x => len (unwrap (E x)) < rawlen₂ x)
+    (fun x hx => hbeats x (E x) (hguar x (hwrap x hx)))
+    (fun x hx => lt_of_le_of_lt (hvalid x) hx)
+    (hdec hcomp)
 
 end EmergenceInheritance
 
