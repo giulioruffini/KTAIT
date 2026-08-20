@@ -311,7 +311,7 @@ Mathlib~v4.31.0. Modules:
 \lean{SelfModelLimits.lean} & quine floor, diagonalization, Chaitin ceiling & WP0192 Principle~1 \\
 \lean{RegulatorSelection.lean} & \lean{ChainRule} & WP0162 Prop.~1 (regulator selection) \\
 \lean{CoarseGraining.lean} & \lean{RegSuff}, structure function & WP0193 Thms~A/B \\
-\lean{AlgorithmicEmergence.lean} & counting bound, raw-length/threshold barriers, schedule refinement & WP0007 Thms~1--3, Props.~1--3, Cors.~1--3 \\
+\lean{AlgorithmicEmergence.lean} & counting bound, raw-length/threshold barriers, schedule refinement, emergence-constructor reduction & WP0007 Thms~1--3, Props.~1--3, Cors.~1--3 \\
 \lean{Contrast.lean} & contrast fibre posterior & WP0162 Q3 (Eq.~26) \\
 \lean{ShiftInvariance.lean} & \lean{CheapTransform}, \lean{PairSymmetric} & WP0202 App.~A (the null-hypothesis error) \\
 \lean{PushPull.lean} & \lean{Plant}, \lean{Admissible}, \lean{InwardOnBoundary} & WP0186 Thms~1--2, Cor.~1, gap Lemma~1 \\
@@ -874,6 +874,15 @@ semantics for programs, a halting-in-$t$-steps predicate and the dovetailing con
 theorem rules out a \emph{total} procedure that halts on every input while exploiting every
 available compression; semidecidability is the complementary positive fact about partial search,
 so nothing proved here rests on it.
+\item \lean{AlgorithmicEmergence.no\_universal\_emergence\_constructor} --- WP0007's
+inheritance proposition: on the unrestricted computable-generator class, a total constructor
+guaranteed to return a qualifying emergent generator whenever one exists decides raw-length
+compressibility. The compression-to-emergence embedding enters as named hypotheses
+(\lean{WrapExists}, \lean{UnwrapValid}, \lean{UnwrapBeats}, \lean{ConstructorGuarantee});
+the AIT input is \lean{CompressibleUndecidable}, with the raw-length function instantiable as
+$|x|-c$ to absorb the paper's fixed framing overhead. The proposition's scope note --- restricted
+classes inherit only when the wrapped generators lie inside them --- is carried by the hypotheses,
+not by the theorem.
 \item \lean{AlgorithmicEmergence.no\_computable\_schedule} --- WP0007's no-computable-schedule
 proposition, the schedule refinement of the discovery barrier: no total computable function bounds the halting
 time of a sound step-indexed search on every positive instance $K(x)<b$. A schedule would decide

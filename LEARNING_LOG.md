@@ -504,3 +504,9 @@ Schedule refinement of the discovery barrier: step-indexed search abstracted as 
 
 ## 2026-08-19 — Palomar wrapper (palomar/)
 Palomar registry requires proofs over Lean core axioms only — KTAIT already complies (hypotheses-not-axioms paid off; audit in docs/axiom-audit.md). Built a thin Comparator wrapper: Challenge/Solution share a byte-identical definition preamble because comparator demands term-level identity for every constant reachable from a compared statement (read its Compare.lean to learn this); Solution-only aux lemmas are fine. Guard: scripts/check_palomar.sh.
+
+## 2026-08-20 — no_universal_emergence_constructor (WP0007 inheritance proposition)
+Wrap/unwrap embedding abstracted as four named hypotheses; same hEq-then-contradict shape as the
+other reductions. Lesson: section-variable auto-binding order is by declaration, and a def whose
+body uses `len` silently prepends it — the call site must supply it (UnwrapBeats len rawlen ...).
+Axioms: [propext, Quot.sound].

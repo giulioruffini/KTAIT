@@ -31,6 +31,13 @@ that embedding.
 * `compressor_of_threshold` — the hierarchy as a lemma, recorded because it is easy to assert
   backwards: a threshold procedure specializes to a universal compressor, so the raw-length
   statement is the stronger one and is *not* a corollary of the arbitrary-`b` theorem.
+* `no_universal_emergence_constructor` — the **inheritance proposition**: on the unrestricted
+  computable-generator class, a total constructor guaranteed to return a qualifying emergent
+  generator whenever one exists would decide raw-length compressibility. The wrap/unwrap
+  embedding enters as hypotheses (`WrapExists`, `UnwrapValid`, `UnwrapBeats`,
+  `ConstructorGuarantee`); consumes `CompressibleUndecidable` with `rawlen` instantiable as
+  `|x| - c` for the paper's fixed-slack form. Restricted classes inherit only when the wrapped
+  generators lie inside them.
 * `no_computable_schedule` — the **schedule refinement**: even under a promise `K x < b` that
   makes an open-ended search halt, no total computable clock bounds its halting time on every
   positive instance. Consumes `KThresholdUndecidable`; the step-indexed search and its
@@ -388,7 +395,80 @@ theorem no_universal_compressor_micro {Exp : Type} (data : Exp → Str) (emb : S
   rw [hEq] at hD
   exact hund hD
 
+
+
 end RawLength
+
+/-! ### Inheritance: no universal emergence constructor
+
+WP0007's inheritance proposition. Algorithmic emergence (Definition 2 of the paper) demands an
+actually acquired reusable generator that beats the raw baseline; on the unrestricted
+computable-generator class, ordinary lossless compression embeds as the special case built by a
+fixed wrapper. The embedding enters abstractly: `wrapExists` says every raw-length-compressible
+string admits a qualifying generator (wrap a shortest program through the fixed frame);
+`unwrapValid`/`unwrapBeats` say any qualifying generator unwraps to a standalone description
+below the raw length (the two-part code of the acquired generator). A total constructor
+guaranteed to return a qualifying generator whenever one exists then decides raw-length
+compressibility. The fixed framing overhead is absorbed into `rawlen`, which is an arbitrary
+function here — instantiate `rawlen x = |x| - c` for the paper's fixed-slack form; the
+undecidability input for that instantiation is classical (same diagonal). -/
+
+section EmergenceInheritance
+
+variable {Str Prog Gen : Type} (K : Str → ℕ) (len : Prog → ℕ) (rawlen : Str → ℕ)
+  (DecR₁ : (Str → Prop) → Prop)
+
+/-- Wrap direction of the embedding: every positive instance of raw-length compression admits a
+qualifying generator — built by the fixed frame from a sufficiently short program. -/
+def WrapExists (Qual : Str → Gen → Prop) : Prop :=
+  ∀ x, K x < rawlen x → ∃ g, Qual x g
+
+/-- Unwrap validity: whatever generator the constructor returns, its unwrapping is a program for
+the record — `K`'s minimality in acquired-code dress. -/
+def UnwrapValid (unwrap : Gen → Prog) (E : Str → Gen) : Prop :=
+  ∀ x, K x ≤ len (unwrap (E x))
+
+/-- Unwrap direction of the embedding: a qualifying generator's two-part code is a description
+below the raw length. -/
+def UnwrapBeats (Qual : Str → Gen → Prop) (unwrap : Gen → Prog) : Prop :=
+  ∀ x g, Qual x g → len (unwrap g) < rawlen x
+
+/-- The constructor's guarantee: it returns a qualifying generator whenever one exists. -/
+def ConstructorGuarantee (Qual : Str → Gen → Prop) (E : Str → Gen) : Prop :=
+  ∀ x, (∃ g, Qual x g) → Qual x (E x)
+
+/-- Reduction closure: a computable constructor composed with the fixed unwrapping makes the
+raw-length test decidable — run it and measure. -/
+def EmergenceTestDecidable (CompG : (Str → Gen) → Prop)
+    (unwrap : Gen → Prog) (E : Str → Gen) : Prop :=
+  CompG E → DecR₁ (fun x => len (unwrap (E x)) < rawlen x)
+
+/-- **WP0007 inheritance proposition (no universal emergence constructor).** On the unrestricted
+computable-generator class, no total computable procedure is guaranteed to construct a qualifying
+emergent generator whenever one exists: composed with the fixed unwrapping, such a constructor
+would decide raw-length compressibility. Consumes `CompressibleUndecidable`, the same classical
+input as the raw-length discovery barrier; a restricted class inherits the conclusion only when
+the wrapped generators lie inside it (the embedding hypotheses are about the unrestricted
+class). -/
+theorem no_universal_emergence_constructor {CompG : (Str → Gen) → Prop}
+    {Qual : Str → Gen → Prop} {E : Str → Gen} {unwrap : Gen → Prog}
+    (hwrap : WrapExists K rawlen Qual)
+    (hguar : ConstructorGuarantee Qual E)
+    (hvalid : UnwrapValid K len unwrap E)
+    (hbeats : UnwrapBeats len rawlen Qual unwrap)
+    (hdec : EmergenceTestDecidable len rawlen DecR₁ CompG unwrap E)
+    (hund : CompressibleUndecidable K rawlen DecR₁) :
+    ¬ CompG E := by
+  intro hcomp
+  have hEq : (fun x => len (unwrap (E x)) < rawlen x) = (fun x => K x < rawlen x) := by
+    funext x
+    refine propext ⟨fun h => lt_of_le_of_lt (hvalid x) h, fun h => ?_⟩
+    exact hbeats x (E x) (hguar x (hwrap x h))
+  have hD := hdec hcomp
+  rw [hEq] at hD
+  exact hund hD
+
+end EmergenceInheritance
 
 /-! ## The optimality barrier -/
 
