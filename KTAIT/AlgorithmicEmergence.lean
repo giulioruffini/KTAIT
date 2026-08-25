@@ -11,7 +11,7 @@ import Mathlib
 WP0007's three barriers between a microscopic generator and a compressive macroscopic model.
 
 A *finite micro-experiment* `μ` carries an update rule, an initial microstate, an observation
-map and a horizon; `data μ` is the finite macrodata record it produces. WP0007 Theorem 1
+map and a horizon; `data μ` is the finite macrodata record it produces. WP0007's residual-information barrier
 supplies a computable *embedding* `emb : Str → Exp` — the shift-and-read register seeded with
 `y` — whose macrohistory is `y` itself (`Faithful`). Everything below is a reduction along
 that embedding.
@@ -96,7 +96,7 @@ The AIT inputs enter as named hypotheses, never as global `axiom`s — the disci
   Li–Vitányi Thm 2.3.2.
 * `KNotApproximable c` — no computable `f` satisfies `K ≤ f ≤ K + c` everywhere. This is
   *not* implied by `KUncomputable` without argument; it is the Berry argument run with slack
-  `c`, proved in WP0007 Proposition 1. Assuming it here is the honest Level-1 reading: the
+  `c`, proved in WP0007's optimality barrier (unbounded additive regret). Assuming it here is the honest Level-1 reading: the
   paper proves it, the Lean development reduces to it.
 * `KThresholdUndecidable` — the predicate `K x < b` is not decidable. Equivalent to
   `KUncomputable` (deciding it for every `b` determines `K x`), but stated in the threshold
@@ -115,7 +115,7 @@ namespace AlgorithmicEmergence
 
 /-! ## The residual-information barrier: the counting step -/
 
-/-- **Counting bound (WP0007 Theorem 1).** If every string in `S` is assigned a program in the
+/-- **Counting bound (WP0007 residual-information barrier).** If every string in `S` is assigned a program in the
 finite set `P`, and distinct strings get distinct programs, then `|S| ≤ |P|`.
 
 Instantiated with `p y` a shortest program for `y` given the conditioning data, and `P` the
@@ -126,7 +126,7 @@ theorem counting_bound {Str Prog : Type} (S : Finset Str) (P : Finset Prog) (p :
     S.card ≤ P.card :=
   Finset.card_le_card_of_injOn p hmem hinj
 
-/-- **Few strings are compressible (WP0007 Theorem 1, eq. (2)).** Fewer than `2 ^ m` strings
+/-- **Few strings are compressible (WP0007 residual-information barrier, counting display).** Fewer than `2 ^ m` strings
 have a shortest (conditional) program among the fewer-than-`2 ^ m` programs of length `< m`.
 
 The bound does not mention the conditioning string, which is the point: no choice of microlaw
@@ -137,7 +137,7 @@ theorem few_low_complexity_strings {Str Prog : Type} {m : ℕ}
     S.card < 2 ^ m :=
   lt_of_le_of_lt (counting_bound S P p hmem hinj) hP
 
-/-- **WP0007 Theorem 1, fraction form.** If fewer than `2 ^ (n - d)` of the `2 ^ n` initial
+/-- **WP0007 residual-information barrier, fraction form.** If fewer than `2 ^ (n - d)` of the `2 ^ n` initial
 states are compressible past the margin, then more than `2 ^ n - 2 ^ (n - d)` are not: "at least a
 fraction `1 - 2 ^ (-d)` of initial microstates yield incompressible macrohistories". This is the
 step from the counting bound to the statement the paper makes. -/
@@ -201,7 +201,7 @@ theorem no_compression_improver {CompS2 : (Str → ℕ → Prog) → Prop} {A : 
 /-- The improver induced on strings by an experiment-level improver, along the embedding. -/
 def induced (A : Exp → ℕ → Prog) (emb : Str → Exp) : Str → ℕ → Prog := fun y b => A (emb y) b
 
-/-- **WP0007 Corollary (micro-to-macro form).** No total computable procedure returns, for every
+/-- **WP0007 optimality barrier, exact-optimality face (micro-to-macro form).** No total computable procedure returns, for every
 finite micro-experiment and threshold, a program for its macrodata below the threshold whenever
 one exists. The experiment-level hypotheses transport to the string level along the `Faithful`
 embedding of Theorem 1. -/
@@ -249,7 +249,7 @@ def ScheduleTestDecidable (CompN2 : (Str → ℕ → ℕ) → Prop)
     (find : Str → ℕ → ℕ → Option Prog) (τ : Str → ℕ → ℕ) : Prop :=
   CompN2 τ → DecR (fun x b => ∃ p, find x b (τ x b) = some p)
 
-/-- **WP0007 Proposition (no computable schedule).** No total computable function bounds the
+/-- **WP0007 auxiliary result (no computable schedule).** No total computable function bounds the
 halting time of a sound step-indexed search on every positive instance: the promise `K x < b`
 guarantees termination, and no computable clock announces it. A schedule would decide the
 threshold predicate --- run the search for the scheduled time and report whether anything was
@@ -374,7 +374,7 @@ theorem threshold_undecidable_of_compressible {DecR : (Str → ℕ → Prop) →
     (hund : CompressibleUndecidable K rawlen DecR₁) :
     KThresholdUndecidable K DecR := fun hT => hund (hslice _ hT)
 
-/-- **WP0007 Corollary (micro-to-macro, raw-length form).** No total computable procedure returns,
+/-- **WP0007 discovery barrier (micro-to-macro, raw-length form).** Stated abstractly over any faithful embedding `emb` with `data (emb y) = y`; the paper instantiates it with the trivial identity/full-readout experiment, the shift register being an equally valid witness. No total computable procedure returns,
 for every finite micro-experiment whose macrodata is compressible at all, a program shorter than
 that macrodata. -/
 theorem no_universal_compressor_micro {Exp : Type} (data : Exp → Str) (emb : Str → Exp)
@@ -491,7 +491,7 @@ variable {Exp Str Prog : Type}
   (CompE : (Exp → Prog) → Prop) (CompN : (Str → ℕ) → Prop)
 
 /-- The embedding is faithful: the macrohistory of the shift-and-read experiment seeded with
-`y` is `y` itself. This is the content of WP0007 Theorem 1's construction. -/
+`y` is `y` itself. This is the content of the residual-information barrier's witness construction. -/
 def Faithful : Prop := ∀ y, data (emb y) = y
 
 /-- The reduction mechanism: post-composing a computable experiment solver with the computable
@@ -504,7 +504,7 @@ def KUncomputable : Prop := ¬ CompN K
 
 /-- **AIT input 2.** No computable function brackets `K` within the fixed additive constant
 `c`. Strictly stronger than `KUncomputable` as stated, and proved by the Berry argument run
-with slack (WP0007 Proposition 1). -/
+with slack (WP0007 optimality barrier). -/
 def KNotApproximable (c : ℕ) : Prop := ∀ f, CompN f → ¬ (∀ y, K y ≤ f y ∧ f y ≤ K y + c)
 
 /-- A solver is *optimal* when it returns a shortest program for every experiment's macrodata. -/
