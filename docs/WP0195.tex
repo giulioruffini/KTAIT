@@ -910,6 +910,15 @@ as results were inserted ahead of others, so entries here name results rather th
 computability, for any $c$. The AIT input here is \lean{KNotApproximable}, which is \emph{not}
 implied by \lean{KUncomputable} as stated --- it is the Berry argument run with slack, proved in
 WP0007 Proposition~1 and assumed here.
+\item \lean{AlgorithmicEmergence.no\_additive\_approximation\_compressible} --- WP0007's
+optimality barrier in the form the paper states: unbounded additive regret already on
+\emph{compressible} records. Strictly stronger than the unconditional statement above, and
+required by the paper's existence/construction tree, in which both computational barriers live on
+the branch where a compression gap exists. The AIT input is
+\lean{KNotApproximableOnCompressible}, the padded-witness strengthening of
+\lean{KNotApproximable}: running the Berry-with-slack diagonal over $\mathrm{pad}(z)=z0^{|z|}$,
+which is compressible for long $z$ while $K(\mathrm{pad}(z))\ge K(z)-O(1)$ remains unbounded,
+yields a compressible witness. Proved in WP0007's optimality barrier and assumed here.
 \item \lean{AlgorithmicEmergence.counting\_bound} / \lean{few\_low\_complexity\_strings} /
 \lean{most\_states\_incompressible} --- WP0007's residual-information barrier, proved outright
 rather than assumed: distinct strings need distinct shortest programs, so fewer than $2^{m}$

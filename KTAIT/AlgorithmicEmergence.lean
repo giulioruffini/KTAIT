@@ -544,6 +544,49 @@ theorem no_additive_approximation {c : ℕ}
   rw [hfaith y] at h
   exact h
 
+/-- **AIT input 2\'.** The compressible-witness strengthening of `KNotApproximable`: no computable
+function brackets `K` within the fixed additive constant `c` *even when only the compressible
+strings are required to be bracketed*. This is strictly stronger than `KNotApproximable c`, and
+strictly stronger is what the paper's optimality barrier needs: the unconditional statement is
+witnessed by an incompressible string, which is the wrong branch of the paper's existence/
+construction tree.
+
+It is proved by the Berry argument run with slack over *padded* strings. Write `pad z = z 0^|z|`.
+Then `z` is computably recoverable from `pad z`, so `K (pad z) ≥ K z - O(1)`, while
+`K (pad z) ≤ |z| + O(log |z|) < 2|z| = rawlen (pad z)` for large `z`; hence every sufficiently
+long padded string is compressible while `K (pad z)` is unbounded. Running the diagonal over
+padded strings only therefore produces a *compressible* witness. See WP0007's optimality
+barrier and its proof. -/
+def KNotApproximableOnCompressible (rawlen : Str → ℕ) (c : ℕ) : Prop :=
+  ∀ f, CompN f → ¬ (∀ y, K y < rawlen y → K y ≤ f y ∧ f y ≤ K y + c)
+
+/-- A solver is *`c`-near-optimal on compressible data* when, on every experiment whose macrodata
+admits any shortening at all, its output is never shorter than optimal and never more than `c`
+bits longer. Weaker demand than `NearOptimal`: nothing is asked on incompressible instances. -/
+def NearOptimalOnCompressible (rawlen : Str → ℕ) (c : ℕ) (A : Exp → Prog) : Prop :=
+  ∀ μ, K (data μ) < rawlen (data μ) →
+    K (data μ) ≤ len (A μ) ∧ len (A μ) ≤ K (data μ) + c
+
+/-- **WP0007 optimality barrier (compressible-witness form).** Even restricted to finite
+micro-experiments whose macrohistory *does* admit a shortening, no total computable procedure
+returning valid descriptions keeps its additive regret below a fixed constant.
+
+This is the form the paper states, and it is the one its existence/construction tree requires:
+Theorem 2 and Theorem 3 both live on the branch where a compression gap exists. The unconditional
+`no_additive_approximation` below is the weaker corollary (demand near-optimality everywhere and
+in particular on compressible instances). -/
+theorem no_additive_approximation_compressible {c : ℕ} (rawlen : Str → ℕ)
+    (hred : ReductionClosure emb len CompE CompN) (hfaith : Faithful data emb)
+    (hApx : KNotApproximableOnCompressible K CompN rawlen c) {A : Exp → Prog}
+    (hA : NearOptimalOnCompressible data K len rawlen c A) :
+    ¬ CompE A := by
+  intro hcomp
+  refine hApx _ (hred A hcomp) ?_
+  intro y hy
+  have h := hA (emb y)
+  rw [hfaith y] at h
+  exact h hy
+
 /-- **WP0007, conditional-solver variant** (not the paper's conditional-form corollary — that is
 `conditional_complexity_uncomputable`). Stated for a solver whose target is complexity
 conditional on the fixed microlaw/observation data `z`: the same reduction applies verbatim,
