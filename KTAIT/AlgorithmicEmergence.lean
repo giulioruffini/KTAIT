@@ -56,8 +56,10 @@ that embedding.
 * `compression_of_good_model` / `sequential_codelength_eq_logloss` — the bridge to scientific
   theory. A simple model assigning the data high probability witnesses a short description of
   them, so a predictive macromodel must realize reusable compression; and sequential code length
-  *is* cumulative predictive log-loss. The converse — that a short description yields a useful
-  generative model — is false and is not claimed.
+  *is* cumulative predictive log-loss. There is no *general* converse — an arbitrary short
+  description of `D` need not be a useful scientific model — but WP0007's inheritance proposition
+  constructs a special family on which a short program does satisfy the scientific constraints at
+  fixed overhead, and that is what carries the discovery barrier across.
 
 Results are named, not numbered: WP0007's numbering has shifted repeatedly as statements were
 inserted ahead of others, and prose here cannot track `\ref`.
@@ -649,14 +651,19 @@ end Conditional
 /-! ## The bridge: reusable compression, and prediction as code length
 
 WP0007 proves things about exact descriptions of completed strings but is interpreted as being
-about scientific theories, which are reusable conditional generators. The bridge is asymmetric,
-and only one direction is needed.
+about scientific theories, which are reusable conditional generators. Both directions of the
+bridge matter, and they are established differently.
 
-A short program for one record need not be a useful model — it may entangle law with initial
-condition, exploit hindsight, and expose no interface for varying a parameter. That direction is
-argued in the paper, not formalized: "useful model" is not a formal predicate here.
+A short program for one record need not *in general* be a useful model — it may entangle law with
+initial condition, exploit hindsight, and expose no interface for varying a parameter. So there is
+no general converse, and "useful model" is not a formal predicate here. What the paper's
+inheritance proposition needs is weaker and is constructed rather than assumed: on one explicitly
+built family, a short program can be wrapped at fixed overhead into a model meeting the relevance,
+reuse and parameterization constraints. That wrap direction is paper-level; the abstract reduction
+consuming it is `no_universal_emergence_constructor`, whose `WrapExists` hypothesis is exactly this
+requirement.
 
-The direction the interpretation rests on is the converse, and it is the two-part coding bound:
+The direction formalized here is the unwrap side, and it is the two-part coding bound:
 a simple model that assigns the data high probability *witnesses* a short description of them.
 `compression_of_good_model` records it, with the coding bound as a named hypothesis (it is
 classical, Li–Vitányi). `sequential_codelength_eq_logloss` is proved outright: factoring a
@@ -677,8 +684,9 @@ in few bits, then `D` itself has a short description. This is the implication WP
 interpretation rests on: a predictive macromodel must realize reusable compression of the data it
 explains, so limits on finding compression bound the substrate every such model needs.
 
-The converse is false and is not claimed: a short description of `D` need not be, or yield, a
-useful generative model. -/
+There is no general converse: an arbitrary short description of `D` need not be, or yield, a
+useful generative model. The inheritance proposition does not need one — it constructs a specific
+family on which the wrap holds at fixed overhead (`WrapExists` above). -/
 theorem compression_of_good_model {Obj Model : Type} {K : Obj → ℕ} {KM : Model → ℕ}
     {codelen : Model → Obj → ℕ} {c : ℕ}
     (hbound : TwoPartCodingBound K KM codelen c)
