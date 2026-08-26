@@ -482,6 +482,58 @@ theorem no_universal_emergence_constructor {CompG : (Str → Gen) → Prop}
     (fun x hx => lt_of_le_of_lt (hvalid x) hx)
     (hdec hcomp)
 
+/-! ### Regret inheritance
+
+WP0007's inheritance proposition has a second part. Part (a) above says a scientific-model
+constructor cannot be guaranteed to *find* a qualifying model. Part (b) says that even when it
+returns one on an instance that genuinely admits a qualifying model, its returned code can sit
+arbitrarily far above `K`.
+
+The paper composes three ingredients: the fixed-slack padded witness (so the bad instance is
+compressible with slack `c₀`, hence lies on the favorable branch where a qualifying model exists),
+the constructor's own validity, and the fixed-overhead compiler from a returned model/coordinate
+pair to a standalone program. What follows records that composition. -/
+
+/-- **AIT input 2''.** Fixed-slack refinement of `KNotApproximableOnCompressible`: no computable
+function brackets `K` within `c` even when only the strings compressible *with slack* `c₀` must be
+bracketed. Proved by the padded-witness diagonal of WP0007's optimality barrier run at slack
+`c₀`: `pad z = z 0^|z|` satisfies `K (pad z) < rawlen (pad z) - c₀` for all sufficiently long `z`
+while `K (pad z)` stays unbounded, so the diagonal witness lies on the favorable branch. -/
+def KNotApproximableOnSlackCompressible (CompN : (Str → ℕ) → Prop)
+    (rawlen : Str → ℕ) (c₀ c : ℕ) : Prop :=
+  ∀ f, CompN f → ¬ (∀ y, K y + c₀ < rawlen y → K y ≤ f y ∧ f y ≤ K y + c)
+
+/-- The fixed-overhead compiler of WP0007's witness: the model/coordinate pair the constructor
+returns compiles, through the fixed interpreter in the observer frame, to a standalone program for
+the record at constant additive cost `d`. `modelcode x` is the length of the returned pair. -/
+def CompilerOverhead (compiled : Str → Prog) (modelcode : Str → ℕ) (d : ℕ) : Prop :=
+  ∀ x, len (compiled x) ≤ modelcode x + d
+
+/-- **WP0007 inheritance proposition, part (b): regret inheritance.** A total valid scientific
+constructor cannot keep the regret of its *returned model code* below any fixed bound `r`, even
+when restricted to instances that admit a qualifying scientific model.
+
+The hypotheses are exactly the paper's: `hvalid` is validity of the compiled output (it is a
+program for the record, so no shorter than `K`), `hover` is the fixed-overhead compiler, `hcomp`
+is computability of the composite length, and `hApx` is the fixed-slack non-approximability input
+at tolerance `r + d`. The conclusion denies bounded returned-code regret on the slack-compressible
+instances — which by the wrap construction are precisely those admitting a qualifying model. -/
+theorem no_bounded_regret_emergence_constructor {c₀ r d : ℕ}
+    (CompN : (Str → ℕ) → Prop) (rawlen : Str → ℕ)
+    (compiled : Str → Prog) (modelcode : Str → ℕ)
+    (hcomp : CompN (fun x => len (compiled x)))
+    (hApx : KNotApproximableOnSlackCompressible K CompN rawlen c₀ (r + d))
+    (hvalid : ∀ x, K x ≤ len (compiled x))
+    (hover : CompilerOverhead len compiled modelcode d) :
+    ¬ (∀ x, K x + c₀ < rawlen x → modelcode x ≤ K x + r) := by
+  intro hbdd
+  refine hApx _ hcomp ?_
+  intro y hy
+  refine ⟨hvalid y, ?_⟩
+  have h1 := hover y
+  have h2 := hbdd y hy
+  omega
+
 end EmergenceInheritance
 
 /-! ## The optimality barrier -/

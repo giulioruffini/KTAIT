@@ -919,6 +919,13 @@ the branch where a compression gap exists. The AIT input is
 \lean{KNotApproximable}: running the Berry-with-slack diagonal over $\mathrm{pad}(z)=z0^{|z|}$,
 which is compressible for long $z$ while $K(\mathrm{pad}(z))\ge K(z)-O(1)$ remains unbounded,
 yields a compressible witness. Proved in WP0007's optimality barrier and assumed here.
+\item \lean{AlgorithmicEmergence.no\_bounded\_regret\_emergence\_constructor} --- WP0007's
+inheritance proposition, part~(b): a total valid scientific-model constructor cannot keep the
+regret of its \emph{returned model code} below any fixed bound, even on instances that admit a
+qualifying scientific model. Composes the fixed-overhead compiler
+(\lean{CompilerOverhead}) with the fixed-slack non-approximability input
+(\lean{KNotApproximableOnSlackCompressible}), the slack ensuring the bad instance lies on the
+favorable branch. Part~(a) is \lean{no\_universal\_emergence\_constructor} above.
 \item \lean{AlgorithmicEmergence.counting\_bound} / \lean{few\_low\_complexity\_strings} /
 \lean{most\_states\_incompressible} --- WP0007's residual-information barrier, proved outright
 rather than assumed: distinct strings need distinct shortest programs, so fewer than $2^{m}$
