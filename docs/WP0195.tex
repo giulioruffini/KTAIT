@@ -926,6 +926,17 @@ qualifying scientific model. Composes the fixed-overhead compiler
 (\lean{CompilerOverhead}) with the fixed-slack non-approximability input
 (\lean{KNotApproximableOnSlackCompressible}), the slack ensuring the bad instance lies on the
 favorable branch. Part~(a) is \lean{no\_universal\_emergence\_constructor} above.
+\item \lean{AlgorithmicEmergence.relational\_optimality\_barrier} --- WP0007's optimality
+barrier stated without an optimum: for every margin and slack there is a record carrying an explicit
+compression witness \emph{and} an explicit competitor the constructor's output loses to by more than
+the margin. No shortest description appears in statement or proof, so the result survives a reading
+on which $K$ is not available as a number; classically it implies the numerical regret form, since
+every valid description is at least $K$. The analytic inputs are named hypotheses:
+\lean{LengthUnbounded} (the paper's counting argument --- validity forces distinct programs for
+distinct records, and only finitely many programs are short), \lean{CompetitorBound} and
+\lean{BoundOutrun} (the competitor is describable from the search index, so its length is
+$O(\log k)$), and \lean{WitnessCompresses} (the padded program beats the literal length by the
+declared slack).
 \item \lean{AlgorithmicEmergence.counting\_bound} / \lean{few\_low\_complexity\_strings} /
 \lean{most\_states\_incompressible} --- WP0007's residual-information barrier, proved outright
 rather than assumed: distinct strings need distinct shortest programs, so fewer than $2^{m}$

@@ -641,6 +641,69 @@ theorem no_additive_approximation_compressible {c : ℕ} (rawlen : Str → ℕ)
   rw [hfaith y] at h
   exact h hy
 
+/-! ### The relational form of the optimality barrier
+
+WP0007 also states the optimality barrier without mentioning an optimum. Instead of comparing the
+constructor's output to `K`, it exhibits two explicit programs on the same record: a *compression
+witness* showing the record really is compressible, and a *competitor* the constructor's output
+loses to by more than any fixed margin. Nothing here refers to a shortest description, so the
+statement survives a reading on which `K` is not available as a number.
+
+The analytic inputs are named hypotheses, as elsewhere in this module. `LengthUnbounded` is the
+paper's counting argument: a valid constructor must return distinct programs for distinct records,
+and only finitely many programs are short, so the returned length is unbounded along the witness
+family. `CompetitorBound` and `WitnessCompresses` record the two length estimates the paper
+computes explicitly — the competitor is describable from the search index `k`, and the padded
+record has a short program. -/
+
+section Relational
+
+variable {Str Prog Idx : Type} (len : Prog → ℕ) (rawlen : Str → ℕ)
+
+/-- The constructor's returned length grows without bound along the witness family. In WP0007 this
+follows by counting: validity forces distinct programs for distinct records, and only finitely many
+programs have any fixed length. -/
+def LengthUnbounded (rec : Idx → Str) (out : Str → Prog) (sel : ℕ → Idx) : Prop :=
+  ∀ k, k < len (out (rec (sel k)))
+
+/-- The competitor for search index `k` is describable from `k`, hence bounded by `bound k`. -/
+def CompetitorBound (comp : ℕ → Prog) (bound : ℕ → ℕ) : Prop :=
+  ∀ k, len (comp k) ≤ bound k
+
+/-- The bound grows more slowly than the index: for every margin some index outruns it. In the
+paper `bound k` is `O(log k)`. -/
+def BoundOutrun (bound : ℕ → ℕ) : Prop :=
+  ∀ c, ∃ k, bound k + c < k
+
+/-- The explicit padded program compresses the record below its literal length minus the slack. -/
+def WitnessCompresses (rec : Idx → Str) (wit : Idx → Prog) (s : ℕ) : Prop :=
+  ∀ i, len (wit i) + s < rawlen (rec i)
+
+/-- **WP0007 relational optimality barrier.** For every margin `c` and slack `s` there is a record
+carrying both witnesses at once: an explicit program `wit` compressing it below `rawlen - s`, and an
+explicit competitor `comp` that the constructor's output exceeds by more than `c`.
+
+No optimum appears in the statement or the proof. Classically this implies the numerical regret
+form, since every valid description is at least `K`; the converse needs a shortest program to exist
+as an object, which is exactly the commitment the relational form avoids. -/
+theorem relational_optimality_barrier {rec : Idx → Str} {out : Str → Prog} {sel : ℕ → Idx}
+    {comp : ℕ → Prog} {wit : Idx → Prog} {bound : ℕ → ℕ} (s : ℕ)
+    (hunb : LengthUnbounded len rec out sel)
+    (hcb : CompetitorBound len comp bound)
+    (hout : BoundOutrun bound)
+    (hwit : WitnessCompresses len rawlen rec wit s) :
+    ∀ c, ∃ k : ℕ,
+      len (wit (sel k)) + s < rawlen (rec (sel k)) ∧
+      len (comp k) + c < len (out (rec (sel k))) := by
+  intro c
+  obtain ⟨k, hk⟩ := hout c
+  refine ⟨k, hwit (sel k), ?_⟩
+  have h1 : k < len (out (rec (sel k))) := hunb k
+  have h2 : len (comp k) ≤ bound k := hcb k
+  omega
+
+end Relational
+
 /-- **WP0007, conditional-solver variant** (not the paper's conditional-form corollary — that is
 `conditional_complexity_uncomputable`). Stated for a solver whose target is complexity
 conditional on the fixed microlaw/observation data `z`: the same reduction applies verbatim,
