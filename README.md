@@ -120,6 +120,46 @@ paths, and core axioms inside it. Canonical preamble definition, beside the exis
 \newcommand{\ktait}[1]{\texttt{\small #1}}
 ```
 
+### Claim coverage: the check that runs the other way
+
+Every check above starts from something a paper already cites and asks whether it still holds up.
+None of them can see a result the paper states and never formalizes, because there is no citation
+to follow. In August 2026 WP0007 gained a corollary with no Lean counterpart; the declaration it
+did cite was untouched, so nothing drifted and every check stayed green while the paper disclaimed
+a formalization that standing practice required.
+
+`scripts/claim_coverage.py` closes that direction. It reads every `theorem`, `proposition`,
+`corollary`, `lemma`, `claim`, and `conjecture` in the registered papers and requires each to carry
+a recorded formal status — a LaTeX comment contiguous with the environment:
+
+```latex
+% ktait: relational_optimality_barrier
+\begin{Corollary}[Relational optimality barrier]\label{cor:relational-optimality}
+
+% ktait: none -- classical Kolmogorov-Solomonoff-Chaitin, proved here at paper level; it
+%   enters the development as the named hypothesis KUncomputable and is not re-proved
+\begin{Theorem}[Kolmogorov, Solomonoff, Chaitin]\label{thm:uncomp}
+```
+
+Declaration names are verified against what KTAIT defines, so an annotation cannot rot the way a
+prose appendix can; `none` requires a reason, because bare `none` reads as an oversight and is
+rejected as one. A `\ktait{}` inside the body counts on its own. Claims are keyed by `\label`, so
+registering a new version of a paper inherits the statuses already recorded and only genuinely new
+results fire.
+
+What it does **not** do is judge whether a Lean statement faithfully renders the prose. Nothing
+mechanical can; that is what the `formalize` lens of the `landau` skill is for. This check asks
+only that the question have been asked and answered somewhere other than in someone's head.
+
+```sh
+python3 scripts/claim_coverage.py --check     # run by check_sync.sh
+python3 scripts/claim_coverage.py --report    # per-claim status census
+python3 scripts/claim_coverage.py --accept    # re-baseline docs/claim-coverage-baseline.tsv
+```
+
+Ratchet, not a wall: the results predating the check are recorded as `legacy` and stay quiet.
+Restating one is a warning, and an error under `--released`.
+
 ## Repository layout
 
 ```

@@ -19,6 +19,14 @@
 #                     conditional corollary renumbered three times as results were
 #                     inserted ahead of it, and the entries here kept the old number
 #                     each time. Numbers belong where \ref maintains them.
+#   7. CLAIM COVERAGE — every result STATED in a paper must carry a recorded formal
+#                     status. Checks 1-5 all walk from Lean to prose: they start from
+#                     something the paper already cites. (2026-08: WP0007 gained a new
+#                     corollary with no Lean counterpart at all. No citation existed for
+#                     the guard to follow, the declaration it did cite was untouched, and
+#                     every check above stayed green while the paper disclaimed a
+#                     formalization standing practice required.) This is the only check
+#                     that walks the other way.
 #   6. --released   — before a paper goes public: the tree is clean AND HEAD is pushed.
 #                     (2026-07: the Prop. 2 fix sat uncommitted while the paper claimed
 #                     it was machine-checked; GitHub still served the false hypothesis.)
@@ -142,6 +150,17 @@ fi
 # numbering has not been audited, so the check fails only on NEW ones.
 echo "== results named, not numbered =="
 if ! python3 scripts/numbered_refs.py --check; then
+  status=1
+fi
+
+# ── 7. claim coverage: from the prose back to Lean ──────────────────────────
+# The only check that starts from what a paper CLAIMS rather than from what it cites.
+# A stated result with no recorded formal status is the finding, because silence is how
+# WP0007's witness-based corollary shipped unformalized past five green checks.
+echo "== claim coverage =="
+REL_FLAG=""
+[ "$RELEASED" -eq 1 ] && REL_FLAG="--released"
+if ! python3 scripts/claim_coverage.py --check $REL_FLAG; then
   status=1
 fi
 
