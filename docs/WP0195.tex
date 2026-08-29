@@ -311,7 +311,7 @@ Mathlib~v4.31.0. Modules:
 \lean{SelfModelLimits.lean} & quine floor, diagonalization, Chaitin ceiling & WP0192 Principle~1 \\
 \lean{RegulatorSelection.lean} & \lean{ChainRule} & WP0162 Prop.~1 (regulator selection) \\
 \lean{CoarseGraining.lean} & \lean{RegSuff}, structure function & WP0193 Thms~A/B \\
-\lean{AlgorithmicEmergence.lean} & counting bound, raw-length/threshold barriers, schedule refinement, emergence-constructor reduction & WP0007 Thms~1--3, Props.~1--3, Cors.~1--3 \\
+\lean{AlgorithmicEmergence.lean} & counting bound, construction barriers, schedule refinement, fixed-task construction--decision equivalence & WP0007 barriers, inheritance, discussion proposition \\
 \lean{Contrast.lean} & contrast fibre posterior & WP0162 Q3 (Eq.~26) \\
 \lean{ShiftInvariance.lean} & \lean{CheapTransform}, \lean{PairSymmetric} & WP0202 App.~A (the null-hypothesis error) \\
 \lean{PushPull.lean} & \lean{Plant}, \lean{Admissible}, \lean{InwardOnBoundary} & WP0186 Thms~1--2, Cor.~1, gap Lemma~1 \\
@@ -960,6 +960,15 @@ on finding compression bound the substrate every such model needs. The bound is 
 (classical, Li--Vit\'anyi); the log-loss identity is proved outright, and is the precise sense in
 which prediction and compression coincide --- \emph{sequential probabilistic} compression, not
 compression in general.
+\item \lean{AlgorithmicEmergence.fixed\_task\_computable\_iff\_factorization} --- WP0007's
+construction--decision equivalence for one fixed coarse-graining and macroquery. A computable
+constructor followed by a computable correct evaluator makes the selected answer map computable;
+the composition direction is also exposed as
+\lean{fixed\_task\_computable\_of\_factorization}. Conversely, every computable answer map factors
+through the identity constructor. That converse stores the microscopic input as the model and
+therefore asserts neither compression nor scientific reuse. The fixed-projection consequence is
+\lean{query\_slice\_computable\_of\_query\_complete}, whose contrapositive is
+\lean{no\_query\_complete\_of\_noncomputable\_slice}. These results consume no AIT hypothesis.
 \item \lean{AlgorithmicEmergence.chaitin\_certification\_ceiling} --- WP0007's classical
 certification limit (an appendix remark since the 2026-08-18 restructure; the paper claims
 exactly three barriers and bills this as classical): certified complexity lower bounds are
@@ -1064,6 +1073,13 @@ Orbit-label thm & conserved orbit label = ``generalized energy'' & KT & \stprove
 Proposition 1 & temporal self-model (= WP0162 Prop.~3) & KT & \stproved\ (same) \\
 Principle 1 & self-model incompleteness (= WP0162 Prop.~4) & KT & \stproved\ (Phase~4) \\
 Conjecture & acquired self-model prior & KT & \stna\ (conjecture) \\
+\midrule
+\multicolumn{4}{@{}l}{\textit{From More Is Different to Algorithmic Emergence --- WP0007}}\\
+\midrule
+Discussion proposition & fixed-task answer computable $\Longleftrightarrow$ computable
+constructor--evaluator factorization; converse stores the input & KT &
+  \stproved\ (\lean{fixed\_task\_computable\_iff\_factorization},
+  \lean{no\_query\_complete\_of\_noncomputable\_slice}) \\
 \midrule
 \multicolumn{4}{@{}l}{\textit{Regulatory Coarse-Graining --- WP0193}}\\
 \midrule

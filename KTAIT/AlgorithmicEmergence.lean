@@ -60,6 +60,12 @@ that embedding.
   description of `D` need not be a useful scientific model — but WP0007's inheritance proposition
   constructs a special family on which a short program does satisfy the scientific constraints at
   fixed overhead, and that is what carries the discovery barrier across.
+* `fixed_task_computable_iff_factorization` / `no_query_complete_of_noncomputable_slice` — the
+  construction--decision results used in WP0007's discussion. A fixed macroquestion has a
+  computable answer map exactly when it factors through a computable constructor and evaluator. A
+  noncomputable slice at one fixed projection and query therefore excludes a universal
+  query-complete pair. The reverse direction uses the identity constructor, so it asserts no
+  compression or scientific model structure.
 
 Results are named, not numbered: WP0007's numbering has shifted repeatedly as statements were
 inserted ahead of others, and prose here cannot track `\ref`.
@@ -822,6 +828,94 @@ theorem sequential_codelength_eq_logloss {n : ℕ} (cond : Fin n → ℝ)
   rw [Real.log_prod (fun t _ => ne_of_gt (hpos t)), Finset.sum_neg_distrib]
 
 end Bridge
+
+/-! ## Construction and decision for a fixed macroquestion
+
+Fixing a coarse-graining and a macroquery turns their semantic answer into one function from
+microscopic specifications to finite answers. A computable constructor followed by a computable,
+correct evaluator makes that answer function computable by composition. Conversely, every
+computable answer function has a formally valid factorization: the "model" stores the complete
+microscopic input and the evaluator runs the answer function.
+
+The converse is deliberately extensional. It supplies neither compression nor a reusable
+scientific representation, and therefore is not a converse to WP0007's construction barriers or
+to its definition of algorithmic emergence. -/
+
+section FixedTask
+
+variable {Micro Model Answer : Type}
+  [Primcodable Micro] [Primcodable Model] [Primcodable Answer]
+
+/-- Correctness of a constructor--evaluator factorization for one fixed task. The selected
+coarse-graining and macroquery are already absorbed into `answer`. -/
+def FixedTaskCorrect (answer : Micro → Answer) (construct : Micro → Model)
+    (evaluate : Model → Answer) : Prop :=
+  ∀ μ, evaluate (construct μ) = answer μ
+
+/-- **Construction followed by evaluation decides the fixed macroquestion.** If both maps are
+computable and their composition is correct, then the semantic answer map is computable. This is
+the implication used to rule out a universal query-complete macrotheory constructor whenever one
+fixed admissible coarse-graining and macroquery give an undecidable answer family. -/
+theorem fixed_task_computable_of_factorization {answer : Micro → Answer}
+    {construct : Micro → Model} {evaluate : Model → Answer}
+    (hconstruct : Computable construct) (hevaluate : Computable evaluate)
+    (hcorrect : FixedTaskCorrect answer construct evaluate) :
+    Computable answer :=
+  (hevaluate.comp hconstruct).of_eq hcorrect
+
+/-- **Fixed-task construction--decision equivalence.** A finite-valued answer map is computable
+if and only if it factors through a computable constructor and a computable evaluator.
+
+The reverse implication uses `Model = Micro`: the constructor is the identity and the evaluator
+is the answer function itself. It is therefore an extensional factorization, not a compressed or
+scientifically reusable macromodel. -/
+theorem fixed_task_computable_iff_factorization {answer : Micro → Answer} :
+    Computable answer ↔
+      ∃ (construct : Micro → Micro) (evaluate : Micro → Answer),
+        Computable construct ∧ Computable evaluate ∧
+          FixedTaskCorrect answer construct evaluate := by
+  constructor
+  · intro hanswer
+    exact ⟨id, answer, Computable.id, hanswer, fun _ => rfl⟩
+  · rintro ⟨construct, evaluate, hconstruct, hevaluate, hcorrect⟩
+    exact fixed_task_computable_of_factorization hconstruct hevaluate hcorrect
+
+/-- Correctness of one constructor--evaluator pair for every microscopic specification,
+admissible projection, and macroquery in its declared domain. -/
+def QueryComplete {Projection Query : Type}
+    (answer : Micro → Projection → Query → Answer)
+    (construct : Micro → Projection → Model) (evaluate : Model → Query → Answer) : Prop :=
+  ∀ μ ρ q, evaluate (construct μ ρ) q = answer μ ρ q
+
+/-- **A query-complete scheme computes every fixed admissible slice.** Supplying a projection and
+query to total computable binary constructor and evaluator maps yields the computable fixed-task
+factorization used in WP0007's construction--decision proposition. -/
+theorem query_slice_computable_of_query_complete {Projection Query : Type}
+    [Primcodable Projection] [Primcodable Query]
+    {answer : Micro → Projection → Query → Answer}
+    {construct : Micro → Projection → Model} {evaluate : Model → Query → Answer}
+    (hconstruct : Computable₂ construct) (hevaluate : Computable₂ evaluate)
+    (hcomplete : QueryComplete answer construct evaluate) (ρ : Projection) (q : Query) :
+    Computable (fun μ => answer μ ρ q) := by
+  apply fixed_task_computable_of_factorization
+    (hconstruct.comp Computable.id (Computable.const ρ))
+    (hevaluate.comp Computable.id (Computable.const q))
+  exact fun μ => hcomplete μ ρ q
+
+/-- **One noncomputable fixed slice excludes universal query-completeness.** If the answer map for
+one supplied admissible projection and macroquery is noncomputable, no total computable constructor
+and evaluator can be correct on every declared triple. This is the computational-strong-emergence
+consequence of WP0007's construction--decision proposition. -/
+theorem no_query_complete_of_noncomputable_slice {Projection Query : Type}
+    [Primcodable Projection] [Primcodable Query]
+    {answer : Micro → Projection → Query → Answer}
+    {construct : Micro → Projection → Model} {evaluate : Model → Query → Answer}
+    (hconstruct : Computable₂ construct) (hevaluate : Computable₂ evaluate)
+    (ρ : Projection) (q : Query) (hund : ¬ Computable (fun μ => answer μ ρ q)) :
+    ¬ QueryComplete answer construct evaluate := fun hcomplete =>
+  hund (query_slice_computable_of_query_complete hconstruct hevaluate hcomplete ρ q)
+
+end FixedTask
 
 end AlgorithmicEmergence
 end KTAIT

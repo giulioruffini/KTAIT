@@ -510,3 +510,11 @@ Wrap/unwrap embedding abstracted as four named hypotheses; same hEq-then-contrad
 other reductions. Lesson: section-variable auto-binding order is by declaration, and a def whose
 body uses `len` silently prepends it — the call site must supply it (UnwrapBeats len rawlen ...).
 Axioms: [propext, Quot.sound].
+
+## 2026-08-29 — fixed-task construction--decision equivalence (WP0007 discussion)
+Computable construction plus correct computable evaluation closes by ordinary composition. The
+converse requires no AIT: the identity constructor stores the micro-input, which proves the iff but
+also proves why it says nothing about compression. Specializing the binary constructor and evaluator
+at fixed `ρ,q` gives the universal-scheme obstruction directly. Axioms: forward [propext,
+Quot.sound]; the iff and fixed-slice results add [Classical.choice] through Mathlib's generic
+computability representation; no custom axioms.
