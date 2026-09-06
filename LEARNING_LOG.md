@@ -518,3 +518,8 @@ also proves why it says nothing about compression. Specializing the binary const
 at fixed `ρ,q` gives the universal-scheme obstruction directly. Axioms: forward [propext,
 Quot.sound]; the iff and fixed-slice results add [Classical.choice] through Mathlib's generic
 computability representation; no custom axioms.
+
+## 2026-09-06 — WP0007 retained-kernel baseline
+The retained-kernel baseline changes the paper-level repeat-x qualification test; its witness
+fits the existing wrap/unwrap interface. Corrected threshold and regret scope comments without
+changing declarations or proofs; a qualifying witness does not make every valid output qualifying.

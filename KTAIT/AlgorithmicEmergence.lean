@@ -33,7 +33,8 @@ that embedding.
   statement is the stronger one and is *not* a corollary of the arbitrary-`b` theorem.
 * `no_universal_emergence_constructor` — the **inheritance proposition**: on the unrestricted
   computable-generator class, a total constructor guaranteed to return a qualifying emergent
-  generator whenever one exists would decide raw-length compressibility. The wrap/unwrap
+  generator whenever one exists would decide a separator between two compressibility classes.
+  The wrap/unwrap
   embedding enters as hypotheses (`WrapExists`, `UnwrapValid`, `UnwrapBeats`,
   `ConstructorGuarantee`) at two raw-length thresholds — wrapping needs headroom
   (`rawlen₁ = |x| - c`) while unwrapping only lands below the looser `rawlen₂ = |x|` — and the
@@ -410,17 +411,16 @@ end RawLength
 
 /-! ### Inheritance: no universal emergence constructor
 
-WP0007's inheritance proposition. Algorithmic emergence (Definition 2 of the paper) demands an
-actually acquired reusable generator that beats the raw baseline; on the unrestricted
-computable-generator class, ordinary lossless compression embeds as the special case built by a
-fixed wrapper. The embedding enters abstractly: `wrapExists` says every raw-length-compressible
-string admits a qualifying generator (wrap a shortest program through the fixed frame);
-`unwrapValid`/`unwrapBeats` say any qualifying generator unwraps to a standalone description
-below the raw length (the two-part code of the acquired generator). A total constructor
-guaranteed to return a qualifying generator whenever one exists then decides raw-length
-compressibility. The fixed framing overhead is absorbed into `rawlen`, which is an arbitrary
-function here — instantiate `rawlen x = |x| - c` for the paper's fixed-slack form; the
-undecidability input for that instantiation is classical (same diagonal). -/
+WP0007's inheritance proposition. Algorithmic emergence demands an acquired reusable generator
+that beats its declared retained-kernel baseline. On the unrestricted computable-generator class,
+ordinary lossless compression embeds through a fixed wrapper. The embedding enters abstractly:
+`WrapExists` says every string compressible below the tighter threshold admits a qualifying
+generator; `UnwrapValid` gives validity of the returned description, and `UnwrapBeats` places a
+qualifying generator's description below the looser threshold. The paper instantiates these
+thresholds as `rawlen₁ x = |x| - c` and `rawlen₂ x = |x|`, leaving headroom for framing and
+translation. A total constructor guaranteed to find a qualifying generator whenever one exists
+would decide a separator between these classes, contradicting `SeparatorUndecidable`.
+The retained-kernel baseline enters through the paper-level witness for these hypotheses. -/
 
 section EmergenceInheritance
 
@@ -491,9 +491,8 @@ theorem no_universal_emergence_constructor {CompG : (Str → Gen) → Prop}
 /-! ### Regret inheritance
 
 WP0007's inheritance proposition has a second part. Part (a) above says a scientific-model
-constructor cannot be guaranteed to *find* a qualifying model. Part (b) says that even when it
-returns one on an instance that genuinely admits a qualifying model, its returned code can sit
-arbitrarily far above `K`.
+constructor cannot be guaranteed to *find* a qualifying model. Part (b) says that its returned
+code can sit arbitrarily far above `K`, even on instances that admit a qualifying model.
 
 The paper composes three ingredients: the fixed-slack padded witness (so the bad instance is
 compressible with slack `c₀`, hence lies on the favorable branch where a qualifying model exists),
@@ -523,7 +522,7 @@ The hypotheses are exactly the paper's: `hvalid` is validity of the compiled out
 program for the record, so no shorter than `K`), `hover` is the fixed-overhead compiler, `hcomp`
 is computability of the composite length, and `hApx` is the fixed-slack non-approximability input
 at tolerance `r + d`. The conclusion denies bounded returned-code regret on the slack-compressible
-instances — which by the wrap construction are precisely those admitting a qualifying model. -/
+instances, a subclass admitting qualifying models by the paper-level wrap construction. -/
 theorem no_bounded_regret_emergence_constructor {c₀ r d : ℕ}
     (CompN : (Str → ℕ) → Prop) (rawlen : Str → ℕ)
     (compiled : Str → Prog) (modelcode : Str → ℕ)
@@ -631,10 +630,9 @@ def NearOptimalOnCompressible (rawlen : Str → ℕ) (c : ℕ) (A : Exp → Prog
 micro-experiments whose macrohistory *does* admit a shortening, no total computable procedure
 returning valid descriptions keeps its additive regret below a fixed constant.
 
-This is the form the paper states, and it is the one its existence/construction tree requires:
-Theorem 2 and Theorem 3 both live on the branch where a compression gap exists. The unconditional
-`no_additive_approximation` below is the weaker corollary (demand near-optimality everywhere and
-in particular on compressible instances). -/
+The bad instance can already be chosen among compressible records. The unconditional
+`no_additive_approximation` is the weaker consequence: a bound holding everywhere would hold
+on compressible instances. -/
 theorem no_additive_approximation_compressible {c : ℕ} (rawlen : Str → ℕ)
     (hred : ReductionClosure emb len CompE CompN) (hfaith : Faithful data emb)
     (hApx : KNotApproximableOnCompressible K CompN rawlen c) {A : Exp → Prog}
@@ -863,7 +861,7 @@ theorem fixed_task_computable_of_factorization {answer : Micro → Answer}
     Computable answer :=
   (hevaluate.comp hconstruct).of_eq hcorrect
 
-/-- **Fixed-task construction--decision equivalence.** A finite-valued answer map is computable
+/-- **Fixed-task construction--decision equivalence.** An answer map on encoded types is computable
 if and only if it factors through a computable constructor and a computable evaluator.
 
 The reverse implication uses `Model = Micro`: the constructor is the identity and the evaluator
