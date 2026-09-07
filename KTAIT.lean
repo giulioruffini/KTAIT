@@ -8,6 +8,7 @@ import KTAIT.RegulatorSelection
 import KTAIT.SelfModelLimits
 import KTAIT.CoarseGraining
 import KTAIT.AlgorithmicEmergence
+import KTAIT.FunctionalCore
 import KTAIT.Decoder
 import KTAIT.WriteBack
 import KTAIT.Retention

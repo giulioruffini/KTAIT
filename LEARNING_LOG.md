@@ -523,3 +523,10 @@ computability representation; no custom axioms.
 The retained-kernel baseline changes the paper-level repeat-x qualification test; its witness
 fits the existing wrap/unwrap interface. Corrected threshold and regret scope comments without
 changing declarations or proofs; a qualifying witness does not make every valid output qualifying.
+
+## 2026-09-07 — WP0007 functional-core benchmark
+Exact and approximate minima must pass the same finite task and prior codes to the decoder.
+The minimum-length bound needs only a valid compiled representative and its explicit wrapper
+cost; it proves neither predictive improvement nor an extraction algorithm. Axiom audit of
+`exists_functional_core` and `functional_core_le_implementation`: Lean core only
+(`propext`, `Classical.choice`, `Quot.sound`), with no custom axioms or proof gaps.

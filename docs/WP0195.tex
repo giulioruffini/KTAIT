@@ -312,6 +312,7 @@ Mathlib~v4.31.0. Modules:
 \lean{RegulatorSelection.lean} & \lean{ChainRule} & WP0162 Prop.~1 (regulator selection) \\
 \lean{CoarseGraining.lean} & \lean{RegSuff}, structure function & WP0193 Thms~A/B \\
 \lean{AlgorithmicEmergence.lean} & counting bound, construction barriers, schedule refinement, fixed-task construction--decision equivalence & WP0007 barriers, inheritance, discussion proposition \\
+\lean{FunctionalCore.lean} & exact and approximate task descriptions & WP0007 minimum-description bound \\
 \lean{Contrast.lean} & contrast fibre posterior & WP0162 Q3 (Eq.~26) \\
 \lean{ShiftInvariance.lean} & \lean{CheapTransform}, \lean{PairSymmetric} & WP0202 App.~A (the null-hypothesis error) \\
 \lean{PushPull.lean} & \lean{Plant}, \lean{Admissible}, \lean{InwardOnBoundary} & WP0186 Thms~1--2, Cor.~1, gap Lemma~1 \\
@@ -960,6 +961,18 @@ on finding compression bound the substrate every such model needs. The bound is 
 (classical, Li--Vit\'anyi); the log-loss identity is proved outright, and is the precise sense in
 which prediction and compression coincide --- \emph{sequential probabilistic} compression, not
 compression in general.
+\item \lean{exists\_functional\_core} and
+\lean{functional\_core\_le\_implementation} --- WP0007's task-relative
+functional-core benchmark. Given a finite realization, a shortest representative exists and
+its length is at most the acquired implementation cost plus the fixed interface-wrapper cost.
+The conditional interpreter carries finite task and prior codes; wrapper correctness and
+length are explicit hypotheses. The definitions \lean{functionalCoreComplexity},
+\lean{IsFunctionalCore}, and \lean{approximateCoreComplexity} minimize description length
+for the declared behavior, exactly or within a fixed discrepancy tolerance. The exact benchmark
+preserves the model's task outputs, including imperfect predictions, and asserts no optimization
+of task loss or runtime. Interpreter computability, core extraction, and a new transfer of
+the discovery barriers are outside these results. The accompanying no-hypercompression
+inequality remains a classical probability result proved at paper level in WP0007.
 \item \lean{AlgorithmicEmergence.fixed\_task\_computable\_iff\_factorization} --- WP0007's
 construction--decision equivalence for one fixed coarse-graining and macroquery. A computable
 constructor followed by a computable correct evaluator makes the selected answer map computable;
@@ -1076,6 +1089,13 @@ Conjecture & acquired self-model prior & KT & \stna\ (conjecture) \\
 \midrule
 \multicolumn{4}{@{}l}{\textit{From More Is Different to Algorithmic Emergence --- WP0007}}\\
 \midrule
+Functional core & shortest exact representative exists; its length is bounded by the
+acquired implementation plus fixed wrapper cost & KT &
+  \stproved \\
+Core definitions & exact and approximate conditional description minima & KT &
+  \stna\ (definitions encoded) \\
+No hypercompression & baseline probability of a $k$-bit coding gain is at most $2^{-k}$ & STD &
+  \stna\ (classical result; paper-level proof, not formalized) \\
 Discussion proposition & fixed-task answer computable $\Longleftrightarrow$ computable
 constructor--evaluator factorization; converse stores the input & KT &
   \stproved\ (\lean{fixed\_task\_computable\_iff\_factorization},

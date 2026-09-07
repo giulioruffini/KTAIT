@@ -58,10 +58,17 @@ AIT hypotheses.
 | **Temporal self-model** (WP0162 Prop. 3 / WP0192 Prop. 1) | `self_regulation_temporal_model` | `SelfModel` |
 | **Self-model incompleteness** (WP0162 Prop. 4 / WP0192 Principle 1) | `quine_floor`, `self_prediction_dichotomy`, `chaitin_blocks_minimality` | `SelfModelLimits` |
 | **Coarse-graining uncomputability** (WP0193 Thm B / Cor. B) | `theoremB`, `corollaryB` | `CoarseGraining` |
+| **Functional-core benchmark** (WP0007) — a shortest task-equivalent representative exists and costs no more than a supplied implementation plus its wrapper | `exists_functional_core`, `functional_core_le_implementation` | `FunctionalCore` |
 
 Plus: typed KT **ontology** with a part-whole guard (`Ontology`), **satisfiability witnesses**
 (`ToyModel`), and documented **guards** — the whole-vs-part error and the `y`-vs-`y*` conditioning
 error fail to compile (`BadStatements`).
+
+`FunctionalCore` also defines the approximate benchmark with the task and prior information
+explicit. These minima concern description length for a declared behavior; they do not minimize
+predictive loss or runtime. The interpreter and its wrapper are supplied, and no core-extraction
+algorithm is claimed. WP0007's classical no-hypercompression inequality remains proved at paper
+level.
 
 ## The axiom layer (what we assume)
 
