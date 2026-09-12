@@ -297,8 +297,8 @@ Chaitin bound in the ``certified lower bounds are capped'' form.
 The repository (\url{https://github.com/giulioruffini/KTAIT}) builds green on Lean~4.31.0 +
 Mathlib~v4.31.0. Modules:
 
-\begin{center}\small
-\begin{tabular}{@{}lll@{}}
+{\small\raggedright
+\begin{longtable}{@{}p{4.4cm}p{5.0cm}p{5.0cm}@{}}
 \toprule
 \textbf{Module} & \textbf{Content} & \textbf{Key results} \\
 \midrule
@@ -313,6 +313,10 @@ Mathlib~v4.31.0. Modules:
 \lean{CoarseGraining.lean} & \lean{RegSuff}, structure function & WP0193 Thms~A/B \\
 \lean{AlgorithmicEmergence.lean} & counting bound, construction barriers, schedule refinement, fixed-task construction--decision equivalence & WP0007 barriers, inheritance, discussion proposition \\
 \lean{FunctionalCore.lean} & exact and approximate task descriptions & WP0007 minimum-description bound \\
+\lean{Certification.lean} & partial semantics; computable certificate stream & WP0228 unrestricted minimum \\
+\lean{Marking.lean} & persistent finite marking; event witnesses & WP0228 budget and eventual coverage \\
+\lean{Encoding.lean} & gamma-style headers; fixed-width indices & WP0228 parsing and prefix-freeness \\
+\lean{Counting.lean} & binary universe; index width; scalar algebra & WP0228 finite counting core \\
 \lean{Contrast.lean} & contrast fibre posterior & WP0162 Q3 (Eq.~26) \\
 \lean{ShiftInvariance.lean} & \lean{CheapTransform}, \lean{PairSymmetric} & WP0202 App.~A (the null-hypothesis error) \\
 \lean{PushPull.lean} & \lean{Plant}, \lean{Admissible}, \lean{InwardOnBoundary} & WP0186 Thms~1--2, Cor.~1, gap Lemma~1 \\
@@ -335,8 +339,7 @@ Mathlib~v4.31.0. Modules:
 \lean{Agentoptosis.lean} & \lean{AgentoptoticEvent}, bearer/target split & WP0207 v0.8 ontology; deletion threshold \\
 \lean{BadStatements.lean} & guards bite & part-whole; $y$ vs $y^\ast$; WP0162 ontology \\
 \bottomrule
-\end{tabular}
-\end{center}
+\end{longtable}}
 
 \noindent\textbf{Proved KT corollaries (no \lean{sorry}; \lean{\#print axioms} = Lean core only):}
 \begin{itemize}[leftmargin=1.4em,itemsep=1pt]
@@ -961,6 +964,50 @@ on finding compression bound the substrate every such model needs. The bound is 
 (classical, Li--Vit\'anyi); the log-loss identity is proved outright, and is the precise sense in
 which prediction and compression coincide --- \emph{sequential probabilistic} compression, not
 compression in general.
+\begingroup\raggedright
+\item \lean{CertifiedPrograms.marking\_empty\_invariant},
+\lean{marking\_step\_invariant}, \lean{marking\_step\_preserves\_events},
+\lean{marking\_step\_covers}, \lean{observed\_mono}, \lean{observed\_sound},
+\lean{observed\_eventually\_contains}, \lean{marking\_run\_invariant},
+\lean{marking\_event\_budget}, and \lean{marking\_eventual\_coverage} --- WP0228's
+finite persistent-marking construction. A round-robin scan of observed certified neighborhoods
+marks every fresh vertex when their count reaches the threshold $h$. Each emission consumes
+at least $h$ fresh vertices, so $Jh\leq |\mathrm{marked}|\leq M$. Marks retain a related
+representative, and every final class of size at least $h$ is eventually represented. The
+eventual-coverage proof uses soundness and completeness of the supplied pair stream, not
+a decision procedure for the final relation or a completion detector.
+\item \lean{CertifiedPrograms.fixed\_bits\_length}, \lean{fixed\_bits\_value},
+\lean{gamma\_code\_length}, \lean{gamma\_length\_mono}, \lean{gamma\_parse\_append},
+\lean{gamma\_prefix\_free}, \lean{descriptor\_length},
+\lean{descriptor\_parse\_append}, \lean{descriptor\_prefix\_free},
+\lean{descriptor\_rejects\_bad\_header},
+\lean{global\_descriptor\_length}, and \lean{local\_descriptor\_length} --- actual
+self-delimiting descriptors with exact length and parsing proofs. The gamma-style code uses
+the usual unary length header and a least-significant-bit-first residual payload; its length
+is exactly $\ell_\gamma(a)=2\lfloor\log_2(a+1)\rfloor+1$. Two headers followed by the
+specified index field form a prefix-free family; the parser rejects $t>L$.
+\item \lean{CertifiedPrograms.words\_exact\_length}, \lean{words\_exact\_complete},
+\lean{words\_exact\_card}, \lean{words\_through\_length},
+\lean{words\_through\_complete}, \lean{bounded\_binary\_card},
+\lean{class\_log\_range}, \lean{event\_count\_fits\_width}, and
+\lean{marking\_rank\_bound} --- the finite binary universe contains $2^{L+1}-1$ strings,
+and the proved marking budget bounds each event rank by the available global index width.
+\lean{structure\_image\_card\_le} shows that a fixed map assigning a structural class
+to each candidate cannot increase cardinality.
+\item \lean{CertifiedPrograms.whole\_function\_minimum\_exists},
+\lean{whole\_function\_minimum\_le}, and \lean{whole\_function\_minimum\_congr}
+minimize over all source strings implementing the same whole partial function, including its
+domain. \lean{certificates\_to\_common\_reference} composes two certificates to a fixed
+reference implementation. \lean{Certification} requires a genuine \lean{Computable} proof
+for its stream and explicit semantic soundness. No concrete optimal evaluator is instantiated.
+\item \lean{CertifiedPrograms.combine\_decoder\_costs} and
+\lean{near\_minimal\_cost\_corollary} --- scalar arithmetic for the two decoder costs and
+the additive-minimality specialization. These results take their displayed input inequalities
+as hypotheses. They are not the whole-function information-distance theorem. The connection
+from the finite scan to partial-recursive source decoders, uniform prefix-machine compilation,
+and the ensuing Kolmogorov-complexity bounds remains a paper proof in WP0228. No class-size
+compression theorem or final information-distance bound is postulated as a Lean axiom.
+\par\endgroup
 \item \lean{exists\_functional\_core} and
 \lean{functional\_core\_le\_implementation} --- WP0007's task-relative
 functional-core benchmark. Given a finite realization, a shortest representative exists and
@@ -1300,6 +1347,23 @@ Minimum moved mass & $N-\sum_i\min(p_i,p_i')=\tfrac12\lVert p-p'\rVert_1$ (doubl
   \stna\ (standard AIT existence argument; manuscript Prop.) \\
 --- token--profile bridge & $O(\log N)$ translation from token lengths to $K$ coordinates & KT &
   \stna\ (manuscript-level; deliberately not formalized) \\
+\midrule
+\multicolumn{4}{@{}l}{\textit{Near-Minimal Equivalent Programs --- WP0228}}\\
+\midrule
+Persistent marking & executable finite scan, charging budget and eventual coverage & STD &
+  \stproved\ (\lean{marking\_...}) \\
+Descriptor codes & exact lengths, correct parsing and prefix-free record formats & STD &
+  \stproved\ (\lean{descriptor...}) \\
+Finite counting & binary universe, dyadic threshold and global event width & STD &
+  \stproved\ (\lean{bounded\_...}) \\
+Structural images & fixed image cardinality cannot exceed candidate cardinality & STD &
+  \stproved\ (\lean{structure...}) \\
+Whole-function minimum & existence, comparison and invariance under full semantic equality & STD &
+  \stproved\ (\lean{whole\_...}) \\
+Integer algebra & combines supplied decoder inequalities; specializes additive excess & STD &
+  \stproved\ (\lean{combine\_...}) \\
+AIT bound & certified whole-function distance and class-size compression & STD &
+  \stna\ (paper proof; concrete decoder compilation remains) \\
 \midrule
 \multicolumn{4}{@{}l}{\textit{The Simulation Is Phenomenally Itself --- WP0215}}\\
 \midrule

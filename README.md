@@ -72,6 +72,15 @@ level.
 
 ## The axiom layer (what we assume)
 
+WP0228 adds `KTAIT/CertifiedPrograms/`: an executable finite marking scan with proved
+charging and eventual coverage, actual self-delimiting descriptors with parsing and length
+proofs, the binary-universe count and event-rank bound, and whole-partial-function minima.
+The whole-function AIT theorem itself is not yet instantiated in Lean. In particular,
+`combine_decoder_costs` checks arithmetic from supplied scalar bounds; it does not prove
+the decoder complexity bounds. The remaining work is partial-recursive decoder correctness,
+the executable source-to-finite-vertex correspondence, and uniform prefix-machine compilation.
+
+
 Standard, classical results — assumed, not re-proved:
 
 - **Complexity:** invariance theorem; coding theorem `−log m(x) = K(x) ± O(1)` (uncond. & cond.);

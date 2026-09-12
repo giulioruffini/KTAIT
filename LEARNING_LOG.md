@@ -530,3 +530,9 @@ The minimum-length bound needs only a valid compiled representative and its expl
 cost; it proves neither predictive improvement nor an extraction algorithm. Axiom audit of
 `exists_functional_core` and `functional_core_le_implementation`: Lean core only
 (`propext`, `Classical.choice`, `Quot.sound`), with no custom axioms or proof gaps.
+
+## 2026-09-12 — WP0228 persistent marking and coding core
+A round-robin scan of observed relation pairs avoids a final-class decision oracle: each
+emission marks at least h fresh vertices, and eventual coverage follows from finitely many
+certificates. Exact prefix parsing and a clean axiom audit do not instantiate the AIT bound;
+partial-recursive decoder correctness and uniform compiler application remain separate work.
