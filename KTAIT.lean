@@ -9,6 +9,7 @@ import KTAIT.SelfModelLimits
 import KTAIT.CoarseGraining
 import KTAIT.AlgorithmicEmergence
 import KTAIT.FunctionalCore
+import KTAIT.ComputationCores
 import KTAIT.CertifiedPrograms.Certification
 import KTAIT.CertifiedPrograms.Counting
 import KTAIT.Decoder

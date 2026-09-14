@@ -312,6 +312,7 @@ Mathlib~v4.31.0. Modules:
 \lean{RegulatorSelection.lean} & \lean{ChainRule} & WP0162 Prop.~1 (regulator selection) \\
 \lean{CoarseGraining.lean} & \lean{RegSuff}, structure function & WP0193 Thms~A/B \\
 \lean{AlgorithmicEmergence.lean} & counting bound, construction barriers, schedule refinement, fixed-task construction--decision equivalence & WP0007 barriers, inheritance, discussion proposition \\
+\lean{ComputationCores.lean} & deterministic experiments, observability, coordinate overwrites & WP0229 structural comparisons \\
 \lean{FunctionalCore.lean} & exact and approximate task descriptions & WP0007 minimum-description bound \\
 \lean{Certification.lean} & partial semantics; computable certificate stream & WP0228 unrestricted minimum \\
 \lean{Marking.lean} & persistent finite marking; event witnesses & WP0228 budget and eventual coverage \\
@@ -1008,6 +1009,14 @@ from the finite scan to partial-recursive source decoders, uniform prefix-machin
 and the ensuing Kolmogorov-complexity bounds remains a paper proof in WP0228. No class-size
 compression theorem or final information-distance bound is postulated as a Lean axiom.
 \par\endgroup
+\item \lean{ComputationCores.run\_intertwines} and \lean{experiment\_outputs}
+transport every finite experiment through a map that intertwines each admitted operation.
+\lean{observable\_conjugacy} constructs a state conjugacy from equal initialized behavior
+for accessible observable deterministic machines; \lean{initialized\_intertwiner\_unique}
+proves uniqueness. These are existence statements, without an effective classifier.
+\lean{overwrite\_rigidity} forces a map commuting with coordinate overwrites to have the
+declared coordinate form; a permutation is handled by reindexing. The finite-product
+reachability argument and the other survey results in WP0229 remain paper proofs.
 \item \lean{exists\_functional\_core} and
 \lean{functional\_core\_le\_implementation} --- WP0007's task-relative
 functional-core benchmark. Given a finite realization, a shortest representative exists and
@@ -1347,6 +1356,14 @@ Minimum moved mass & $N-\sum_i\min(p_i,p_i')=\tfrac12\lVert p-p'\rVert_1$ (doubl
   \stna\ (standard AIT existence argument; manuscript Prop.) \\
 --- token--profile bridge & $O(\log N)$ translation from token lengths to $K$ coordinates & KT &
   \stna\ (manuscript-level; deliberately not formalized) \\
+\midrule
+\multicolumn{4}{@{}l}{\textit{Computation Cores --- WP0229}}\\
+\midrule
+Composite words & \lean{run\_intertwines}: transport finite compositions & STD & \stproved \\
+Readouts & \lean{experiment\_outputs}: preserve outputs of composite experiments & STD & \stproved \\
+Observable models & \lean{observable\_conjugacy}: equal behavior with accessibility and observability gives a conjugacy & STD & \stproved \\
+Uniqueness & \lean{initialized\_intertwiner\_unique}: uniqueness on accessible states & STD & \stproved \\
+Overwrites & \lean{overwrite\_rigidity}: commutation forces coordinate form & STD & \stproved \\
 \midrule
 \multicolumn{4}{@{}l}{\textit{Near-Minimal Equivalent Programs --- WP0228}}\\
 \midrule

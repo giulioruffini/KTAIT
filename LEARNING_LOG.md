@@ -536,3 +536,7 @@ A round-robin scan of observed relation pairs avoids a final-class decision orac
 emission marks at least h fresh vertices, and eventual coverage follows from finitely many
 certificates. Exact prefix parsing and a clean axiom audit do not instantiate the AIT bound;
 partial-recursive decoder correctness and uniform compiler application remain separate work.
+
+## 2026-09-14 — WP0229 deterministic cores
+
+Equal whole-word behavior yields a conjugacy only after accessibility and observability are supplied. The Lean proof chooses reaching histories and uses observability to show this choice is consistent; it provides no effective classifier. Commuting coordinate overwrites fixes the coordinate form independently of any source-length minimum.
