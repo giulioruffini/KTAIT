@@ -540,3 +540,10 @@ partial-recursive decoder correctness and uniform compiler application remain se
 ## 2026-09-14 — WP0229 deterministic cores
 
 Equal whole-word behavior yields a conjugacy only after accessibility and observability are supplied. The Lean proof chooses reaching histories and uses observability to show this choice is consistent; it provides no effective classifier. Commuting coordinate overwrites fixes the coordinate form independently of any source-length minimum.
+
+## 2026-09-15 — WP0218 v0.6.3 statement correspondence
+
+Registered the reviewed manuscript and annotated its results. The existing localization
+and token-transport declarations are unchanged; canonical incompressibility and layout
+coding remain manuscript arguments. Declaration annotations accept names only; scope
+notes belong on a separate comment line.
