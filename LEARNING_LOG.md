@@ -547,3 +547,11 @@ Registered the reviewed manuscript and annotated its results. The existing local
 and token-transport declarations are unchanged; canonical incompressibility and layout
 coding remain manuscript arguments. Declaration annotations accept names only; scope
 notes belong on a separate comment line.
+
+
+## 2026-09-16 — WP0203 v18 statement correspondence
+
+Registered v17.2 and the v18 preprint/journal sources. The probability statement now appears
+in the main text with explicit canonical-code events and event normalization; the cited Lean
+implications and their assumptions are unchanged. The synchronization guard passes. The
+concrete clamp-family and program-length counterexamples remain paper-level arguments.
