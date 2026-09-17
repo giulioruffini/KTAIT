@@ -7,50 +7,32 @@ import Mathlib
 import KTAIT.Basic
 
 /-!
-# KTAIT.RegulationBalance — the algorithmic regulation balance (WP0203 v2)
+# KTAIT.RegulationBalance — the Global Algorithmic Regulator Theorem (WP0203 v20)
 
-The positive replacement for the withdrawn ART concentration corollary. Where
-`KTAIT.ModelOrPay` records what ART *cannot* deliver (a per-pair bound does not lift to a
-tail bound), this module records what *does* hold once the omitted degrees of freedom are
-put back on the books.
+For regulated output `x`, null output `y`, initial regulator `R`, and additional episode
+records `Q`, the output gap is bounded by initial shared information plus the conditional
+information that `Q` supplies about `y`:
 
-## The statement
+  `K y − K x ≤ IK(W : R) + cIK(y : Q | ⟨x,R⟩) + 5 * slack`.
 
-Fix the ART horizon. Write `x` for the ON readout `O^(N)_{W,R}`, `y` for the OFF readout
-`O^(N)_{W,∅}`, and `Δ = K y − K x` for the regulator gap. Let `Q` bundle the realized
-regulator output transcript, the regulator's retained private state, and the *world
-exhaust* — the minimal hidden world record needed, alongside the visible record, to recover
-`y`. Then
+The conditional chain rule and a supplied reconstruction premise give this record form.
+`Q` bundles actions, final regulator memory, and a complementary world record. The paper
+requires those records to come from the actual regulated episode under a fixed selection
+rule; minimality is not required. `InfoClosed` expresses recoverability, while `Localized`
+captures one frame-level implication of world-side selection. Neither predicate by itself
+formalizes a physical boundary or prospective record selection.
 
-  `Δ ≤ IK(y : R) + cIK(y : Q | ⟨x,R⟩) + slack`,   and by data processing
-  `Δ ≤ IK(W : R) + cIK(y : Q | ⟨x,R⟩) + slack`.
+`ReversibleReconstruction` separately supplies the composition from complete final joint
+records through inverse dynamics, initial-world decoding, and the null protocol. Regulator
+memory is included in that complete account. The record balance itself consumes only the
+resulting recoverability premise, not reversibility. The `GroundedRegulation` module retains
+its historical declaration names for the residual inequalities and measurement extension.
 
-Equivalently, in deficit form,
-
-  `cIK(y : Q | ⟨x,R⟩) ≥ Δ − IK(W : R) − slack`:
-
-the null-world information missing from the regulated readout must be present somewhere in
-the rest of the realized episode. A regulator may open a gap by already carrying structure
-of the world, by routing the missing information through its action stream, or by leaving
-the removed distinctions in the world. It may not open one for free.
-
-## What this is, and what it is not
-
-The first inequality is an accounting identity: it is the chain rule plus the closure
-condition that *defines* the exhaust as whatever recovers `y`. Its content is not
-mathematical depth but **localization** — the residual is forced into three named places
-rather than being allowed to vanish. The clamp family of `KTAIT.ModelOrPay` is not a
-counterexample to it; it is the instance that saturates the exhaust term.
-
-The substantive consequence is the rate form: with a regulator of fixed finite description
-and bounded private memory, a *sustained extensive* gap needs an extensive world-specific
-flow through action or exhaust. `balance_rate_finite` below is its finite-horizon core; the
-limiting statement is analysis on top of it and is not formalized here.
-
-## Discipline
-
-As throughout KTAIT, the AIT facts are **hypotheses about a frame**, never global axioms.
-Everything below is arithmetic over `Int` once those hypotheses are supplied.
+The ordered action/memory/world split discounts information supplied by earlier records.
+It is an information account, not a unique causal allocation. A small initial regulator
+and sublinear final-memory cost force an extensive additional contribution for a sustained
+extensive gap. `balance_rate_finite` is the finite core; the limiting argument remains at
+paper level. Standard AIT facts are named frame hypotheses, never global axioms.
 -/
 
 namespace KTAIT
@@ -90,10 +72,10 @@ def CondChain (y Q C : F.Obj) : Prop :=
   (F.cond (F.pair y Q) C : Int)
     ≤ (F.cond Q C : Int) + (F.cond y (F.pair Q C) : Int) + (F.slack : Int)
 
-/-- **Information closure** of the realized episode: given the visible record `C = ⟨x,R⟩`
-    and the completion `Q`, the null readout is determined up to `slack`,
-    `K(y | ⟨Q,C⟩) ≤ slack`. This is what makes `Q` an admissible completion; it is the
-    formal content of "the exhaust is whatever, with the visible record, recovers `y`". -/
+/-- Reconstruction from the selected episode records: given `C = ⟨x,R⟩` and `Q`, the
+null output is determined up to `slack`. This is a recoverability hypothesis. The paper
+separately requires actual records and a fixed selection rule; it does not define an
+admissible world record merely by stipulating this inequality. -/
 def InfoClosed (y Q C : F.Obj) : Prop :=
   (F.cond y (F.pair Q C) : Int) ≤ (F.slack : Int)
 

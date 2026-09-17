@@ -555,3 +555,7 @@ Registered v17.2 and the v18 preprint/journal sources. The probability statement
 in the main text with explicit canonical-code events and event normalization; the cited Lean
 implications and their assumptions are unchanged. The synchronization guard passes. The
 concrete clamp-family and program-length counterexamples remain paper-level arguments.
+
+## 2026-09-17 — WP0203 reversible reconstruction
+
+A complete final joint state can recover the initial world via inverse dynamics and a specified null replay. World-side recovery alone does not follow: a reversible swap can move the disturbance into regulator memory. `ReversibleReconstruction` keeps the left-inverse law explicit and sums named conditional map costs; it does not infer those costs for arbitrary maps or claim a concrete machine implementation.

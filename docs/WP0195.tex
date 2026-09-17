@@ -323,6 +323,7 @@ Mathlib~v4.31.0. Modules:
 \lean{ShiftInvariance.lean} & \lean{CheapTransform}, \lean{PairSymmetric} & WP0202 App.~A (the null-hypothesis error) \\
 \lean{PushPull.lean} & \lean{Plant}, \lean{Admissible}, \lean{InwardOnBoundary} & WP0186 Thms~1--2, Cor.~1, gap Lemma~1 \\
 \lean{ModelOrPay.lean} & \lean{MAICapped}; multiplicity witnesses & WP0203 Props.~1--2 \\
+\resizebox{0.96\linewidth}{!}{\lean{ReversibleReconstruction.lean}} & \lean{ConditionalMapBound} & WP0203 v20: inverse joint dynamics, world decoding, and null replay \\
 \lean{RegulationBalance.lean} & \lean{cIK}, \lean{InfoClosed}, \lean{Localized}, \lean{FlowSplit} & WP0203 v4, the regulation balance \\
 \lean{GroundedRegulation.lean} & \lean{Grounded}, \lean{residual}, \lean{IKCeiling}, \lean{PairMono} & WP0203 grounded exposition, repaired corollary, self-regulation/implicit-self-model corollary \\
 \lean{OrbitLabel.lean} & conserved orbit labels & WP0162 App.~C \\
@@ -504,6 +505,18 @@ The two bounds coincide exactly when $K(x_{\rm OFF})\le K(R)$
 (\lean{invertible\_reaches\_gap\_iff}), which is the hypothesis nothing supplies and a clamp
 violates. What is machine-checked is that the invertible-coupling bound is \emph{insufficient};
 nothing here establishes the positive claim it was meant to support.
+\item In \lean{ReversibleReconstruction.lean}, \lean{initial\_from\_complete\_records} and
+\lean{null\_from\_complete\_records} --- WP0203 v20's reconstruction proposition.
+The first result composes recovery of the final joint state with a supplied
+left inverse of the joint evolution. The second decodes the initial world
+and applies the specified null protocol. The resulting conditional complexity
+is bounded by the sum of the record, inverse, world-decoder, and null-decoder
+costs. Standard AIT bounds for applying fixed computable maps are explicit
+\lean{ConditionalMapBound} hypotheses; concrete machine coding is not
+constructed. Joint records include regulator memory: reversibility does not
+imply recovery from the world-side projection alone. In v20, GART expands to
+Global Algorithmic Regulator Theorem and names the existing output record
+balance; grounding remains its measurement extension.
 \item \lean{RegulationBalance.balance}, \lean{balance\_readout}, \lean{deficit},
 \lean{balance\_rate\_finite}, \lean{gap\_forces\_exhaust} --- WP0203~v2, the regulation balance:
 the positive replacement for the withdrawn concentration corollary. With $Q$ bundling the regulator's action transcript, its
@@ -1295,14 +1308,20 @@ Residual = completion & closure: $|L_Z-\mathrm{cIK}(z_0{:}Q\mid\langle z,R\rangl
   \stproved\ (\lean{residual\_is\_completion}, \lean{grounded\_balance}) \\
 Exact balance (v16) & $\Delta_N^\zeta=\Ik(\zeta_\varnothing{:}R\mid C)+L_{\mathrm{cf}}-\Ik(\zeta_R{:}R\mid C)-K(\zeta_R\mid\zeta_\varnothing,R,C)\pm O(\mathrm{slack})$ & KT &
   \stproved\ (\lean{exact\_counterfactual\_balance}) \\
---- GART as projection & drop regulated-branch terms + data processing $\Rightarrow$ $\Delta_N^\zeta\le\Ik(W{:}R\mid C)+L_{\mathrm{cf}}+O(\mathrm{slack})$ & KT &
+--- residual bound & drop regulated-branch terms + data processing $\Rightarrow$ $\Delta_N^\zeta\le\Ik(W{:}R\mid C)+L_{\mathrm{cf}}+O(\mathrm{slack})$ & KT &
   \stproved\ (\lean{gart\_reguland\_from\_exact\_balance}, \lean{grounded\_inequality\_from\_exact\_balance}) \\
 --- closed ledger & closure: residual term $=\mathrm{cIK}(\zeta_\varnothing{:}Q\mid\zeta_R,R,C)$ in the equality & KT &
   \stproved\ (\lean{exact\_counterfactual\_balance\_closed}) \\
 Implicit self-model & self-regulation query: $\mathsf{SM}^{\mathrm{imp}}\ge\Delta_Z-L_Z-O(\mathrm{slack})$; grounded: $\ge\Delta-L_Z-2\varepsilon-O(\mathrm{slack})$ & KT &
   \stproved\ (\lean{self\_regulation\_forces\_self\_model}, \lean{..\_grounded}) \\
-Automatic closure & abstract ART: world record closes the accounting by construction & KT &
+Retained-input reconstruction & world description recoverable from world records; null output computable from it & KT &
   \stproved\ (\lean{closure\_by\_construction}) \\
+Inverse-state reconstruction & complete final records and a cost-bounded left inverse recover the initial joint state & KT &
+  \stproved\ (\lean{initial\_from\_complete\_records}) \\
+Null-output reconstruction & inverse evolution, world decoding, and null replay; costs add & KT &
+  \stproved\ (\lean{null\_from\_complete\_records}) \\
+--- map cost & conditional description bound for each supplied computable map & STD &
+  \staxiom\ (\lean{ConditionalMapBound}, a named hypothesis) \\
 --- asymptotic form & $\Ik(W{:}R)\ge(1-o(1))\Delta$ for $\varepsilon,\lambda=o(\Delta)$ & KT &
   \stna\ (analysis on top of the finite inequalities) \\
 \midrule

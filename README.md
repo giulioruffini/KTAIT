@@ -243,3 +243,7 @@ Apache-2.0.
 ## License
 
 Apache-2.0. Built with [Claude Code](https://claude.com/claude-code).
+
+### WP0203 v20: complete-state reconstruction
+
+`ReversibleReconstruction.lean` checks recovery of the initial joint state and the null output from complete regulated-episode records, under an explicit inverse law and named AIT map-cost hypotheses. The record, inverse, world-decoder, and null-decoder costs add. Regulator memory is part of the complete account. WP0203 v20 names the existing output record balance the Global Algorithmic Regulator Theorem; the `GroundedRegulation` declaration names remain stable for its residual and measurement forms.
