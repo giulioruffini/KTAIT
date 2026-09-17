@@ -110,3 +110,4 @@ WP0203-v19-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail
 # Global GART reorganization and reversible reconstruction, September 17, 2026.
 WP0203-v20 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v20/wp0203_preprint.tex
 WP0203-v20-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v20/entropy/wp0203_entropy.tex
+WP0203-v20-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v20/bcom/wp0203_bcom.tex
