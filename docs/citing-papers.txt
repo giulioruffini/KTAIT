@@ -104,3 +104,5 @@ WP0203-v18.1 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_
 WP0203-v18.1-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v18.1/entropy/wp0203_entropy.tex
 WP0203-v18.2 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v18.2/wp0203_preprint.tex
 WP0203-v18.2-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v18.2/entropy/wp0203_entropy.tex
+WP0203-v19 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v19/wp0203_preprint.tex
+WP0203-v19-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v19/entropy/wp0203_entropy.tex
