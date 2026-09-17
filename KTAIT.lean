@@ -6,6 +6,7 @@ import KTAIT.SelfModel
 import KTAIT.Persistence
 import KTAIT.RegulatorSelection
 import KTAIT.SelfModelLimits
+import KTAIT.Lawvere
 import KTAIT.CoarseGraining
 import KTAIT.AlgorithmicEmergence
 import KTAIT.FunctionalCore
