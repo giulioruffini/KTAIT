@@ -100,3 +100,5 @@ WP0229 | ../../BCOM WPs and Blogs/working_drafts/WP0229-Computation_Cores/curren
 WP0203-v17.2 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v17.2/wp0203_preprint.tex
 WP0203-v18 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v18/wp0203_preprint.tex
 WP0203-v18-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v18/entropy/wp0203_entropy.tex
+WP0203-v18.1 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v18.1/wp0203_preprint.tex
+WP0203-v18.1-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v18.1/entropy/wp0203_entropy.tex
