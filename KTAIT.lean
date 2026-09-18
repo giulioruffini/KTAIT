@@ -23,6 +23,7 @@ import KTAIT.NoetherFlow
 import KTAIT.PushPull
 import KTAIT.ModelOrPay
 import KTAIT.ReversibleReconstruction
+import KTAIT.GenerativeRegulation
 import KTAIT.RegulationBalance
 import KTAIT.GroundedRegulation
 import KTAIT.PatternPersist

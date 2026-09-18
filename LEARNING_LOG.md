@@ -563,3 +563,13 @@ A complete final joint state can recover the initial world via inverse dynamics 
 ## 2026-09-18 — WP0203 v21 annotation revision
 
 Registered the canonical, Entropy, and BCOM sources with unchanged Lean declarations. The manuscript now distinguishes the reconstruction-free residual bounds from the record balance, whose reconstruction premise may be supplied by reversibility or retained inputs; the final private state is written S_R^(N).
+
+## 2026-09-18 — WP0203 retained generative model
+
+Subtracting a generated output while retaining its model has an explicit inverse.
+The model's finite parameter data remain charged to the initial regulator; a long
+generated record need not contain independently specified bits. Named map-cost
+hypotheses connect the reversible algebra to description conservation and the
+existing residual bound. These proofs establish neither actuator capability nor
+an algorithm for discovering a shortest model. All 35 declarations cited by v22
+use Lean core axioms only; the new module introduces no axioms or proof gaps.

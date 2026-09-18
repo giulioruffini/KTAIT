@@ -324,6 +324,7 @@ Mathlib~v4.31.0. Modules:
 \lean{PushPull.lean} & \lean{Plant}, \lean{Admissible}, \lean{InwardOnBoundary} & WP0186 Thms~1--2, Cor.~1, gap Lemma~1 \\
 \lean{ModelOrPay.lean} & \lean{MAICapped}; multiplicity witnesses & WP0203 Props.~1--2 \\
 \resizebox{0.96\linewidth}{!}{\lean{ReversibleReconstruction.lean}} & \lean{ConditionalMapBound} & WP0203 v20: inverse joint dynamics, world decoding, and null replay \\
+\resizebox{0.96\linewidth}{!}{\lean{GenerativeRegulation.lean}} & retained model, additive compensation, map-cost bounds & WP0203 v22: lossless model-based regulation \\
 \lean{RegulationBalance.lean} & \lean{cIK}, \lean{InfoClosed}, \lean{Localized}, \lean{FlowSplit} & WP0203 v4, the regulation balance \\
 \lean{GroundedRegulation.lean} & \lean{Grounded}, \lean{residual}, \lean{IKCeiling}, \lean{PairMono} & WP0203 grounded exposition, repaired corollary, self-regulation/implicit-self-model corollary \\
 \lean{OrbitLabel.lean} & conserved orbit labels & WP0162 App.~C \\
@@ -517,6 +518,15 @@ constructed. Joint records include regulator memory: reversibility does not
 imply recovery from the world-side projection alone. In v20, GART expands to
 Global Algorithmic Regulator Theorem and names the existing output record
 balance; grounding remains its measurement extension.
+\item In \lean{GenerativeRegulation.lean}, \lean{compensation\_reversible} and
+\lean{model\_cancellation} check that subtracting a generated disturbance while retaining
+its model is invertible and cancels an exact prediction. \lean{joint\_complexity\_preserved}
+composes a supplied inverse with standard \lean{DescriptionMapBound} hypotheses.
+\lean{model\_residual} bounds the null-output reconstruction cost by reading an available
+model and applying its generator; \lean{model\_initial\_information} inserts that bound
+into the existing finite GART inference. These are WP0203 v22's ideal model example:
+physical actuator capability and concrete universal-machine encodings remain explicit
+manuscript assumptions.
 \item \lean{RegulationBalance.balance}, \lean{balance\_readout}, \lean{deficit},
 \lean{balance\_rate\_finite}, \lean{gap\_forces\_exhaust} --- WP0203~v2, the regulation balance:
 the positive replacement for the withdrawn concentration corollary. With $Q$ bundling the regulator's action transcript, its
@@ -1320,6 +1330,14 @@ Inverse-state reconstruction & complete final records and a cost-bounded left in
   \stproved\ (\lean{initial\_from\_complete\_records}) \\
 Null-output reconstruction & inverse evolution, world decoding, and null replay; costs add & KT &
   \stproved\ (\lean{null\_from\_complete\_records}) \\
+Model compensation (v22) & retained model makes compensation invertible and an exact prediction zero & KT &
+  \stproved\ (\lean{compensation\_\allowbreak reversible}, \lean{model\_\allowbreak cancellation}) \\
+Joint description conservation & supplied inverse and forward/backward map costs & KT &
+  \stproved\ (\lean{joint\_\allowbreak complexity\_\allowbreak preserved}) \\
+Available-model inference & reading the model and generating the null output bound the residual and initial information & KT &
+  \stproved\ (\lean{model\_\allowbreak residual}, \lean{model\_\allowbreak initial\_\allowbreak information}) \\
+--- unconditional map cost & description bound for a supplied fixed computable map & STD &
+  \staxiom\ (\lean{Description\allowbreak Map\allowbreak Bound}, a named hypothesis) \\
 --- map cost & conditional description bound for each supplied computable map & STD &
   \staxiom\ (\lean{ConditionalMapBound}, a named hypothesis) \\
 --- asymptotic form & $\Ik(W{:}R)\ge(1-o(1))\Delta$ for $\varepsilon,\lambda=o(\Delta)$ & KT &

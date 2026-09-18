@@ -116,3 +116,8 @@ WP0203-v20-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Do
 WP0203-v21 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v21/wp0203_preprint.tex
 WP0203-v21-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v21/entropy/wp0203_entropy.tex
 WP0203-v21-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v21/bcom/wp0203_bcom.tex
+
+# WP0203 v22: retained-model construction and consolidated interpretation.
+WP0203-v22 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v22/wp0203_preprint.tex
+WP0203-v22-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v22/entropy/wp0203_entropy.tex
+WP0203-v22-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v22/bcom/wp0203_bcom.tex
