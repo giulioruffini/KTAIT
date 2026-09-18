@@ -111,3 +111,8 @@ WP0203-v19-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail
 WP0203-v20 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v20/wp0203_preprint.tex
 WP0203-v20-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v20/entropy/wp0203_entropy.tex
 WP0203-v20-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v20/bcom/wp0203_bcom.tex
+
+# WP0203 v21: author-annotation revision; existing theorem dependencies preserved.
+WP0203-v21 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v21/wp0203_preprint.tex
+WP0203-v21-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v21/entropy/wp0203_entropy.tex
+WP0203-v21-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v21/bcom/wp0203_bcom.tex

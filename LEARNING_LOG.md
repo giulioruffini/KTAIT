@@ -559,3 +559,7 @@ concrete clamp-family and program-length counterexamples remain paper-level argu
 ## 2026-09-17 — WP0203 reversible reconstruction
 
 A complete final joint state can recover the initial world via inverse dynamics and a specified null replay. World-side recovery alone does not follow: a reversible swap can move the disturbance into regulator memory. `ReversibleReconstruction` keeps the left-inverse law explicit and sums named conditional map costs; it does not infer those costs for arbitrary maps or claim a concrete machine implementation.
+
+## 2026-09-18 — WP0203 v21 annotation revision
+
+Registered the canonical, Entropy, and BCOM sources with unchanged Lean declarations. The manuscript now distinguishes the reconstruction-free residual bounds from the record balance, whose reconstruction premise may be supplied by reversibility or retained inputs; the final private state is written S_R^(N).
