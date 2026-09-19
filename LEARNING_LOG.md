@@ -573,3 +573,15 @@ hypotheses connect the reversible algebra to description conservation and the
 existing residual bound. These proofs establish neither actuator capability nor
 an algorithm for discovering a shortest model. All 35 declarations cited by v22
 use Lean core axioms only; the new module introduces no axioms or proof gaps.
+
+
+### 2026-09-19 — WP0203 self-regulation scope
+
+The self-regulation wrapper rearranges the existing residual inequality. Its docstring
+now says initial information and makes clear that representation, predictive use, and
+reuse require separate justification. Statements and proofs are unchanged; all v23
+paper formats are registered after moving measurement details to the appendix.
+
+### 2026-09-19 — WP0203 incomplete reconstruction
+
+The record balance without closure retains the null-output complexity conditional on all supplied records. Proved the two-sided residual decomposition and the one-sided bound with that term; only the former needs the lower chain-rule hypothesis. Missing information can reflect record selection as well as erasure. WP0195 and WP0203 v23 cite both declarations.

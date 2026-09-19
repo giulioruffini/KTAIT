@@ -25,7 +25,9 @@ formalizes a physical boundary or prospective record selection.
 `ReversibleReconstruction` separately supplies the composition from complete final joint
 records through inverse dynamics, initial-world decoding, and the null protocol. Regulator
 memory is included in that complete account. The record balance itself consumes only the
-resulting recoverability premise, not reversibility. The `GroundedRegulation` module retains
+resulting recoverability premise, not reversibility. With incomplete records, the v23
+identity and bound retain the null-output conditional complexity still missing after `Q`
+is supplied. The `GroundedRegulation` module retains
 its historical declaration names for the residual inequalities and measurement extension.
 
 The ordered action/memory/world split discounts information supplied by earlier records.
@@ -72,6 +74,12 @@ def CondChain (y Q C : F.Obj) : Prop :=
   (F.cond (F.pair y Q) C : Int)
     ≤ (F.cond Q C : Int) + (F.cond y (F.pair Q C) : Int) + (F.slack : Int)
 
+/-- The reverse conditional chain-rule inequality, with the same finite tolerance.
+Together with `CondChain`, this states the ordinary two-sided chain rule. -/
+def CondChainLower (y Q C : F.Obj) : Prop :=
+  (F.cond Q C : Int) + (F.cond y (F.pair Q C) : Int)
+    ≤ (F.cond (F.pair y Q) C : Int) + (F.slack : Int)
+
 /-- Reconstruction from the selected episode records: given `C = ⟨x,R⟩` and `Q`, the
 null output is determined up to `slack`. This is a recoverability hypothesis. The paper
 separately requires actual records and a fixed selection rule; it does not define an
@@ -85,6 +93,19 @@ def DataProcessing (y W R : F.Obj) : Prop :=
   IK F y R ≤ IK F W R + (F.slack : Int)
 
 /-! ## The residual lemma -/
+
+/-- **Residual with incomplete records.** The two-sided conditional chain rule splits
+the remaining description cost into the information in `Q` and the conditional complexity
+still missing after `Q` is supplied. No reconstruction or reversibility premise is used.
+This is WP0203 v23's incomplete-reconstruction identity, with `C = ⟨x,R⟩`. -/
+theorem residual_with_missing_information (y Q C : F.Obj)
+    (hchain : CondChain F y Q C) (hlower : CondChainLower F y Q C) :
+    |(F.cond y C : Int) -
+      (cIK F y Q C + (F.cond y (F.pair Q C) : Int))| ≤ (F.slack : Int) := by
+  simp only [CondChain, CondChainLower] at hchain hlower
+  simp only [cIK]
+  rw [abs_le]
+  omega
 
 /-- **The residual is mutual information with the completion.** Under the conditional chain
     rule and information closure, the conditional complexity of the null readout given the
@@ -100,6 +121,23 @@ theorem residual_in_completion (y Q C : F.Obj)
   omega
 
 /-! ## The balance -/
+
+/-- **Balance with incomplete records.** Without reconstruction, the record bound
+retains `K(y | ⟨Q,⟨x,R⟩⟩)` as a missing-information term. This can reflect omitted
+records or erased distinctions; the inequality does not identify a physical erasure.
+Only the upper conditional chain rule is needed for this bound. -/
+theorem balance_with_missing_information (W x y R Q : F.Obj)
+    (hmut : MutualChain F y R)
+    (hsub : CondSubadd F x y R)
+    (hmono : CondMono F x R)
+    (hchain : CondChain F y Q (F.pair x R))
+    (hdp : DataProcessing F y W R) :
+    gap F x y ≤ IK F W R + cIK F y Q (F.pair x R)
+      + (F.cond y (F.pair Q (F.pair x R)) : Int) + 4 * (F.slack : Int) := by
+  simp only [MutualChain, CondSubadd, CondMono, CondChain, DataProcessing]
+    at hmut hsub hmono hchain hdp
+  simp only [gap, cIK]
+  omega
 
 /-- **Theorem (algorithmic regulation balance), model-content form.**
     `Δ ≤ M(y : R) + M(y : Q | ⟨x,R⟩) + 4·slack`.

@@ -325,7 +325,7 @@ Mathlib~v4.31.0. Modules:
 \lean{ModelOrPay.lean} & \lean{MAICapped}; multiplicity witnesses & WP0203 Props.~1--2 \\
 \resizebox{0.96\linewidth}{!}{\lean{ReversibleReconstruction.lean}} & \lean{ConditionalMapBound} & WP0203 v20: inverse joint dynamics, world decoding, and null replay \\
 \resizebox{0.96\linewidth}{!}{\lean{GenerativeRegulation.lean}} & retained model, additive compensation, map-cost bounds & WP0203 v22: lossless model-based regulation \\
-\lean{RegulationBalance.lean} & \lean{cIK}, \lean{InfoClosed}, \lean{Localized}, \lean{FlowSplit} & WP0203 v4, the regulation balance \\
+\lean{RegulationBalance.lean} & conditional information, reconstruction, incomplete records & WP0203 v23, the regulation balance \\
 \lean{GroundedRegulation.lean} & \lean{Grounded}, \lean{residual}, \lean{IKCeiling}, \lean{PairMono} & WP0203 grounded exposition, repaired corollary, self-regulation/implicit-self-model corollary \\
 \lean{OrbitLabel.lean} & conserved orbit labels & WP0162 App.~C \\
 \lean{NoetherFlow.lean} & \lean{trajLabel}, flow symmetries & generalized Noether (abstract core) \\
@@ -540,13 +540,22 @@ Equivalently (\lean{deficit}) the episode flow is bounded \emph{below} by
 $\Delta-\Ik(W{:}R)$: the distinctions removed from the scored readout do not disappear.
 \lean{gap\_forces\_exhaust} is the trichotomy --- no model content, no world-relevant action
 transcript and no retained state force the whole gap into the exhaust term, which is the regime
-the clamp family of \lean{ModelOrPay} occupies. Two scope notes belong with these. The first
-inequality is an \emph{accounting identity}: it is the chain rule together with a closure
-condition that defines the exhaust as whatever recovers $y$, so its content is localization, not
-depth. And the paper's rate form --- a sustained extensive gap needs an extensive flow --- is
-analysis on top of \lean{balance\_rate\_finite} and is deliberately not formalized.
+the clamp family of \lean{ModelOrPay} occupies. In WP0203 v23, the paper fixes the
+record-selection rule in advance and requires records from the actual regulated episode.
+The formal balance consumes their recoverability premise; physical completeness and record
+selection remain manuscript assumptions. The limiting rate argument is analysis on top of
+\lean{balance\_rate\_finite} and is not separately formalized.
 \lean{residual\_in\_completion} is the supporting step converting ``there is a residual'' into
 ``the residual sits in $Q$.''
+\item \lean{RegulationBalance.residual\_with\_missing\_information} splits
+$K(y\mid C)$ into $\mathrm{cIK}(y{:}Q\mid C)$ and $K(y\mid Q,C)$,
+within the supplied two-sided conditional chain-rule tolerance. This is
+WP0203 v23's incomplete-reconstruction identity, with no reversibility premise.
+\item \lean{balance\_with\_missing\_information} retains the missing conditional
+complexity in the regulation bound when the selected records are insufficient.
+Only the upper conditional chain rule is needed for this inequality; it assumes
+neither reconstruction nor reversibility. Neither this bound nor the preceding
+identity equates missing information with physical erasure.
 \item \lean{RegulationBalance.localized\_closure\_needs\_world\_record} and
 \lean{no\_localized\_exhaust\_of\_world\_record\_insufficient} --- WP0203~v4's
 \emph{localization} clause, which is what stops the balance closing by fiat. If the exhaust
@@ -1314,6 +1323,10 @@ Repaired corollary & grounded, non-collapsing: $\Ik(W{:}R)\ge\Delta-L_Z-2\vareps
   \stproved\ (\lean{repaired\_corollary}, \lean{repaired\_good\_regulator}) \\
 Forced residual & $\Ik\le K R+\mathrm{slack}$ $\Rightarrow$ $L_Z\ge\Delta_Z-K R-O(\mathrm{slack})$ & KT &
   \stproved\ (\lean{simple\_regulator\_forces\_residual}) \\
+Incomplete reconstruction & residual equals record information plus the remaining conditional complexity, within chain-rule slack & KT &
+  \stproved\ (\lean{residual\_with\_\allowbreak missing\_information}) \\
+--- record bound & retain the missing conditional complexity; no closure premise & KT &
+  \stproved\ (\lean{balance\_with\_\allowbreak missing\_information}) \\
 Residual = completion & closure: $|L_Z-\mathrm{cIK}(z_0{:}Q\mid\langle z,R\rangle)|\le2\,\mathrm{slack}$ & KT &
   \stproved\ (\lean{residual\_is\_completion}, \lean{grounded\_balance}) \\
 Exact balance (v16) & $\Delta_N^\zeta=\Ik(\zeta_\varnothing{:}R\mid C)+L_{\mathrm{cf}}-\Ik(\zeta_R{:}R\mid C)-K(\zeta_R\mid\zeta_\varnothing,R,C)\pm O(\mathrm{slack})$ & KT &

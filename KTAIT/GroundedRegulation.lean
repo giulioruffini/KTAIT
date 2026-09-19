@@ -159,10 +159,10 @@ self-representation. -/
 /-- **Corollary (implicit self-model from grounded self-regulation), reguland form.**
     `SM^imp ≥ Δ_Z − L_Z − 2·slack`: reading `z, z₀` as the regulated and matched-null
     self-side reguland trajectories `ζ^P_R, ζ^P_∅`, successful self-regulation with a small
-    counterfactual residual forces reusable information about the focal pattern's own
-    counterfactual trajectory into the regulating organization. A rearrangement of
-    `grounded_readout`; nothing here says the self-model is explicit, complete, or
-    self-targeting. -/
+    counterfactual residual requires initial information about the focal pattern's own
+    counterfactual trajectory. A rearrangement of `grounded_readout`; the inequality
+    does not establish a predictive representation, its use, reuse across tasks, or
+    self-targeting. WP0203 v23 presents this as an application of the general bound. -/
 theorem self_regulation_forces_self_model (z z0 R : F.Obj)
     (hmut : MutualChain F z0 R)
     (hsub : CondSubadd F z z0 R)
