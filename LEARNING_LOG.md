@@ -607,3 +607,9 @@ moment from marginal coding domination and pair Kraft, then its normalized regul
 Unbounded explanation classes need a per-explanation allowance; conditioning and independent
 sampling describe different probability experiments. The new declarations pass the Lean-core
 axiom audit; classical coding and Kraft facts remain named hypotheses.
+
+### 2026-09-19 — the repaired tail in ART's shape (conditional_tail_given_residual)
+
+Conditioning on a residual bound turns the withdrawn tail into a step: mass 0 beyond
+k = η + s, bounded by 2^{−(k−η−s)} everywhere. Mathlib name for 1 ≤ a^n (n ≥ 0, ordered field
+with zero) is `one_le_zpow₀`; `one_le_zpow` is the ordered-group version.

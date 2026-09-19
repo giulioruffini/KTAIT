@@ -38,6 +38,8 @@ The statements include:
   upper bound on the residual.
 * `residual_bounded_class_mass_zero` — under a uniform residual bound the low-information class
   is empty, so its mass is `0`.
+* `conditional_tail_given_residual` — ART's withdrawn display, conditioned on a residual bound
+  `η`: `Pr[I ≤ Δ−k | L ≤ η] ≤ 2^{−(k−η−s)}`, and `0` beyond `k = η + s`.
 * `posterior_residual_transfer` — the instantiation on the `AITProb` canonical-code posterior
   `post`, with the per-explanation hypothesis supplied by `GroundedRegulation.grounded_inequality`
   (the named chain-rule and data-processing facts) for each explanation.
@@ -166,6 +168,47 @@ theorem residual_bounded_class_mass_zero {E : Type*} (S : Finset E) (w : E → �
     have h2 := hlam e he
     omega
   rw [hempty, Finset.sum_empty]
+
+/-! ## The repaired tail in the original's shape -/
+
+/-- **Conditional tail given a residual bound (finite family, real weights).** Among explanations
+    with residual at most `η`, the weight of those with `I ≤ Δ − k` is at most
+    `2^{−(k−η−s)}` times the weight of the residual-bounded class; the ratio is the conditional
+    probability. For `k > η + s` the numerator is `0`; for `k ≤ η + s` the factor is at least `1`.
+    This is ART's withdrawn display with the residual shifting the constant: `C' = 2^{η+s}`. -/
+theorem conditional_tail_given_residual {E : Type*} (S : Finset E) (w : E → ℝ)
+    (hw : ∀ e ∈ S, 0 ≤ w e) (I L : E → ℤ) (Δ k η s : ℤ)
+    (hgart : ∀ e ∈ S, Δ ≤ I e + L e + s) :
+    (S.filter (fun e => I e ≤ Δ - k ∧ L e ≤ η)).sum w
+      ≤ (2 : ℝ) ^ (-(k - η - s)) * (S.filter (fun e => L e ≤ η)).sum w := by
+  by_cases hk : k ≤ η + s
+  · -- the factor is at least one and the numerator class is inside the residual class
+    have h1 : (1 : ℝ) ≤ (2 : ℝ) ^ (-(k - η - s)) :=
+      one_le_zpow₀ (by norm_num) (by omega)
+    have hsub : (S.filter (fun e => I e ≤ Δ - k ∧ L e ≤ η)).sum w
+        ≤ (S.filter (fun e => L e ≤ η)).sum w := by
+      apply Finset.sum_le_sum_of_subset_of_nonneg
+      · intro e he
+        rw [Finset.mem_filter] at he ⊢
+        exact ⟨he.1, he.2.2⟩
+      · intro e he _
+        exact hw e (Finset.mem_of_mem_filter e he)
+    have hnn : 0 ≤ (S.filter (fun e => L e ≤ η)).sum w :=
+      Finset.sum_nonneg (fun e he => hw e (Finset.mem_of_mem_filter e he))
+    calc (S.filter (fun e => I e ≤ Δ - k ∧ L e ≤ η)).sum w
+        ≤ (S.filter (fun e => L e ≤ η)).sum w := hsub
+      _ = 1 * (S.filter (fun e => L e ≤ η)).sum w := (one_mul _).symm
+      _ ≤ (2 : ℝ) ^ (-(k - η - s)) * (S.filter (fun e => L e ≤ η)).sum w :=
+          mul_le_mul_of_nonneg_right h1 hnn
+  · -- k > η + s: no explanation has both a small residual and a large deficit
+    have hempty : S.filter (fun e => I e ≤ Δ - k ∧ L e ≤ η) = ∅ := by
+      apply Finset.filter_eq_empty_iff.mpr
+      intro e he ⟨h1, h2⟩
+      have := hgart e he
+      omega
+    rw [hempty, Finset.sum_empty]
+    exact mul_nonneg (by positivity)
+      (Finset.sum_nonneg (fun e he => hw e (Finset.mem_of_mem_filter e he)))
 
 /-! ## Instantiation on the canonical-code posterior -/
 

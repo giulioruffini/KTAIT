@@ -537,6 +537,10 @@ weight of the class $\{I\le\Delta-k\}$ is at most the weight of $\{L\ge k-s\}$; 
 of a nonnegative sum under set inclusion. \lean{residual\_bounded\_class\_mass\_zero} adds a
 uniform residual bound and empties the low-information class.
 The helper \lean{post\_nonneg} records that the canonical-code posterior is nonnegative.
+\lean{conditional\_tail\_given\_residual} states ART's withdrawn display in its original shape,
+conditioned on a residual bound $\eta$: the weight of $\{I\le\Delta-k,\ L\le\eta\}$ is at most
+$2^{-(k-\eta-s)}$ times the weight of $\{L\le\eta\}$, so the conditional probability is at most
+$2^{-(k-\eta-s)}$ and is $0$ beyond $k=\eta+s$; the residual shifts the constant, $C'=2^{\eta+s}$.
 \lean{posterior\_residual\_transfer} and \lean{posterior\_residual\_bounded\_zero} instantiate
 these on the canonical-code posterior \lean{AITProb.post} for a finite family of explanations
 $(W_i,R_i)$ of one observed output $x$ with null outputs of common complexity $b$, taking the
@@ -1392,6 +1396,8 @@ Class-mass transfer (v24.2) & GART on each explanation puts $\{I\le\Delta-k\}$ i
   \stproved\ (\lean{class\_\allowbreak mass\_\allowbreak transfer}, \lean{..\_tsum}, \lean{residual\_\allowbreak bounded\_\allowbreak class\_\allowbreak mass\_\allowbreak zero}) \\
 ART, residual-transfer form & posterior mass of low shared information $\le$ posterior mass of large residual; $0$ below the residual-bound threshold & KT &
   \stproved\ (\lean{posterior\_\allowbreak residual\_\allowbreak transfer}, \lean{posterior\_\allowbreak residual\_\allowbreak bounded\_\allowbreak zero}) \\
+Conditional tail given a residual bound & in ART's original shape: $\Pr[I\le\Delta-k\mid L\le\eta]\le2^{-(k-\eta-s)}$, and $0$ for $k>\eta+s$ & KT &
+  \stproved\ (\lean{conditional\_\allowbreak tail\_\allowbreak given\_\allowbreak residual}) \\
 Countable posterior transfer (v25) & variable gap and allowance; strict-event confidence bound and countable zero case & KT &
   \stproved\ (\lean{class\_mass\_transfer\_\allowbreak variable\_tsum}, \lean{class\_mass\_\allowbreak residual\_confidence\_tsum}, \lean{residual\_bounded\_\allowbreak class\_mass\_zero\_tsum}, \lean{gart\_mass\_transfer\_tsum}) \\
 Independent information moment & $\mathbb E\,2^{I_K(W:R)}\le ab$ from marginal coding domination and pair Kraft & STD &
