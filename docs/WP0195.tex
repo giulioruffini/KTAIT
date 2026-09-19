@@ -325,6 +325,7 @@ Mathlib~v4.31.0. Modules:
 \lean{ModelOrPay.lean} & \lean{MAICapped}; multiplicity witnesses & WP0203 Props.~1--2 \\
 \resizebox{0.96\linewidth}{!}{\lean{ReversibleReconstruction.lean}} & \lean{ConditionalMapBound} & WP0203 v20: inverse joint dynamics, world decoding, and null replay \\
 \resizebox{0.96\linewidth}{!}{\lean{GenerativeRegulation.lean}} & retained model, additive compensation, map-cost bounds & WP0203 v22: lossless model-based regulation \\
+\resizebox{0.96\linewidth}{!}{\lean{ResidualTransfer.lean}} & class-mass transfer over explanations; \lean{AITProb.post} & WP0203 v24.2: ART's probabilistic reading repaired through GART (Proposition A4) \\
 \lean{RegulationBalance.lean} & conditional information, reconstruction, incomplete records & WP0203 v23, the regulation balance \\
 \lean{GroundedRegulation.lean} & \lean{Grounded}, \lean{residual}, \lean{IKCeiling}, \lean{PairMono} & WP0203 grounded exposition, repaired corollary, self-regulation/implicit-self-model corollary \\
 \lean{OrbitLabel.lean} & conserved orbit labels & WP0162 App.~C \\
@@ -527,6 +528,24 @@ model and applying its generator; \lean{model\_initial\_information} inserts tha
 into the existing finite GART inference. These are WP0203 v22's ideal model example:
 physical actuator capability and concrete universal-machine encodings remain explicit
 manuscript assumptions.
+\item In \lean{ResidualTransfer.lean}, \lean{class\_mass\_transfer} (finite family, real
+weights) and \lean{class\_mass\_transfer\_tsum} (countable family, $\mathbb{R}_{\ge0}^{\infty}$)
+state that if every explanation obeys a GART-type inequality $\Delta\le I+L+s$, then the
+weight of the class $\{I\le\Delta-k\}$ is at most the weight of $\{L\ge k-s\}$; monotonicity
+of a nonnegative sum under set inclusion. \lean{residual\_bounded\_class\_mass\_zero} adds a
+uniform residual bound and empties the low-information class.
+The helper \lean{post\_nonneg} records that the canonical-code posterior is nonnegative.
+\lean{posterior\_residual\_transfer} and \lean{posterior\_residual\_bounded\_zero} instantiate
+these on the canonical-code posterior \lean{AITProb.post} for a finite family of explanations
+$(W_i,R_i)$ of one observed output $x$ with null outputs of common complexity $b$, taking the
+per-explanation inequality from \lean{GroundedRegulation.grounded\_inequality} under its named
+chain-rule and data-processing hypotheses: the posterior mass with $I_K(W{:}R)\le\Delta-k$ is at
+most the mass with residual $\ge k-3\,\mathrm{slack}$, and is $0$ under a residual bound
+$\lambda$ for $I_K<\Delta-\lambda-3\,\mathrm{slack}$. This is WP0203 v24.2's Proposition A4,
+the valid replacement for the withdrawn tail claim: the tail of low shared information is
+bounded by the tail of large residual. Tightness (the clamp family, where the right side is
+$\Theta(1)$) is a paper-level construction; the posterior over infinitely many programs is
+represented by a finite or countable family with nonnegative weights.
 \item \lean{RegulationBalance.balance}, \lean{balance\_readout}, \lean{deficit},
 \lean{balance\_rate\_finite}, \lean{gap\_forces\_exhaust} --- WP0203~v2, the regulation balance:
 the positive replacement for the withdrawn concentration corollary. With $Q$ bundling the regulator's action transcript, its
@@ -1349,6 +1368,10 @@ Joint description conservation & supplied inverse and forward/backward map costs
   \stproved\ (\lean{joint\_\allowbreak complexity\_\allowbreak preserved}) \\
 Available-model inference & reading the model and generating the null output bound the residual and initial information & KT &
   \stproved\ (\lean{model\_\allowbreak residual}, \lean{model\_\allowbreak initial\_\allowbreak information}) \\
+Class-mass transfer (v24.2) & GART on each explanation puts $\{I\le\Delta-k\}$ inside $\{L\ge k-s\}$; nonnegative weights are monotone & KT &
+  \stproved\ (\lean{class\_\allowbreak mass\_\allowbreak transfer}, \lean{..\_tsum}, \lean{residual\_\allowbreak bounded\_\allowbreak class\_\allowbreak mass\_\allowbreak zero}) \\
+ART, residual-transfer form (Prop.~A4) & posterior mass of low shared information $\le$ posterior mass of large residual; $0$ under a residual bound & KT &
+  \stproved\ (\lean{posterior\_\allowbreak residual\_\allowbreak transfer}, \lean{posterior\_\allowbreak residual\_\allowbreak bounded\_\allowbreak zero}) \\
 --- unconditional map cost & description bound for a supplied fixed computable map & STD &
   \staxiom\ (\lean{Description\allowbreak Map\allowbreak Bound}, a named hypothesis) \\
 --- map cost & conditional description bound for each supplied computable map & STD &

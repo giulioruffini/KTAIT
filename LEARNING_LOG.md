@@ -589,3 +589,13 @@ The record balance without closure retains the null-output complexity conditiona
 ### 2026-09-19 — WP0203 v24 interpretation
 
 Registered the three v24 formats after the regulation-criteria comparison and compression-motivation revision. The eight result bodies, 49 displays, and cited declarations are unchanged; this is a prose and table revision, not a new formalization milestone.
+
+### 2026-09-19 — ART's probabilistic reading repaired (ResidualTransfer.lean)
+
+The withdrawn tail claim has no counting repair (a class of explanations can carry O(1) mass
+at any shared-information level), but GART on each explanation gives an inclusion of events,
+so posterior mass transfers: Pr[I ≤ Δ−k] ≤ Pr[L ≥ k−slack]. Six sorry-free declarations, Lean
+core axioms only. Tripped on ENNReal nonnegativity: `zero_le _` is not a function here; `bot_le`
+closes `0 ≤ w e` in `ℝ≥0∞`. The posterior over all programs is represented by a finite or
+countable family with nonnegative weights; the instantiation composes `grounded_inequality`
+with `Finset.sum_le_sum_of_subset_of_nonneg`.

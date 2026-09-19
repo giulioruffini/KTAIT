@@ -24,6 +24,7 @@ import KTAIT.PushPull
 import KTAIT.ModelOrPay
 import KTAIT.ReversibleReconstruction
 import KTAIT.GenerativeRegulation
+import KTAIT.ResidualTransfer
 import KTAIT.RegulationBalance
 import KTAIT.GroundedRegulation
 import KTAIT.PatternPersist
