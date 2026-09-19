@@ -131,3 +131,8 @@ WP0203-v22.1-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_
 WP0203-v23 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v23/wp0203_preprint.tex
 WP0203-v23-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v23/entropy/wp0203_entropy.tex
 WP0203-v23-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v23/bcom/wp0203_bcom.tex
+
+# WP0203 v24: regulation motivation and historical comparison; mathematical statements unchanged.
+WP0203-v24 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v24/wp0203_preprint.tex
+WP0203-v24-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v24/entropy/wp0203_entropy.tex
+WP0203-v24-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v24/bcom/wp0203_bcom.tex

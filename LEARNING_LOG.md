@@ -585,3 +585,7 @@ paper formats are registered after moving measurement details to the appendix.
 ### 2026-09-19 — WP0203 incomplete reconstruction
 
 The record balance without closure retains the null-output complexity conditional on all supplied records. Proved the two-sided residual decomposition and the one-sided bound with that term; only the former needs the lower chain-rule hypothesis. Missing information can reflect record selection as well as erasure. WP0195 and WP0203 v23 cite both declarations.
+
+### 2026-09-19 — WP0203 v24 interpretation
+
+Registered the three v24 formats after the regulation-criteria comparison and compression-motivation revision. The eight result bodies, 49 displays, and cited declarations are unchanged; this is a prose and table revision, not a new formalization milestone.
