@@ -121,3 +121,8 @@ WP0203-v21-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Do
 WP0203-v22 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v22/wp0203_preprint.tex
 WP0203-v22-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v22/entropy/wp0203_entropy.tex
 WP0203-v22-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v22/bcom/wp0203_bcom.tex
+
+# WP0203 v22.1: figure and table callouts; mathematical content unchanged.
+WP0203-v22.1 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v22.1/wp0203_preprint.tex
+WP0203-v22.1-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v22.1/entropy/wp0203_entropy.tex
+WP0203-v22.1-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v22.1/bcom/wp0203_bcom.tex
