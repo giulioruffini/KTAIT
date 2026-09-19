@@ -136,3 +136,6 @@ WP0203-v23-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Do
 WP0203-v24 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v24/wp0203_preprint.tex
 WP0203-v24-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v24/entropy/wp0203_entropy.tex
 WP0203-v24-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v24/bcom/wp0203_bcom.tex
+WP0203-v24.1 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v24.1/wp0203_preprint.tex
+WP0203-v24.1-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v24.1/entropy/wp0203_entropy.tex
+WP0203-v24.1-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v24.1/bcom/wp0203_bcom.tex
