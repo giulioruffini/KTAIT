@@ -91,7 +91,8 @@
 \newcommand{\Q}{\mathbb{Q}}
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator*{\argmax}{arg\,max}
-\newcommand{\lean}[1]{\texttt{\small #1}}
+\newcommand{\lean}[1]{{\ttfamily\small
+  \let\leanunderscore\_\def\_{\leanunderscore\allowbreak}#1}}
 % \ktait{decl}: machine-checked-claim citation — the prose asserts a result and
 % names the KTAIT declaration proving it (see \S\ref{sec:citing}).
 \newcommand{\ktait}[1]{\texttt{\small #1}}
@@ -325,7 +326,8 @@ Mathlib~v4.31.0. Modules:
 \lean{ModelOrPay.lean} & \lean{MAICapped}; multiplicity witnesses & WP0203 Props.~1--2 \\
 \resizebox{0.96\linewidth}{!}{\lean{ReversibleReconstruction.lean}} & \lean{ConditionalMapBound} & WP0203 v20: inverse joint dynamics, world decoding, and null replay \\
 \resizebox{0.96\linewidth}{!}{\lean{GenerativeRegulation.lean}} & retained model, additive compensation, map-cost bounds & WP0203 v22: lossless model-based regulation \\
-\resizebox{0.96\linewidth}{!}{\lean{ResidualTransfer.lean}} & class-mass transfer over explanations; \lean{AITProb.post} & WP0203 v24.2: ART's probabilistic reading repaired through GART (Proposition A4) \\
+\resizebox{0.96\linewidth}{!}{\lean{ResidualTransfer.lean}} & countable class-mass transfer; variable coding allowance & WP0203 v25: posterior information inference from residual bounds \\
+\resizebox{0.96\linewidth}{!}{\lean{IndependentRegulation.lean}} & marginal coding bounds, pair Kraft, product weights & WP0203 v25: prospective regulation under independent initial sampling \\
 \lean{RegulationBalance.lean} & conditional information, reconstruction, incomplete records & WP0203 v23, the regulation balance \\
 \lean{GroundedRegulation.lean} & \lean{Grounded}, \lean{residual}, \lean{IKCeiling}, \lean{PairMono} & WP0203 grounded exposition, repaired corollary, self-regulation/implicit-self-model corollary \\
 \lean{OrbitLabel.lean} & conserved orbit labels & WP0162 App.~C \\
@@ -541,11 +543,29 @@ $(W_i,R_i)$ of one observed output $x$ with null outputs of common complexity $b
 per-explanation inequality from \lean{GroundedRegulation.grounded\_inequality} under its named
 chain-rule and data-processing hypotheses: the posterior mass with $I_K(W{:}R)\le\Delta-k$ is at
 most the mass with residual $\ge k-3\,\mathrm{slack}$, and is $0$ under a residual bound
-$\lambda$ for $I_K<\Delta-\lambda-3\,\mathrm{slack}$. This is WP0203 v24.2's Proposition A4,
-the valid replacement for the withdrawn tail claim: the tail of low shared information is
-bounded by the tail of large residual. Tightness (the clamp family, where the right side is
-$\Theta(1)$) is a paper-level construction; the posterior over infinitely many programs is
-represented by a finite or countable family with nonnegative weights.
+$\lambda$ for $I_K<\Delta-\lambda-3\,\mathrm{slack}$.
+For WP0203 v25, \lean{class\_mass\_transfer\_variable\_tsum} permits both the gap and
+coding allowance to depend on the explanation. The strict-event consequence is
+\lean{class\_mass\_residual\_confidence\_tsum}, and its uniform-residual zero case is
+\lean{residual\_bounded\_class\_mass\_zero\_tsum}.
+\lean{gart\_mass\_transfer\_tsum} supplies the balance from the named AIT hypotheses
+before summing a countable class. A normalized conditional posterior is one choice of
+these weights; all conditioning must use the same positive evidence denominator.
+An exponential information-deficit tail requires a separately justified residual tail
+under that posterior. The concrete clamp-family mass remains a paper-level construction.
+\item In \lean{IndependentRegulation.lean}, \lean{independent\_information\_moment}
+derives $\mathbb E\,2^{I_K(W:R)}\le ab$ from the named classical hypotheses
+\lean{CodingDominated} for both marginal laws and \lean{PairKraft} for encoded pairs.
+Under normalized product weights, \lean{independent\_regulation\_probability} bounds
+the probability of $\Delta-L-h\ge t$ by $\min\{1,ab2^{-t}\}$, allowing $h$ to vary
+between pairs. \lean{independent\_regulation\_threshold} needs a uniform allowance
+only on the event $\{\Delta\ge d,L\le\ell\}$.
+\lean{independent\_gart\_probability} derives its pointwise premise from
+\lean{grounded\_inequality}, with allowance $3\,\mathrm{slack}$.
+These are prospective bounds under independently sampled initial descriptions, separate
+from ART's joint-prior posterior. Computability-to-coding domination and prefix Kraft
+remain named classical AIT inputs; the exponential moment and regulation consequences
+are proved from them.
 \item \lean{RegulationBalance.balance}, \lean{balance\_readout}, \lean{deficit},
 \lean{balance\_rate\_finite}, \lean{gap\_forces\_exhaust} --- WP0203~v2, the regulation balance:
 the positive replacement for the withdrawn concentration corollary. With $Q$ bundling the regulator's action transcript, its
@@ -1370,8 +1390,18 @@ Available-model inference & reading the model and generating the null output bou
   \stproved\ (\lean{model\_\allowbreak residual}, \lean{model\_\allowbreak initial\_\allowbreak information}) \\
 Class-mass transfer (v24.2) & GART on each explanation puts $\{I\le\Delta-k\}$ inside $\{L\ge k-s\}$; nonnegative weights are monotone & KT &
   \stproved\ (\lean{class\_\allowbreak mass\_\allowbreak transfer}, \lean{..\_tsum}, \lean{residual\_\allowbreak bounded\_\allowbreak class\_\allowbreak mass\_\allowbreak zero}) \\
-ART, residual-transfer form (Prop.~A4) & posterior mass of low shared information $\le$ posterior mass of large residual; $0$ under a residual bound & KT &
+ART, residual-transfer form & posterior mass of low shared information $\le$ posterior mass of large residual; $0$ below the residual-bound threshold & KT &
   \stproved\ (\lean{posterior\_\allowbreak residual\_\allowbreak transfer}, \lean{posterior\_\allowbreak residual\_\allowbreak bounded\_\allowbreak zero}) \\
+Countable posterior transfer (v25) & variable gap and allowance; strict-event confidence bound and countable zero case & KT &
+  \stproved\ (\lean{class\_mass\_transfer\_\allowbreak variable\_tsum}, \lean{class\_mass\_\allowbreak residual\_confidence\_tsum}, \lean{residual\_bounded\_\allowbreak class\_mass\_zero\_tsum}, \lean{gart\_mass\_transfer\_tsum}) \\
+Independent information moment & $\mathbb E\,2^{I_K(W:R)}\le ab$ from marginal coding domination and pair Kraft & STD &
+  \stproved\ (\lean{independent\_\allowbreak information\_moment}) \\
+Independent regulation (v25) & $\Pr(\Delta-L-h\ge t)\le\min\{1,ab2^{-t}\}$; eventwise uniform-allowance consequence & KT &
+  \stproved\ (\lean{independent\_regulation\_\allowbreak probability}, \lean{independent\_regulation\_\allowbreak threshold}) \\
+--- GART instantiation & named chain and data-processing facts supply the pointwise balance & KT &
+  \stproved\ (\lean{independent\_gart\_\allowbreak probability}) \\
+--- marginal coding and pair Kraft & computable-law domination by prefix-code weights; total shortest-pair-code weight at most one & STD &
+  \staxiom\ (\lean{Coding\allowbreak Dominated}, \lean{PairKraft}, named hypotheses) \\
 --- unconditional map cost & description bound for a supplied fixed computable map & STD &
   \staxiom\ (\lean{Description\allowbreak Map\allowbreak Bound}, a named hypothesis) \\
 --- map cost & conditional description bound for each supplied computable map & STD &

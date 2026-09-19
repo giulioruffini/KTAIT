@@ -599,3 +599,11 @@ core axioms only. Tripped on ENNReal nonnegativity: `zero_le _` is not a functio
 closes `0 ≤ w e` in `ℝ≥0∞`. The posterior over all programs is represented by a finite or
 countable family with nonnegative weights; the instantiation composes `grounded_inequality`
 with `Finset.sum_le_sum_of_subset_of_nonneg`.
+### 2026-09-19 — Probabilistic GART consequences for WP0203 v25
+
+Extended the countable residual transfer to variable gaps and coding allowances, retaining
+strict boundaries for the zero-probability case. Derived the independent-sampling exponential
+moment from marginal coding domination and pair Kraft, then its normalized regulation tails.
+Unbounded explanation classes need a per-explanation allowance; conditioning and independent
+sampling describe different probability experiments. The new declarations pass the Lean-core
+axiom audit; classical coding and Kraft facts remain named hypotheses.

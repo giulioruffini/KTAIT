@@ -12,12 +12,12 @@ import KTAIT.GroundedRegulation
 /-!
 # KTAIT.ResidualTransfer — ART's probabilistic reading, repaired through GART
 
-WP0203 (v24.2, the appendix on probability proofs) shows that the concentration claim the
+WP0203 (v25, the appendix on probabilistic regulator bounds) shows that the concentration claim the
 original ART article states after its probabilistic regulator theorem, the tail bound
 `Pr[M(W:R) ≤ Δ − k | x, E_b] ≤ C'·2^{−k}`, does not follow
 from the per-explanation bound: a fixed clamp regulating a family of complex worlds keeps
-`Θ(1)` posterior mass however large the gap. No counting repair exists, because explanations of
-joint length `ℓ` producing `x` may number `2^ℓ` at weight `2^{−ℓ}` each.
+`Θ(1)` posterior mass however large the gap. Counting individual code penalties alone does not
+control this aggregate: a class of `2^ℓ` explanations can offset weights of order `2^{−ℓ}`.
 
 What does survive is a *transfer*: GART holds for every explanation in ART's class,
 `Δ ≤ I_K(W:R) + L_cf + slack`, so the event "little shared information" is contained in the
@@ -25,12 +25,17 @@ event "large residual", and posterior mass is monotone under inclusion. Hence
 
   `Pr[I_K(W:R) ≤ Δ − k | x, E_b] ≤ Pr[L_cf ≥ k − slack | x, E_b]`,
 
-and conditional on a residual bound `L_cf ≤ λ` the low-information event has mass `0`. The
-original `C'·2^{−k}` is the special case in which large residuals carry no mass.
+and conditional on a residual bound `L_cf ≤ λ` the strictly lower-information event has mass
+`0`. An exponential information-deficit tail follows if an exponential residual tail is
+independently established under the same evidence and with the coding allowance retained.
 
-Three statements:
+The statements include:
 * `class_mass_transfer` — the abstract inequality for a finite family with nonnegative weights.
 * `class_mass_transfer_tsum` — the same over a countable family, in `ℝ≥0∞`, no summability needed.
+* `class_mass_transfer_variable_tsum` — allows the gap and coding allowance to vary between
+  explanations, so a uniform logarithmic allowance on an unbounded class is not assumed.
+* `class_mass_residual_confidence_tsum` — the strict-event transfer used for a probabilistic
+  upper bound on the residual.
 * `residual_bounded_class_mass_zero` — under a uniform residual bound the low-information class
   is empty, so its mass is `0`.
 * `posterior_residual_transfer` — the instantiation on the `AITProb` canonical-code posterior
@@ -77,6 +82,76 @@ theorem class_mass_transfer_tsum {E : Type*} (w : E → ENNReal) (I L : E → �
     omega
   · intro _; exact bot_le
 
+/-- **Variable-gap, variable-allowance transfer.** The posterior may range over explanations
+    of unbounded size. The applicable coding allowance is then kept inside the event. The
+    weights may already be normalized conditional probabilities; no choice of prior is used. -/
+theorem class_mass_transfer_variable_tsum {E : Type*} (w : E → ENNReal)
+    (gap I L s : E → ℤ) (k : ℤ)
+    (hgart : ∀ e, gap e ≤ I e + L e + s e) :
+    ∑' e, Set.indicator {e | I e ≤ gap e - k} w e
+      ≤ ∑' e, Set.indicator {e | k ≤ L e + s e} w e := by
+  apply ENNReal.tsum_le_tsum
+  intro e
+  apply Set.indicator_le_indicator_of_subset
+  · intro e' he'
+    simp only [Set.mem_setOf_eq] at he' ⊢
+    have := hgart e'
+    omega
+  · intro _; exact bot_le
+
+/-- **Residual-confidence transfer.** If the gap is at least `d` and the coding allowance is
+    at most `s`, the mass below `d - lam - s` bits of shared information is no greater than
+    the mass above `lam` bits of residual. Strict inequalities preserve the equality case. -/
+theorem class_mass_residual_confidence_tsum {E : Type*} (w : E → ENNReal)
+    (I L : E → ℤ) (d lam s : ℤ)
+    (hgart : ∀ e, d ≤ I e + L e + s) :
+    ∑' e, Set.indicator {e | I e < d - lam - s} w e
+      ≤ ∑' e, Set.indicator {e | lam < L e} w e := by
+  apply ENNReal.tsum_le_tsum
+  intro e
+  apply Set.indicator_le_indicator_of_subset
+  · intro e' he'
+    simp only [Set.mem_setOf_eq] at he' ⊢
+    have := hgart e'
+    omega
+  · intro _; exact bot_le
+
+/-- **Countable zero-mass consequence.** A uniform residual bound excludes information
+    strictly below the GART threshold, for any nonnegative weights. -/
+theorem residual_bounded_class_mass_zero_tsum {E : Type*} (w : E → ENNReal)
+    (I L : E → ℤ) (d lam s : ℤ)
+    (hgart : ∀ e, d ≤ I e + L e + s) (hlam : ∀ e, L e ≤ lam) :
+    ∑' e, Set.indicator {e | I e < d - lam - s} w e = 0 := by
+  apply ENNReal.tsum_eq_zero.mpr
+  intro e
+  apply Set.indicator_of_notMem
+  simp only [Set.mem_setOf_eq, not_lt]
+  have := hgart e
+  have := hlam e
+  omega
+
+/-- **GART instantiated on a countable weighted family.** Each pair may have its own
+    regulated and null outputs. The four named AIT hypotheses supply the balance before
+    class mass is summed. Conditioning belongs in the nonnegative weights `w`. -/
+theorem gart_mass_transfer_tsum (F : AITFrame) {E : Type*} (w : E → ENNReal)
+    (W R y y0 : E → F.Obj) (k : ℤ)
+    (hmut : ∀ e, RegulationBalance.MutualChain F (y0 e) (R e))
+    (hsub : ∀ e, RegulationBalance.CondSubadd F (y e) (y0 e) (R e))
+    (hmono : ∀ e, RegulationBalance.CondMono F (y e) (R e))
+    (hdp : ∀ e, RegulationBalance.DataProcessing F (y0 e) (W e) (R e)) :
+    ∑' e, Set.indicator
+      {e | IK F (W e) (R e) ≤ RegulationBalance.gap F (y e) (y0 e) - k} w e
+      ≤ ∑' e, Set.indicator
+      {e | k ≤ GroundedRegulation.residual F (y e) (y0 e) (R e) + 3 * (F.slack : ℤ)} w e := by
+  apply class_mass_transfer_variable_tsum w
+    (fun e => RegulationBalance.gap F (y e) (y0 e))
+    (fun e => IK F (W e) (R e))
+    (fun e => GroundedRegulation.residual F (y e) (y0 e) (R e))
+    (fun _ => 3 * (F.slack : ℤ)) k
+  intro e
+  exact GroundedRegulation.grounded_inequality F (W e) (y e) (y0 e) (R e)
+    (hmut e) (hsub e) (hmono e) (hdp e)
+
 /-- **Residual bound kills the low-information class.** If every explanation has residual at
     most `λ`, no explanation has `I e < Δ − λ − s`, so that class has weight `0`. -/
 theorem residual_bounded_class_mass_zero {E : Type*} (S : Finset E) (w : E → ℝ)
@@ -101,7 +176,7 @@ theorem post_nonneg (e x : F.Obj) : 0 ≤ F.post e x := by
   unfold AITProb.post
   exact div_nonneg (by positivity) (le_of_lt (F.m_pos x))
 
-/-- **ART, residual-transfer form (WP0203 v24.2, Proposition A4).**
+/-- **ART, residual-transfer form (WP0203, posterior residual-transfer proposition).**
     Index a finite family of specified explanations by `ι`: world `W i`, regulator `R i`, common
     observed (regulated) output `x`, and null output `z0 i`. Suppose each explanation satisfies
     the named chain-rule facts behind GART (`MutualChain`, `CondSubadd`, `CondMono`,

@@ -143,3 +143,8 @@ WP0203-v24.1-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_
 WP0203-v24.2 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v24.2/wp0203_preprint.tex
 WP0203-v24.2-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v24.2/entropy/wp0203_entropy.tex
 WP0203-v24.2-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v24.2/bcom/wp0203_bcom.tex
+
+# WP0203 v25: posterior residual transfer and independent-sampling regulation bounds.
+WP0203-v25 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v25/wp0203_preprint.tex
+WP0203-v25-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v25/entropy/wp0203_entropy.tex
+WP0203-v25-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v25/bcom/wp0203_bcom.tex
