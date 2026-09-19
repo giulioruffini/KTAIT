@@ -6,6 +6,7 @@ Authors: Giulio Ruffini (with Codex)
 import Mathlib
 import KTAIT.Basic
 import KTAIT.GroundedRegulation
+import KTAIT.ResidualTransfer
 
 /-!
 # KTAIT.IndependentRegulation — regulation under independent initial sampling
@@ -34,6 +35,8 @@ and the named chain-rule/data-processing hypotheses, with allowance `3 * F.slack
 This is a prospective bound under independently sampled initial descriptions. It is not a
 posterior concentration theorem under ART's joint universal prior, and it does not assert that
 independent random draws have zero algorithmic mutual information in every realization.
+`independent_regulation_given_residual` conditions the joint-event bound on a small residual,
+retaining the residual-event probability as a divisor.
 
 The coding and Kraft facts are named `Prop` hypotheses, never global axioms. All sums use
 `ENNReal`, so no hidden summability assumption is needed; the statements apply in particular to
@@ -222,6 +225,39 @@ theorem independent_gart_probability (F : AITFrame) (p q : F.Obj → ENNReal)
       (hmut e hw) (hsub e hw) (hmono e hw) (hdp e hw)
   · intro _ _ _ _
     exact le_rfl
+
+/-! ## Explicit conditioning of the prospective bound -/
+
+open ResidualTransfer
+
+/-- **Independent sampling conditioned on a small residual.** Dividing the joint-event bound
+    by the positive residual-event probability bounds `Pr[gap >= d | residual <= eta]`.
+    The denominator is retained; a rare conditioning event can remove the prospective rarity.
+    The finite-mass premise is explicit even though normalized marginals already imply it. -/
+theorem independent_regulation_given_residual (F : AITFrame) (p q : F.Obj → ENNReal)
+    (a b : ENNReal) (hp : CodingDominated F p a) (hq : CodingDominated F q b)
+    (hk : PairKraft F) (hpMass : ∑' x, p x = 1) (hqMass : ∑' y, q y = 1)
+    (gap residual allowance : F.Obj × F.Obj → ℤ)
+    (hgart : ∀ e, productWeight p q e ≠ 0 →
+      gap e ≤ IK F e.1 e.2 + residual e + allowance e)
+    (d eta h : ℤ)
+    (hs : ∀ e, productWeight p q e ≠ 0 →
+      d ≤ gap e → residual e ≤ eta → allowance e ≤ h)
+    (hpos : 0 < eventMass (productWeight p q) {e | residual e ≤ eta})
+    (hfinite : eventMass (productWeight p q) {e | residual e ≤ eta} < ⊤) :
+    conditionalMass (productWeight p q) {e | d ≤ gap e} {e | residual e ≤ eta} hpos hfinite
+      ≤ min 1 (((a * b) * (2 : ENNReal) ^ (-(d - eta - h))) /
+        eventMass (productWeight p q) {e | residual e ≤ eta}) := by
+  apply le_min
+  · exact conditionalMass_le_one _ _ _ hpos hfinite
+  · have hnum : eventMass (productWeight p q)
+        ({e | d ≤ gap e} ∩ {e | residual e ≤ eta}) ≤
+        (a * b) * (2 : ENNReal) ^ (-(d - eta - h)) :=
+      (independent_regulation_threshold F p q a b hp hq hk hpMass hqMass
+        gap residual allowance hgart d eta h hs).trans (min_le_right _ _)
+    simp only [conditionalMass, div_eq_mul_inv]
+    exact mul_le_mul' hnum le_rfl
+
 
 end
 end IndependentRegulation

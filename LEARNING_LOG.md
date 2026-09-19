@@ -613,3 +613,11 @@ axiom audit; classical coding and Kraft facts remain named hypotheses.
 Conditioning on a residual bound turns the withdrawn tail into a step: mass 0 beyond
 k = η + s, bounded by 2^{−(k−η−s)} everywhere. Mathlib name for 1 ≤ a^n (n ≥ 0, ordered field
 with zero) is `one_le_zpow₀`; `one_le_zpow` is the ordered-group version.
+
+### 2026-09-19 — Explicit conditioning for WP0203 v26
+
+Conditional mass now requires positive finite event weight; the GART premise is needed
+only on that event. The normalized countable ART envelope follows from a hard cutoff,
+and a one-point guard separates the unadjusted threshold from the residual-adjusted one.
+Conditioning the independent-sampling bound retains the selection probability in its
+denominator. New declarations pass the Lean-core axiom audit.

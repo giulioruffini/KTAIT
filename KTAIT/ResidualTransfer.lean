@@ -38,8 +38,14 @@ The statements include:
   upper bound on the residual.
 * `residual_bounded_class_mass_zero` — under a uniform residual bound the low-information class
   is empty, so its mass is `0`.
-* `conditional_tail_given_residual` — ART's withdrawn display, conditioned on a residual bound
-  `η`: `Pr[I ≤ Δ−k | L ≤ η] ≤ 2^{−(k−η−s)}`, and `0` beyond `k = η + s`.
+* `conditional_small_residual_zero` — a normalized posterior conditioned on the evidence and
+  `L <= eta` assigns probability zero to `I < gap - eta - h`; the denominator is positive
+  and finite.
+* `conditional_deficit_zero` and `conditional_art_tail` — the hard cutoff and its ART-shaped
+  envelope, with information deficit distinguished from a lower threshold on the gap.
+* `conditional_tail_given_residual` — the corresponding finite, unnormalized weight inequality.
+* `unadjusted_threshold_counterexample` — GART alone allows `I < gap` with probability one even
+  at arbitrarily large gaps and a residual of one bit.
 * `posterior_residual_transfer` — the instantiation on the `AITProb` canonical-code posterior
   `post`, with the per-explanation hypothesis supplied by `GroundedRegulation.grounded_inequality`
   (the named chain-rule and data-processing facts) for each explanation.
@@ -169,13 +175,129 @@ theorem residual_bounded_class_mass_zero {E : Type*} (S : Finset E) (w : E → �
     omega
   rw [hempty, Finset.sum_empty]
 
+/-! ## Conditional probabilities under a residual bound -/
+
+/-- The total nonnegative weight of an event; no normalization of the ambient weights is needed. -/
+noncomputable def eventMass {E : Type*} (w : E → ENNReal) (A : Set E) : ENNReal :=
+  ∑' e, A.indicator w e
+
+/-- Conditional event probability under nonnegative weights. Positive finite conditioning mass
+    is required to form this expression, rather than left implicit in totalized division. -/
+noncomputable def conditionalMass {E : Type*} (w : E → ENNReal) (A B : Set E)
+    (_hpos : 0 < eventMass w B) (_hfinite : eventMass w B < ⊤) : ENNReal :=
+  eventMass w (A ∩ B) / eventMass w B
+
+/-- Event mass is monotone under inclusion. (Helper.) -/
+private theorem eventMass_mono {E : Type*} (w : E → ENNReal) {A B : Set E}
+    (hAB : A ⊆ B) : eventMass w A ≤ eventMass w B := by
+  apply ENNReal.tsum_le_tsum
+  intro e
+  exact Set.indicator_le_indicator_of_subset hAB (fun _ => bot_le) e
+
+/-- A normalized conditional event probability is at most one. (Helper.) -/
+theorem conditionalMass_le_one {E : Type*} (w : E → ENNReal) (A B : Set E)
+    (hpos : 0 < eventMass w B) (hfinite : eventMass w B < ⊤) :
+    conditionalMass w A B hpos hfinite ≤ 1 := by
+  unfold conditionalMass
+  apply (ENNReal.div_le_iff hpos.ne' hfinite.ne).2
+  simpa using eventMass_mono w (Set.inter_subset_right : A ∩ B ⊆ B)
+
+/-- Excluding the event on every positive-weight conditioned pair gives zero probability.
+    (Helper.) -/
+private theorem conditionalMass_zero_of_exclusion {E : Type*} (w : E → ENNReal)
+    (A B : Set E) (hpos : 0 < eventMass w B) (hfinite : eventMass w B < ⊤)
+    (hex : ∀ e ∈ B, w e ≠ 0 → e ∉ A) : conditionalMass w A B hpos hfinite = 0 := by
+  have hnum : eventMass w (A ∩ B) = 0 := by
+    apply ENNReal.tsum_eq_zero.mpr
+    intro e
+    by_cases he : e ∈ A ∩ B
+    · rw [Set.indicator_of_mem he]
+      by_contra hw
+      exact hex e he.2 hw he.1
+    · exact Set.indicator_of_notMem he w
+  simp only [conditionalMass, hnum, ENNReal.zero_div]
+
+/-- **Posterior inference conditional on a small residual.** Let `B` consist of the evidence
+    and the bound `L <= eta`, and assume `B` has positive finite weight. GART on `B`
+    excludes `I < gap - eta - h` on `B`, so that event has conditional probability zero.
+    The gap may vary across explanations, and the probability law need not be universal. -/
+theorem conditional_small_residual_zero {E : Type*} (w : E → ENNReal)
+    (gap I L : E → ℤ) (evidence : Set E) (eta h : ℤ)
+    (hgart : ∀ e ∈ evidence ∩ {e | L e ≤ eta}, w e ≠ 0 →
+      gap e ≤ I e + L e + h)
+    (hpos : 0 < eventMass w (evidence ∩ {e | L e ≤ eta}))
+    (hfinite : eventMass w (evidence ∩ {e | L e ≤ eta}) < ⊤) :
+    conditionalMass w {e | I e < gap e - eta - h}
+      (evidence ∩ {e | L e ≤ eta}) hpos hfinite = 0 := by
+  apply conditionalMass_zero_of_exclusion
+  intro e he hw hbad
+  simp only [Set.mem_inter_iff, Set.mem_setOf_eq] at he hbad
+  have := hgart e he hw
+  omega
+
+/-- **Hard cutoff for the information deficit.** After conditioning on the evidence and
+    `L <= eta`, a deficit `t > eta + h` has zero probability. The strict inequality on `t`
+    is necessary: equality at the GART threshold is allowed. -/
+theorem conditional_deficit_zero {E : Type*} (w : E → ENNReal)
+    (gap I L : E → ℤ) (evidence : Set E) (eta h t : ℤ)
+    (hgart : ∀ e ∈ evidence ∩ {e | L e ≤ eta}, w e ≠ 0 →
+      gap e ≤ I e + L e + h)
+    (hpos : 0 < eventMass w (evidence ∩ {e | L e ≤ eta}))
+    (hfinite : eventMass w (evidence ∩ {e | L e ≤ eta}) < ⊤)
+    (ht : eta + h < t) :
+    conditionalMass w {e | I e ≤ gap e - t}
+      (evidence ∩ {e | L e ≤ eta}) hpos hfinite = 0 := by
+  apply conditionalMass_zero_of_exclusion
+  intro e he hw hbad
+  simp only [Set.mem_inter_iff, Set.mem_setOf_eq] at he hbad
+  have := hgart e he hw
+  omega
+
+/-- **ART-shaped envelope for the conditional hard cutoff.** Under the same positive-mass
+    residual conditioning, `Pr[I <= gap - t] <= min(1, 2^(-(t-eta-h)))`.
+    This follows from a stronger zero-probability result for `t > eta + h`; below that cutoff
+    the displayed bound is one. It is not an independently derived statistical decay law. -/
+theorem conditional_art_tail {E : Type*} (w : E → ENNReal)
+    (gap I L : E → ℤ) (evidence : Set E) (eta h t : ℤ)
+    (hgart : ∀ e ∈ evidence ∩ {e | L e ≤ eta}, w e ≠ 0 →
+      gap e ≤ I e + L e + h)
+    (hpos : 0 < eventMass w (evidence ∩ {e | L e ≤ eta}))
+    (hfinite : eventMass w (evidence ∩ {e | L e ≤ eta}) < ⊤) :
+    conditionalMass w {e | I e ≤ gap e - t}
+      (evidence ∩ {e | L e ≤ eta}) hpos hfinite
+      ≤ min 1 ((2 : ENNReal) ^ (-(t - eta - h))) := by
+  by_cases ht : eta + h < t
+  · rw [conditional_deficit_zero w gap I L evidence eta h t hgart hpos hfinite ht]
+    exact bot_le
+  · have hpow : (1 : ENNReal) ≤ (2 : ENNReal) ^ (-(t - eta - h)) := by
+      have hexp : (0 : ℤ) ≤ -(t - eta - h) := by omega
+      simpa only [zpow_zero] using ENNReal.zpow_le_of_le (by norm_num : (1 : ENNReal) ≤ 2) hexp
+    rw [min_eq_left hpow]
+    exact conditionalMass_le_one w _ _ hpos hfinite
+
+/-- **Guard against the unadjusted threshold.** For every `n`, a one-point probability law can
+    have `gap = n+1`, `I = n`, `L = 1`, and zero allowance, satisfying the GART inequality.
+    Conditional on `gap >= n` and `L <= 1`, the event `I < gap` still has probability one.
+    This is a counterexample within the arithmetic GART interface; it does not separately
+    construct universal-machine complexities realizing those exact integers. -/
+theorem unadjusted_threshold_counterexample (n : ℕ) :
+    ((n : ℤ) + 1 ≤ (n : ℤ) + 1 + 0) ∧
+    conditionalMass (fun _ : Unit => (1 : ENNReal))
+      { _u | (n : ℤ) < (n : ℤ) + 1}
+      { _u | (n : ℤ) ≤ (n : ℤ) + 1 ∧ (1 : ℤ) ≤ 1}
+      (by simp [eventMass]) (by simp [eventMass]) = 1 := by
+  constructor
+  · omega
+  · simp [conditionalMass, eventMass]
+
 /-! ## The repaired tail in the original's shape -/
 
 /-- **Conditional tail given a residual bound (finite family, real weights).** Among explanations
     with residual at most `η`, the weight of those with `I ≤ Δ − k` is at most
-    `2^{−(k−η−s)}` times the weight of the residual-bounded class; the ratio is the conditional
-    probability. For `k > η + s` the numerator is `0`; for `k ≤ η + s` the factor is at least `1`.
-    This is ART's withdrawn display with the residual shifting the constant: `C' = 2^{η+s}`. -/
+    `2^{−(k−η−s)}` times the weight of the residual-bounded class. With positive denominator,
+    their ratio is the conditional probability. For `k > η + s` the numerator is `0`; for
+    `k ≤ η + s` the factor is at least `1`. The exponential factor packages the hard cutoff;
+    the normalized countable forms above require positive finite conditioning mass explicitly. -/
 theorem conditional_tail_given_residual {E : Type*} (S : Finset E) (w : E → ℝ)
     (hw : ∀ e ∈ S, 0 ≤ w e) (I L : E → ℤ) (Δ k η s : ℤ)
     (hgart : ∀ e ∈ S, Δ ≤ I e + L e + s) :
