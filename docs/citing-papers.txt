@@ -173,3 +173,8 @@ WP0203-v29-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Do
 WP0203-v30 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v30/wp0203_preprint.tex
 WP0203-v30-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v30/entropy/wp0203_entropy.tex
 WP0203-v30-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v30/bcom/wp0203_bcom.tex
+
+# WP0203 v31: prose read and notation audit applied (symbol renames, wording); mathematics and declarations unchanged, September 20, 2026.
+WP0203-v31 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v31/wp0203_preprint.tex
+WP0203-v31-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v31/entropy/wp0203_entropy.tex
+WP0203-v31-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v31/bcom/wp0203_bcom.tex
