@@ -187,5 +187,37 @@ theorem bridge_identity (W R x y0 : F.Obj)
   have := abs_le.mp hA; have := abs_le.mp hB
   exact abs_le.mpr ⟨by omega, by omega⟩
 
+/-- **Four-term form.** `K x − K⟨W,R⟩ = −K R − L − K(W | y₀) + (IK W R − (Δ − L)) ± slack`:
+    the posterior charges the regulator's length, the residual and the null-world beyond its
+    output, and rewards shared information only in excess of GART's minimum `Δ − L`. This is
+    ART's exponent `IK − K R − Δ` with the residual made explicit. -/
+theorem four_term_exponent (W R x y0 : F.Obj)
+    (h5 : |(F.K W : ℤ) - (F.K y0 : ℤ) - (F.cond W y0 : ℤ)| ≤ (F.slack : ℤ)) :
+    |((F.K x : ℤ) - (F.K (F.pair W R) : ℤ))
+      - (-(F.K R : ℤ) - residual F x y0 R - (F.cond W y0 : ℤ)
+          + (IK F W R - (((F.K y0 : ℤ) - (F.K x : ℤ)) - residual F x y0 R)))|
+      ≤ (F.slack : ℤ) := by
+  have h := shared_information_exponent F W R x y0 h5
+  simp only [residual] at *
+  have := abs_le.mp h
+  exact abs_le.mpr ⟨by omega, by omega⟩
+
+/-- **The excess is nonnegative up to slack.** With `K(R | x) ≤ K R` and
+    `K(W | ⟨⟨x,R⟩,y₀⟩) ≤ K(W | y₀) + slack`, the bridge gives `IK W R − (Δ − L) ≥ −6·slack`:
+    GART, read off the identity. -/
+theorem excess_nonneg (W R x y0 : F.Obj)
+    (hcomp : OutputsComputable F W R x y0)
+    (h1 : Chain F x (F.pair R (F.pair y0 W)))
+    (h2 : CondChain F R (F.pair y0 W) x)
+    (h3 : CondChain F y0 W (F.pair x R))
+    (h5 : |(F.K W : ℤ) - (F.K y0 : ℤ) - (F.cond W y0 : ℤ)| ≤ (F.slack : ℤ))
+    (hmono : (F.cond R x : ℤ) ≤ (F.K R : ℤ))
+    (h6 : (F.cond W (F.pair (F.pair x R) y0) : ℤ) ≤ (F.cond W y0 : ℤ) + (F.slack : ℤ)) :
+    IK F W R - (((F.K y0 : ℤ) - (F.K x : ℤ)) - residual F x y0 R) ≥ -6 * (F.slack : ℤ) := by
+  have hb := bridge_identity F W R x y0 hcomp h1 h2 h3 h5
+  simp only [residual, hidden] at *
+  have := abs_le.mp hb
+  omega
+
 end ARTExactForm
 end KTAIT
