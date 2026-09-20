@@ -25,6 +25,10 @@ residual cost is exactly offset by the multiplicity of worlds sharing that resid
 why the aggregate tail of the original article fails and why conditioning on the residual
 (`ResidualTransfer`) repairs it.
 
+Two further declarations restore the shared information: `shared_information_exponent` is ART's
+gap form made exact (the dropped term is `K(W | y₀)`), and `bridge_identity` equates the two
+exact forms: `IK W R = Δ − L + I(R:x) + I(W:(x,R)|y₀) ± slack`, GART with its slack identified.
+
 Hypotheses are the usual named facts: two-sided chain rules (unconditioned and conditional),
 computability of both outputs from the pair, and the coding theorem already carried by
 `AITProb`. Nothing is proved about a universal machine.
@@ -146,6 +150,42 @@ theorem residual_dominates_gap (W R x y0 : F.Obj)
   have := abs_le.mp hcomp; have := abs_le.mp h1; have := abs_le.mp h2
   have := abs_le.mp h3; have := abs_le.mp h4; have := abs_le.mp h5
   omega
+
+/-! ## The shared-information form and the bridge identity -/
+
+/-- **Exponent in shared-information form.** With `K W = K y₀ + K(W | y₀) ± slack` (`y₀`
+    computable from `W`) and the definition of `IK`,
+    `K x − K⟨W,R⟩ = IK W R − K R − (K y₀ − K x) − K(W | y₀) ± slack`.
+    ART's gap form drops the nonnegative last term. -/
+theorem shared_information_exponent (W R x y0 : F.Obj)
+    (h5 : |(F.K W : ℤ) - (F.K y0 : ℤ) - (F.cond W y0 : ℤ)| ≤ (F.slack : ℤ)) :
+    |((F.K x : ℤ) - (F.K (F.pair W R) : ℤ))
+      - (IK F W R - (F.K R : ℤ) - ((F.K y0 : ℤ) - (F.K x : ℤ)) - (F.cond W y0 : ℤ))|
+      ≤ (F.slack : ℤ) := by
+  simp only [IK]
+  have := abs_le.mp h5
+  exact abs_le.mpr ⟨by omega, by omega⟩
+
+/-- **Bridge identity: GART with its slack identified.**
+    `IK W R = Δ − L + (K R − K(R | x)) + (K(W | y₀) − K(W | ⟨⟨x,R⟩,y₀⟩)) ± 5·slack`,
+    where `Δ = K y₀ − K x` and `L` is the residual. The two bracketed terms are the information
+    the regulated output carries about the regulator and the information the output and the
+    regulator carry about the world beyond its null output; both are nonnegative up to slack,
+    so `IK W R ≥ Δ − L − O(slack)` is GART, and the identity says what the gap in GART is. -/
+theorem bridge_identity (W R x y0 : F.Obj)
+    (hcomp : OutputsComputable F W R x y0)
+    (h1 : Chain F x (F.pair R (F.pair y0 W)))
+    (h2 : CondChain F R (F.pair y0 W) x)
+    (h3 : CondChain F y0 W (F.pair x R))
+    (h5 : |(F.K W : ℤ) - (F.K y0 : ℤ) - (F.cond W y0 : ℤ)| ≤ (F.slack : ℤ)) :
+    |IK F W R - (((F.K y0 : ℤ) - (F.K x : ℤ)) - residual F x y0 R
+        + ((F.K R : ℤ) - (F.cond R x : ℤ))
+        + ((F.cond W y0 : ℤ) - hidden F W x y0 R))| ≤ 5 * (F.slack : ℤ) := by
+  have hA := exact_exponent F W R x y0 hcomp h1 h2 h3
+  have hB := shared_information_exponent F W R x y0 h5
+  simp only [residual, hidden] at *
+  have := abs_le.mp hA; have := abs_le.mp hB
+  exact abs_le.mpr ⟨by omega, by omega⟩
 
 end ARTExactForm
 end KTAIT

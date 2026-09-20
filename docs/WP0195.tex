@@ -590,7 +590,11 @@ with $L=K(y_\varnothing\mid x,R)$ the counterfactual residual and $H=K(W\mid x,R
 hidden-world term; \lean{art\_exact\_form} turns it, through the coding theorem, into the
 two-sided bound on \lean{AITProb.post}, \lean{art\_exact\_upper} drops $H\ge0$, and
 \lean{residual\_dominates\_gap} shows $K(R\mid x)+L\ge\Delta+K(R\mid W)-7\,\mathrm{slack}$,
-so the upper half implies the original gap form of ART. This is WP0203's ``Algorithmic
+so the upper half implies the original gap form of ART. \lean{shared\_information\_exponent}
+is the gap form made exact (the dropped term is $K(W\mid y_\varnothing)$), and
+\lean{bridge\_identity} equates the two exact forms:
+$I_K(W{:}R)=\Delta-L+I_K(R{:}x)+I_K(W{:}(x,R)\mid y_\varnothing)\pm5\,\mathrm{slack}$, GART with its
+slack identified. This is WP0203's ``Algorithmic
 Regulator Theorem: exact form'': the posterior charges the residual bit for bit, which is why
 the clamp family ($2^N$ worlds at $2^{-N}$ each) defeats the aggregate tail and why
 conditioning on the residual repairs it.
@@ -1424,6 +1428,8 @@ Conditional tail given a residual bound & in ART's original shape: $\Pr[I\le\Del
   \stproved\ (\lean{conditional\_\allowbreak tail\_\allowbreak given\_\allowbreak residual}) \\
 ART, exact form & $\log_2 P(e\mid x)=-K(R\mid x)-L-H\pm O(\mathrm{slack})$; upper half implies the gap form & KT &
   \stproved\ (\lean{exact\_\allowbreak exponent}, \lean{art\_\allowbreak exact\_\allowbreak form}, \lean{art\_\allowbreak exact\_\allowbreak upper}, \lean{residual\_\allowbreak dominates\_\allowbreak gap}) \\
+ART, shared-information form and bridge & $\log_2P=I_K(W{:}R)-K(R)-\Delta-K(W\mid y_\varnothing)\pm s$; $I_K(W{:}R)=\Delta-L+I_K(R{:}x)+I_K(W{:}(x,R)\mid y_\varnothing)\pm5s$ & KT &
+  \stproved\ (\lean{shared\_\allowbreak information\_\allowbreak exponent}, \lean{bridge\_\allowbreak identity}) \\
 --- two-sided chain rules, outputs computable & $K\langle a,b\rangle=K a+K(b\mid a)\pm s$; conditional form; $K\langle W,R\rangle=K\langle x,R,y_\varnothing,W\rangle\pm s$ & STD &
   \staxiom\ (\lean{Chain}, \lean{CondChain}, \lean{OutputsComputable}) \\
 Conditional ART (v26) & positive finite conditioning mass; zero probability below $\Delta-\eta-h$ and an exponential envelope & KT &
