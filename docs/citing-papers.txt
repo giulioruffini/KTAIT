@@ -186,3 +186,8 @@ WP0203-v31.1-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_
 WP0203-v31.2 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v31.2/wp0203_preprint.tex
 WP0203-v31.2-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v31.2/entropy/wp0203_entropy.tex
 WP0203-v31.2-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v31.2/bcom/wp0203_bcom.tex
+
+# WP0203 v32: prose pass from head to toe (wording, redundancy, register; one rename miss in a display corrected); mathematics, declarations, and pin unchanged, September 20, 2026.
+WP0203-v32 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v32/wp0203_preprint.tex
+WP0203-v32-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v32/entropy/wp0203_entropy.tex
+WP0203-v32-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v32/bcom/wp0203_bcom.tex
