@@ -199,3 +199,7 @@ WP0203-v32.1-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_
 WP0203-v32.2 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v32.2/wp0203_preprint.tex
 WP0203-v32.2-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v32.2/entropy/wp0203_entropy.tex
 WP0203-v32.2-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v32.2/bcom/wp0203_bcom.tex
+# WP0203 v32.3: abstract rewritten (math-free; conservation first, GART in words, ART's bound before its limitation); body, declarations, and pin unchanged, September 20, 2026.
+WP0203-v32.3 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v32.3/wp0203_preprint.tex
+WP0203-v32.3-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v32.3/entropy/wp0203_entropy.tex
+WP0203-v32.3-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v32.3/bcom/wp0203_bcom.tex
