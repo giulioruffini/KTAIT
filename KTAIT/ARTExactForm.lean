@@ -219,5 +219,53 @@ theorem excess_nonneg (W R x y0 : F.Obj)
   have := abs_le.mp hb
   omega
 
+/-- **ART with the residual (two-sided).** The upper bound is ART's exponent `IK − K R − Δ`
+    (exact up to `K(W | y₀)`); the lower bound is new: `−K R − L − K(W | y₀)`. They differ by
+    the excess `IK − (Δ − L) ≥ 0`. -/
+theorem art_with_residual (F : AITProb) {c1 c2 : ℝ}
+    (hLB : F.CodingLB c1) (hUB : F.CodingUB c2) (W R x y0 : F.Obj)
+    (hcomp : OutputsComputable F.toAITFrame W R x y0)
+    (h1 : Chain F.toAITFrame x (F.pair R (F.pair y0 W)))
+    (h2 : CondChain F.toAITFrame R (F.pair y0 W) x)
+    (h3 : CondChain F.toAITFrame y0 W (F.pair x R))
+    (h5 : |(F.K W : ℤ) - (F.K y0 : ℤ) - (F.cond W y0 : ℤ)| ≤ (F.slack : ℤ))
+    (hmono : (F.cond R x : ℤ) ≤ (F.K R : ℤ))
+    (h6 : (F.cond W (F.pair (F.pair x R) y0) : ℤ) ≤ (F.cond W y0 : ℤ) + (F.slack : ℤ)) :
+    (1 / c2) * (2 : ℝ) ^ (-(F.K R : ℤ) - residual F.toAITFrame x y0 R - (F.cond W y0 : ℤ)
+        - 7 * (F.slack : ℤ))
+      ≤ F.post (F.pair W R) x ∧
+    F.post (F.pair W R) x
+      ≤ (1 / c1) * (2 : ℝ) ^ (IK F.toAITFrame W R - (F.K R : ℤ)
+        - ((F.K y0 : ℤ) - (F.K x : ℤ)) + (F.slack : ℤ)) := by
+  have htilt := F.theorem1_posterior_tilt hLB hUB W R x
+  have hIK : (F.K x : ℤ) - (F.K W : ℤ) - (F.K R : ℤ) + IK F.toAITFrame W R
+      = (F.K x : ℤ) - (F.K (F.pair W R) : ℤ) := by simp only [IK]; ring
+  rw [hIK] at htilt
+  have hsh := shared_information_exponent F.toAITFrame W R x y0 h5
+  have hex := excess_nonneg F.toAITFrame W R x y0 hcomp h1 h2 h3 h5 hmono h6
+  have hc1 : 0 < c1 := hLB.1
+  have hc2 : 0 < c2 := hUB.1
+  have hs := abs_le.mp hsh
+  have hcw : (0 : ℤ) ≤ (F.cond W y0 : ℤ) := by positivity
+  constructor
+  · have hlo : -(F.K R : ℤ) - residual F.toAITFrame x y0 R - (F.cond W y0 : ℤ) - 7 * (F.slack : ℤ)
+        ≤ (F.K x : ℤ) - (F.K (F.pair W R) : ℤ) := by
+      simp only [residual] at *; omega
+    calc (1 / c2) * (2 : ℝ) ^ (-(F.K R : ℤ) - residual F.toAITFrame x y0 R - (F.cond W y0 : ℤ)
+          - 7 * (F.slack : ℤ))
+        ≤ (1 / c2) * (2 : ℝ) ^ ((F.K x : ℤ) - (F.K (F.pair W R) : ℤ)) := by
+          gcongr
+          · norm_num
+      _ ≤ F.post (F.pair W R) x := htilt.1
+  · have hhi : (F.K x : ℤ) - (F.K (F.pair W R) : ℤ)
+        ≤ IK F.toAITFrame W R - (F.K R : ℤ) - ((F.K y0 : ℤ) - (F.K x : ℤ)) + (F.slack : ℤ) := by
+      omega
+    calc F.post (F.pair W R) x
+        ≤ (1 / c1) * (2 : ℝ) ^ ((F.K x : ℤ) - (F.K (F.pair W R) : ℤ)) := htilt.2
+      _ ≤ (1 / c1) * (2 : ℝ) ^ (IK F.toAITFrame W R - (F.K R : ℤ)
+            - ((F.K y0 : ℤ) - (F.K x : ℤ)) + (F.slack : ℤ)) := by
+          gcongr
+          · norm_num
+
 end ARTExactForm
 end KTAIT
