@@ -2,7 +2,9 @@
 
 - [ ] connect WP0228 finite marking and descriptor codes to partial-recursive decoders and optimal prefix evaluators
 - [ ] formalize WP0228's unrestricted total-function count via the bounded-width prefix-tree construction
+- [ ] when WP0195 is next deposited (v0.7.0), cut it in Calliope with Giulio's authorization; the tex now carries September 2026 and the concept DOI on its title page
 - [ ] wrap long existing identifiers in the WP0195 module inventory and result prose; v22's new entries fit, but older entries overflow
+- [x] add check_pins.py to check_sync.sh (a paper's pinned commit must define every cited declaration); register WP0203 v31.2 with the corrected pin 8c602ff; refresh README and WP0195 — 2026-09-20
 - [x] formalize WP0203 v26's normalized conditional ART bound and independent-sampling selection denominator; document the hard cutoff and arithmetic counterexample — 2026-09-19
 - [x] prove and document WP0203 v23's incomplete-reconstruction identity and bound; audit both declarations — 2026-09-19
 - [x] register WP0203 v23 and correct the self-regulation docstring without changing statements or proofs — 2026-09-19

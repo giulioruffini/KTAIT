@@ -71,14 +71,46 @@ add to that list.
    Rebuild in place: `cd docs && latexmk -pdf WP0195.tex && latexmk -c`.
    Note: `BCOM WPs and Blogs/working_drafts/WP0195-Lean_KT_Formalization/main.tex` is a
    **symlink** to `docs/WP0195.tex`. One file, two names. Never `cp` over the symlink.
-4. Verify with `./scripts/check_wp0195_sync.sh` — it fails if any module or non-helper
-   theorem is missing from WP0195. It must exit 0 before you commit.
+4. Verify with **`./scripts/check_sync.sh`**. It must exit 0 before you commit. It checks
+   that proofs are `sorry`-free; that WP0195 lists every module and non-helper theorem;
+   that every `\lean{...}` and `\ktait{...}` name cited by a *citing paper* resolves to a real
+   declaration; statement drift; numbered references; claim coverage; and **provenance pins**
+   (`scripts/check_pins.py`): the commit a paper links as its source must define every
+   declaration the paper cites. Papers that cite KTAIT by name are registered in
+   **`docs/citing-papers.txt`** — when a new paper starts citing `\lean{}` names, add it there
+   or nothing will guard it. (`check_wp0195_sync.sh` is a shim kept for older references.)
+   **Move the pin whenever a paper cites a declaration newer than it.** WP0203 cited
+   `ARTExactForm.lean` for three releases under a pin from before the module existed; names
+   resolved at HEAD, so every other check stayed green. Pin the last commit that changed
+   `KTAIT/` (`git log -1 --format=%H -- KTAIT/`), never a docs-only registration commit.
 5. Commit **both** the Lean and `docs/WP0195.{tex,pdf}` in the same commit, then **push**
    (`Co-Authored-By: Claude ...`). Branch off `main` only for larger work. A local commit is
    not done; check `git status` shows nothing ahead of `origin/main`.
 6. If the result is a corollary of a KT paper (WP0058, WP0162, WP0193, …), add a line to that
    paper's machine-checked-formalization appendix too, naming the Lean theorem. WP0162 and
-   WP0058 both carry such an appendix; keep them current.
+   WP0058 both carry such an appendix; keep them current — and make sure the paper is listed
+   in `docs/citing-papers.txt` so a rename can never silently break its claim.
+
+## The sync guard — why it exists, and how it is enforced
+
+On 2026-07-12 an adversarial review found that WP0058's Proposition 2 was proved from a
+hypothesis false in the regime it named, and that the Lean `Darwinian` structure encoded the
+same false bound. Fixing it exposed two holes that had nothing to do with the mathematics:
+
+- The fix sat **uncommitted** while the paper claimed the result was "machine-checked in Lean 4"
+  and pointed readers at the public repo — which still served the *false* hypothesis.
+- Nothing checked WP0058's appendix against the Lean at all. Only WP0195 was covered.
+
+So the discipline is enforced now, not merely remembered:
+
+- **`git config core.hooksPath .githooks`** (once per clone) arms a **pre-push hook** that runs
+  `lake build` + `check_sync.sh` and blocks the push on failure.
+- **CI** (`.github/workflows/lean_action_ci.yml`) runs `check_sync.sh` on every push to `main`,
+  so drift cannot land even if a hook is bypassed with `--no-verify`.
+- **Before a paper goes public**, run **`./scripts/check_sync.sh --released`**. On top of the
+  above it fails if the tree is dirty or HEAD is unpushed — i.e. if the paper would cite proofs
+  that exist only on your disk. "Machine-checked" is a promise about *GitHub*, not about your
+  laptop.
 
 ## File map
 `Ontology` (typed roles, part-whole guard) · `Basic` (AITFrame, IK/NMAI/condStar, named AIT

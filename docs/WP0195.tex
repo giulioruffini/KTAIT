@@ -64,7 +64,7 @@
 \renewcommand{\headrulewidth}{0.4pt}
 \renewcommand{\footrulewidth}{0.4pt}
 \newcommand{\wpnumber}{WP0195}
-\newcommand{\wpdate}{July 2026}
+\newcommand{\wpdate}{September 2026}
 \newcommand{\wppillar}{Kolmogorov Theory (KT)}
 \fancyhead[L]{\small\sffamily\color{bcomblue}BCOM Working Paper \wpnumber}
 \fancyhead[R]{\small\sffamily\color{bcomblue}\wpdate}
@@ -151,7 +151,7 @@
 {\color{bcomblue}\rule{\textwidth}{1.5pt}}
 \vspace{\fill}
 
-{\small\sffamily\color{gray}\url{https://bcom.one} \quad$\cdot$\quad Lean source: \url{https://github.com/giulioruffini/KTAIT} \quad$\cdot$\quad \textsc{doi}:\,10.5281/zenodo.20969562}
+{\small\sffamily\color{gray}\url{https://bcom.one} \quad$\cdot$\quad Lean source: \url{https://github.com/giulioruffini/KTAIT} \quad$\cdot$\quad \textsc{doi}:\,10.5281/zenodo.21008868}
 \end{center}
 \newpage
 
@@ -242,6 +242,13 @@ in \lean{docs/citing-papers.txt} have every cited name resolved against the curr
 declarations by \lean{scripts/check\_sync.sh}, which the pre-push hook and CI run, so renaming
 or restating a theorem cannot silently break a citing paper's claim. The canonical preamble
 definition is \verb|\newcommand{\ktait}[1]{\texttt{\small #1}}|.
+
+A paper's claim is about the commit it pins, not about the author's working tree. Where a
+registered paper links a KTAIT commit as its source, \lean{scripts/check\_pins.py} reads that
+commit and verifies that its tree defines every declaration the paper cites with
+\ktait{\textbackslash ktait}; the last-registered version of each paper is enforced, and
+archived versions warn. The check exists because WP0203 cited \lean{ARTExactForm.lean} for
+three releases under a pin that predates the module, while every name resolved at HEAD.
 
 % ══════════════════════════════════════════════════════════════════════
 \section{The standard AIT / probability axiom layer}

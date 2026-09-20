@@ -181,3 +181,8 @@ WP0203-v31-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Do
 WP0203-v31.1 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v31.1/wp0203_preprint.tex
 WP0203-v31.1-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v31.1/entropy/wp0203_entropy.tex
 WP0203-v31.1-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v31.1/bcom/wp0203_bcom.tex
+
+# WP0203 v31.2: Lean provenance pin moved from d00a991 (predates ARTExactForm.lean) to 8c602ff; text otherwise unchanged, September 20, 2026.
+WP0203-v31.2 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v31.2/wp0203_preprint.tex
+WP0203-v31.2-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v31.2/entropy/wp0203_entropy.tex
+WP0203-v31.2-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v31.2/bcom/wp0203_bcom.tex

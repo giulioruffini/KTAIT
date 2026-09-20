@@ -641,3 +641,13 @@ Omega does not see through |·| after `simp only`; unpack every hypothesis with 
 close an absolute-value goal with `abs_le.mpr ⟨by omega, by omega⟩`. For a zpow monotonicity
 step under `gcongr`, prove the exponent inequality first as its own `have`; leaving it to the
 side goal fails when it needs hypotheses about nonnegative `cond` terms.
+
+### 2026-09-20 — The pin is the claim (check_pins.py)
+
+WP0203 v30 added ARTExactForm.lean and cited eight of its declarations while its provenance
+paragraph kept the v26 pin, d00a991, from before the module existed. Three releases passed every
+check: names resolve at HEAD, and --released only asks whether HEAD is pushed. A reader following
+the paper's link found a tree without the proofs. `scripts/check_pins.py` now reads each registered
+paper's pinned commit and verifies that the tree there defines every `\ktait{}` name; the
+last-registered version of a paper fails, archived versions warn. WP0203 v31.2 re-pins to 8c602ff,
+the last commit that changed KTAIT/. Pin that commit, never a docs-only registration.

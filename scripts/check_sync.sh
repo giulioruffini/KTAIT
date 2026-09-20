@@ -164,6 +164,17 @@ if ! python3 scripts/claim_coverage.py --check $REL_FLAG; then
   status=1
 fi
 
+# ── 8. provenance pins: the commit a paper points readers at has the proofs ──
+# Check 3 resolves cited names against HEAD. A paper's claim is about the commit it
+# pins ("source commit 8c602ff"), and that pin can fall behind the declarations the
+# paper cites. (2026-09: WP0203 v30 added ARTExactForm.lean and cited nine of its
+# declarations while keeping the v26 pin; three releases stayed green.) Enforced on
+# the last-registered version of each paper; archived versions warn.
+echo "== provenance pins =="
+if ! python3 scripts/check_pins.py --check; then
+  status=1
+fi
+
 # ── 6. released: committed and pushed ────────────────────────────────────────
 if [ "$RELEASED" -eq 1 ]; then
   echo "== released (tree clean, HEAD pushed) =="
