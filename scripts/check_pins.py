@@ -66,7 +66,10 @@ def version_key(path):
     parts = path.split(os.sep)
     for i, part in enumerate(parts):
         if re.match(r"WP\d+", part) and i + 1 < len(parts):
-            return parts[i + 1]
+            nxt = parts[i + 1]
+            if nxt in ("versions", "archive") and i + 2 < len(parts):
+                return parts[i + 2]  # WP0203 keeps its releases under versions/
+            return nxt
     return os.path.basename(path)
 
 

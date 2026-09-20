@@ -30,16 +30,16 @@ WP0186 | ../../BCOM WPs and Blogs/working_drafts/WP0186-Push_Pull_Motifs/WP0186-
 WP0207-v6 | ../../BCOM WPs and Blogs/working_drafts/WP0207-Subagent_Apoptosis/v6/WP0207-Agentoptosis_v6.tex
 WP0207-v9 | ../../BCOM WPs and Blogs/working_drafts/WP0207-Subagent_Apoptosis/v9/WP0207-Agentoptosis_v9.tex
 WP0207 | ../../BCOM WPs and Blogs/working_drafts/WP0207-Subagent_Apoptosis/v10/WP0207-Agentoptosis_v10.tex
-WP0203-note | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v1/WP0203-The_ART_Tail_Does_Not_Follow.tex
-WP0203-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v4_entropy/wp0203_entropy.tex
-WP0203-v5 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v5/wp0203_preprint.tex
-WP0203-v7 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v7/wp0203_preprint.tex
-WP0203-v8 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v8/wp0203_preprint.tex
-WP0203-v9 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v9/wp0203_preprint.tex
-WP0203-v10 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v10/wp0203_preprint.tex
-WP0203-v11 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v11/wp0203_preprint.tex
-WP0203-v13 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v13/wp0203_preprint.tex
-WP0203-v14 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v14/wp0203_preprint.tex
+WP0203-note | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v1/WP0203-The_ART_Tail_Does_Not_Follow.tex
+WP0203-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v4_entropy/wp0203_entropy.tex
+WP0203-v5 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v5/wp0203_preprint.tex
+WP0203-v7 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v7/wp0203_preprint.tex
+WP0203-v8 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v8/wp0203_preprint.tex
+WP0203-v9 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v9/wp0203_preprint.tex
+WP0203-v10 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v10/wp0203_preprint.tex
+WP0203-v11 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v11/wp0203_preprint.tex
+WP0203-v13 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v13/wp0203_preprint.tex
+WP0203-v14 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v14/wp0203_preprint.tex
 WP0162 | ../../BCOM WPs and Blogs/working_drafts/WP0162-Pattern_Persist_Nature/appendix_formalization.tex
 WP0193 | ../../BCOM WPs and Blogs/working_drafts/WP0193-Regulatory_Coarse_Graining/WP0193-Regulatory_Coarse_Graining.tex
 WP0202 | ../../BCOM WPs and Blogs/working_drafts/WP0202-Exo_Daisy_Algorithmic/WP0202.tex
@@ -76,7 +76,7 @@ WP0218 | ../../BCOM WPs and Blogs/working_drafts/WP0218-Algorithmic information 
 
 # WP0195 (docs/WP0195.tex) is the status paper itself and is covered by the
 # module/theorem coverage check above, not by this registry.
-WP0203-v16 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v16/wp0203_preprint.tex
+WP0203-v16 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v16/wp0203_preprint.tex
 WP216-PLR-v17-main | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/v17/04_regulation_agent.tex
 WP216-PLR-v17-collectives | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/v17/07_collectives.tex
 WP216-PLR-v17-status | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/v17/09_controversies.tex
@@ -84,8 +84,8 @@ WP216-PLR-v17-formalization | ../../BCOM WPs and Blogs/working_drafts/WP216-Patt
 WP216-PLR-v17-endmatter | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/v17/10_endmatter.tex
 WP216-PLR-v17-apb | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/v17/supp_formal_apb.tex
 WP0218-v0.6 | ../../BCOM WPs and Blogs/working_drafts/WP0218-Algorithmic information conservation/v0.6/WP0218.tex
-WP0203-v16.2 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v16.2/wp0203_preprint.tex
-WP0203-v17.1 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v17.1/wp0203_preprint.tex
+WP0203-v16.2 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v16.2/wp0203_preprint.tex
+WP0203-v17.1 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v17.1/wp0203_preprint.tex
 WP0218-v0.6.2 | ../../BCOM WPs and Blogs/working_drafts/WP0218-Algorithmic information conservation/v0.6.2/WP0218.tex
 WP0218-v0.6.3 | ../../BCOM WPs and Blogs/working_drafts/WP0218-Algorithmic information conservation/v0.6.3/WP0218.tex
 WP216-PLR-v17.2-main | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/v17.2/04_regulation_agent.tex
@@ -97,105 +97,105 @@ WP216-PLR-v17.2-apb | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Pers
 
 WP0229 | ../../BCOM WPs and Blogs/working_drafts/WP0229-Computation_Cores/current_version/WP0229.tex
 
-WP0203-v17.2 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v17.2/wp0203_preprint.tex
-WP0203-v18 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v18/wp0203_preprint.tex
-WP0203-v18-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v18/entropy/wp0203_entropy.tex
-WP0203-v18.1 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v18.1/wp0203_preprint.tex
-WP0203-v18.1-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v18.1/entropy/wp0203_entropy.tex
-WP0203-v18.2 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v18.2/wp0203_preprint.tex
-WP0203-v18.2-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v18.2/entropy/wp0203_entropy.tex
-WP0203-v19 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v19/wp0203_preprint.tex
-WP0203-v19-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v19/entropy/wp0203_entropy.tex
+WP0203-v17.2 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v17.2/wp0203_preprint.tex
+WP0203-v18 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v18/wp0203_preprint.tex
+WP0203-v18-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v18/entropy/wp0203_entropy.tex
+WP0203-v18.1 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v18.1/wp0203_preprint.tex
+WP0203-v18.1-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v18.1/entropy/wp0203_entropy.tex
+WP0203-v18.2 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v18.2/wp0203_preprint.tex
+WP0203-v18.2-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v18.2/entropy/wp0203_entropy.tex
+WP0203-v19 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v19/wp0203_preprint.tex
+WP0203-v19-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v19/entropy/wp0203_entropy.tex
 
 # Global GART reorganization and reversible reconstruction, September 17, 2026.
-WP0203-v20 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v20/wp0203_preprint.tex
-WP0203-v20-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v20/entropy/wp0203_entropy.tex
-WP0203-v20-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v20/bcom/wp0203_bcom.tex
+WP0203-v20 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v20/wp0203_preprint.tex
+WP0203-v20-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v20/entropy/wp0203_entropy.tex
+WP0203-v20-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v20/bcom/wp0203_bcom.tex
 
 # WP0203 v21: author-annotation revision; existing theorem dependencies preserved.
-WP0203-v21 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v21/wp0203_preprint.tex
-WP0203-v21-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v21/entropy/wp0203_entropy.tex
-WP0203-v21-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v21/bcom/wp0203_bcom.tex
+WP0203-v21 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v21/wp0203_preprint.tex
+WP0203-v21-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v21/entropy/wp0203_entropy.tex
+WP0203-v21-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v21/bcom/wp0203_bcom.tex
 
 # WP0203 v22: retained-model construction and consolidated interpretation.
-WP0203-v22 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v22/wp0203_preprint.tex
-WP0203-v22-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v22/entropy/wp0203_entropy.tex
-WP0203-v22-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v22/bcom/wp0203_bcom.tex
+WP0203-v22 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v22/wp0203_preprint.tex
+WP0203-v22-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v22/entropy/wp0203_entropy.tex
+WP0203-v22-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v22/bcom/wp0203_bcom.tex
 
 # WP0203 v22.1: figure and table callouts; mathematical content unchanged.
-WP0203-v22.1 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v22.1/wp0203_preprint.tex
-WP0203-v22.1-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v22.1/entropy/wp0203_entropy.tex
-WP0203-v22.1-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v22.1/bcom/wp0203_bcom.tex
+WP0203-v22.1 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v22.1/wp0203_preprint.tex
+WP0203-v22.1-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v22.1/entropy/wp0203_entropy.tex
+WP0203-v22.1-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v22.1/bcom/wp0203_bcom.tex
 
 # WP0203 v23: shorter interpretation; unchanged bounds with measurement details in Appendix D.
-WP0203-v23 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v23/wp0203_preprint.tex
-WP0203-v23-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v23/entropy/wp0203_entropy.tex
-WP0203-v23-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v23/bcom/wp0203_bcom.tex
+WP0203-v23 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v23/wp0203_preprint.tex
+WP0203-v23-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v23/entropy/wp0203_entropy.tex
+WP0203-v23-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v23/bcom/wp0203_bcom.tex
 
 # WP0203 v24: regulation motivation and historical comparison; mathematical statements unchanged.
-WP0203-v24 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v24/wp0203_preprint.tex
-WP0203-v24-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v24/entropy/wp0203_entropy.tex
-WP0203-v24-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v24/bcom/wp0203_bcom.tex
-WP0203-v24.1 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v24.1/wp0203_preprint.tex
-WP0203-v24.1-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v24.1/entropy/wp0203_entropy.tex
-WP0203-v24.1-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v24.1/bcom/wp0203_bcom.tex
+WP0203-v24 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v24/wp0203_preprint.tex
+WP0203-v24-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v24/entropy/wp0203_entropy.tex
+WP0203-v24-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v24/bcom/wp0203_bcom.tex
+WP0203-v24.1 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v24.1/wp0203_preprint.tex
+WP0203-v24.1-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v24.1/entropy/wp0203_entropy.tex
+WP0203-v24.1-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v24.1/bcom/wp0203_bcom.tex
 # Good GART rename, glossary, precise naming of ART's concentration claim, September 19, 2026.
-WP0203-v24.2 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v24.2/wp0203_preprint.tex
-WP0203-v24.2-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v24.2/entropy/wp0203_entropy.tex
-WP0203-v24.2-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v24.2/bcom/wp0203_bcom.tex
+WP0203-v24.2 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v24.2/wp0203_preprint.tex
+WP0203-v24.2-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v24.2/entropy/wp0203_entropy.tex
+WP0203-v24.2-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v24.2/bcom/wp0203_bcom.tex
 
 # WP0203 v25: posterior residual transfer and independent-sampling regulation bounds.
-WP0203-v25 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v25/wp0203_preprint.tex
-WP0203-v25-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v25/entropy/wp0203_entropy.tex
-WP0203-v25-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v25/bcom/wp0203_bcom.tex
+WP0203-v25 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v25/wp0203_preprint.tex
+WP0203-v25-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v25/entropy/wp0203_entropy.tex
+WP0203-v25-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v25/bcom/wp0203_bcom.tex
 
 # WP0203 v26: explicit residual conditioning, normalized ART cutoff, and prospective selection.
-WP0203-v26 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v26/wp0203_preprint.tex
-WP0203-v26-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v26/entropy/wp0203_entropy.tex
-WP0203-v26-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v26/bcom/wp0203_bcom.tex
+WP0203-v26 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v26/wp0203_preprint.tex
+WP0203-v26-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v26/entropy/wp0203_entropy.tex
+WP0203-v26-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v26/bcom/wp0203_bcom.tex
 
 # WP0203 v27: probabilistic ART moved to the main text as a corollary; proofs unchanged.
-WP0203-v27 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v27/wp0203_preprint.tex
-WP0203-v27-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v27/entropy/wp0203_entropy.tex
-WP0203-v27-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v27/bcom/wp0203_bcom.tex
+WP0203-v27 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v27/wp0203_preprint.tex
+WP0203-v27-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v27/entropy/wp0203_entropy.tex
+WP0203-v27-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v27/bcom/wp0203_bcom.tex
 
 # WP0203 v28: abstract, Introduction, and Conclusions updated; mathematics unchanged.
-WP0203-v28 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v28/wp0203_preprint.tex
-WP0203-v28-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v28/entropy/wp0203_entropy.tex
-WP0203-v28-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v28/bcom/wp0203_bcom.tex
+WP0203-v28 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v28/wp0203_preprint.tex
+WP0203-v28-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v28/entropy/wp0203_entropy.tex
+WP0203-v28-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v28/bcom/wp0203_bcom.tex
 
 # WP0203 v29: compact probabilistic reading and merged Discussion; mathematics unchanged.
-WP0203-v29 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v29/wp0203_preprint.tex
-WP0203-v29-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v29/entropy/wp0203_entropy.tex
-WP0203-v29-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v29/bcom/wp0203_bcom.tex
+WP0203-v29 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v29/wp0203_preprint.tex
+WP0203-v29-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v29/entropy/wp0203_entropy.tex
+WP0203-v29-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v29/bcom/wp0203_bcom.tex
 
 # WP0203 v30: v29 line plus the exact-form proposition and the small-residual Remark, September 20, 2026.
-WP0203-v30 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v30/wp0203_preprint.tex
-WP0203-v30-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v30/entropy/wp0203_entropy.tex
-WP0203-v30-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v30/bcom/wp0203_bcom.tex
+WP0203-v30 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v30/wp0203_preprint.tex
+WP0203-v30-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v30/entropy/wp0203_entropy.tex
+WP0203-v30-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v30/bcom/wp0203_bcom.tex
 
 # WP0203 v31: prose read and notation audit applied (symbol renames, wording); mathematics and declarations unchanged, September 20, 2026.
-WP0203-v31 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v31/wp0203_preprint.tex
-WP0203-v31-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v31/entropy/wp0203_entropy.tex
-WP0203-v31-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v31/bcom/wp0203_bcom.tex
-WP0203-v31.1 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v31.1/wp0203_preprint.tex
-WP0203-v31.1-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v31.1/entropy/wp0203_entropy.tex
-WP0203-v31.1-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v31.1/bcom/wp0203_bcom.tex
+WP0203-v31 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v31/wp0203_preprint.tex
+WP0203-v31-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v31/entropy/wp0203_entropy.tex
+WP0203-v31-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v31/bcom/wp0203_bcom.tex
+WP0203-v31.1 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v31.1/wp0203_preprint.tex
+WP0203-v31.1-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v31.1/entropy/wp0203_entropy.tex
+WP0203-v31.1-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v31.1/bcom/wp0203_bcom.tex
 
 # WP0203 v31.2: Lean provenance pin moved from d00a991 (predates ARTExactForm.lean) to 8c602ff; text otherwise unchanged, September 20, 2026.
-WP0203-v31.2 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v31.2/wp0203_preprint.tex
-WP0203-v31.2-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v31.2/entropy/wp0203_entropy.tex
-WP0203-v31.2-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v31.2/bcom/wp0203_bcom.tex
+WP0203-v31.2 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v31.2/wp0203_preprint.tex
+WP0203-v31.2-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v31.2/entropy/wp0203_entropy.tex
+WP0203-v31.2-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v31.2/bcom/wp0203_bcom.tex
 
 # WP0203 v32: prose pass from head to toe (wording, redundancy, register; one rename miss in a display corrected); mathematics, declarations, and pin unchanged, September 20, 2026.
-WP0203-v32 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v32/wp0203_preprint.tex
-WP0203-v32-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v32/entropy/wp0203_entropy.tex
-WP0203-v32-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v32/bcom/wp0203_bcom.tex
+WP0203-v32 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v32/wp0203_preprint.tex
+WP0203-v32-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v32/entropy/wp0203_entropy.tex
+WP0203-v32-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v32/bcom/wp0203_bcom.tex
 # WP0203 v32.1: a comma replaces the colon before each displayed equation; nothing else changed, September 20, 2026.
-WP0203-v32.1 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v32.1/wp0203_preprint.tex
-WP0203-v32.1-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v32.1/entropy/wp0203_entropy.tex
-WP0203-v32.1-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v32.1/bcom/wp0203_bcom.tex
+WP0203-v32.1 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v32.1/wp0203_preprint.tex
+WP0203-v32.1-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v32.1/entropy/wp0203_entropy.tex
+WP0203-v32.1-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v32.1/bcom/wp0203_bcom.tex
 # WP0203 v32.2: three sentences restored (Pattern, Persist! balance cross-reference, intervention-knowledge open problem, Ashby's law named); mathematics, declarations, and pin unchanged, September 20, 2026.
-WP0203-v32.2 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v32.2/wp0203_preprint.tex
-WP0203-v32.2-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v32.2/entropy/wp0203_entropy.tex
-WP0203-v32.2-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v32.2/bcom/wp0203_bcom.tex
+WP0203-v32.2 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v32.2/wp0203_preprint.tex
+WP0203-v32.2-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v32.2/entropy/wp0203_entropy.tex
+WP0203-v32.2-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v32.2/bcom/wp0203_bcom.tex
