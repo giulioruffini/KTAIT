@@ -153,3 +153,8 @@ WP0203-v25-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Do
 WP0203-v26 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v26/wp0203_preprint.tex
 WP0203-v26-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v26/entropy/wp0203_entropy.tex
 WP0203-v26-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v26/bcom/wp0203_bcom.tex
+
+# WP0203 v27: probabilistic ART moved to the main text as a corollary; proofs unchanged.
+WP0203-v27 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v27/wp0203_preprint.tex
+WP0203-v27-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v27/entropy/wp0203_entropy.tex
+WP0203-v27-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v27/bcom/wp0203_bcom.tex

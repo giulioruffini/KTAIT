@@ -621,3 +621,9 @@ only on that event. The normalized countable ART envelope follows from a hard cu
 and a one-point guard separates the unadjusted threshold from the residual-adjusted one.
 Conditioning the independent-sampling bound retains the selection probability in its
 denominator. New declarations pass the Lean-core axiom audit.
+
+### 2026-09-20 — WP0203 v27 moves probabilistic ART into the main text
+
+Registered all three v27 formats after moving the residual-conditioned statement from
+an appendix proposition to a main-text corollary. Existing declarations and hypotheses
+are unchanged; the fresh 52-declaration audit uses only Lean core axioms.
