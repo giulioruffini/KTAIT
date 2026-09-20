@@ -627,3 +627,9 @@ denominator. New declarations pass the Lean-core axiom audit.
 Registered all three v27 formats after moving the residual-conditioned statement from
 an appendix proposition to a main-text corollary. Existing declarations and hypotheses
 are unchanged; the fresh 52-declaration audit uses only Lean core axioms.
+
+### 2026-09-20 — WP0203 v28 aligns the summaries with probabilistic ART
+
+Registered the three v28 formats after prose revisions to the abstract, Introduction,
+and Conclusions. All result statements, proofs, displays, and formalization claims
+remain unchanged; the v27 axiom audit applies to the same proof code.

@@ -158,3 +158,8 @@ WP0203-v26-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Do
 WP0203-v27 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v27/wp0203_preprint.tex
 WP0203-v27-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v27/entropy/wp0203_entropy.tex
 WP0203-v27-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v27/bcom/wp0203_bcom.tex
+
+# WP0203 v28: abstract, Introduction, and Conclusions updated; mathematics unchanged.
+WP0203-v28 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v28/wp0203_preprint.tex
+WP0203-v28-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v28/entropy/wp0203_entropy.tex
+WP0203-v28-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v28/bcom/wp0203_bcom.tex
