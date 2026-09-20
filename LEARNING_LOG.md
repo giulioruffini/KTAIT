@@ -633,3 +633,11 @@ are unchanged; the fresh 52-declaration audit uses only Lean core axioms.
 Registered the three v28 formats after prose revisions to the abstract, Introduction,
 and Conclusions. All result statements, proofs, displays, and formalization claims
 remain unchanged; the v27 axiom audit applies to the same proof code.
+
+### 2026-09-20 — ART exact form (ARTExactForm.lean)
+
+log₂ P(e|x) = −K(R|x) − L − H ± 4·slack from three chain-rule steps and outputs-computable.
+Omega does not see through |·| after `simp only`; unpack every hypothesis with `abs_le.mp` and
+close an absolute-value goal with `abs_le.mpr ⟨by omega, by omega⟩`. For a zpow monotonicity
+step under `gcongr`, prove the exponent inequality first as its own `have`; leaving it to the
+side goal fails when it needs hypotheses about nonnegative `cond` terms.

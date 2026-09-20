@@ -327,6 +327,7 @@ Mathlib~v4.31.0. Modules:
 \resizebox{0.96\linewidth}{!}{\lean{ReversibleReconstruction.lean}} & \lean{ConditionalMapBound} & WP0203 v20: inverse joint dynamics, world decoding, and null replay \\
 \resizebox{0.96\linewidth}{!}{\lean{GenerativeRegulation.lean}} & retained model, additive compensation, map-cost bounds & WP0203 v22: lossless model-based regulation \\
 \resizebox{0.96\linewidth}{!}{\lean{ResidualTransfer.lean}} & countable mass transfer; explicit positive-mass conditioning & WP0203 v26: conditional ART and residual confidence bounds \\
+\lean{ARTExactForm.lean} & \lean{Chain}, \lean{CondChain}, \lean{OutputsComputable} & WP0203: ART's specified-code posterior as three additive costs, residual included \\
 \resizebox{0.96\linewidth}{!}{\lean{IndependentRegulation.lean}} & marginal coding bounds, pair Kraft, product weights & WP0203 v26: joint and conditional prospective regulation bounds \\
 \lean{RegulationBalance.lean} & conditional information, reconstruction, incomplete records & WP0203 v23, the regulation balance \\
 \lean{GroundedRegulation.lean} & \lean{Grounded}, \lean{residual}, \lean{IKCeiling}, \lean{PairMono} & WP0203 grounded exposition, repaired corollary, self-regulation/implicit-self-model corollary \\
@@ -583,6 +584,16 @@ These are prospective bounds under independently sampled initial descriptions, s
 from ART's joint-prior posterior. Computability-to-coding domination and prefix Kraft
 remain named classical AIT inputs; the exponential moment and regulation consequences
 are proved from them.
+\item In \lean{ARTExactForm.lean}, \lean{exact\_exponent} proves from two-sided chain rules and
+computability of both outputs that $K(x)-K(\langle W,R\rangle)=-(K(R\mid x)+L+H)\pm4\,\mathrm{slack}$,
+with $L=K(y_\varnothing\mid x,R)$ the counterfactual residual and $H=K(W\mid x,R,y_\varnothing)$ the
+hidden-world term; \lean{art\_exact\_form} turns it, through the coding theorem, into the
+two-sided bound on \lean{AITProb.post}, \lean{art\_exact\_upper} drops $H\ge0$, and
+\lean{residual\_dominates\_gap} shows $K(R\mid x)+L\ge\Delta+K(R\mid W)-7\,\mathrm{slack}$,
+so the upper half implies the original gap form of ART. This is WP0203's ``Algorithmic
+Regulator Theorem: exact form'': the posterior charges the residual bit for bit, which is why
+the clamp family ($2^N$ worlds at $2^{-N}$ each) defeats the aggregate tail and why
+conditioning on the residual repairs it.
 \item \lean{RegulationBalance.balance}, \lean{balance\_readout}, \lean{deficit},
 \lean{balance\_rate\_finite}, \lean{gap\_forces\_exhaust} --- WP0203~v2, the regulation balance:
 the positive replacement for the withdrawn concentration corollary. With $Q$ bundling the regulator's action transcript, its
@@ -1411,6 +1422,10 @@ ART, residual-transfer form & posterior mass of low shared information $\le$ pos
   \stproved\ (\lean{posterior\_\allowbreak residual\_\allowbreak transfer}, \lean{posterior\_\allowbreak residual\_\allowbreak bounded\_\allowbreak zero}) \\
 Conditional tail given a residual bound & in ART's original shape: $\Pr[I\le\Delta-k\mid L\le\eta]\le2^{-(k-\eta-s)}$, and $0$ for $k>\eta+s$ & KT &
   \stproved\ (\lean{conditional\_\allowbreak tail\_\allowbreak given\_\allowbreak residual}) \\
+ART, exact form & $\log_2 P(e\mid x)=-K(R\mid x)-L-H\pm O(\mathrm{slack})$; upper half implies the gap form & KT &
+  \stproved\ (\lean{exact\_\allowbreak exponent}, \lean{art\_\allowbreak exact\_\allowbreak form}, \lean{art\_\allowbreak exact\_\allowbreak upper}, \lean{residual\_\allowbreak dominates\_\allowbreak gap}) \\
+--- two-sided chain rules, outputs computable & $K\langle a,b\rangle=K a+K(b\mid a)\pm s$; conditional form; $K\langle W,R\rangle=K\langle x,R,y_\varnothing,W\rangle\pm s$ & STD &
+  \staxiom\ (\lean{Chain}, \lean{CondChain}, \lean{OutputsComputable}) \\
 Conditional ART (v26) & positive finite conditioning mass; zero probability below $\Delta-\eta-h$ and an exponential envelope & KT &
   \stproved\ (\lean{conditional\_\allowbreak small\_residual\_zero}, \lean{conditional\_\allowbreak deficit\_zero}, \lean{conditional\_art\_tail}) \\
 Unadjusted-threshold guard & arithmetic GART permits $I<\Delta$ with probability one, a fixed residual, and an unbounded gap & KT &

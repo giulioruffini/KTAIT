@@ -25,6 +25,7 @@ import KTAIT.ModelOrPay
 import KTAIT.ReversibleReconstruction
 import KTAIT.GenerativeRegulation
 import KTAIT.ResidualTransfer
+import KTAIT.ARTExactForm
 import KTAIT.IndependentRegulation
 import KTAIT.RegulationBalance
 import KTAIT.GroundedRegulation
