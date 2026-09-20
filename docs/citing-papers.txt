@@ -191,3 +191,7 @@ WP0203-v31.2-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_
 WP0203-v32 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v32/wp0203_preprint.tex
 WP0203-v32-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v32/entropy/wp0203_entropy.tex
 WP0203-v32-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v32/bcom/wp0203_bcom.tex
+# WP0203 v32.1: a comma replaces the colon before each displayed equation; nothing else changed, September 20, 2026.
+WP0203-v32.1 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v32.1/wp0203_preprint.tex
+WP0203-v32.1-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v32.1/entropy/wp0203_entropy.tex
+WP0203-v32.1-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/v32.1/bcom/wp0203_bcom.tex
