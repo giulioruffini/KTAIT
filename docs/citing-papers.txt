@@ -235,3 +235,7 @@ WP0203-v34-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Do
 WP0203-v34.1 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v34.1/wp0203_preprint.tex
 WP0203-v34.1-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v34.1/entropy/wp0203_entropy.tex
 WP0203-v34.1-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v34.1/bcom/wp0203_bcom.tex
+# WP0203 v34.2: prose frozen; one sentence in Appendix F.3 narrowed; declarations and pin unchanged.
+WP0203-v34.2 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v34.2/wp0203_preprint.tex
+WP0203-v34.2-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v34.2/entropy/wp0203_entropy.tex
+WP0203-v34.2-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v34.2/bcom/wp0203_bcom.tex
