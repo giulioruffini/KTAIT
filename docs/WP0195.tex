@@ -339,6 +339,7 @@ Mathlib~v4.31.0. Modules:
 \lean{RegulationBalance.lean} & conditional information, reconstruction, incomplete records & WP0203 v23, the regulation balance \\
 \lean{GroundedRegulation.lean} & \lean{Grounded}, \lean{residual}, \lean{IKCeiling}, \lean{PairMono} & WP0203 grounded exposition, repaired corollary, self-regulation/implicit-self-model corollary \\
 \resizebox{0.96\linewidth}{!}{\lean{HorizonConditioning.lean}} & \lean{conditioning\_on\_horizon}, horizon families & WP0203 v32.10: GART read across horizons; horizon-free shared information \\
+\resizebox{0.96\linewidth}{!}{\lean{InterventionKnowledge.lean}} & \lean{SelfInformation}, \lean{DataProcessingSnd}, \lean{ChainThroughOutput}, \lean{ChainPair} & WP0203 v34.3: descriptor bound, descriptive saving, shared-content split \\
 \lean{OrbitLabel.lean} & conserved orbit labels & WP0162 App.~C \\
 \lean{NoetherFlow.lean} & \lean{trajLabel}, flow symmetries & generalized Noether (abstract core) \\
 \lean{Decoder.lean} & \lean{Achievable}, \lean{Inverts}, \lean{dovetail} & WP0058 Prop.~1(i)--(iii), axiom-free \\
@@ -619,6 +620,17 @@ $\Ik(W{:}R)\ge\Delta_i-\lambda_i-h_i-K(N_i)-\mathrm{slack}$ at every admitted ho
 \lean{horizon\_bound\_sup} states the supremum form over any nonempty finite family of horizons.
 This is WP0203 v32.10's remark on reading the bound across horizons, which the paper had left at
 paper level; the background $C_0$ is the frame and the horizon is an object.
+\item In \lean{InterventionKnowledge.lean}, \lean{key\_bound} proves that a descriptor $m$
+recovered by fixed maps from both $W$ and $R$ forces $\Ik(W{:}R)\ge K(m)-3\,\mathrm{slack}$
+(data processing in each argument, then \lean{SelfInformation}); \lean{intervention\_and\_gap}
+places this beside \lean{grounded\_inequality} as a maximum, not a sum.
+\lean{readout\_saving\_upper} bounds the description saving $K(Z)-K(Z\mid R)$ of any world
+record $Z$ computable from $W$ by $\Ik(W{:}R)+2\,\mathrm{slack}$; \lean{descriptive\_saving}
+brackets the saving on the null output between $\Delta-L-\mathrm{slack}$ and that bound; and
+\lean{shared\_content\_split} is the two-sided chain-rule decomposition
+$\Ik(W{:}R)=\Ik(y_\varnothing{:}R)+\Ik(W{:}R\mid y_\varnothing)\pm3\,\mathrm{slack}$ from three
+named chain facts. These are the four displays of WP0203 v34.3's Discussion subsection on
+intervention knowledge and descriptive power, previously paper-level.
 \item \lean{RegulationBalance.balance}, \lean{balance\_readout}, \lean{deficit},
 \lean{balance\_rate\_finite}, \lean{gap\_forces\_exhaust} --- WP0203~v2, the regulation balance:
 the positive replacement for the withdrawn concentration corollary. With $Q$ bundling the regulator's action transcript, its
@@ -1479,6 +1491,12 @@ Conditional independent regulation (v26) & joint-event bound divided by the posi
   \stna\ (analysis on top of the finite inequalities) \\
 Horizon conditioning (v32.10) & $\Ik(W{:}R)\ge\Ik(W{:}R\mid N)-K(N)-O(1)$; the bound at every horizon and its supremum over a finite family & KT &
   \stproved\ (\lean{conditioning\_\allowbreak on\_horizon}, \lean{horizon\_bound\_\allowbreak every}, \lean{horizon\_bound\_sup}) \\
+Descriptor bound and descriptive saving (v34.3) & $\Ik(W{:}R)\ge\max\{K(m),\Delta-L\}-O(1)$; $\Delta-L-O(1)\le K(y_\varnothing)-K(y_\varnothing\mid R)\le\Ik(W{:}R)+O(1)$, and the same upper bound for any readout & KT &
+  \stproved\ (\lean{key\_bound}, \lean{intervention\_\allowbreak and\_gap}, \lean{readout\_\allowbreak saving\_upper}, \lean{descriptive\_\allowbreak saving}) \\
+Shared-content split (v34.3) & $\Ik(W{:}R)=\Ik(y_\varnothing{:}R)+\Ik(W{:}R\mid y_\varnothing)\pm3s$ under null-output computability & KT &
+  \stproved\ (\lean{shared\_\allowbreak content\_split}) \\
+--- self-information, second-argument data processing, chain through a computable output & $K(m)\le\Ik(m{:}m)+s$; $\Ik(m{:}m)\le\Ik(m{:}R)+s$; $K(a)=K(y_\varnothing)+K(a\mid y_\varnothing)\pm s$ & STD &
+  \staxiom\ (\lean{SelfInformation}, \lean{DataProcessingSnd}, \lean{ChainThroughOutput}, \lean{ChainPair}) \\
 \midrule
 \multicolumn{4}{@{}l}{\textit{Algorithmic Persistence Balance --- roadmap v2 (PersistenceFlow)}}\\
 \midrule

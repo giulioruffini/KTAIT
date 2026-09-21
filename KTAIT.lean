@@ -30,6 +30,7 @@ import KTAIT.IndependentRegulation
 import KTAIT.RegulationBalance
 import KTAIT.GroundedRegulation
 import KTAIT.HorizonConditioning
+import KTAIT.InterventionKnowledge
 import KTAIT.PatternPersist
 import KTAIT.PersistenceFlow
 import KTAIT.Localization

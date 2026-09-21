@@ -659,3 +659,12 @@ derivation, I_K(W:R|C₀) ≥ I_K(W:R|C₀,N) − K(N|C₀) − O(1), is three n
 (CondMono twice, Subadd once, after `simp only` unfolding IK and cIK). The supremum over a
 finite family is `Finset.sup'_le_iff`. Giulio's rule from this pass: a paper-level derivation
 that is not formalized is where the next error hides; formalize before it ships.
+
+### 2026-09-21 — Intervention knowledge and descriptive power (InterventionKnowledge.lean)
+
+WP0203 v34.3's new Discussion subsection had four paper-level displays. All four are
+rearrangements of named facts and close by `omega` after `simp only` unfolding; the descriptor
+bound needs data processing in the *second* argument (`m` from `R`), which had no named form, so
+`DataProcessingSnd` joins `DataProcessing`. In `simp only [...]` lists, write
+`RegulationBalance.gap` and `GroundedRegulation.residual` in full when two opened namespaces are
+in scope; the bare name is "ambiguous" there even where the statement resolved it.
