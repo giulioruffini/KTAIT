@@ -6,46 +6,64 @@
 #
 # key	status	bodyhash	note
 label:cor:conditional	checked	778a101db774	conditional_complexity_uncomputable
-label:cor:cyclic	legacy	6e12ae5ec2eb	WP0203-entropy
-label:cor:deficit	legacy	97d070eb9c22	WP0203-entropy
+label:cor:correctness	none	8b760cf281db	relation composition is checked; the whole-function AIT bound remains a paper proof.
+label:cor:cyclic	checked	6e12ae5ec2eb	RegulationBalance.cyclic_form
+label:cor:deficit	checked	97d070eb9c22	RegulationBalance.deficit
 label:cor:finite-horizon-inheritance	checked	168b9197fa2d	no_additive_approximation_compressible
 label:cor:fixed-slack-regret	none	f5db829bf071	fixed-margin regret bound, proved at paper level; it enters the
-label:cor:forcesL	legacy	088862eaf260	WP0203-v7
-label:cor:generate	legacy	d146633997c7	WP0218-v0.2
-label:cor:groundedgood	legacy	6eb0e58f5e0a	WP0203-v7
+label:cor:forcesL	checked	088862eaf260	GroundedRegulation.simple_regulator_forces_residual
+label:cor:generate	checked	d146633997c7	transport_plan_exists,transport_plan_realizable
+label:cor:groundedgood	checked	6eb0e58f5e0a	GroundedRegulation.repaired_good_regulator
 label:cor:improvermicro	legacy	f71bfcca55b6	WP0007-v1
-label:cor:rate	legacy	7c821b282f63	WP0203-entropy
+label:cor:prob-art	checked	0795a80967f1	ResidualTransfer.conditional_small_residual_zero,ResidualTransfer.conditional_deficit_zero,ResidualTransfer.conditional_art_tail
+label:cor:rate	none	7c821b282f63	limiting argument from the checked finite balance_rate_finite; proof given in the text
 label:cor:relational-optimality	checked	81d9a5b2d7d7	relational_optimality_barrier
-label:cor:selfmodel	legacy	fbe19d4b0de7	WP0203-v13
+label:cor:selfmodel	checked	fbe19d4b0de7	GroundedRegulation.self_regulation_forces_self_model,GroundedRegulation.self_regulation_forces_self_model_grounded
+label:cor:structures	none	be065758bd1d	finite image inequality is checked; the AIT upper bounds remain paper proofs.
 label:cor:threshold	checked	f18bdbbc30e4	compressor_of_threshold,threshold_undecidable_of_compressible
+label:cor:uniformfinite	none	361e697b9a3b	specialization of the finite-output coding-theorem proof.
+label:lem:actions	none	7cc7be0f6318	elementary code-action bound; paper proof only.
 label:lem:dataproc	checked	643f12d821ba	cited in body
-label:lem:recoverable-overlap	legacy	558bfa1c5fe9	WP0218-v0.2
-label:lem:reversible	legacy	8789be80c035	WP0218-v0.2
+label:lem:recoverable-overlap	checked	558bfa1c5fe9	recoverable_description_overlap
+label:lem:reversible	checked	8789be80c035	reversible_complexity_invariance
 label:prop:additive	legacy	df73555d50cb	WP0007-v1
-label:prop:balance	legacy	47908b2bed66	WP0218-v0.2
+label:prop:art-exact	checked	cf6daeb9fd6c	ARTExactForm.exact_exponent,ARTExactForm.art_exact_form,ARTExactForm.art_exact_upper,ARTExactForm.residual_dominates_gap
+label:prop:balance	checked	47908b2bed66	localization_balance_reversible
 label:prop:blind-spots	none	cce1ca0dfb1a	paper-level, classical counting and diagonal selection; quantitative
 label:prop:boundary	legacy	ccbddb551459	WP0215
+label:prop:chains	none	ae4608a07f75	operation-count proof and exhaustive finite illustration, not a source-length theorem
 label:prop:chaitin	legacy	136207800fea	WP0007-v1
-label:prop:common	checked	54dc4ed42058	KTAIT.IS.common_semantics_bound
+label:prop:common	checked	a0b136ba1b0e	KTAIT.IS.common_semantics_bound
+label:prop:component-rigidity	none	5d8130bafc1d	conjugacy and overwrite kernels formalized separately; finite-product accessibility remains a paper proof
 label:prop:construction-decision	checked	97c282d13d6b	no_query_complete_of_noncomputable_slice
 label:prop:emergence-inheritance	none	0fb626dc4976	revised joint-code discovery and regret bound, classical counting argument at paper level; queued for formalization
-label:prop:exactbalance	legacy	45de5526e031	WP0203-v16
-label:prop:gaptransfer	legacy	eee58f4099d8	WP0203-v7
-label:prop:loss	legacy	5ccf500289e9	WP0218-v0.2
-label:prop:minturnover	legacy	9a5c164cb9a9	WP0218-v0.2
-label:prop:nearprograms	none	a9e58468a318	conventional proof from the conditional coding theorem; the text states it is not machine-checked
+label:prop:exactbalance	checked	45de5526e031	GroundedRegulation.exact_counterfactual_balance
+label:prop:finite	none	3d15ccb1bdb5	conditional coding theorem and source-index decoder are paper proofs.
+label:prop:gaptransfer	checked	eee58f4099d8	GroundedRegulation.gap_transfer
+label:prop:independent-regulation	checked	6a096ebbcf9d	IndependentRegulation.independent_information_moment,IndependentRegulation.independent_regulation_probability,IndependentRegulation.independent_regulation_threshold,IndependentRegulation.independent_gart_probability
+label:prop:intervention	checked	7b062ad2e3eb	KTAIT.ComputationCores.experiment_outputs
+label:prop:lift	none	084b20d92ab0	elementary Banach-space proof, not formalized
+label:prop:loss	none	5ccf500289e9	displayed algebraic rearrangement of the checked localization balance; no separate wrapper
+label:prop:minturnover	checked	9a5c164cb9a9	diag_le_min,exists_min_moved_plan,minimum_moved_mass
+label:prop:nearprograms	none	41f1c85bc6b8	conditional coding and source reconstruction are proved in the cited equivalent-program analysis, not instantiated in the inherited Lean modules.
 label:prop:no-hypercompression	none	4122617a7d54	classical no-hypercompression inequality, proved here at paper level; no new KT corollary
-label:prop:realize	legacy	8c1ea9158e34	WP0218-v0.2
-label:prop:recurrent-persistence	legacy	99b1597b213f	WP0218-v0.2
+label:prop:posterior-repair	checked	74f5dc398840	ResidualTransfer.class_mass_transfer_variable_tsum,ResidualTransfer.class_mass_residual_confidence_tsum,ResidualTransfer.residual_bounded_class_mass_zero_tsum,ResidualTransfer.gart_mass_transfer_tsum
+label:prop:realize	none	8c1ea9158e34	standard incompressibility counting and coding construction; manuscript proof, not mechanized
+label:prop:reconstruction	checked	e01fcb96652d	ReversibleReconstruction.null_from_complete_records
+label:prop:recurrent-persistence	checked	99b1597b213f	recurrent_recoverability_implies_mai_bound,recurrent_recoverability_persistence_bound
+label:prop:residual	none	a4d0364bb37e	classical residual-quotient proof; observable uniqueness separately formalized
 label:prop:residualcompletion	legacy	7e87292a51c3	WP0203-v7
 label:prop:schedule	checked	4ded36d434c2	no_computable_schedule
-label:prop:unfolding	checked	9b4eb09614c7	KTAIT.IS.finite_unfolding
-label:thm:balance	legacy	95aca1f2c2fb	WP0203-entropy
+label:prop:unfolding	checked	187ab58e904e	KTAIT.IS.finite_unfolding
+label:thm:art-main	checked	bae8dd5eba18	AITProb.theorem1_posterior_tilt,AITProb.probabilistic_regulator_theorem_sharp
+label:thm:balance	checked	95aca1f2c2fb	RegulationBalance.balance_readout,RegulationBalance.balance
 label:thm:existence	checked	8016d197dd13	counting_bound,few_low_complexity_strings,most_states_incompressible
-label:thm:grounded	legacy	4fe20babf83d	WP0203-v7
+label:thm:grounded	checked	4fe20babf83d	GroundedRegulation.gart_reguland_from_exact_balance,GroundedRegulation.grounded_inequality_from_exact_balance
 label:thm:identification	legacy	e877563c695c	WP0007-v1
 label:thm:improver	checked	f8c1e8578a95	no_universal_compressor_micro,no_universal_compressor,no_compression_improver_of_raw
 label:thm:optimality	checked	3480a668d6eb	no_additive_approximation_compressible,no_additive_approximation,identification_barrier
 label:thm:partial-exactness	none	af490d885fe4	paper-level, classical partial exactness (Vitanyi 2020, Theorem 1,
-label:thm:transport	legacy	eb5b8b1eda80	WP0218-v0.2
+label:thm:totalcount	none	4044e483dc5d	bounded-width enumerable-tree construction and compiler transfer are paper proofs.
+label:thm:transport	checked	eb5b8b1eda80	transport_plan_realizable,applyGates_involutive
 label:thm:uncomp	none	80976f983ae1	classical Kolmogorov-Solomonoff-Chaitin, proved here at paper level; it
+label:thm:whole	none	75a04126750b	finite marking and codes are checked; partial-recursive decoders and optimal-machine application remain paper proofs.

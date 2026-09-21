@@ -203,3 +203,11 @@ WP0203-v32.2-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_
 WP0203-v32.3 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v32.3/wp0203_preprint.tex
 WP0203-v32.3-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v32.3/entropy/wp0203_entropy.tex
 WP0203-v32.3-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v32.3/bcom/wp0203_bcom.tex
+# WP0203 v32.8: Giulio's review candidate of September 21 (Section 3 restructured, Appendix G assumption table, proofs expanded); statements unchanged except Theorem 1's wording; pin unchanged.
+WP0203-v32.8 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v32.8/wp0203_preprint.tex
+WP0203-v32.8-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v32.8/entropy/wp0203_entropy.tex
+WP0203-v32.8-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v32.8/bcom/wp0203_bcom.tex
+# WP0203 v32.9: review of the v32.8 candidate (tolerances corrected, Proposition 1 restated as convention + left inverse, horizon remark, punctuation); declarations and pin unchanged, September 21, 2026.
+WP0203-v32.9 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v32.9/wp0203_preprint.tex
+WP0203-v32.9-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v32.9/entropy/wp0203_entropy.tex
+WP0203-v32.9-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v32.9/bcom/wp0203_bcom.tex
