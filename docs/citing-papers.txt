@@ -215,3 +215,7 @@ WP0203-v32.9-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_
 WP0203-v32.10 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v32.10/wp0203_preprint.tex
 WP0203-v32.10-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v32.10/entropy/wp0203_entropy.tex
 WP0203-v32.10-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v32.10/bcom/wp0203_bcom.tex
+# WP0203 v33: v32.10 with the horizon remark's derivation checked in HorizonConditioning.lean and cited; pin 44ecb4e, September 21, 2026.
+WP0203-v33 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v33/wp0203_preprint.tex
+WP0203-v33-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v33/entropy/wp0203_entropy.tex
+WP0203-v33-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v33/bcom/wp0203_bcom.tex
