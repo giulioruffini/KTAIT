@@ -14,6 +14,7 @@ label:cor:fixed-slack-regret	none	f5db829bf071	fixed-margin regret bound, proved
 label:cor:forcesL	checked	088862eaf260	GroundedRegulation.simple_regulator_forces_residual
 label:cor:generate	checked	d146633997c7	transport_plan_exists,transport_plan_realizable
 label:cor:groundedgood	checked	6eb0e58f5e0a	GroundedRegulation.repaired_good_regulator
+label:cor:horizon	checked	09165f985f21	HorizonConditioning.conditioning_on_horizon,HorizonConditioning.horizon_bound_every,HorizonConditioning.horizon_bound_sup
 label:cor:improvermicro	legacy	f71bfcca55b6	WP0007-v1
 label:cor:prob-art	checked	0795a80967f1	ResidualTransfer.conditional_small_residual_zero,ResidualTransfer.conditional_deficit_zero,ResidualTransfer.conditional_art_tail
 label:cor:rate	none	7c821b282f63	limiting argument from the checked finite balance_rate_finite; proof given in the text

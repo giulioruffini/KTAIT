@@ -219,3 +219,7 @@ WP0203-v32.10-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail
 WP0203-v33 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v33/wp0203_preprint.tex
 WP0203-v33-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v33/entropy/wp0203_entropy.tex
 WP0203-v33-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v33/bcom/wp0203_bcom.tex
+# WP0203 v33.1: the horizon statement is Corollary 2 with its derivation as the proof; Lean citations only in Appendix F; declarations and pin unchanged.
+WP0203-v33.1 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v33.1/wp0203_preprint.tex
+WP0203-v33.1-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v33.1/entropy/wp0203_entropy.tex
+WP0203-v33.1-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v33.1/bcom/wp0203_bcom.tex
