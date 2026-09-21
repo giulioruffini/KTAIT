@@ -247,3 +247,7 @@ WP0203-v34.3-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_
 WP0203-v34.4 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v34.4/wp0203_preprint.tex
 WP0203-v34.4-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v34.4/entropy/wp0203_entropy.tex
 WP0203-v34.4-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v34.4/bcom/wp0203_bcom.tex
+# WP0203 v34.5: the cyclic regulator defined and motivated before its corollary; declarations and pin unchanged.
+WP0203-v34.5 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v34.5/wp0203_preprint.tex
+WP0203-v34.5-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v34.5/entropy/wp0203_entropy.tex
+WP0203-v34.5-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v34.5/bcom/wp0203_bcom.tex
