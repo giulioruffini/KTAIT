@@ -338,6 +338,7 @@ Mathlib~v4.31.0. Modules:
 \resizebox{0.96\linewidth}{!}{\lean{IndependentRegulation.lean}} & marginal coding bounds, pair Kraft, product weights & WP0203 v26: joint and conditional prospective regulation bounds \\
 \lean{RegulationBalance.lean} & conditional information, reconstruction, incomplete records & WP0203 v23, the regulation balance \\
 \lean{GroundedRegulation.lean} & \lean{Grounded}, \lean{residual}, \lean{IKCeiling}, \lean{PairMono} & WP0203 grounded exposition, repaired corollary, self-regulation/implicit-self-model corollary \\
+\resizebox{0.96\linewidth}{!}{\lean{HorizonConditioning.lean}} & \lean{conditioning\_on\_horizon}, horizon families & WP0203 v32.10: GART read across horizons; horizon-free shared information \\
 \lean{OrbitLabel.lean} & conserved orbit labels & WP0162 App.~C \\
 \lean{NoetherFlow.lean} & \lean{trajLabel}, flow symmetries & generalized Noether (abstract core) \\
 \lean{Decoder.lean} & \lean{Achievable}, \lean{Inverts}, \lean{dovetail} & WP0058 Prop.~1(i)--(iii), axiom-free \\
@@ -608,6 +609,16 @@ WP0203 displays: ART's upper bound and the residual lower bound. This is WP0203'
 Regulator Theorem: exact form'': the posterior charges the residual bit for bit, which is why
 the clamp family ($2^N$ worlds at $2^{-N}$ each) defeats the aggregate tail and why
 conditioning on the residual repairs it.
+\item In \lean{HorizonConditioning.lean}, \lean{conditioning\_on\_horizon} removes the
+horizon from the conditioning of shared information: with \lean{CondMono} for the two
+marginals and \lean{Subadd} for the pair against the horizon object $N$,
+$\Ik(W{:}R)\ge\Ik(W{:}R\mid N)-K(N)-\mathrm{slack}$. \lean{horizon\_bound\_every} composes
+this with the per-horizon initial-information bound $\Ik(W{:}R\mid N_i)\ge\Delta_i-\lambda_i-h_i$
+(WP0203's initial-information corollary with the horizon explicit) to give
+$\Ik(W{:}R)\ge\Delta_i-\lambda_i-h_i-K(N_i)-\mathrm{slack}$ at every admitted horizon, and
+\lean{horizon\_bound\_sup} states the supremum form over any nonempty finite family of horizons.
+This is WP0203 v32.10's remark on reading the bound across horizons, which the paper had left at
+paper level; the background $C_0$ is the frame and the horizon is an object.
 \item \lean{RegulationBalance.balance}, \lean{balance\_readout}, \lean{deficit},
 \lean{balance\_rate\_finite}, \lean{gap\_forces\_exhaust} --- WP0203~v2, the regulation balance:
 the positive replacement for the withdrawn concentration corollary. With $Q$ bundling the regulator's action transcript, its
@@ -1466,6 +1477,8 @@ Conditional independent regulation (v26) & joint-event bound divided by the posi
   \staxiom\ (\lean{ConditionalMapBound}, a named hypothesis) \\
 --- asymptotic form & $\Ik(W{:}R)\ge(1-o(1))\Delta$ for $\varepsilon,\lambda=o(\Delta)$ & KT &
   \stna\ (analysis on top of the finite inequalities) \\
+Horizon conditioning (v32.10) & $\Ik(W{:}R)\ge\Ik(W{:}R\mid N)-K(N)-O(1)$; the bound at every horizon and its supremum over a finite family & KT &
+  \stproved\ (\lean{conditioning\_\allowbreak on\_horizon}, \lean{horizon\_bound\_\allowbreak every}, \lean{horizon\_bound\_sup}) \\
 \midrule
 \multicolumn{4}{@{}l}{\textit{Algorithmic Persistence Balance --- roadmap v2 (PersistenceFlow)}}\\
 \midrule

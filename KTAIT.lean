@@ -29,6 +29,7 @@ import KTAIT.ARTExactForm
 import KTAIT.IndependentRegulation
 import KTAIT.RegulationBalance
 import KTAIT.GroundedRegulation
+import KTAIT.HorizonConditioning
 import KTAIT.PatternPersist
 import KTAIT.PersistenceFlow
 import KTAIT.Localization

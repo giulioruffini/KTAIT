@@ -651,3 +651,11 @@ the paper's link found a tree without the proofs. `scripts/check_pins.py` now re
 paper's pinned commit and verifies that the tree there defines every `\ktait{}` name; the
 last-registered version of a paper fails, archived versions warn. WP0203 v31.2 re-pins to 8c602ff,
 the last commit that changed KTAIT/. Pin that commit, never a docs-only registration.
+
+### 2026-09-21 — Horizon conditioning (HorizonConditioning.lean)
+
+WP0203's remark on reading GART across horizons needed a horizon-free left side; the paper's
+derivation, I_K(W:R|C₀) ≥ I_K(W:R|C₀,N) − K(N|C₀) − O(1), is three named facts and `omega`
+(CondMono twice, Subadd once, after `simp only` unfolding IK and cIK). The supremum over a
+finite family is `Finset.sup'_le_iff`. Giulio's rule from this pass: a paper-level derivation
+that is not formalized is where the next error hides; formalize before it ships.
