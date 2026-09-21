@@ -243,3 +243,7 @@ WP0203-v34.2-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_
 WP0203-v34.3 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v34.3/wp0203_preprint.tex
 WP0203-v34.3-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v34.3/entropy/wp0203_entropy.tex
 WP0203-v34.3-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v34.3/bcom/wp0203_bcom.tex
+# WP0203 v34.4: v34.3 with Giulio's two explanatory edits and the Discussion 5.2 displays machine-checked (InterventionKnowledge.lean); pin 6448b94.
+WP0203-v34.4 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v34.4/wp0203_preprint.tex
+WP0203-v34.4-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v34.4/entropy/wp0203_entropy.tex
+WP0203-v34.4-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v34.4/bcom/wp0203_bcom.tex
