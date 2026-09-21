@@ -227,3 +227,7 @@ WP0203-v33.1-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_
 WP0203-v33.2 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v33.2/wp0203_preprint.tex
 WP0203-v33.2-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v33.2/entropy/wp0203_entropy.tex
 WP0203-v33.2-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v33.2/bcom/wp0203_bcom.tex
+# WP0203 v34: Giulio's editorial cut of v33.2 (about 3,200 words; scope disclaimers consolidated); canonical source reconstructed from the Entropy edition; declarations and pin unchanged.
+WP0203-v34 | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v34/wp0203_preprint.tex
+WP0203-v34-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v34/entropy/wp0203_entropy.tex
+WP0203-v34-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/versions/v34/bcom/wp0203_bcom.tex
