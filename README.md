@@ -75,7 +75,7 @@ declarations by source paper.
 | WP0186 | Push–pull necessity and sufficiency (Thms 1–2) | `theorem1_necessity`, `theorem2_sufficiency`, `regulation_iff` | `PushPull` |
 | WP0202 App. A | Circular shifts are not a null model for algorithmic mutual information | `shift_is_not_a_null` | `ShiftInvariance` |
 | WP0207 | Agentoptosis: self-targeting requires an agent and a target | `collective_self_targeting_requires_agent` | `Agentoptosis` |
-| WP0216 | Pattern, Persist! ontology; **Algorithmic Persistence Balance** and the flow corollaries | `persists_iff_nmai`, `algorithmic_persistence_balance`, `bounded_persistence_forces_flow` | `PatternPersist`, `PersistenceFlow` |
+| WP0216 | Pattern, Persist! ontology; **Algorithmic Persistence Balance** and the flow corollaries | `persists_iff_nmai`, `algorithmic_persistence_balance_with_error`, `bounded_persistence_forces_flow_with_error` | `PatternPersist`, `PersistenceFlow` |
 | WP0218 | Localization algebra, reversible balance, recoverable-description overlap; canonical token transport | `localization_conserved_exact`, `recoverable_description_overlap`, `transport_plan_exists` | `Localization`, `TokenTransport` |
 | WP0215 | Common-semantics bound; boundary vs. organization; finite-horizon unfolding | `common_semantics_bound`, `boundary_eq_of_iso`, `no_fixed_unfolding_covers_all_horizons` | `IS/CommonSemantics`, `IS/Boundary`, `IS/Unfolding` |
 | WP0229 | Deterministic experiments, observability, coordinate overwrites | `observable_conjugacy`, `overwrite_rigidity` | `ComputationCores` |
@@ -93,6 +93,8 @@ its `combine_decoder_costs` checks arithmetic from supplied scalar bounds and do
 complexity bounds, and the whole-function AIT theorem is not yet instantiated. The WP0203 conditional
 probabilities require positive finite conditioning mass, and the classical coding and Kraft facts
 they rest on remain named hypotheses.
+
+The persistence suite retains an explicit reconstruction allowance independently of coding slack; [the audit](docs/apb-error-audit.md) records the scope and proof checks.
 
 ## The axiom layer (what we assume)
 

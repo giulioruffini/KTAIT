@@ -668,3 +668,7 @@ bound needs data processing in the *second* argument (`m` from `R`), which had n
 `DataProcessingSnd` joins `DataProcessing`. In `simp only [...]` lists, write
 `RegulationBalance.gap` and `GroundedRegulation.residual` in full when two opened namespaces are
 in scope; the bare name is "ambiguous" there even where the statement resolved it.
+
+### 2026-10-03 — Explicit reconstruction error in persistence accounting
+
+WP0216 allowed residual reconstruction complexity δ but its flow corollary cited a theorem assuming δ ≤ frame slack. The new APB, flow, and pigeonhole forms retain δ independently (remainders δ+2s and δ+5s); the original declarations are unchanged. A separate update-capacity theorem matches the paper's conditional budget. All four new proofs use named hypotheses; the axiom audit is recorded in docs/apb-error-audit.md.

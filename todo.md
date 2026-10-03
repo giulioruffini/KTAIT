@@ -16,3 +16,5 @@
 - [x] prove WP0228 marking budget and coverage, descriptor parsing, finite cardinality and structural-image bounds
 - [x] integrate the FunctionalCore module and WP0195 update with WP0007 v0.31.9
 - [x] formalize the conditional functional-core benchmark and its implementation bound
+
+- [x] separate reconstruction error from frame slack in APB and flow bounds, add conditional self-code update capacity, and audit axioms — 2026-10-03

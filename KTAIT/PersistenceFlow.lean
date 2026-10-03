@@ -29,17 +29,18 @@ Reading of the objects (roadmap notation):
 
 The suite:
 
-1. `FlowSplit5` — the named five-way ordered conditional-flow split (house style).
-2. `algorithmic_persistence_balance` (APB) — identity-relevant novelty is recoverable from
-   self-code change, model update, retained state, action, or world complement.
-3. `bounded_persistence_forces_flow` — bounded internal channels force interface/world flow.
-4. `flow_pigeonhole` — finite max-form: one of the two flow channels carries half the load.
-5. `self_code_overload` — recoverable novelty forces self-code update.
-6. `bounded_self_code_capacity` — a budgeted self-code stores at most `K₀ + δ + slack` of
-   independent novelty.
-7. `persistence_does_not_imply_gap` — explicit witness: perfect persistence with a strictly
-   negative raw readout gap. Kills any universal persistence-to-positive-gap bridge; the
-   universal statement is APB's accounting, not a gap claim.
+1. `FlowSplit5` — the named five-way ordered conditional-flow split.
+2. `algorithmic_persistence_balance_with_error` — APB with explicit reconstruction error.
+3. `bounded_persistence_forces_flow_with_error` — bounded internal channels force external flow.
+4. `flow_pigeonhole_with_error` — one external channel carries half the positive residual.
+5. `self_code_overload` — recoverable novelty forces a self-code update.
+6. `bounded_self_code_update_capacity` / `bounded_self_code_capacity` — novelty capacity
+   under a conditional update budget / unconditional self-code budget.
+7. `persistence_does_not_imply_gap` — a finite frame witness with perfect persistence and
+   a strictly negative raw readout gap.
+
+The original APB and flow declarations retain their statements, with reconstruction
+error bounded by frame slack. The explicit-error forms separate these allowances.
 
 Counterfactual input suppression (acting so that less novelty arrives) is not re-proved
 here: it is the existing grounded machinery of `KTAIT.GroundedRegulation` instantiated with
@@ -89,7 +90,88 @@ def FlowSplit5 (iota Znext Mnext sigma action exhaust Ctx : F.Obj) : Prop :=
 def CIKCeiling (A B C : F.Obj) : Prop :=
   cIK F A B C ≤ (F.cond B C : Int) + (F.slack : Int)
 
+/-- Residual reconstruction complexity after the declared completion is supplied.
+    The bit allowance `δ` is independent of the frame's chain-rule slack. -/
+def ReconstructionBound (iota Q Ctx : F.Obj) (δ : ℕ) : Prop :=
+  (F.cond iota (F.pair Q Ctx) : Int) ≤ (δ : Int)
+
 /-! ## The Algorithmic Persistence Balance -/
+
+/-- APB with an explicit reconstruction allowance: the five ordered channels carry
+    the incoming novelty except for at most `δ` missing bits and two frame slacks.
+    Only the conditional chain rule, reconstruction bound, and flow split are used;
+    no temporal conservation or dynamical premise is assumed. -/
+theorem algorithmic_persistence_balance_with_error
+    (iota Ctx Znext Mnext sigma action exhaust : F.Obj) (δ : ℕ)
+    (hchain : CondChain F iota (flowTuple F Znext Mnext sigma action exhaust) Ctx)
+    (hrec : ReconstructionBound F iota (flowTuple F Znext Mnext sigma action exhaust) Ctx δ)
+    (hsplit : FlowSplit5 F iota Znext Mnext sigma action exhaust Ctx) :
+    (F.cond iota Ctx : Int)
+      ≤ cIK F iota Znext Ctx
+        + cIK F iota Mnext (F.pair Znext Ctx)
+        + cIK F iota sigma (F.pair Mnext (F.pair Znext Ctx))
+        + cIK F iota action (F.pair sigma (F.pair Mnext (F.pair Znext Ctx)))
+        + cIK F iota exhaust (F.pair action (F.pair sigma (F.pair Mnext (F.pair Znext Ctx))))
+        + (δ : Int) + 2 * (F.slack : Int) := by
+  have hres : (F.cond iota Ctx : Int)
+      ≤ cIK F iota (flowTuple F Znext Mnext sigma action exhaust) Ctx
+        + (δ : Int) + (F.slack : Int) := by
+    simp only [CondChain] at hchain
+    simp only [ReconstructionBound] at hrec
+    simp only [cIK]
+    omega
+  simp only [FlowSplit5] at hsplit
+  omega
+
+/-- Bounded internal channels force action/world information only after subtracting
+    the independent reconstruction allowance `δ`. The five slacks comprise the two
+    APB slacks and one conditional-information ceiling per internal channel. -/
+theorem bounded_persistence_forces_flow_with_error
+    (iota Ctx Znext Mnext sigma action exhaust : F.Obj) (δ : ℕ)
+    (hchain : CondChain F iota (flowTuple F Znext Mnext sigma action exhaust) Ctx)
+    (hrec : ReconstructionBound F iota (flowTuple F Znext Mnext sigma action exhaust) Ctx δ)
+    (hsplit : FlowSplit5 F iota Znext Mnext sigma action exhaust Ctx)
+    (hcZ : CIKCeiling F iota Znext Ctx)
+    (hcM : CIKCeiling F iota Mnext (F.pair Znext Ctx))
+    (hcS : CIKCeiling F iota sigma (F.pair Mnext (F.pair Znext Ctx))) :
+    cIK F iota action (F.pair sigma (F.pair Mnext (F.pair Znext Ctx)))
+      + cIK F iota exhaust (F.pair action (F.pair sigma (F.pair Mnext (F.pair Znext Ctx))))
+      ≥ (F.cond iota Ctx : Int)
+        - (F.cond Znext Ctx : Int)
+        - (F.cond Mnext (F.pair Znext Ctx) : Int)
+        - (F.cond sigma (F.pair Mnext (F.pair Znext Ctx)) : Int)
+        - (δ : Int) - 5 * (F.slack : Int) := by
+  have h := algorithmic_persistence_balance_with_error F iota Ctx
+    Znext Mnext sigma action exhaust δ hchain hrec hsplit
+  simp only [CIKCeiling] at hcZ hcM hcS
+  omega
+
+/-- Finite maximum form of the flow bound with reconstruction error. If the residual
+    on the right is positive, at least one external channel carries half of it. -/
+theorem flow_pigeonhole_with_error
+    (iota Ctx Znext Mnext sigma action exhaust : F.Obj) (δ : ℕ)
+    (hchain : CondChain F iota (flowTuple F Znext Mnext sigma action exhaust) Ctx)
+    (hrec : ReconstructionBound F iota (flowTuple F Znext Mnext sigma action exhaust) Ctx δ)
+    (hsplit : FlowSplit5 F iota Znext Mnext sigma action exhaust Ctx)
+    (hcZ : CIKCeiling F iota Znext Ctx)
+    (hcM : CIKCeiling F iota Mnext (F.pair Znext Ctx))
+    (hcS : CIKCeiling F iota sigma (F.pair Mnext (F.pair Znext Ctx))) :
+    2 * max (cIK F iota action (F.pair sigma (F.pair Mnext (F.pair Znext Ctx))))
+            (cIK F iota exhaust (F.pair action (F.pair sigma (F.pair Mnext (F.pair Znext Ctx)))))
+      ≥ (F.cond iota Ctx : Int)
+        - (F.cond Znext Ctx : Int)
+        - (F.cond Mnext (F.pair Znext Ctx) : Int)
+        - (F.cond sigma (F.pair Mnext (F.pair Znext Ctx)) : Int)
+        - (δ : Int) - 5 * (F.slack : Int) := by
+  have h := bounded_persistence_forces_flow_with_error F iota Ctx
+    Znext Mnext sigma action exhaust δ hchain hrec hsplit hcZ hcM hcS
+  rcases le_total
+      (cIK F iota action (F.pair sigma (F.pair Mnext (F.pair Znext Ctx))))
+      (cIK F iota exhaust (F.pair action (F.pair sigma (F.pair Mnext (F.pair Znext Ctx))))) with
+    hle | hle
+  · rw [max_eq_right hle]; omega
+  · rw [max_eq_left hle]; omega
+
 
 /-- **Algorithmic Persistence Balance (APB).** Under information closure of the episode
     and the declared five-way split, the residual identity-relevant novelty `K(ι | Ctx)`
@@ -113,10 +195,8 @@ theorem algorithmic_persistence_balance
         + cIK F iota action (F.pair sigma (F.pair Mnext (F.pair Znext Ctx)))
         + cIK F iota exhaust (F.pair action (F.pair sigma (F.pair Mnext (F.pair Znext Ctx))))
         + 3 * (F.slack : Int) := by
-  have hres :=
-    residual_in_completion F iota (flowTuple F Znext Mnext sigma action exhaust) Ctx
-      hchain hclosed
-  simp only [FlowSplit5] at hsplit
+  have h := algorithmic_persistence_balance_with_error F iota Ctx
+    Znext Mnext sigma action exhaust F.slack hchain hclosed hsplit
   omega
 
 /-! ## Bounded persistence forces flow -/
@@ -205,11 +285,22 @@ theorem self_code_overload
   simp only [CondSubadd] at hsub
   omega
 
+/-- A conditional update budget suffices to cap recoverable novelty; no bound on
+    the unconditional complexity of the later identity is required. -/
+theorem bounded_self_code_update_capacity
+    (iota Z0 Z1 Cf : F.Obj) (δ K0 : Int)
+    (hsub : CondSubadd F Z1 iota (F.pair Z0 Cf))
+    (hrec : (F.cond iota (F.pair Z1 (F.pair Z0 Cf)) : Int) ≤ δ)
+    (hbudget : (F.cond Z1 (F.pair Z0 Cf) : Int) ≤ K0) :
+    (F.cond iota (F.pair Z0 Cf) : Int) ≤ K0 + δ + (F.slack : Int) := by
+  have h := self_code_overload F iota Z0 Z1 Cf δ hsub hrec
+  omega
+
 /-- **Bounded self-code capacity.** If additionally the later self-code obeys a uniform
     budget `K(Z₁) ≤ K₀` (and conditioning only shrinks description length), then the
     novelty storable uniquely in the self-code is capped:
 
-    `K(ι | ⟨Z₀,C⟩) ≤ K₀ + δ + 2·slack`.
+    `K(ι | ⟨Z₀,C⟩) ≤ K₀ + δ + slack`.
 
     A bounded identity cannot be an indefinitely growing memory: novelty beyond the budget
     must be compressed, consolidated outside the identity core, routed out, or forgotten. -/
