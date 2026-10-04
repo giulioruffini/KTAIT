@@ -263,3 +263,6 @@ WP0216-manuscript-08_predictions | ../../BCOM WPs and Blogs/working_drafts/WP216
 WP0216-manuscript-supp_formal_apb | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/manuscript/source/supp_formal_apb.tex
 WP0216-manuscript-12_formalization | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/manuscript/source/12_formalization.tex
 WP0216-manuscript-10_endmatter | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/manuscript/source/10_endmatter.tex
+
+# Pre-cut BCOM inspection revision; migrate this path with the coordinated v0.7.0 cut.
+WP0218-v0.7.0-draft1 | ../../BCOM WPs and Blogs/working_drafts/WP0218-Algorithmic information conservation/build/revision/WP0218_v0.7.0-draft1.tex
