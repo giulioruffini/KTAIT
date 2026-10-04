@@ -18,9 +18,10 @@ Reading of the objects (roadmap notation):
 
 * `iota` — the fixed identity-relevant incoming interface record `ι_{P,N}` for focal
   pattern `P` over horizon `N`, a computable projection declared before any comparison.
-* `Ctx` — the initial conditioning context `Ctx_{P,t} = ⟨C, Z_t, 𝒲_t⟩`: frame, current
-  self-code, current reusable model. `K(ι | Ctx)` is then the *residual identity-relevant
-  novelty* `ν_{P,N}`: what the present organization fails to predict about its own inflow.
+* `Ctx` — the initial conditioning context `Ctx_{P,t} = ⟨C, Z_t, 𝒲_t, σ_t⟩`: frame, current
+  self-code, current reusable model, and other retained internal state (initial memory).
+  `K(ι | Ctx)` is then the *residual identity-relevant novelty* `ν_{P,N}`: what the
+  present organization fails to predict about its own inflow.
 * `Znext, Mnext, sigma, action, exhaust` — later self-code `Z⁺`, later reusable model
   `𝒲⁺`, retained state `σ_N`, action/interface transcript `a_N`, and an admissible
   complementary world record `Ξ_N`. As in `KTAIT.RegulationBalance`, a complete reversible

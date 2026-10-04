@@ -672,3 +672,17 @@ in scope; the bare name is "ambiguous" there even where the statement resolved i
 ### 2026-10-03 — Explicit reconstruction error in persistence accounting
 
 WP0216 allowed residual reconstruction complexity δ but its flow corollary cited a theorem assuming δ ≤ frame slack. The new APB, flow, and pigeonhole forms retain δ independently (remainders δ+2s and δ+5s); the original declarations are unchanged. A separate update-capacity theorem matches the paper's conditional budget. All four new proofs use named hypotheses; the axiom audit is recorded in docs/apb-error-audit.md.
+
+### 2026-10-04 — Completion account with neutral names (CompletionLedger.lean)
+
+WP0218's companion revision states the reconstruction-and-capacity account once, with target
+`D`, context `B`, internal and complementary records, so that WP0216's APB (five records,
+three internal) and WP0203's residual identification (one record) become instances. The
+ordered form is list-indexed: `orderedInfo`/`orderedCost` recurse along the list with the
+context nested as `pair Q ctx`, exactly the nesting `FlowSplit5` uses, so the five-record
+instance is `simp only [orderedInfo, orderedCost, ctxAfter, add_zero]` plus `omega`. The
+`(2 + k)·slack` term is `(2 + ↑Ps.length) * ↑slack`; `rw [add_mul]` first, then `omega`
+treats `↑len * ↑slack` as an atom. The `Iff` between `FlowSplit5` and `OrderedSplit` closes by
+`constructor <;> intro h <;> omega` after unfolding. All eleven declarations report core axioms
+only. The persistence module's overview now lists `σ_t` in the initial context, as the paper
+does; the formal `Ctx` was already opaque.

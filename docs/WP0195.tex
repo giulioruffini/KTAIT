@@ -351,6 +351,7 @@ Mathlib~v4.31.0. Modules:
 \lean{ToyModel.lean} & \lean{Toy}, \lean{ToyMachine}, \lean{ToyGap} & satisfiability witnesses \\
 \lean{PatternPersist.lean} & PP! ontology on \lean{AITFrame} & agenthood per cell, not automatic; Prop.~3 inherited \\
 \lean{PersistenceFlow.lean} & \lean{flowTuple}, \lean{FlowSplit5}, \lean{CIKCeiling}, \lean{ReconstructionBound}, \lean{noGapFrame} & APB suite: persistence balance, flow corollaries, self-code overload, no-gap witness (roadmap v2) \\
+\lean{CompletionLedger.lean} & \lean{ctxAfter}, \lean{orderedInfo}, \lean{orderedCost}, \lean{OrderedCeilings}, \lean{OrderedSplit} & WP0218 revision: reconstruction and capacity with neutral names, grouped and ordered forms; the five-record APB as the ordered instance \\
 \lean{Localization.lean} & \lean{localization\_left/mutual/right}, \lean{CondDataProcessing} & WP0218 localization algebra, reversible balance, recoverable-description overlap, persistence bound \\
 \lean{TokenTransport.lean} & \lean{Mode}, \lean{LocalizationProfile}, \lean{LocalizationPlan}, \lean{nwPlan}, \lean{natAbsDiff} & WP0218 canonical token transport: gates, plans, minimum moved mass (finite, Mathlib-free) \\
 \lean{Agentoptosis.lean} & \lean{AgentoptoticEvent}, bearer/target split & WP0207 v0.8 ontology; deletion threshold \\
@@ -678,7 +679,7 @@ the world}.
 \item \lean{PersistenceFlow.algorithmic\_persistence\_balance} and its suite give the
 \textbf{Algorithmic Persistence Balance (APB)}. With completion
 $Q=(Z^+,\mathcal W^+,\sigma,a,\Xi)$ and initial context
-$\mathsf{Ctx}=(C,Z_t,\mathcal W_t)$, the explicit-error form
+$\mathsf{Ctx}=(C,Z_t,\mathcal W_t,\sigma_t)$ (frame, self-code, model, and retained memory), the explicit-error form
 \lean{algorithmic\_persistence\_balance\_with\_error} assumes
 $K(\iota\mid Q,\mathsf{Ctx})\le\delta$ (\lean{ReconstructionBound}), a conditional
 chain rule, and the ordered split \lean{FlowSplit5}. It proves
@@ -713,6 +714,39 @@ finite frame witness (\lean{noGapFrame}) with $\mathrm{NMAI}(z,z)=1$,
 $\mathrm{NMAI}(z,0^n)=0$, and raw gap $\Delta=K(0^n)-K(z)<0$. This is a witness
 in the abstract frame interface; it does not construct an optimal universal
 machine realizing those exact assigned complexities.
+\item \lean{CompletionLedger.grouped\_completion\_balance} and its suite state the
+reconstruction-and-capacity account of WP0216's APB and WP0203's residual identification once,
+with neutral names, for the WP0218 companion revision (October 2026). Grouped form: with
+target $D$, initial context $B$, internal record $S$, and complementary record $E$,
+conditional subadditivity through $S$ (\lean{CondSubadd}), the conditional chain rule for
+$\langle D,E\rangle$ given $\langle S,B\rangle$ (\lean{CondChain}), and reconstruction
+$K(D\mid E,S,B)\le\delta$ (\lean{ReconstructionBound}) give
+\[
+ K(D\mid B)\le K(S\mid B)+\Ik(D{:}E\mid S,B)+\delta+2s;
+\]
+an internal budget $K(S\mid B)\le b$ then forces
+$\Ik(D{:}E\mid S,B)\ge K(D\mid B)-b-\delta-2s$
+(\lean{grouped\_bounded\_internal\_forces\_external}), and with no complement
+$K(D\mid B)\le b+\delta+s$ (\lean{grouped\_internal\_capacity}; the self-code capacity
+theorem is the case $S=Z_1$, $B=\langle Z_0,C\rangle$). Ordered form: for records supplied
+in a declared order, \lean{ctxAfter}, \lean{orderedInfo}, and \lean{orderedCost} give the
+nested context, the ordered conditional-information sum, and the ordered description cost;
+\lean{OrderedSplit} is the named split hypothesis generalizing \lean{FlowSplit5}, and
+\lean{OrderedCeilings} caps each internal channel. \lean{ordered\_completion\_balance} gives
+$K(D\mid B)\le\sum_i J_i+\delta+2s$; with $k$ internal records,
+\lean{ordered\_bounded\_internal\_forces\_external} gives
+$\sum_{\text{ext}}J\ge K(D\mid B)-\sum_{\text{int}}d-\delta-(2+k)s$, and
+\lean{ordered\_two\_external\_pigeonhole} the max form for two external records
+(\lean{orderedInfo\_append} and \lean{orderedInfo\_le\_orderedCost} are the list lemmas).
+The allowances stay distinct: $\delta$ is the reconstruction allowance, $s$ bounds each named
+estimate including the whole ordered split, and $(2+k)s$ counts hypothesis uses. The
+five-record APB is the instance $[Z^+,\mathcal W^+,\sigma,a,\Xi]$ with $k=3$:
+\lean{flowSplit5\_iff\_orderedSplit} identifies the split hypotheses,
+\lean{orderedCost\_internal\_three} the internal cost $d_Z+d_M+d_\sigma$, and
+\lean{apb\_flow\_from\_ordered} re-derives the conclusion of
+\lean{bounded\_persistence\_forces\_flow\_with\_error} with $(2+3)s=5s$. No temporal
+conservation or reversibility premise appears; the account applies to irreversible
+realizations.
 \item \lean{GroundedRegulation.grounded\_readout}, \lean{grounded\_inequality},
 \lean{repaired\_corollary}, \lean{repaired\_good\_regulator} --- WP0203's grounded
 exposition, the repaired static-MAI corollary. A designated reguland trajectory $z$ (ON) and
@@ -1533,6 +1567,23 @@ No positive gap & witness: $\mathrm{NMAI}=1$ persistence, $\Delta<0$ raw gap & K
   \stna\ (analysis on top of the finite forms) \\
 --- identity-grounded bridge & restricted persistence-to-GART score & KT &
   \stna\ (readout definition open; roadmap \S3 Cor.~2 is existing GART re-instantiated) \\
+\midrule
+\multicolumn{4}{@{}l}{\textit{Reconstruction and capacity with neutral names --- WP0218 revision (CompletionLedger)}}\\
+\midrule
+Grouped completion balance & $K(D|B)\le K(S|B)+\Ik(D{:}E|S,B)+\delta+2s$ & KT &
+  \stproved\ (\lean{grouped\_\allowbreak completion\_\allowbreak balance}) \\
+Grouped: internal budget forces external information & $\Ik(D{:}E|S,B)\ge K(D|B)-b-\delta-2s$ & KT &
+  \stproved\ (\lean{grouped\_\allowbreak bounded\_\allowbreak internal\_\allowbreak forces\_\allowbreak external}) \\
+Grouped: internal capacity & $K(D|S,B)\le\delta$, $K(S|B)\le b$ give $K(D|B)\le b+\delta+s$ & KT &
+  \stproved\ (\lean{grouped\_\allowbreak internal\_\allowbreak capacity}) \\
+Ordered completion balance & $K(D|B)\le\sum_iJ_i+\delta+2s$ along a declared order & KT &
+  \stproved\ (\lean{ordered\_\allowbreak completion\_\allowbreak balance}) \\
+Ordered: $k$ internal budgets force external information & $\sum_{\rm ext}J\ge K(D|B)-\sum_{\rm int}d-\delta-(2+k)s$ & KT &
+  \stproved\ (\lean{ordered\_\allowbreak bounded\_\allowbreak internal\_\allowbreak forces\_\allowbreak external}; list lemmas \lean{orderedInfo\_append}, \lean{orderedInfo\_\allowbreak le\_\allowbreak orderedCost}) \\
+Ordered: two external records & $2\max\{J_{E_1},J_{E_2}\}\ge$ the same right-hand side & KT &
+  \stproved\ (\lean{ordered\_\allowbreak two\_\allowbreak external\_\allowbreak pigeonhole}) \\
+Five-record APB is the ordered instance & $[Z^+,\mathcal W^+,\sigma,a,\Xi]$, $k=3$, $(2+3)s=5s$ & KT &
+  \stproved\ (\lean{flowSplit5\_\allowbreak iff\_\allowbreak orderedSplit}, \lean{orderedCost\_\allowbreak internal\_\allowbreak three}, \lean{apb\_\allowbreak flow\_\allowbreak from\_\allowbreak ordered}) \\
 \midrule
 \multicolumn{4}{@{}l}{\textit{Algorithmic localization dynamics --- WP0218 (Localization, TokenTransport)}}\\
 \midrule
