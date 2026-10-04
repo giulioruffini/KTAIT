@@ -690,3 +690,10 @@ does; the formal `Ctx` was already opaque.
 Kaiti's return audit reran the full build, all eleven axiom checks, and the release guard
 at `f6eb677`. The WP0195 source contained the new module, prose, and inventory, but its
 tracked PDF was stale; rebuilding and inspecting the new entries restored the PDF.
+
+### 2026-10-04 — Acquired models and incompressible residuals (ModelAccounting.lean)
+
+The cost of a learned model belongs to the later records, alongside parameters and residual.
+Three conditional subadditivity estimates charge all three; combining the innovation lower
+bound with grouped completion gives four slacks, distinct from the five-record APB's five.
+Finite list recovery is checked separately from the assumed conditional incompressibility.

@@ -352,6 +352,7 @@ Mathlib~v4.31.0. Modules:
 \lean{PatternPersist.lean} & PP! ontology on \lean{AITFrame} & agenthood per cell, not automatic; Prop.~3 inherited \\
 \lean{PersistenceFlow.lean} & \lean{flowTuple}, \lean{FlowSplit5}, \lean{CIKCeiling}, \lean{ReconstructionBound}, \lean{noGapFrame} & APB suite: persistence balance, flow corollaries, self-code overload, no-gap witness (roadmap v2) \\
 \lean{CompletionLedger.lean} & \lean{ctxAfter}, \lean{orderedInfo}, \lean{orderedCost}, \lean{OrderedCeilings}, \lean{OrderedSplit} & WP0218 revision: reconstruction and capacity with neutral names, grouped and ordered forms; the five-record APB as the ordered instance \\
+\lean{ModelAccounting.lean} & conditional recoding, acquired model and residual costs; repeated-block records & WP0218 revision: compact accommodation and incompressible innovations, conditional AIT consequences and finite recovery checks \\
 \lean{Localization.lean} & \lean{localization\_left/mutual/right}, \lean{CondDataProcessing} & WP0218 localization algebra, reversible balance, recoverable-description overlap, persistence bound \\
 \lean{TokenTransport.lean} & \lean{Mode}, \lean{LocalizationProfile}, \lean{LocalizationPlan}, \lean{nwPlan}, \lean{natAbsDiff} & WP0218 canonical token transport: gates, plans, minimum moved mass (finite, Mathlib-free) \\
 \lean{Agentoptosis.lean} & \lean{AgentoptoticEvent}, bearer/target split & WP0207 v0.8 ontology; deletion threshold \\
@@ -747,6 +748,26 @@ five-record APB is the instance $[Z^+,\mathcal W^+,\sigma,a,\Xi]$ with $k=3$:
 \lean{bounded\_persistence\_forces\_flow\_with\_error} with $(2+3)s=5s$. No temporal
 conservation or reversibility premise appears; the account applies to irreversible
 realizations.
+\item \textbf{Compressive models in the completion account.}
+\lean{ModelAccounting.lossless\_recode\_complexity} bounds the conditional-complexity
+change between mutually reconstructible records by $\varepsilon+s$.
+\lean{model\_parameter\_residual\_bound} charges an acquired model, its finite parameters,
+and its residual in order; three named subadditivity estimates give their summed
+conditional cost plus $\delta+3s$. With $\kappa=K(\theta\mid B)$,
+\lean{innovation\_lower\_bound} gives
+$K(D\mid B)\ge\kappa+n-c-\varepsilon-2s$ when the record recovers the parameter
+$\theta$ and an innovation string having conditional complexity at least $n-c$.
+If $K(S\mid B)\le\kappa+b$, \lean{innovations\_force\_complement} gives
+$I_K(D:E\mid S,B)\ge n-c-b-\varepsilon-\delta-4s$ under grouped reconstruction;
+\lean{innovations\_limit\_internal\_retention} gives
+$n\le b+\delta+c+\varepsilon+3s$ when internal records alone reconstruct the target.
+All coding and incompressibility statements enter as named or explicit hypotheses.
+Here $c$ is the innovation deficiency, $\varepsilon$ the pair-recovery allowance,
+$\delta$ the target-reconstruction allowance, and $b$ the internal cost beyond $\kappa$.
+The finite list results \lean{block\_residual\_recovery},
+\lean{block\_parameter\_recovery} (positive horizon), \lean{block\_record\_recovery},
+and \lean{block\_stream\_length} check the construction with a $q$-bit repeated block; they do not
+establish its Kolmogorov complexities or a model-discovery guarantee.
 \item \lean{GroundedRegulation.grounded\_readout}, \lean{grounded\_inequality},
 \lean{repaired\_corollary}, \lean{repaired\_good\_regulator} --- WP0203's grounded
 exposition, the repaired static-MAI corollary. A designated reguland trajectory $z$ (ON) and
@@ -1584,6 +1605,21 @@ Ordered: two external records & $2\max\{J_{E_1},J_{E_2}\}\ge$ the same right-han
   \stproved\ (\lean{ordered\_\allowbreak two\_\allowbreak external\_\allowbreak pigeonhole}) \\
 Five-record APB is the ordered instance & $[Z^+,\mathcal W^+,\sigma,a,\Xi]$, $k=3$, $(2+3)s=5s$ & KT &
   \stproved\ (\lean{flowSplit5\_\allowbreak iff\_\allowbreak orderedSplit}, \lean{orderedCost\_\allowbreak internal\_\allowbreak three}, \lean{apb\_\allowbreak flow\_\allowbreak from\_\allowbreak ordered}) \\
+\midrule
+\multicolumn{4}{@{}l}{\textit{Compressive models and innovation capacity --- WP0218 (ModelAccounting)}}\\
+\midrule
+Lossless recoding & Mutual reconstruction preserves conditional complexity within $\varepsilon+s$ & STD &
+  \stproved\ (\lean{lossless\_\allowbreak recode\_\allowbreak complexity}) \\
+Acquired model cost & Model, parameters, and residual contribute ordered costs, plus $\delta+3s$ & KT &
+  \stproved\ (\lean{model\_\allowbreak parameter\_\allowbreak residual\_\allowbreak bound}) \\
+Innovation cost & Recoverable parameter plus $n-c$ incompressible conditional bits requires $\kappa+n-c-\varepsilon-2s$ & KT &
+  \stproved\ (\lean{innovation\_\allowbreak lower\_\allowbreak bound}) \\
+Complementary retention & Internal budget $\kappa+b$ leaves at least $n-c-b-\varepsilon-\delta-4s$ in the complement & KT &
+  \stproved\ (\lean{innovations\_\allowbreak force\_\allowbreak complement}) \\
+Internal retention & Internal recovery implies $n\le b+\delta+c+\varepsilon+3s$ & KT &
+  \stproved\ (\lean{innovations\_\allowbreak limit\_\allowbreak internal\_\allowbreak retention}) \\
+Repeated-block records & Recover the residual, the parameter at positive horizon, and the record; raw length $n(q+1)$ & KT &
+  \stproved\ (\lean{block\_\allowbreak residual\_\allowbreak recovery}, \lean{block\_\allowbreak parameter\_\allowbreak recovery}, \lean{block\_\allowbreak record\_\allowbreak recovery}, \lean{block\_\allowbreak stream\_\allowbreak length}) \\
 \midrule
 \multicolumn{4}{@{}l}{\textit{Algorithmic localization dynamics --- WP0218 (Localization, TokenTransport)}}\\
 \midrule
