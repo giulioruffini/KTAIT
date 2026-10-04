@@ -262,3 +262,4 @@ WP0216-manuscript-06_thermodynamic_cost | ../../BCOM WPs and Blogs/working_draft
 WP0216-manuscript-08_predictions | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/manuscript/source/08_predictions.tex
 WP0216-manuscript-supp_formal_apb | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/manuscript/source/supp_formal_apb.tex
 WP0216-manuscript-12_formalization | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/manuscript/source/12_formalization.tex
+WP0216-manuscript-10_endmatter | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/manuscript/source/10_endmatter.tex
