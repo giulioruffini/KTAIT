@@ -686,3 +686,7 @@ treats `↑len * ↑slack` as an atom. The `Iff` between `FlowSplit5` and `Order
 `constructor <;> intro h <;> omega` after unfolding. All eleven declarations report core axioms
 only. The persistence module's overview now lists `σ_t` in the initial context, as the paper
 does; the formal `Ctx` was already opaque.
+
+Kaiti's return audit reran the full build, all eleven axiom checks, and the release guard
+at `f6eb677`. The WP0195 source contained the new module, prose, and inventory, but its
+tracked PDF was stale; rebuilding and inspecting the new entries restored the PDF.
