@@ -253,5 +253,89 @@ theorem apb_flow_from_ordered (iota Ctx Znext Mnext sigma action exhaust : F.Obj
   norm_num at h
   omega
 
+/-! ## The ordered split derived by telescoping
+
+`OrderedSplit` above is a named hypothesis with one slack for the whole split. The declarations
+below derive it from per-record estimates, so the order of its error is explicit:
+`n` easy-direction chain steps (one `slack` each), one hard-direction step on the joint record
+(allowance `hlog`, of order `log(N+2)` for the classical prefix machine), and one conversion
+between the nested context and the tuple context (allowance `hconv`, constant when `n` is
+supplied, `O(log(n+2))` otherwise). -/
+
+/-- The easy conditional chain rule holds at every step of the declared order:
+    `CondChain F D Qᵢ B_{i-1}` along the list. -/
+def ChainAlong (D B : F.Obj) : List F.Obj → Prop
+  | [] => True
+  | Q :: Qs => CondChain F D Q B ∧ ChainAlong D (F.pair Q B) Qs
+
+/-- **Telescoping lower bound.** Each easy chain step gives
+    `Jᵢ ≥ K(D | B_{i-1}) − K(D | B_i) − slack`; summed along the order,
+    `Σ Jᵢ ≥ K(D | B) − K(D | B_n) − n·slack`. -/
+theorem orderedInfo_telescope (D B : F.Obj) (Qs : List F.Obj) (h : ChainAlong F D B Qs) :
+    orderedInfo F D B Qs
+      ≥ (F.cond D B : Int) - (F.cond D (ctxAfter F B Qs) : Int)
+        - (Qs.length : Int) * (F.slack : Int) := by
+  induction Qs generalizing B with
+  | nil => simp [orderedInfo, ctxAfter]
+  | cons Q Qs ih =>
+    obtain ⟨hQ, hQs⟩ := h
+    have hrest := ih (F.pair Q B) hQs
+    simp only [CondChain] at hQ
+    simp only [orderedInfo, ctxAfter, cIK, List.length_cons] at *
+    push_cast
+    rw [add_mul, one_mul]
+    omega
+
+/-- The hard direction of the chain rule on the joint record, with explicit allowance:
+    `K(Q | B) + K(D | ⟨Q,B⟩) ≤ K(⟨D,Q⟩ | B) + hlog`. -/
+def JointChainLower (D Q B : F.Obj) (hlog : Int) : Prop :=
+  (F.cond Q B : Int) + (F.cond D (F.pair Q B) : Int) ≤ (F.cond (F.pair D Q) B : Int) + hlog
+
+/-- Conversion from the tuple context to the nested context:
+    `K(D | B_n) ≤ K(D | ⟨Q,B⟩) + hconv`. -/
+def NestedConversion (D Q B : F.Obj) (Qs : List F.Obj) (hconv : Int) : Prop :=
+  (F.cond D (ctxAfter F B Qs) : Int) ≤ (F.cond D (F.pair Q B) : Int) + hconv
+
+/-- **The ordered split, derived.** Under the easy chain rule at each of the `n` steps, the
+    hard chain rule on the joint record, and the context conversion,
+    `M(D : Q | B) ≤ Σ Jᵢ + hlog + hconv + n·slack`. -/
+theorem orderedSplit_telescoped (D Q B : F.Obj) (Qs : List F.Obj) (hlog hconv : Int)
+    (hsteps : ChainAlong F D B Qs) (hjoint : JointChainLower F D Q B hlog)
+    (hnest : NestedConversion F D Q B Qs hconv) :
+    cIK F D Q B ≤ orderedInfo F D B Qs + hlog + hconv + (Qs.length : Int) * (F.slack : Int) := by
+  have ht := orderedInfo_telescope F D B Qs hsteps
+  simp only [JointChainLower] at hjoint
+  simp only [NestedConversion] at hnest
+  simp only [cIK]
+  omega
+
+/-- `OrderedSplit` follows whenever the derived error fits the frame's slack. -/
+theorem orderedSplit_of_telescoped (D Q B : F.Obj) (Qs : List F.Obj) (hlog hconv : Int)
+    (hsteps : ChainAlong F D B Qs) (hjoint : JointChainLower F D Q B hlog)
+    (hnest : NestedConversion F D Q B Qs hconv)
+    (hfit : hlog + hconv + (Qs.length : Int) * (F.slack : Int) ≤ (F.slack : Int)) :
+    OrderedSplit F D Q B Qs := by
+  have h := orderedSplit_telescoped F D Q B Qs hlog hconv hsteps hjoint hnest
+  simp only [OrderedSplit]
+  omega
+
+/-- **Ordered reconstruction balance with the split derived.**
+    `K(D | B) ≤ Σ Jᵢ + δ + hlog + hconv + (n + 1)·slack`: the chain estimate costs one slack,
+    the split `hlog + hconv + n·slack`. -/
+theorem ordered_completion_balance_telescoped (D Q B : F.Obj) (Qs : List F.Obj) (δ : ℕ)
+    (hlog hconv : Int)
+    (hchain : CondChain F D Q B) (hrec : ReconstructionBound F D Q B δ)
+    (hsteps : ChainAlong F D B Qs) (hjoint : JointChainLower F D Q B hlog)
+    (hnest : NestedConversion F D Q B Qs hconv) :
+    (F.cond D B : Int)
+      ≤ orderedInfo F D B Qs + (δ : Int) + hlog + hconv
+        + ((Qs.length : Int) + 1) * (F.slack : Int) := by
+  have hs := orderedSplit_telescoped F D Q B Qs hlog hconv hsteps hjoint hnest
+  simp only [CondChain] at hchain
+  simp only [ReconstructionBound] at hrec
+  simp only [cIK] at hs
+  rw [add_mul, one_mul]
+  omega
+
 end CompletionLedger
 end KTAIT

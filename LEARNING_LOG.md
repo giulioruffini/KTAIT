@@ -717,3 +717,12 @@ paper has O(log). The new declarations derive that step from the manuscript's el
 with explicit allowance h), all `omega` after unfolding. The log allowance stays a separate
 parameter, so the Lean remainder h + 5·slack matches the paper's O(log(N+2)) honestly.
 
+### 2026-10-05 — Ordered split by telescoping (CompletionLedger.lean)
+
+WP0218 review C04 asked for the order of the coding allowance; the whole-split hypothesis
+`OrderedSplit` is now derived. Per step the easy chain rule (`CondChain`, concatenation, O(1)) gives
+J_i ≥ K(D|B_{i-1}) − K(D|B_i) − s; the sum telescopes by list induction (`push_cast`, `add_mul`,
+`omega`). The hard chain rule enters once, on the joint record (`JointChainLower`, allowance hlog),
+and the nested context B_n is converted to the tuple context once (`NestedConversion`). Error:
+hlog + hconv + n·s, i.e. O(n + log(N+2)) for the classical machine.
+

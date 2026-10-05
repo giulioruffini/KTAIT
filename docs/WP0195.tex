@@ -748,7 +748,17 @@ five-record APB is the instance $[Z^+,\mathcal W^+,\sigma,a,\Xi]$ with $k=3$:
 \lean{apb\_flow\_from\_ordered} re-derives the conclusion of
 \lean{bounded\_persistence\_forces\_flow\_with\_error} with $(2+3)s=5s$. No temporal
 conservation or reversibility premise appears; the account applies to irreversible
-realizations.
+realizations. The whole-split hypothesis is itself derived (October 5, WP0218 review C04):
+\lean{orderedInfo\_telescope} telescopes the per-step easy chain rule (\lean{ChainAlong}) to
+$\sum_iJ_i\ge K(D|B)-K(D|B_n)-n\,s$; with the hard chain rule on the joint record,
+allowance $h_{\log}$ (\lean{JointChainLower}), and the conversion between the nested and tuple
+contexts, allowance $h_{\rm conv}$ (\lean{NestedConversion}),
+\lean{orderedSplit\_telescoped} gives split error $h_{\log}+h_{\rm conv}+n\,s$,
+\lean{orderedSplit\_of\_telescoped} recovers \lean{OrderedSplit} when that error fits the frame
+slack, and \lean{ordered\_completion\_balance\_telescoped} gives the balance with remainder
+$\delta+h_{\log}+h_{\rm conv}+(n+1)s$. For the classical prefix machine $h_{\log}=O(\log(N+2))$
+with $N\ge n+K(D,Q|B)$, and $h_{\rm conv}=O(1)$ when $n$ is supplied, $O(\log(n+2))$ otherwise.
+
 \item \lean{StateGraph.unique\_iff\_permGraph} and its suite check the support-level form of
 Susskind's conservation of information used in WP0218's Appendix E. For a transition-support
 relation $R$ on any state space (the empty one included), every state has exactly one allowed
@@ -1629,6 +1639,10 @@ Ordered: two external records & $2\max\{J_{E_1},J_{E_2}\}\ge$ the same right-han
   \stproved\ (\lean{ordered\_\allowbreak two\_\allowbreak external\_\allowbreak pigeonhole}) \\
 Five-record APB is the ordered instance & $[Z^+,\mathcal W^+,\sigma,a,\Xi]$, $k=3$, $(2+3)s=5s$ & KT &
   \stproved\ (\lean{flowSplit5\_\allowbreak iff\_\allowbreak orderedSplit}, \lean{orderedCost\_\allowbreak internal\_\allowbreak three}, \lean{apb\_\allowbreak flow\_\allowbreak from\_\allowbreak ordered}) \\
+Ordered split, derived by telescoping & $\Ik(D{:}Q|B)\le\sum_iJ_i+h_{\log}+h_{\rm conv}+n\,s$ from the easy chain rule at each step (\lean{ChainAlong}), the hard chain rule on the joint record (\lean{JointChainLower}), and the nested/tuple context conversion (\lean{NestedConversion}) & KT &
+  \stproved\ (\lean{orderedInfo\_telescope}, \lean{orderedSplit\_\allowbreak telescoped}, \lean{orderedSplit\_\allowbreak of\_\allowbreak telescoped}) \\
+Ordered balance with the split derived & $K(D|B)\le\sum_iJ_i+\delta+h_{\log}+h_{\rm conv}+(n+1)s$ & KT &
+  \stproved\ (\lean{ordered\_\allowbreak completion\_\allowbreak balance\_\allowbreak telescoped}) \\
 \midrule
 \multicolumn{4}{@{}l}{\textit{State graphs and permutations --- WP0218 Appendix E (StateGraph)}}\\
 \midrule
