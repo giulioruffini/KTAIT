@@ -274,3 +274,5 @@ WP0218-v0.7.0-draft3 | ../../BCOM WPs and Blogs/working_drafts/WP0218-Algorithmi
 WP0218-v0.7.0-draft4 | ../../BCOM WPs and Blogs/working_drafts/WP0218-Algorithmic information conservation/build/revision/WP0218_v0.7.0-draft4.tex
 # Introductory XOR explanation and figure; existing gate theorem, same proof pin 00c3127.
 WP0218-v0.7.0-draft5 | ../../BCOM WPs and Blogs/working_drafts/WP0218-Algorithmic information conservation/build/revision/WP0218_v0.7.0-draft5.tex
+# Motivation for local copying and clearing under joint conservation; mathematics and pin unchanged.
+WP0218-v0.7.0-draft6 | ../../BCOM WPs and Blogs/working_drafts/WP0218-Algorithmic information conservation/build/revision/WP0218_v0.7.0-draft6.tex
