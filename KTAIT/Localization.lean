@@ -11,9 +11,10 @@ import KTAIT.GroundedRegulation
 # KTAIT.Localization — localization coordinates and the recoverable-description
 overlap (WP0218, Levels 1 and 3)
 
-WP0218 (*What Flows When Information Is Conserved?*) rewrites the standard pair
+WP0218 (*Stable Patterns under Information Exchange: The Algorithmic Persistence
+Balance*; earlier versions *What Flows When Information Is Conserved?*) rewrites the standard pair
 complexity profile `(K A, K W, K(A,W))` in localization coordinates
-`Λ = (L_A, I_K, L_W)` with `L_A = K(A,W) − K W`, `L_W = K(A,W) − K A`, and asks
+`Loc_{A|W} = (L_A, I_K, L_W)` (written `Loc`, not `Λ`, which WP0216 reserves) with `L_A = K(A,W) − K W`, `L_W = K(A,W) − K A`, and asks
 how they redistribute under fixed reversible dynamics. This module checks:
 
 * **Level 1 — exact algebra** on abstract `Int` coordinates:
