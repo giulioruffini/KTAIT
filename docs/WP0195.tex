@@ -753,9 +753,7 @@ realizations. The whole-split hypothesis is itself derived (October 5, WP0218 re
 $\sum_iJ_i\ge K(D|B)-K(D|B_n)-n\,s$; with the hard chain rule on the joint record,
 allowance $h_{\log}$ (\lean{JointChainLower}), and the conversion between the nested and tuple
 contexts, allowance $h_{\rm conv}$ (\lean{NestedConversion}),
-\lean{orderedSplit\_telescoped} gives split error $h_{\log}+h_{\rm conv}+n\,s$,
-\lean{orderedSplit\_of\_telescoped} recovers \lean{OrderedSplit} when that error fits the frame
-slack, and \lean{ordered\_completion\_balance\_telescoped} gives the balance with remainder
+\lean{orderedSplit\_telescoped} gives split error $h_{\log}+h_{\rm conv}+n\,s$, and \lean{ordered\_completion\_balance\_telescoped} gives the balance with remainder
 $\delta+h_{\log}+h_{\rm conv}+(n+1)s$. For the classical prefix machine $h_{\log}=O(\log(N+2))$
 with $N\ge n+K(D,Q|B)$, and $h_{\rm conv}=O(1)$ when $n$ is supplied, $O(\log(n+2))$ otherwise.
 
@@ -908,9 +906,9 @@ plain-to-starred conversion with an explicit allowance $h$ (\lean{StarConversion
 \lean{cond\_data\_processing\_from\_steps} gives $\Ik(D{:}Y)\le\Ik(X{:}Y)+K(D|X)+h+4s$, and
 the overlap and recurrent bounds follow with remainder $h+5s$
 (\lean{recurrent\_recoverability\_steps}). The logarithmic allowance $h$
-is the manuscript's $O(\log(N+2))$, kept separate from the constant slack $s$;
-\lean{condDataProcessing\_of\_steps} recovers the original named hypothesis when $h=0$ and
-the slack absorbs the constants.
+is the manuscript's $O(\log(N+2))$, kept separate from the constant slack $s$.
+The original named hypothesis is not recovered with a single frame slack; papers should cite
+the explicit-error forms.
 \item \lean{TokenTransport} --- WP0218's canonical token transport calculus, finite and
 Mathlib-free. \lean{cnotAW\_involutive}, \lean{cnotWA\_involutive},
 \lean{swap\_involutive}, and \lean{gateFor\_involutive} check the reversible gate
@@ -1640,7 +1638,7 @@ Ordered: two external records & $2\max\{J_{E_1},J_{E_2}\}\ge$ the same right-han
 Five-record APB is the ordered instance & $[Z^+,\mathcal W^+,\sigma,a,\Xi]$, $k=3$, $(2+3)s=5s$ & KT &
   \stproved\ (\lean{flowSplit5\_\allowbreak iff\_\allowbreak orderedSplit}, \lean{orderedCost\_\allowbreak internal\_\allowbreak three}, \lean{apb\_\allowbreak flow\_\allowbreak from\_\allowbreak ordered}) \\
 Ordered split, derived by telescoping & $\Ik(D{:}Q|B)\le\sum_iJ_i+h_{\log}+h_{\rm conv}+n\,s$ from the easy chain rule at each step (\lean{ChainAlong}), the hard chain rule on the joint record (\lean{JointChainLower}), and the nested/tuple context conversion (\lean{NestedConversion}) & KT &
-  \stproved\ (\lean{orderedInfo\_telescope}, \lean{orderedSplit\_\allowbreak telescoped}, \lean{orderedSplit\_\allowbreak of\_\allowbreak telescoped}) \\
+  \stproved\ (\lean{orderedInfo\_telescope}, \lean{orderedSplit\_\allowbreak telescoped}) \\
 Ordered balance with the split derived & $K(D|B)\le\sum_iJ_i+\delta+h_{\log}+h_{\rm conv}+(n+1)s$ & KT &
   \stproved\ (\lean{ordered\_\allowbreak completion\_\allowbreak balance\_\allowbreak telescoped}) \\
 \midrule
@@ -1685,7 +1683,7 @@ ALB (reversible) & localization sum moves $\le\varepsilon+\mathrm{slack}$ under 
 Overlap lemma & $\Ik(X{:}Y)\ge K D-K(D|X)-K(D|Y)-2\,\mathrm{slack}$ & KT &
   \stproved\ (\lean{recoverable\_description\_overlap}) \\
 --- data-processing step derived & $\Ik(D{:}Y)\le\Ik(X{:}Y)+K(D|X)+h+4\,\mathrm{slack}$ from starred symmetry (both forms), recovery from $X^*$, subadditivity through $D$, and plain-to-starred conversion with log allowance $h$ & STD &
-  \stproved\ (\lean{cond\_\allowbreak data\_\allowbreak processing\_\allowbreak from\_\allowbreak steps}, \lean{condDataProcessing\_\allowbreak of\_\allowbreak steps}) \\
+  \stproved\ (\lean{cond\_\allowbreak data\_\allowbreak processing\_\allowbreak from\_\allowbreak steps}) \\
 Overlap lemma from the proof steps & $\Ik(X{:}Y)\ge K D-K(D|X)-K(D|Y)-h-5\,\mathrm{slack}$, $h$ explicit & KT &
   \stproved\ (\lean{recoverable\_\allowbreak description\_\allowbreak overlap\_\allowbreak steps}) \\
 Recurrent recoverability from the proof steps & $\Ik(S_t{:}S_{t+\tau})\ge K D-\varepsilon_t-\varepsilon_{t+\tau}-h-5\,\mathrm{slack}$ & KT &

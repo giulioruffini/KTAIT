@@ -309,16 +309,6 @@ theorem orderedSplit_telescoped (D Q B : F.Obj) (Qs : List F.Obj) (hlog hconv : 
   simp only [cIK]
   omega
 
-/-- `OrderedSplit` follows whenever the derived error fits the frame's slack. -/
-theorem orderedSplit_of_telescoped (D Q B : F.Obj) (Qs : List F.Obj) (hlog hconv : Int)
-    (hsteps : ChainAlong F D B Qs) (hjoint : JointChainLower F D Q B hlog)
-    (hnest : NestedConversion F D Q B Qs hconv)
-    (hfit : hlog + hconv + (Qs.length : Int) * (F.slack : Int) ≤ (F.slack : Int)) :
-    OrderedSplit F D Q B Qs := by
-  have h := orderedSplit_telescoped F D Q B Qs hlog hconv hsteps hjoint hnest
-  simp only [OrderedSplit]
-  omega
-
 /-- **Ordered reconstruction balance with the split derived.**
     `K(D | B) ≤ Σ Jᵢ + δ + hlog + hconv + (n + 1)·slack`: the chain estimate costs one slack,
     the split `hlog + hconv + n·slack`. -/

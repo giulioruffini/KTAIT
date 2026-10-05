@@ -726,3 +726,11 @@ J_i ≥ K(D|B_{i-1}) − K(D|B_i) − s; the sum telescopes by list induction (`
 and the nested context B_n is converted to the tuple context once (`NestedConversion`). Error:
 hlog + hconv + n·s, i.e. O(n + log(N+2)) for the classical machine.
 
+### 2026-10-05 — Adapters that only fit degenerate frames are removed
+
+`condDataProcessing_of_steps` (hypothesis `4·slack ≤ slack`) and `orderedSplit_of_telescoped`
+(`hlog + hconv + n·slack ≤ slack`) restated the derived bounds in the original single-slack form,
+but with nonnegative costs those hypotheses hold only when the slack and allowances vanish. Kaiti
+caught it; both are deleted. Cite the explicit-error forms. Rule: do not add a "recover the old
+hypothesis" adapter whose side condition asks a frame constant to dominate a multiple of itself.
+

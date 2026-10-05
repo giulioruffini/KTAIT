@@ -259,17 +259,6 @@ theorem cond_data_processing_from_steps (D X Y : F.Obj) (h : Int)
   simp only [SymStarUpper, SymStarLower, StarRecovers, SubaddThrough, StarConversion] at *
   omega
 
-/-- `CondDataProcessing` holds in any frame whose slack absorbs `h + 4·slack`; stated as an
-    implication so the frame's own slack is not redefined. -/
-theorem condDataProcessing_of_steps (D X Y : F.Obj)
-    (hup : SymStarUpper F D Y) (hlo : SymStarLower F X Y) (hrec : StarRecovers F X Y)
-    (hsub : SubaddThrough F D X Y) (hconv : StarConversion F D Y 0)
-    (habs : 4 * (F.slack : Int) ≤ (F.slack : Int)) :
-    CondDataProcessing F D X Y := by
-  have h := cond_data_processing_from_steps F D X Y 0 hup hlo hrec hsub hconv
-  simp only [CondDataProcessing]
-  omega
-
 /-- **Recoverable-description overlap from the proof steps** (WP0218). With the data-processing
     step derived rather than assumed:
     `I_K(X:Y) ≥ K D − K(D|X) − K(D|Y) − h − 5·slack`, where `h` is the logarithmic
