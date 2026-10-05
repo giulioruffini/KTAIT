@@ -707,3 +707,13 @@ surjective, so `Equiv.ofBijective` gives the permutation and `R i j ↔ σ i = j
 uniqueness. Exact-`k` steps are `σ ^ k` by induction with `pow_succ` and `Equiv.Perm.mul_apply`;
 `rintro` sees through the recursive `Steps` definition. Predecessor uniqueness uses
 `Equiv.eq_symm_apply`. The linter wants `change`, not `show`, when the goal is rewritten.
+
+### 2026-10-05 — Overlap lemma from the proof steps (Localization.lean)
+
+The WP0218 ship review found the overlap lemma described as "machine-checked in exact form" while
+its Lean proof assumed `CondDataProcessing`, the substantive step, with a constant 2·slack where the
+paper has O(log). The new declarations derive that step from the manuscript's elementary estimates
+(starred symmetry both ways, recovery from X*, subadditivity through D, plain-to-starred conversion
+with explicit allowance h), all `omega` after unfolding. The log allowance stays a separate
+parameter, so the Lean remainder h + 5·slack matches the paper's O(log(N+2)) honestly.
+

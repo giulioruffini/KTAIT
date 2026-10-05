@@ -218,5 +218,82 @@ theorem recurrent_recoverability_persistence_bound (D St Stau : F.Obj)
   unfold NMAI
   gcongr
 
+/-! ### The data-processing step derived from the manuscript's proof steps
+
+The overlap lemma above assumes `CondDataProcessing`, which is its substantive step. The
+declarations below derive that step from the elementary estimates the WP0218 proof uses,
+keeping the logarithmic star-conversion allowance `h` separate from the constant slack:
+symmetry of information in starred form (both directions used), recovery of `X` from `X*`,
+subadditivity through `D`, and conversion of plain conditioning on `D` to `D*`. -/
+
+/-- Symmetry of information, upper form: `I_K(D:Y) ≤ K Y − K(Y | D*) + slack`. -/
+def SymStarUpper (D Y : F.Obj) : Prop :=
+  IK F D Y ≤ (F.K Y : Int) - (F.cond Y (F.star D) : Int) + (F.slack : Int)
+
+/-- Symmetry of information, lower form: `I_K(X:Y) ≥ K Y − K(Y | X*) − slack`. -/
+def SymStarLower (X Y : F.Obj) : Prop :=
+  (F.K Y : Int) - (F.cond Y (F.star X) : Int) - (F.slack : Int) ≤ IK F X Y
+
+/-- `X*` reconstructs `X`, so conditioning on it costs at most a constant more:
+    `K(Y | X*) ≤ K(Y | X) + slack`. -/
+def StarRecovers (X Y : F.Obj) : Prop :=
+  (F.cond Y (F.star X) : Int) ≤ (F.cond Y X : Int) + (F.slack : Int)
+
+/-- Subadditivity through `D`: `K(Y | X) ≤ K(D | X) + K(Y | D) + slack`. -/
+def SubaddThrough (D X Y : F.Obj) : Prop :=
+  (F.cond Y X : Int) ≤ (F.cond D X : Int) + (F.cond Y D : Int) + (F.slack : Int)
+
+/-- Plain-to-starred conversion with an explicit allowance `h` (of order `log(N+2)` for the
+    classical prefix machine): `K(Y | D) ≤ K(Y | D*) + h`. -/
+def StarConversion (D Y : F.Obj) (h : Int) : Prop :=
+  (F.cond Y D : Int) ≤ (F.cond Y (F.star D) : Int) + h
+
+/-- **Conditional data processing from the proof steps.** The five elementary estimates give
+    `I_K(D:Y) ≤ I_K(X:Y) + K(D | X) + h + 4·slack`: the content of `CondDataProcessing`, with the
+    logarithmic allowance `h` exposed instead of hidden in the slack. -/
+theorem cond_data_processing_from_steps (D X Y : F.Obj) (h : Int)
+    (hup : SymStarUpper F D Y) (hlo : SymStarLower F X Y) (hrec : StarRecovers F X Y)
+    (hsub : SubaddThrough F D X Y) (hconv : StarConversion F D Y h) :
+    IK F D Y ≤ IK F X Y + (F.cond D X : Int) + h + 4 * (F.slack : Int) := by
+  simp only [SymStarUpper, SymStarLower, StarRecovers, SubaddThrough, StarConversion] at *
+  omega
+
+/-- `CondDataProcessing` holds in any frame whose slack absorbs `h + 4·slack`; stated as an
+    implication so the frame's own slack is not redefined. -/
+theorem condDataProcessing_of_steps (D X Y : F.Obj)
+    (hup : SymStarUpper F D Y) (hlo : SymStarLower F X Y) (hrec : StarRecovers F X Y)
+    (hsub : SubaddThrough F D X Y) (hconv : StarConversion F D Y 0)
+    (habs : 4 * (F.slack : Int) ≤ (F.slack : Int)) :
+    CondDataProcessing F D X Y := by
+  have h := cond_data_processing_from_steps F D X Y 0 hup hlo hrec hsub hconv
+  simp only [CondDataProcessing]
+  omega
+
+/-- **Recoverable-description overlap from the proof steps** (WP0218). With the data-processing
+    step derived rather than assumed:
+    `I_K(X:Y) ≥ K D − K(D|X) − K(D|Y) − h − 5·slack`, where `h` is the logarithmic
+    star-conversion allowance and the five slacks are the mutual-information chain rule and the
+    four constant estimates. -/
+theorem recoverable_description_overlap_steps (D X Y : F.Obj) (h : Int)
+    (hmut : MutualChain F D Y)
+    (hup : SymStarUpper F D Y) (hlo : SymStarLower F X Y) (hrec : StarRecovers F X Y)
+    (hsub : SubaddThrough F D X Y) (hconv : StarConversion F D Y h) :
+    IK F X Y ≥ (F.K D : Int) - (F.cond D X : Int) - (F.cond D Y : Int) - h
+      - 5 * (F.slack : Int) := by
+  have hdp := cond_data_processing_from_steps F D X Y h hup hlo hrec hsub hconv
+  simp only [MutualChain] at hmut
+  omega
+
+/-- **Recurrent recoverability from the proof steps.** `ε`-recovery of a named description at two
+    times gives `I_K(S_t : S_{t+τ}) ≥ K D − ε_t − ε_{t+τ} − h − 5·slack`. -/
+theorem recurrent_recoverability_steps (D St Stau : F.Obj) (epst epstau h : Int)
+    (hmut : MutualChain F D Stau)
+    (hup : SymStarUpper F D Stau) (hlo : SymStarLower F St Stau) (hrec : StarRecovers F St Stau)
+    (hsub : SubaddThrough F D St Stau) (hconv : StarConversion F D Stau h)
+    (ht : (F.cond D St : Int) ≤ epst) (htau : (F.cond D Stau : Int) ≤ epstau) :
+    IK F St Stau ≥ (F.K D : Int) - epst - epstau - h - 5 * (F.slack : Int) := by
+  have hov := recoverable_description_overlap_steps F D St Stau h hmut hup hlo hrec hsub hconv
+  omega
+
 end Localization
 end KTAIT

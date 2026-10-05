@@ -890,6 +890,17 @@ direction only: no converse extraction of generic MAI is stated, and recurrent
 recoverability is a sufficient mechanism for persistence, not its definition. The
 plain-conditioned sibling of \lean{IS.common\_semantics\_bound} (which conditions on
 shortest programs); the two consume different named hypotheses and are kept separate.
+\item \lean{Localization.recoverable\_description\_overlap\_steps} derives the overlap lemma's
+data-processing step instead of assuming it (WP0218 review, October 2026). From starred symmetry
+of information in both directions (\lean{SymStarUpper}, \lean{SymStarLower}), recovery of $X$
+from $X^*$ (\lean{StarRecovers}), subadditivity through $D$ (\lean{SubaddThrough}), and the
+plain-to-starred conversion with an explicit allowance $h$ (\lean{StarConversion}),
+\lean{cond\_data\_processing\_from\_steps} gives $\Ik(D{:}Y)\le\Ik(X{:}Y)+K(D|X)+h+4s$, and
+the overlap and recurrent bounds follow with remainder $h+5s$
+(\lean{recurrent\_recoverability\_steps}). The logarithmic allowance $h$
+is the manuscript's $O(\log(N+2))$, kept separate from the constant slack $s$;
+\lean{condDataProcessing\_of\_steps} recovers the original named hypothesis when $h=0$ and
+the slack absorbs the constants.
 \item \lean{TokenTransport} --- WP0218's canonical token transport calculus, finite and
 Mathlib-free. \lean{cnotAW\_involutive}, \lean{cnotWA\_involutive},
 \lean{swap\_involutive}, and \lean{gateFor\_involutive} check the reversible gate
@@ -1659,6 +1670,12 @@ ALB (reversible) & localization sum moves $\le\varepsilon+\mathrm{slack}$ under 
   \staxiom\ (\lean{CondDataProcessing}) \\
 Overlap lemma & $\Ik(X{:}Y)\ge K D-K(D|X)-K(D|Y)-2\,\mathrm{slack}$ & KT &
   \stproved\ (\lean{recoverable\_description\_overlap}) \\
+--- data-processing step derived & $\Ik(D{:}Y)\le\Ik(X{:}Y)+K(D|X)+h+4\,\mathrm{slack}$ from starred symmetry (both forms), recovery from $X^*$, subadditivity through $D$, and plain-to-starred conversion with log allowance $h$ & STD &
+  \stproved\ (\lean{cond\_\allowbreak data\_\allowbreak processing\_\allowbreak from\_\allowbreak steps}, \lean{condDataProcessing\_\allowbreak of\_\allowbreak steps}) \\
+Overlap lemma from the proof steps & $\Ik(X{:}Y)\ge K D-K(D|X)-K(D|Y)-h-5\,\mathrm{slack}$, $h$ explicit & KT &
+  \stproved\ (\lean{recoverable\_\allowbreak description\_\allowbreak overlap\_\allowbreak steps}) \\
+Recurrent recoverability from the proof steps & $\Ik(S_t{:}S_{t+\tau})\ge K D-\varepsilon_t-\varepsilon_{t+\tau}-h-5\,\mathrm{slack}$ & KT &
+  \stproved\ (\lean{recurrent\_\allowbreak recoverability\_\allowbreak steps}) \\
 Recurrent recoverability & $\varepsilon$-recoverable $D_P$ at two times bounds cross-time $\Ik$, $\mathrm{Pers}$ & KT &
   \stproved\ (\lean{recurrent\_recoverability\_implies\_mai\_bound}, \lean{..\_persistence\_bound}) \\
 Gates involutive & $C_{A\to W}$, $C_{W\to A}$, SWAP, and mode gates self-inverse & KT &
