@@ -282,3 +282,6 @@ WP0218-v0.7.0-draft7 | ../../BCOM WPs and Blogs/working_drafts/WP0218-Algorithmi
 WP0218-v0.7.0-draft8 | ../../BCOM WPs and Blogs/working_drafts/WP0218-Algorithmic information conservation/build/revision/WP0218_v0.7.0-draft8.tex
 # Approved readability revision from draft 8; all mathematical results and proof pin fc60f68 unchanged.
 WP0218-v0.7.0-draft9 | ../../BCOM WPs and Blogs/working_drafts/WP0218-Algorithmic information conservation/build/revision/WP0218_v0.7.0-draft9.tex
+
+# Conservation-first framing repair from draft 9; mathematical statements and proof pin fc60f68 unchanged.
+WP0218-v0.7.0-draft10 | ../../BCOM WPs and Blogs/working_drafts/WP0218-Algorithmic information conservation/build/revision/WP0218_v0.7.0-draft10.tex
