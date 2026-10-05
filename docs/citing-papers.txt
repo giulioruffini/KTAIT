@@ -276,3 +276,5 @@ WP0218-v0.7.0-draft4 | ../../BCOM WPs and Blogs/working_drafts/WP0218-Algorithmi
 WP0218-v0.7.0-draft5 | ../../BCOM WPs and Blogs/working_drafts/WP0218-Algorithmic information conservation/build/revision/WP0218_v0.7.0-draft5.tex
 # Motivation for local copying and clearing under joint conservation; mathematics and pin unchanged.
 WP0218-v0.7.0-draft6 | ../../BCOM WPs and Blogs/working_drafts/WP0218-Algorithmic information conservation/build/revision/WP0218_v0.7.0-draft6.tex
+# Conservation and exact localization identity before the introductory gate; existing results at 00c3127.
+WP0218-v0.7.0-draft7 | ../../BCOM WPs and Blogs/working_drafts/WP0218-Algorithmic information conservation/build/revision/WP0218_v0.7.0-draft7.tex
