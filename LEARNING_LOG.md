@@ -734,3 +734,7 @@ but with nonnegative costs those hypotheses hold only when the slack and allowan
 caught it; both are deleted. Cite the explicit-error forms. Rule: do not add a "recover the old
 hypothesis" adapter whose side condition asks a frame constant to dominate a multiple of itself.
 
+
+## 2026-10-05 — WP0216 draft19 import registration
+
+Registered the live temporal-persistence source for the recurrent-recovery anchors. WP0216 now cites the ordered APB, grouped capacity, and recurrence results at the shared fc60f68 snapshot; the manuscript build checks that all four active provenance files use that pin. No Lean statements changed.

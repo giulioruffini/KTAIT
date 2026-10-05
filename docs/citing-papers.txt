@@ -256,7 +256,8 @@ WP0203-manuscript | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_
 WP0203-manuscript-entropy | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/manuscript/entropy/wp0203_entropy.tex
 WP0203-manuscript-bcom | ../../BCOM WPs and Blogs/working_drafts/WP0203-The_ART_Tail_Does_Not_Follow/manuscript/bcom/wp0203_bcom.tex
 
-# WP0216 v18.0-draft2: shared live sources; explicit reconstruction allowance and output/descriptor bounds at cbe4a43.
+# WP0216 v18.0-draft19: live sources; ordered APB and recurrent recovery imported from WP0218, all active proof references at fc60f68.
+WP0216-manuscript-03_algorithmic_persistence | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/manuscript/source/03_algorithmic_persistence.tex
 WP0216-manuscript-04_regulation_agent | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/manuscript/source/04_regulation_agent.tex
 WP0216-manuscript-06_thermodynamic_cost | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/manuscript/source/06_thermodynamic_cost.tex
 WP0216-manuscript-08_predictions | ../../BCOM WPs and Blogs/working_drafts/WP216-Pattern_Persist_PLR/manuscript/source/08_predictions.tex
