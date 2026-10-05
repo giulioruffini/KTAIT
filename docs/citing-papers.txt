@@ -270,3 +270,5 @@ WP0218-v0.7.0-draft1 | ../../BCOM WPs and Blogs/working_drafts/WP0218-Algorithmi
 WP0218-v0.7.0-draft2 | ../../BCOM WPs and Blogs/working_drafts/WP0218-Algorithmic information conservation/build/revision/WP0218_v0.7.0-draft2.tex
 # Approved APB-first manuscript; ordered balance and orbit results at proof pin 3828a8b.
 WP0218-v0.7.0-draft3 | ../../BCOM WPs and Blogs/working_drafts/WP0218-Algorithmic information conservation/build/revision/WP0218_v0.7.0-draft3.tex
+# StateGraph return integrated; support, exact-step layers, and orbit labels pinned at 00c3127.
+WP0218-v0.7.0-draft4 | ../../BCOM WPs and Blogs/working_drafts/WP0218-Algorithmic information conservation/build/revision/WP0218_v0.7.0-draft4.tex
