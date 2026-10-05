@@ -697,3 +697,13 @@ The cost of a learned model belongs to the later records, alongside parameters a
 Three conditional subadditivity estimates charge all three; combining the innovation lower
 bound with grouped completion gives four slacks, distinct from the five-record APB's five.
 Finite list recovery is checked separately from the assumed conditional incompressibility.
+
+### 2026-10-05 — Singleton support layers and permutations (StateGraph.lean)
+
+WP0218's Appendix E passes from Susskind's "one successor, one predecessor" to a bijection and
+its conserved orbit label. The relation-level proof needs no finiteness: the unique successor
+defines `f`, unique predecessors make it injective, and every state's predecessor makes it
+surjective, so `Equiv.ofBijective` gives the permutation and `R i j ↔ σ i = j` follows from
+uniqueness. Exact-`k` steps are `σ ^ k` by induction with `pow_succ` and `Equiv.Perm.mul_apply`;
+`rintro` sees through the recursive `Steps` definition. Predecessor uniqueness uses
+`Equiv.eq_symm_apply`. The linter wants `change`, not `show`, when the goal is rewritten.

@@ -78,6 +78,7 @@ declarations by source paper.
 | WP0216 | Pattern, Persist! ontology; **Algorithmic Persistence Balance** and the flow corollaries | `persists_iff_nmai`, `algorithmic_persistence_balance_with_error`, `bounded_persistence_forces_flow_with_error` | `PatternPersist`, `PersistenceFlow` |
 | WP0218 | Localization algebra, reversible balance, recoverable-description overlap; canonical token transport | `localization_conserved_exact`, `recoverable_description_overlap`, `transport_plan_exists` | `Localization`, `TokenTransport` |
 | WP0218 (revision) | Reconstruction and capacity with neutral names: grouped and ordered completion balances, bounded internal budgets force external information; the five-record APB as the ordered instance | `grouped_completion_balance`, `ordered_bounded_internal_forces_external`, `apb_flow_from_ordered` | `CompletionLedger` |
+| WP0218 App. E | Singleton support layers are the graph of a permutation; exact-step layers are singletons; conserved orbit label | `unique_iff_permGraph`, `steps_unique_succ`, `orbit_label_of_unique` | `StateGraph` |
 | WP0218 (revision) | Acquired model, parameter, and residual costs; lossless recoding; innovation capacity and finite repeated-block recovery | `model_parameter_residual_bound`, `innovations_force_complement`, `block_residual_recovery` | `ModelAccounting` |
 | WP0215 | Common-semantics bound; boundary vs. organization; finite-horizon unfolding | `common_semantics_bound`, `boundary_eq_of_iso`, `no_fixed_unfolding_covers_all_horizons` | `IS/CommonSemantics`, `IS/Boundary`, `IS/Unfolding` |
 | WP0229 | Deterministic experiments, observability, coordinate overwrites | `observable_conjugacy`, `overwrite_rigidity` | `ComputationCores` |
@@ -228,6 +229,7 @@ KTAIT/
 ├── PatternPersist, PersistenceFlow                         — WP0216
 ├── Localization, TokenTransport                            — WP0218
 ├── CompletionLedger                                        — WP0218 revision (completion account)
+├── StateGraph                                              — WP0218 App. E (support graphs, permutations)
 ├── OrbitLabel, NoetherFlow, ComputationCores               — orbit labels, Noether core, WP0229
 ├── IS/  (CommonSemantics, Boundary, Unfolding)             — WP0215
 └── CertifiedPrograms/  (Certification, Marking, Encoding, Counting) — WP0228

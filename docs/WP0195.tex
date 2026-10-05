@@ -352,6 +352,7 @@ Mathlib~v4.31.0. Modules:
 \lean{PatternPersist.lean} & PP! ontology on \lean{AITFrame} & agenthood per cell, not automatic; Prop.~3 inherited \\
 \lean{PersistenceFlow.lean} & \lean{flowTuple}, \lean{FlowSplit5}, \lean{CIKCeiling}, \lean{ReconstructionBound}, \lean{noGapFrame} & APB suite: persistence balance, flow corollaries, self-code overload, no-gap witness (roadmap v2) \\
 \lean{CompletionLedger.lean} & \lean{ctxAfter}, \lean{orderedInfo}, \lean{orderedCost}, \lean{OrderedCeilings}, \lean{OrderedSplit} & WP0218 revision: reconstruction and capacity with neutral names, grouped and ordered forms; the five-record APB as the ordered instance \\
+\lean{StateGraph.lean} & \lean{UniqueSucc}, \lean{UniquePred}, \lean{IsPermGraph}, \lean{Steps} & WP0218 Appendix E: singleton support layers are the graph of a permutation; exact-step layers are singletons; the orbit label is conserved along allowed transitions \\
 \lean{ModelAccounting.lean} & conditional recoding, acquired model and residual costs; repeated-block records & WP0218 revision: compact accommodation and incompressible innovations, conditional AIT consequences and finite recovery checks \\
 \lean{Localization.lean} & \lean{localization\_left/mutual/right}, \lean{CondDataProcessing} & WP0218 localization algebra, reversible balance, recoverable-description overlap, persistence bound \\
 \lean{TokenTransport.lean} & \lean{Mode}, \lean{LocalizationProfile}, \lean{LocalizationPlan}, \lean{nwPlan}, \lean{natAbsDiff} & WP0218 canonical token transport: gates, plans, minimum moved mass (finite, Mathlib-free) \\
@@ -748,6 +749,18 @@ five-record APB is the instance $[Z^+,\mathcal W^+,\sigma,a,\Xi]$ with $k=3$:
 \lean{bounded\_persistence\_forces\_flow\_with\_error} with $(2+3)s=5s$. No temporal
 conservation or reversibility premise appears; the account applies to irreversible
 realizations.
+\item \lean{StateGraph.unique\_iff\_permGraph} and its suite check the support-level form of
+Susskind's conservation of information used in WP0218's Appendix E. For a transition-support
+relation $R$ on any state space (the empty one included), every state has exactly one allowed
+successor and exactly one allowed predecessor (\lean{UniqueSucc}, \lean{UniquePred}) if and
+only if $R$ is the graph of a permutation (\lean{IsPermGraph};
+\lean{permGraph\_of\_unique}, \lean{unique\_of\_permGraph}). The exact-$k$-step relation
+\lean{Steps} is then the $k$-th power of that permutation (\lean{steps\_iff\_pow}), so every
+exact-time future and past layer is a singleton (\lean{steps\_unique\_succ},
+\lean{steps\_unique\_pred}), and the permutation's orbit label from \lean{OrbitLabel} is
+conserved along every allowed transition (\lean{orbit\_label\_of\_unique}). Pure relation and
+permutation algebra, no AIT frame. The weaker bounded-advice form that WP0218's reversible
+invariance lemma consumes is deliberately not identified with the singleton condition.
 \item \textbf{Compressive models in the completion account.}
 \lean{ModelAccounting.lossless\_recode\_complexity} bounds the conditional-complexity
 change between mutually reconstructible records by $\varepsilon+s$.
@@ -1605,6 +1618,15 @@ Ordered: two external records & $2\max\{J_{E_1},J_{E_2}\}\ge$ the same right-han
   \stproved\ (\lean{ordered\_\allowbreak two\_\allowbreak external\_\allowbreak pigeonhole}) \\
 Five-record APB is the ordered instance & $[Z^+,\mathcal W^+,\sigma,a,\Xi]$, $k=3$, $(2+3)s=5s$ & KT &
   \stproved\ (\lean{flowSplit5\_\allowbreak iff\_\allowbreak orderedSplit}, \lean{orderedCost\_\allowbreak internal\_\allowbreak three}, \lean{apb\_\allowbreak flow\_\allowbreak from\_\allowbreak ordered}) \\
+\midrule
+\multicolumn{4}{@{}l}{\textit{State graphs and permutations --- WP0218 Appendix E (StateGraph)}}\\
+\midrule
+Singleton support is a permutation graph & unique successor and predecessor at every state $\iff$ $R(i,j)\iff\sigma(i)=j$ for a permutation $\sigma$; empty space included & KT &
+  \stproved\ (\lean{permGraph\_\allowbreak of\_\allowbreak unique}, \lean{unique\_\allowbreak of\_\allowbreak permGraph}, \lean{unique\_\allowbreak iff\_\allowbreak permGraph}) \\
+Exact-step layers & $k$ exact steps $\iff\sigma^k$; every future and past layer is a singleton & KT &
+  \stproved\ (\lean{steps\_iff\_pow}, \lean{steps\_\allowbreak unique\_\allowbreak succ}, \lean{steps\_\allowbreak unique\_\allowbreak pred}) \\
+Conserved orbit label from singleton support & the permutation's \lean{genEnergy} is invariant along every allowed transition & KT &
+  \stproved\ (\lean{orbit\_\allowbreak label\_\allowbreak of\_\allowbreak unique}) \\
 \midrule
 \multicolumn{4}{@{}l}{\textit{Compressive models and innovation capacity --- WP0218 (ModelAccounting)}}\\
 \midrule
