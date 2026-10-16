@@ -288,8 +288,8 @@ $P(x\mid p)=\mathbf{1}\{U(p)=x\}$, evidence $P(x)=m(x)$.\\
 and minimal sufficient statistics are not locatable.
 
 \smallskip
-WP0007 consumes three of these in distinct forms, and \lean{AlgorithmicEmergence} keeps them
-apart because they are not interchangeable: \lean{KUncomputable} ($K$ is not computable),
+WP0007 consumes three basic forms of these, and \lean{AlgorithmicEmergence} keeps them
+apart because they are not interchangeable (its module header lists the four refinements): \lean{KUncomputable} ($K$ is not computable),
 \lean{KThresholdUndecidable} (the predicate $K(x)<b$ is not \emph{decidable} --- it is
 semidecidable, which is the whole content of the discovery barrier), and
 \lean{KNotApproximable} (no computable $f$ satisfies $K\le f\le K+c$, which does \emph{not}
@@ -1116,8 +1116,11 @@ semantics for programs, a halting-in-$t$-steps predicate and the dovetailing con
 theorem rules out a \emph{total} procedure that halts on every input while exploiting every
 available compression; semidecidability is the complementary positive fact about partial search,
 so nothing proved here rests on it.
-\item \lean{AlgorithmicEmergence.no\_universal\_emergence\_constructor} --- WP0007's
-inheritance proposition: on the unrestricted computable-generator class, a total constructor
+\item \lean{AlgorithmicEmergence.no\_universal\_emergence\_constructor} --- the abstract
+emergence transfer of WP0007 drafts up to v0.31. It does \emph{not} cover the accepted edition's
+proposition on discovery and regret barriers for reusable models (periodic-block counting under
+the revised definition), which that paper proves at
+paper level only. On the unrestricted computable-generator class, a total constructor
 guaranteed to return a qualifying emergent generator whenever one exists decides a set sandwiched
 between two compressibility classes, and no decidable set separates them. The
 compression-to-emergence embedding enters as named hypotheses at two raw-length thresholds
@@ -1140,18 +1143,20 @@ without building the dovetailer; the AIT input is again \lean{KThresholdUndecida
 \item \lean{AlgorithmicEmergence.identification\_barrier} --- WP0007's optimality barrier: no
 computable
 procedure returns, for every finite micro-experiment, a shortest program for its macrodata.
-``Reduction is not construction.'' The reduction runs along the \lean{Faithful} shift-and-read
-embedding of WP0007 Theorem~1; the AIT input is the uncomputability of $K$, assumed as the named
+``Reduction is not construction.'' The reduction runs along any \lean{Faithful} embedding;
+WP0007 uses the one-observation identity experiment $\nu_y$, and the shift-and-read register of its
+residual-information barrier is another instance; the AIT input is the uncomputability of $K$, assumed as the named
 hypothesis \lean{KUncomputable}. \lean{identification\_barrier\_conditional} is the same statement with
 complexity taken conditional on the microlaw and observation map; it is a variant kept for the
 development's own sake, and is \emph{not} what WP0007's conditional-form corollary says --- that
 is \lean{conditional\_complexity\_uncomputable} above. WP0007's numbering has shifted three times
 as results were inserted ahead of others, so entries here name results rather than number them.
-\item \lean{AlgorithmicEmergence.no\_additive\_approximation} --- WP0007 Proposition~1: relaxing
+\item \lean{AlgorithmicEmergence.no\_additive\_approximation} --- the unconditional form of
+WP0007's optimality barrier: relaxing
 ``shortest'' to ``within a fixed additive constant $c$ of shortest'' does not restore
 computability, for any $c$. The AIT input here is \lean{KNotApproximable}, which is \emph{not}
-implied by \lean{KUncomputable} as stated --- it is the Berry argument run with slack, proved in
-WP0007 Proposition~1 and assumed here.
+implied by \lean{KUncomputable} as stated --- it is the Berry argument run with slack, and follows
+from \lean{KNotApproximableOnCompressible} below. Assumed here.
 \item \lean{AlgorithmicEmergence.no\_additive\_approximation\_compressible} --- WP0007's
 optimality barrier in the form the paper states: unbounded additive regret already on
 \emph{compressible} records. Strictly stronger than the unconditional statement above, and
@@ -1160,9 +1165,14 @@ the branch where a compression gap exists. The AIT input is
 \lean{KNotApproximableOnCompressible}, the padded-witness strengthening of
 \lean{KNotApproximable}: running the Berry-with-slack diagonal over $\mathrm{pad}(z)=z0^{|z|}$,
 which is compressible for long $z$ while $K(\mathrm{pad}(z))\ge K(z)-O(1)$ remains unbounded,
-yields a compressible witness. Proved in WP0007's optimality barrier and assumed here.
-\item \lean{AlgorithmicEmergence.no\_bounded\_regret\_emergence\_constructor} --- WP0007's
-inheritance proposition, part~(b): a total valid scientific-model constructor cannot keep the
+yields a compressible witness. Assumed here; the argument is in the declaration's docstring.
+WP0007 (accepted edition) does not contain it: its optimality barrier is proved from the
+blind-spot proposition, which applies to valid constructors and uses injectivity, not to an
+arbitrary computable $f$. \lean{no\_additive\_approximation\_compressible\_finite\_horizon} and
+\lean{no\_universal\_compressor\_finite\_horizon} specialize the two barriers to a record-preserving
+embedding $e\circ\nu$, WP0007's finite-horizon inheritance corollary.
+\item \lean{AlgorithmicEmergence.no\_bounded\_regret\_emergence\_constructor} --- part~(b) of
+the same abstract transfer, likewise not part~(b) of the accepted WP0007's reusable-model proposition: a total valid scientific-model constructor cannot keep the
 regret of its \emph{returned model code} below any fixed bound, even on instances that admit a
 qualifying scientific model. Composes the fixed-overhead compiler
 (\lean{CompilerOverhead}) with the fixed-slack non-approximability input
@@ -1178,10 +1188,15 @@ every valid description is at least $K$. The analytic inputs are named hypothese
 distinct records, and only finitely many programs are short), \lean{CompetitorBound} and
 \lean{BoundOutrun} (the competitor is describable from the search index, so its length is
 $O(\log k)$), and \lean{WitnessCompresses} (the padded program beats the literal length by the
-declared slack).
+declared slack). This declaration is the arithmetic core: it does not say that the two programs
+print the record, and it requires compression at every index. The statement matching WP0007's
+corollary is \lean{relational\_optimality\_barrier\_valid}, which carries the output predicate
+$U(p)=x$ for both programs into the conclusion and needs compression only from some index on
+(\lean{WitnessCompressesEventually}), as the paper's estimate gives.
 \item \lean{AlgorithmicEmergence.counting\_bound} / \lean{few\_low\_complexity\_strings} /
-\lean{most\_states\_incompressible} --- WP0007's residual-information barrier, proved outright
-rather than assumed: distinct strings need distinct shortest programs, so fewer than $2^{m}$
+\lean{most\_states\_incompressible} --- the counting step of WP0007's residual-information
+barrier, proved outright rather than assumed (the shift-register identity $x(\mu_{n,y})=y$ and the
+injective shortest-program map are supplied when it is instantiated): distinct strings need distinct shortest programs, so fewer than $2^{m}$
 strings have a shortest conditional program of length $<m$, and the complement is therefore more
 than a $1-2^{-d}$ fraction of the state space. The bound holds for every \emph{fixed} conditioning
 string shared across the ensemble and does not depend on it --- no choice of a common microlaw and
@@ -1189,8 +1204,8 @@ observation map improves the fraction.
 \item \lean{AlgorithmicEmergence.conditional\_complexity\_uncomputable} --- WP0007's conditional-form corollary:
 conditional complexity relative to $(\mathcal D_n,\rho_n,n,C)$ is not computable (WP0007 v0.8.0 notation: $\rho$ the projection, $C$ the observer frame). The conditioning
 \emph{varies with the input}, so this does not follow from uncomputability at a fixed conditioning
-string; the formalization carries the paper's diagonal argument, with the counting witness and the
-constant-size search as its two named hypotheses.
+string; the formalization checks the closing step of the paper's diagonal argument, with the
+counting witness and the constant-size search as its two named hypotheses.
 \item \lean{AlgorithmicEmergence.compression\_of\_good\_model} /
 \lean{sequential\_codelength\_eq\_logloss} --- WP0007's bridge from exact description to
 scientific theory, which is asymmetric. A short program for one record need not be a useful
@@ -1281,7 +1296,10 @@ exactly three barriers and bills this as classical): certified complexity lower 
 capped at a constant fixed by the theory and the reference machine, so no macromodel longer
 than that constant is certifiably shortest for any record. Same obstruction as
 \lean{chaitin\_blocks\_minimality}, stated for macromodel optimality rather than self-models.
-Uncomputability is uniform over the family; unprovability is per-instance.
+Uncomputability is uniform over the family; unprovability is per-instance. Chaitin's bound is
+the named hypothesis and Lean checks only the closing step; the step from capped lower bounds to
+uncertifiable shortness is paper-level. \lean{faithful\_comp} records that a record-preserving
+embedding composed with a faithful one is faithful.
 \item \lean{algorithmic\_emergence} --- \textbf{superseded.} This declaration stated WP0007's
 former ``no algorithm finds the optimal coarse-graining'' result. WP0007~v0.3.0 withdrew that
 theorem: the objective is degenerate under a constant observation map, the target moves as $C$

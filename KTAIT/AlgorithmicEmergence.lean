@@ -11,10 +11,13 @@ import Mathlib
 WP0007's three barriers between a microscopic generator and a compressive macroscopic model.
 
 A *finite micro-experiment* `μ` carries an update rule, an initial microstate, an observation
-map and a horizon; `data μ` is the finite macrodata record it produces. WP0007's residual-information barrier
-supplies a computable *embedding* `emb : Str → Exp` — the shift-and-read register seeded with
-`y` — whose macrohistory is `y` itself (`Faithful`). Everything below is a reduction along
-that embedding.
+map and a horizon; `data μ` is the finite macrodata record it produces. The computational
+barriers are reductions along a computable *embedding* `emb : Str → Exp` whose macrohistory is
+`y` itself (`Faithful`). WP0007 (accepted Entropy edition) instantiates it with the
+one-observation identity experiment `ν_y` of its Eq. (string-embedding), the identity update with
+full-state readout; the shift-and-read register of the residual-information barrier is another
+instance. The theorems hold for any faithful embedding. The paper defines `ν_y` for nonempty `y`
+and hard-codes the empty string; take `Str` to be the nonempty strings to match it exactly.
 
 * `counting_bound` / `few_low_complexity_strings` / `most_states_incompressible` — the
   **residual-information barrier**, proved outright: distinct strings need distinct shortest
@@ -31,8 +34,11 @@ that embedding.
 * `compressor_of_threshold` — the hierarchy as a lemma, recorded because it is easy to assert
   backwards: a threshold procedure specializes to a universal compressor, so the raw-length
   statement is the stronger one and is *not* a corollary of the arbitrary-`b` theorem.
-* `no_universal_emergence_constructor` — the **inheritance proposition**: on the unrestricted
-  computable-generator class, a total constructor guaranteed to return a qualifying emergent
+* `no_universal_emergence_constructor` — the **earlier abstract emergence transfer**. It does
+  not cover the revised reusable-model discovery and regret proposition of the accepted WP0007 (periodic-block counting, joint
+  codes), which the paper proves at paper level only (its Appendix F.3); do not cite it for that
+  proposition. On the unrestricted computable-generator class, a total constructor guaranteed to
+  return a qualifying emergent
   generator whenever one exists would decide a separator between two compressibility classes.
   The wrap/unwrap
   embedding enters as hypotheses (`WrapExists`, `UnwrapValid`, `UnwrapBeats`,
@@ -99,18 +105,26 @@ closure property the reductions consume (post-composing a computable solver with
 embedding and the computable length function yields a computable numeric function).
 
 The AIT inputs enter as named hypotheses, never as global `axiom`s — the discipline of
-`KTAIT.Basic`. There are three, and they are different facts:
+`KTAIT.Basic`. They are different facts and are kept apart. The three basic ones:
 
 * `KUncomputable` — `K` is not computable. Berry/diagonal; WP0007 Appendix A,
   Li–Vitányi Thm 2.3.2.
 * `KNotApproximable c` — no computable `f` satisfies `K ≤ f ≤ K + c` everywhere. This is
   *not* implied by `KUncomputable` without argument; it is the Berry argument run with slack
-  `c`, proved in WP0007's optimality barrier (unbounded additive regret). Assuming it here is the honest Level-1 reading: the
-  paper proves it, the Lean development reduces to it.
+  `c`. WP0007 does not prove it in this form: since v0.32 its optimality barrier is proved from
+  the blind-spot proposition, which concerns `|A(ν_x)|` for a *valid* `A` and uses injectivity,
+  whereas this hypothesis quantifies over every computable `f`. The proof is given at
+  `KNotApproximableOnCompressible`.
 * `KThresholdUndecidable` — the predicate `K x < b` is not decidable. Equivalent to
   `KUncomputable` (deciding it for every `b` determines `K x`), but stated in the threshold
   form the discovery barrier consumes. It *is* semidecidable, which is the whole point:
   what the barrier denies is a procedure that always halts, not one that ever succeeds.
+
+The refinements: `CompressibleUndecidable` (the diagonal slice `K x < |x|`, which implies
+`KThresholdUndecidable` by `threshold_undecidable_of_compressible`),
+`KNotApproximableOnCompressible` and `KNotApproximableOnSlackCompressible` (non-approximability
+required only on compressible strings), and `SeparatorUndecidable` (no decidable set separates
+two compressibility classes). Each docstring gives the classical argument and its source.
 
 What is NOT claimed: nothing here re-proves an AIT theorem, and nothing here concerns optimal
 *coarse-graining selection*. WP0007 treats that claim as an open problem because the unconstrained
@@ -210,10 +224,11 @@ theorem no_compression_improver {CompS2 : (Str → ℕ → Prog) → Prop} {A : 
 /-- The improver induced on strings by an experiment-level improver, along the embedding. -/
 def induced (A : Exp → ℕ → Prog) (emb : Str → Exp) : Str → ℕ → Prog := fun y b => A (emb y) b
 
-/-- **WP0007 optimality barrier, exact-optimality face (micro-to-macro form).** No total computable procedure returns, for every
-finite micro-experiment and threshold, a program for its macrodata below the threshold whenever
-one exists. The experiment-level hypotheses transport to the string level along the `Faithful`
-embedding of Theorem 1. -/
+/-- **WP0007 discovery barrier, threshold form (micro-to-macro).** No total computable procedure
+returns, for every finite micro-experiment and threshold, a program for its macrodata below the
+threshold whenever one exists. The experiment-level hypotheses transport to the string level
+along any faithful embedding `emb` (`data (emb y) = y`). The paper's arbitrary-threshold
+corollary is `no_compression_improver_of_raw`, which needs no separate undecidability input. -/
 theorem no_compression_improver_micro {CompE2 : (Exp → ℕ → Prog) → Prop} {A : Exp → ℕ → Prog}
     (hfaith : ∀ y, data (emb y) = y)
     (hlb : ∀ μ b, K (data μ) ≤ len (A μ b))
@@ -383,7 +398,10 @@ theorem threshold_undecidable_of_compressible {DecR : (Str → ℕ → Prop) →
     (hund : CompressibleUndecidable K rawlen DecR₁) :
     KThresholdUndecidable K DecR := fun hT => hund (hslice _ hT)
 
-/-- **WP0007 discovery barrier (micro-to-macro, raw-length form).** Stated abstractly over any faithful embedding `emb` with `data (emb y) = y`; the paper instantiates it with the trivial identity/full-readout experiment, the shift register being an equally valid witness. No total computable procedure returns,
+/-- **WP0007 discovery barrier (micro-to-macro, raw-length form).** Stated abstractly over any
+faithful embedding `emb` with `data (emb y) = y`; the paper instantiates it with the identity
+experiment `ν_y` (defined for nonempty `y`, so take `Str` to be the nonempty strings), the shift
+register being an equally valid witness. No total computable procedure returns,
 for every finite micro-experiment whose macrodata is compressible at all, a program shorter than
 that macrodata. -/
 theorem no_universal_compressor_micro {Exp : Type} (data : Exp → Str) (emb : Str → Exp)
@@ -409,10 +427,14 @@ theorem no_universal_compressor_micro {Exp : Type} (data : Exp → Str) (emb : S
 
 end RawLength
 
-/-! ### Inheritance: no universal emergence constructor
+/-! ### Earlier abstract emergence transfer
 
-WP0007's inheritance proposition. Algorithmic emergence demands an acquired reusable generator
-that beats its declared retained-kernel baseline. On the unrestricted computable-generator class,
+**Scope.** This section formalizes the abstract program-to-model transfer of WP0007 drafts up to
+v0.31. The accepted edition's reusable-model discovery and regret proposition uses a
+different, direct periodic-block counting proof under a revised definition, and the paper states
+that it is *not* covered by the two declarations below (Appendix F.3). They remain valid
+implications from their named hypotheses. Algorithmic emergence demands an acquired reusable
+generator that beats its declared retained-kernel baseline. On the unrestricted computable-generator class,
 ordinary lossless compression embeds through a fixed wrapper. The embedding enters abstractly:
 `WrapExists` says every string compressible below the tighter threshold admits a qualifying
 generator; `UnwrapValid` gives validity of the returned description, and `UnwrapBeats` places a
@@ -465,7 +487,8 @@ def SeparatorUndecidable : Prop :=
   ∀ P : Str → Prop,
     (∀ x, K x < rawlen₁ x → P x) → (∀ x, P x → K x < rawlen₂ x) → ¬ DecR₁ P
 
-/-- **WP0007 inheritance proposition (no universal emergence constructor).** On the unrestricted
+/-- **Abstract emergence transfer (no universal emergence constructor).** Not a formalization of
+the accepted WP0007's reusable-model discovery and regret proposition; see the section scope note. On the unrestricted
 computable-generator class, no total computable procedure is guaranteed to construct a qualifying
 emergent generator whenever one exists: composed with the fixed unwrapping, such a constructor
 would decide a set sandwiched between compressibility below `rawlen₁` and compressibility below
@@ -488,9 +511,10 @@ theorem no_universal_emergence_constructor {CompG : (Str → Gen) → Prop}
     (fun x hx => lt_of_le_of_lt (hvalid x) hx)
     (hdec hcomp)
 
-/-! ### Regret inheritance
+/-! ### Regret inheritance (abstract transfer)
 
-WP0007's inheritance proposition has a second part. Part (a) above says a scientific-model
+The abstract transfer has a second part; as above, it is not part (b) of the accepted WP0007's
+reusable-model proposition. Part (a) above says a scientific-model
 constructor cannot be guaranteed to *find* a qualifying model. Part (b) says that its returned
 code can sit arbitrarily far above `K`, even on instances that admit a qualifying model.
 
@@ -501,9 +525,11 @@ pair to a standalone program. What follows records that composition. -/
 
 /-- **AIT input 2''.** Fixed-slack refinement of `KNotApproximableOnCompressible`: no computable
 function brackets `K` within `c` even when only the strings compressible *with slack* `c₀` must be
-bracketed. Proved by the padded-witness diagonal of WP0007's optimality barrier run at slack
-`c₀`: `pad z = z 0^|z|` satisfies `K (pad z) < rawlen (pad z) - c₀` for all sufficiently long `z`
-while `K (pad z)` stays unbounded, so the diagonal witness lies on the favorable branch. -/
+bracketed. The proof is the padded diagonal given at `KNotApproximableOnCompressible`, with the
+length threshold `N₀` chosen so that `K (pad z) + c₀ < 2|z| = rawlen (pad z)` for `|z| ≥ N₀`,
+which holds because `K (pad z) ≤ |z| + O(log |z|)`. WP0007 does not contain this argument for
+arbitrary computable `f`; its Corollary (regret with a fixed compression margin) is proved from
+the blind-spot proposition for valid constructors instead. -/
 def KNotApproximableOnSlackCompressible (CompN : (Str → ℕ) → Prop)
     (rawlen : Str → ℕ) (c₀ c : ℕ) : Prop :=
   ∀ f, CompN f → ¬ (∀ y, K y + c₀ < rawlen y → K y ≤ f y ∧ f y ≤ K y + c)
@@ -514,7 +540,9 @@ the record at constant additive cost `d`. `modelcode x` is the length of the ret
 def CompilerOverhead (compiled : Str → Prog) (modelcode : Str → ℕ) (d : ℕ) : Prop :=
   ∀ x, len (compiled x) ≤ modelcode x + d
 
-/-- **WP0007 inheritance proposition, part (b): regret inheritance.** A total valid scientific
+/-- **Abstract regret transfer.** Not a formalization of part (b) of the accepted WP0007's
+reusable-model discovery and regret proposition;
+see the section scope note. A total valid scientific
 constructor cannot keep the regret of its *returned model code* below any fixed bound `r`, even
 when restricted to instances that admit a qualifying scientific model.
 
@@ -549,8 +577,9 @@ variable {Exp Str Prog : Type}
   (data : Exp → Str) (emb : Str → Exp) (K : Str → ℕ) (len : Prog → ℕ)
   (CompE : (Exp → Prog) → Prop) (CompN : (Str → ℕ) → Prop)
 
-/-- The embedding is faithful: the macrohistory of the shift-and-read experiment seeded with
-`y` is `y` itself. This is the content of the residual-information barrier's witness construction. -/
+/-- The embedding is faithful: the macrohistory of the experiment built from `y` is `y` itself.
+WP0007 uses the identity experiment `ν_y` of its Eq. (string-embedding); the shift-and-read
+register of the residual-information barrier also qualifies. -/
 def Faithful : Prop := ∀ y, data (emb y) = y
 
 /-- The reduction mechanism: post-composing a computable experiment solver with the computable
@@ -562,8 +591,9 @@ def ReductionClosure : Prop := ∀ A, CompE A → CompN (fun y => len (A (emb y)
 def KUncomputable : Prop := ¬ CompN K
 
 /-- **AIT input 2.** No computable function brackets `K` within the fixed additive constant
-`c`. Strictly stronger than `KUncomputable` as stated, and proved by the Berry argument run
-with slack (WP0007 optimality barrier). -/
+`c`. Strictly stronger than `KUncomputable` as stated. It follows from
+`KNotApproximableOnCompressible` (a bracket holding everywhere holds on compressible strings),
+whose docstring gives the proof; WP0007 does not prove it for arbitrary computable `f`. -/
 def KNotApproximable (c : ℕ) : Prop := ∀ f, CompN f → ¬ (∀ y, K y ≤ f y ∧ f y ≤ K y + c)
 
 /-- A solver is *optimal* when it returns a shortest program for every experiment's macrodata. -/
@@ -610,12 +640,14 @@ strictly stronger is what the paper's optimality barrier needs: the unconditiona
 witnessed by an incompressible string, which is the wrong branch of the paper's existence/
 construction tree.
 
-It is proved by the Berry argument run with slack over *padded* strings. Write `pad z = z 0^|z|`.
-Then `z` is computably recoverable from `pad z`, so `K (pad z) ≥ K z - O(1)`, while
-`K (pad z) ≤ |z| + O(log |z|) < 2|z| = rawlen (pad z)` for large `z`; hence every sufficiently
-long padded string is compressible while `K (pad z)` is unbounded. Running the diagonal over
-padded strings only therefore produces a *compressible* witness. See WP0007's optimality
-barrier and its proof. -/
+Proof (classical; not in WP0007, whose optimality barrier is proved from the blind-spot
+proposition for valid constructors). Write `pad z = z 0^|z|`. Then `z` is computably recoverable
+from `pad z`, so `K (pad z) ≥ K z - O(1)` is unbounded, while
+`K (pad z) ≤ |z| + O(log |z|) < 2|z| = rawlen (pad z)` for `|z| ≥ N₀`, a fixed constant. Suppose
+a computable `f` satisfies `K ≤ f ≤ K + c` on compressible strings. Given `m`, search for the
+first `z` with `|z| ≥ N₀` and `f (pad z) > m`; it exists because `f (pad z) ≥ K (pad z)` is
+unbounded. Its output `pad z_m` satisfies `m - c < f (pad z_m) - c ≤ K (pad z_m) ≤ K(m) + O(1)`,
+which fails for large `m`. -/
 def KNotApproximableOnCompressible (rawlen : Str → ℕ) (c : ℕ) : Prop :=
   ∀ f, CompN f → ¬ (∀ y, K y < rawlen y → K y ≤ f y ∧ f y ≤ K y + c)
 
@@ -689,7 +721,12 @@ explicit competitor `comp` that the constructor's output exceeds by more than `c
 
 No optimum appears in the statement or the proof. Classically this implies the numerical regret
 form, since every valid description is at least `K`; the converse needs a shortest program to exist
-as an object, which is exactly the commitment the relational form avoids. -/
+as an object, which is exactly the commitment the relational form avoids.
+
+**Scope.** This is the arithmetic core only. It does not say that `wit` and `comp` output the
+record, and `WitnessCompresses` is required at every index, whereas the paper's padded witness
+compresses only for long `z`. The statement matching WP0007's Corollary (relational optimality
+barrier) is `relational_optimality_barrier_valid`. -/
 theorem relational_optimality_barrier {rec : Idx → Str} {out : Str → Prog} {sel : ℕ → Idx}
     {comp : ℕ → Prog} {wit : Idx → Prog} {bound : ℕ → ℕ} (s : ℕ)
     (hunb : LengthUnbounded len rec out sel)
@@ -704,6 +741,43 @@ theorem relational_optimality_barrier {rec : Idx → Str} {out : Str → Prog} {
   refine ⟨k, hwit (sel k), ?_⟩
   have h1 : k < len (out (rec (sel k))) := hunb k
   have h2 : len (comp k) ≤ bound k := hcb k
+  omega
+
+/-- The explicit padded program compresses the record by more than the slack, from some index on.
+This is the form the paper's estimate `|z_k| + 2 log |z_k| + O(1) < 2|z_k| - ℓ` gives: it holds
+once the search index is large, not at every index. -/
+def WitnessCompressesEventually (rec : Idx → Str) (wit : Idx → Prog) (sel : ℕ → Idx) (s : ℕ) :
+    Prop :=
+  ∃ N, ∀ k, N ≤ k → len (wit (sel k)) + s < rawlen (rec (sel k))
+
+/-- **WP0007 relational optimality barrier, full statement.** `Out p x` reads "`U(p) = x`".
+For every slack `s` and margin `c` there is a record `x = rec (sel k)` with programs `r = wit (sel
+k)`
+and `p = comp k` such that `U(r) = x`, `|r| + s < |x|`, `U(p) = x` and `|p| + c < |A(μ)|`.
+
+Instantiation in WP0007: `Idx` the strings `z`, `rec = pad`, `out y = A(ν_y)`, `sel k = z_k` the
+first `z` with `|A(ν_{pad z})| > k` (`LengthUnbounded`, from validity and counting), `comp k` the
+fixed search program run on a self-delimiting `k` (`CompetitorBound`, `BoundOutrun`: length
+`O(log k)`), `wit z` the program holding `z` self-delimitingly and appending `|z|` zeros
+(`WitnessCompressesEventually`). The two validity hypotheses are the paper's claims that these
+programs print `pad (z_k)`; they are not derived from an operational semantics here. -/
+theorem relational_optimality_barrier_valid {rec : Idx → Str} {out : Str → Prog} {sel : ℕ → Idx}
+    {comp : ℕ → Prog} {wit : Idx → Prog} {bound : ℕ → ℕ} (Out : Prog → Str → Prop) (s : ℕ)
+    (hunb : LengthUnbounded len rec out sel)
+    (hcb : CompetitorBound len comp bound)
+    (hout : BoundOutrun bound)
+    (hwit : WitnessCompressesEventually len rawlen rec wit sel s)
+    (hwitOut : ∀ i, Out (wit i) (rec i))
+    (hcompOut : ∀ k, Out (comp k) (rec (sel k))) :
+    ∀ c, ∃ k : ℕ,
+      Out (wit (sel k)) (rec (sel k)) ∧ len (wit (sel k)) + s < rawlen (rec (sel k)) ∧
+      Out (comp k) (rec (sel k)) ∧ len (comp k) + c < len (out (rec (sel k))) := by
+  intro c
+  obtain ⟨N, hN⟩ := hwit
+  obtain ⟨k, hk⟩ := hout (c + N)
+  have h1 : k < len (out (rec (sel k))) := hunb k
+  have h2 : len (comp k) ≤ bound k := hcb k
+  refine ⟨k, hwitOut (sel k), hN k (by omega), hcompOut k, ?_⟩
   omega
 
 end Relational
@@ -739,7 +813,9 @@ direct diagonal argument, and this is its skeleton.
   (it is a component of `z_n`) and runs the search, so its output has conditional complexity
   bounded by a constant `c` independent of `n`.
 
-Instantiating at `n = c + 1` gives `c + 1 ≤ Kc (sel (c+1)) ≤ c`. -/
+Instantiating at `n = c + 1` gives `c + 1 ≤ Kc (sel (c+1)) ≤ c`. Lean checks this closing
+step; the diagonal search and its constant-size program are the content of `hconst`, argued in
+the paper. -/
 theorem conditional_complexity_uncomputable {Str : Type} {Kc : Str → ℕ}
     {CompN : (Str → ℕ) → Prop} (sel : ℕ → Str) (hsel : ∀ n, n ≤ Kc (sel n)) {c : ℕ}
     (hconst : CompN Kc → ∀ n, Kc (sel n) ≤ c) :
@@ -749,15 +825,16 @@ theorem conditional_complexity_uncomputable {Str : Type} {Kc : Str → ℕ}
   have h2 := hconst h (c + 1)
   omega
 
-/-- **WP0007, per-instance non-certifiability (a classical remark in the paper's Appendix B
-since the 2026-08-18 restructure).** Read `Cert x m` as "the formal
+/-- **WP0007, per-instance non-certifiability (the classical remark in the paper's appendix
+"Certification is theory-relative").** Read `Cert x m` as "the formal
 theory `F` certifies the lower bound `K(x) > m`". Chaitin's incompleteness theorem caps such
 certificates at a constant `c_{F,U}` fixed by the theory and the reference machine. Hence no
 macromodel longer than that constant can be certified shortest for any record, however finite.
 
-The Chaitin bound is the assumed input, exactly as in `SelfModelLimits.chaitin_blocks_minimality`,
-which is the self-model form of the same obstruction. What is proved here is the consequence for
-macromodel optimality: uncomputability is uniform over the family, unprovability is per-instance. -/
+The Chaitin bound is the assumed input `chaitin`, exactly as in
+`SelfModelLimits.chaitin_blocks_minimality`, which is the self-model form of the same
+obstruction. Lean checks only the closing step `p ≤ c_F < p`; Chaitin's theorem itself, and the
+paper's step from "certify `K x > m`" to "certify that a program is shortest", are paper-level. -/
 theorem chaitin_certification_ceiling {Str : Type} (Cert : Str → ℕ → Prop) {cF : ℕ}
     (chaitin : ∀ x m, Cert x m → m ≤ cF) {x : Str} {p : ℕ} (hp : cF < p) :
     ¬ Cert x p := by
@@ -914,6 +991,47 @@ theorem no_query_complete_of_noncomputable_slice {Projection Query : Type}
   hund (query_slice_computable_of_query_complete hconstruct hevaluate hcomplete ρ q)
 
 end FixedTask
+
+/-! ## Finite-horizon embeddings
+
+WP0007's Corollary (inheritance under finite-horizon embeddings): a computable map `e` from finite
+micro-experiments into a larger class `𝒰` that preserves records carries the discovery and
+optimality barriers to `𝒰`. Both are the micro theorems applied to the composite embedding
+`y ↦ e (ν y)`; these declarations write that specialization out. -/
+
+section FiniteHorizon
+
+variable {Str Prog Exp Exp' : Type} (K : Str → ℕ) (len : Prog → ℕ) (rawlen : Str → ℕ)
+  (data : Exp → Str) (data' : Exp' → Str) (ν : Str → Exp) (e : Exp → Exp')
+
+/-- A record-preserving embedding composed with a faithful one is faithful. -/
+theorem faithful_comp (hν : ∀ y, data (ν y) = y) (he : ∀ μ, data' (e μ) = data μ) :
+    ∀ y, data' (e (ν y)) = y := fun y => by rw [he, hν]
+
+/-- **Discovery barrier on a finite-horizon enlargement.** -/
+theorem no_universal_compressor_finite_horizon (DecR₁ : (Str → Prop) → Prop)
+    {CompE' : (Exp' → Prog) → Prop} {C : Exp' → Prog}
+    (hν : ∀ y, data (ν y) = y) (he : ∀ μ, data' (e μ) = data μ)
+    (hlb : ∀ u, K (data' u) ≤ len (C u))
+    (hbr : ∀ u, K (data' u) < rawlen (data' u) → len (C u) < rawlen (data' u))
+    (hdec : CompE' C → DecR₁ (fun y => len (C (e (ν y))) < rawlen y))
+    (hund : CompressibleUndecidable K rawlen DecR₁) :
+    ¬ CompE' C :=
+  no_universal_compressor_micro K len rawlen DecR₁ data' (fun y => e (ν y))
+    (faithful_comp data data' ν e hν he) hlb hbr hdec hund
+
+/-- **Optimality barrier on a finite-horizon enlargement** (compressible-witness form). -/
+theorem no_additive_approximation_compressible_finite_horizon
+    (CompE' : (Exp' → Prog) → Prop) (CompN : (Str → ℕ) → Prop) {c : ℕ}
+    (hν : ∀ y, data (ν y) = y) (he : ∀ μ, data' (e μ) = data μ)
+    (hred : ReductionClosure (fun y => e (ν y)) len CompE' CompN)
+    (hApx : KNotApproximableOnCompressible K CompN rawlen c) {A : Exp' → Prog}
+    (hA : NearOptimalOnCompressible data' K len rawlen c A) :
+    ¬ CompE' A :=
+  no_additive_approximation_compressible data' (fun y => e (ν y)) K len CompE' CompN rawlen
+    hred (faithful_comp data data' ν e hν he) hApx hA
+
+end FiniteHorizon
 
 end AlgorithmicEmergence
 end KTAIT
