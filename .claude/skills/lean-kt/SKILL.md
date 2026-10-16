@@ -1,6 +1,6 @@
 ---
 name: lean-kt
-description: Work on the KTAIT Lean 4 formalization of Kolmogorov Theory (KT) / algorithmic information theory. Use when proving or extending KT theorems in Lean, adding to the KTAIT repo, or formalizing a result from the KT papers (WP0162/WP0192/WP0193, the ART paper). Covers the methodology (AIT facts as axioms, KT corollaries proved sorry-free), build workflow, proof idioms, and conventions.
+description: Work on the KTAIT Lean 4 formalization of Kolmogorov Theory (KT) / algorithmic information theory. Use when proving or extending KT theorems in Lean, adding to the KTAIT repo, or formalizing a result from the KT papers (WP0162/WP0192/WP0193, the ART paper). Covers the methodology (AIT facts as named hypotheses, KT corollaries proved sorry-free), build workflow, proof idioms, and conventions.
 ---
 
 # Lean KT — formalizing Kolmogorov Theory in Lean 4
@@ -22,7 +22,7 @@ quote statements faithfully; do not paraphrase from memory).
 ## Translation fidelity (read before stating or citing anything)
 A compiled declaration checks the derivation from its hypotheses, not that it says what the
 paper says (arXiv:2610.08144). Read `KTAIT/docs/translation-fidelity.md` first. Short form:
-- Every named AIT hypothesis carries its tolerance and cites its source + overhead
+- Every named AIT hypothesis records the tolerance its source gives (zero if exact) and cites source + overhead
   (`CondMono` without an allowance is not justified by the standard O(1) fact).
 - Cite only declarations whose hypotheses follow from the paper's stated assumptions; write
   specialization bridges as their own declarations (Eq. forcesL needed `W := y∅`).

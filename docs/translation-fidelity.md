@@ -1,6 +1,6 @@
 # Translation fidelity: pitfalls between a paper and its Lean counterpart
 
-October 16, 2026. Written after the WP0203 Round 1 audit (Klaus and Kaiti), prompted by
+October 16, 2026. Written during the WP0203 Round 1 audit (Klaus and Kaiti), prompted by
 Bastounis, Circelli and Hansen, *Navier–Stokes lost in translation: why Lean verification of AI
 autoformalisation does not guarantee correct natural language proofs* (arXiv:2610.08144).
 Read this before stating a new KT result in Lean, before citing a declaration in a paper, and
@@ -27,8 +27,9 @@ Each entry gives the pitfall, the case where it occurred, and the rule that prev
    interpretation the exact premise is unjustified (a consistent normalization might justify
    it, but that must be argued). If it fails for the intended `K`, the theorem does not apply.
    Raising `slack` does not help when `slack` does not occur in the premise.
-   *Rule:* every named AIT hypothesis carries its tolerance (`slack` or an explicit constant).
-   Its docstring cites the standard result it instantiates and the overhead that result gives.
+   *Rule:* every named AIT hypothesis records the tolerance its source theorem actually gives
+   (`slack`, an explicit constant, or zero where the fact is exact, as for Kraft's inequality).
+   Its docstring cites the standard result it instantiates and that overhead.
 
 2. **A Lean premise the paper does not assume.** WP0203's Eq. (forcesL) holds "without the
    null-output computability assumption". The cited `simple_regulator_forces_residual` has a
@@ -55,7 +56,10 @@ Each entry gives the pitfall, the case where it occurred, and the rule that prev
 5. **A Lean definition that names the paper's object but differs from it.** `AITProb.post e x`
    is `2^(−K e)/m(x)`. The paper's specified-code posterior uses the weight of a
    simulator-wrapped canonical code among the programs producing `x`. The two agree only after
-   the wrapper, code injectivity and normalization are justified.
+   the wrapper, code injectivity and normalization are justified: for a compatible code of
+   length `K(e∣C) + δ_e`, the paper's posterior is `2^(−δ_e) · post(e, x)` when both use the
+   same evidence denominator. A uniformly bounded `δ_e` preserves asymptotic comparisons; it
+   does not make the two quantities equal.
    *Rule:* never identify a Lean definition with a paper quantity on the strength of its name.
    Write the bridge lemma or state the interpretation obligation.
 
@@ -119,4 +123,6 @@ One record per paper claim (Kaiti's protocol, WP0203 `notes/round1/kaiti_2026-10
     implication, paper-only, or unresolved;
 - repair, owner, build and axiom evidence, cross-reviewer and final pin.
 
-"Bridge required" is a verdict of its own, never folded into "equivalent".
+Record each pending bridge beside the three verdicts. Do not mark the intended correspondence
+established until the bridge has been justified. Cross-review every adverse or unresolved
+verdict and every shared interface.
