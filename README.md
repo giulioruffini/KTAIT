@@ -29,6 +29,8 @@ and genuinely entailed by it.
   Pattern, Persist! (WP0216), Algorithmic Information Conservation (WP0218), and the
   simulation, computation-core, and certified-program papers (WP0215, WP0229, WP0228).
 
+**Before citing a declaration in a paper**, read [`docs/translation-fidelity.md`](docs/translation-fidelity.md): a compiled declaration checks the derivation from its hypotheses, not that it states what the paper states.
+
 ## The one rule
 
 > **Standard AIT and probability theorems may be *assumed* (a named axiom layer).
