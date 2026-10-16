@@ -21,17 +21,18 @@ silent on all three, and each needs its own check.
 
 Each entry gives the pitfall, the case where it occurred, and the rule that prevents it.
 
-1. **A hypothesis stronger than the true AIT fact.** `RegulationBalance.CondMono` states
-   `cond x R ≤ K x` with no allowance; `ARTExactForm` uses the same exact form. For prefix
-   complexity the fact holds only up to a fixed constant. A premise stronger than the true fact
-   may fail for the intended `K`, so the theorem may not apply to it. Raising `slack` does not
-   help when `slack` does not occur in the premise.
+1. **A hypothesis the standard fact does not justify as stated.** `RegulationBalance.CondMono`
+   states `cond x R ≤ K x` with no allowance; `ARTExactForm` uses the same exact form. The
+   standard fact guarantees it only up to an additive constant, so under the direct
+   interpretation the exact premise is unjustified (a consistent normalization might justify
+   it, but that must be argued). If it fails for the intended `K`, the theorem does not apply.
+   Raising `slack` does not help when `slack` does not occur in the premise.
    *Rule:* every named AIT hypothesis carries its tolerance (`slack` or an explicit constant).
    Its docstring cites the standard result it instantiates and the overhead that result gives.
 
-2. **A Lean hypothesis the paper explicitly excludes.** WP0203's Eq. (forcesL) holds "without
-   the null-output computability assumption". The cited `simple_regulator_forces_residual`
-   assumes `DataProcessing F z0 W R`. The paper's claim is still covered: instantiating
+2. **A Lean premise the paper does not assume.** WP0203's Eq. (forcesL) holds "without the
+   null-output computability assumption". The cited `simple_regulator_forces_residual` has a
+   data-processing premise, `DataProcessing F z0 W R`. The paper's claim is still covered: instantiating
    `W := z0` makes the hypothesis trivial. But that bridge appeared nowhere, and a reader
    comparing statements sees a stronger premise.
    *Rule:* cite a declaration whose hypotheses are implied by the paper's stated assumptions.
