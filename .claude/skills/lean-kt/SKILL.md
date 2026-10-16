@@ -19,6 +19,18 @@ quote statements faithfully; do not paraphrase from memory).
   axiom is inconsistent here (build a frame with `slack=0` violating it → `False`). With
   hypotheses, `#print axioms` shows only Lean core; the toy model witnesses satisfiability.
 
+## Translation fidelity (read before stating or citing anything)
+A compiled declaration checks the derivation from its hypotheses, not that it says what the
+paper says (arXiv:2610.08144). Read `KTAIT/docs/translation-fidelity.md` first. Short form:
+- Every named AIT hypothesis carries its tolerance and cites its source + overhead
+  (`CondMono` without slack was too strong for real K).
+- Cite only declarations whose hypotheses follow from the paper's stated assumptions; write
+  specialization bridges as their own declarations (Eq. forcesL needed `W := y∅`).
+- Write and get approval for the statement + correspondence record BEFORE proving; never
+  weaken a conclusion or add a hypothesis just to make a proof compile — stop and report.
+- Record three verdicts per claim: statement relation, proof correspondence, formal coverage.
+- Re-check the correspondence after any prose revision of a cited result.
+
 ## Build & verify
 ```sh
 export PATH="$HOME/.elan/bin:$PATH"
