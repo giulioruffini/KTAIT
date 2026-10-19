@@ -547,9 +547,25 @@ overhead; \lean{residual\_with\_preload} substitutes the stored-prefix bound
 $K(U\mid y_R,R)\le m+b_1$; \lean{gap\_from\_disturbance} gives $\Delta\ge N-r-(c_1+c_2)$ from
 an incompressible disturbance recovered from the null record and a simple regulated record;
 and \lean{preload\_certifies\_initial\_information} combines GART's world form, the residual
-bound and the gap bound into $\Ik(W{:}R)\ge N-m-(r+b+c+h)$. The decoder cost, the stored
-prefix, the first-difference recovery and the zero record enter as named hypotheses; the
-finite-record bridges that derive them are stated in the paper's review notes.
+bound and the gap bound into $\Ik(W{:}R)\ge N-m-(r+b+c+h)$. The finite-record section
+identifies the maps behind those premises and proves that they produce the records:
+\lean{decode\_regulated\_eq\_null} (the decoder on \lean{Fin} records returns the null record),
+\lean{reactive\_regulated\_zero} and \lean{reactive\_observes\_disturbance} (the reactive rule
+$u_n=-(x_n+d_n)$ keeps the record at zero and is realized from the measurement),
+\lean{reactive\_log\_eq\_prefix\_suffix} (the log is the negated record assembled from a
+stored prefix and a supplied suffix), \lean{firstDiff\_null\_eq\_disturbance} and
+\lean{cumulate\_disturbance\_eq\_null}. The bridges \lean{hdec\_from\_decoder},
+\lean{hlog\_from\_prefix\_suffix}, \lean{hrec\_from\_first\_difference} and
+\lean{hcum\_from\_cumulative} derive the helpers' numerical premises from
+\lean{ConditionalMapBound} and \lean{DescriptionMapBound} for the encoded maps (the log map
+takes the suffix-first pair that \lean{CondChain} bounds). The reactive case gets two-sided
+bounds, \lean{reactive\_residual\_two\_sided}, \lean{reactive\_gap\_two\_sided} and
+\lean{reactive\_initial\_information\_bounded}: with the frame's slack read as $O(\log N)$ they
+give $L=K(d\mid C,N)+O(\log N)$ and $I=O(\log N)$; the paper's $O(1)$ reading is a choice of
+uniform constant costs for the fixed programs these instances consume, stated beside the
+citation. The binary literal-description premise behind \lean{hsuffix}, the stored-prefix
+fact behind \lean{hprefix}, and one uniform decoder and assembly algorithm over the admitted
+horizons are paper-level obligations.
 \item In \lean{GenerativeRegulation.lean}, \lean{compensation\_reversible} and
 \lean{model\_cancellation} check that subtracting a generated disturbance while retaining
 its model is invertible and cancels an exact prediction. \lean{joint\_complexity\_preserved}
