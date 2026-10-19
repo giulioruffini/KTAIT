@@ -6,15 +6,17 @@ Authors: Giulio Ruffini (with Claude Code)
 import Mathlib
 import KTAIT.Basic
 import KTAIT.ART
+import KTAIT.RegulationBalance
 
 /-!
 # KTAIT.ARTExactForm — the specified-code posterior as three additive costs
 
 WP0203 (the appendix on probabilistic regulator bounds, "Algorithmic Regulator Theorem: exact
 form"). For a specified explanation `e = (W, R)` of the regulated output `x`, with null output
-`y₀` computable from `W` and `x` computable from `(W, R)`, the canonical-code posterior obeys
+`y₀` computable from `W` and `x` computable from `(W, R)`, a compatible selected
+program of length `K(W,R)+delta`, with matching output evidence, has posterior
 
-  `log₂ P(e | x) = −K(R | x) − L − H ± O(log N)`,
+  `log₂ P(e | x) = −K(R | x) − L − H − delta ± O(log N)`,
 
 where `L = K(y₀ | x, R)` is the counterfactual residual and `H = K(W | x, R, y₀)` is the
 world beyond what its two outputs and the regulator determine. The gap and the shared
@@ -25,17 +27,23 @@ residual cost is exactly offset by the multiplicity of worlds sharing that resid
 why the aggregate tail of the original article fails and why conditioning on the residual
 (`ResidualTransfer`) repairs it.
 
-Two further declarations restore the shared information: `shared_information_exponent` is ART's
-gap form made exact (the dropped term is `K(W | y₀)`), and `bridge_identity` equates the two
-exact forms: `IK W R = Δ − L + I(R:x) + I(W:(x,R)|y₀) ± slack`, GART with its slack identified.
+`shared_information_exponent` restores the term `K(W | y₀)` dropped from ART's gap bound.
+`bridge_identity` equates the exponent forms using complexity differences, within `5*slack`.
+`bridge_symmetric_information` converts those differences to symmetric mutual information,
+charging `7*slack` plus the three explicit pair and context conversion costs.
 
 Hypotheses are the usual named facts: two-sided chain rules (unconditioned and conditional),
 computability of both outputs from the pair, and the coding theorem already carried by
-`AITProb`. Nothing is proved about a universal machine.
+`AITProb`. The older declarations bound its abstract `post` weight;
+`art_with_residual_specified` retains a selected program's length offset.
+`bridge_symmetric_information` charges pair and context conversions separately.
+Nothing is proved about a universal machine.
 -/
 
 namespace KTAIT
 namespace ARTExactForm
+
+open AITProb
 
 variable (F : AITFrame)
 
@@ -68,8 +76,8 @@ theorem exact_exponent (W R x y0 : F.Obj)
   have := abs_le.mp hcomp; have := abs_le.mp h1; have := abs_le.mp h2; have := abs_le.mp h3
   exact abs_le.mpr ⟨by omega, by omega⟩
 
-/-- **Exact form of the specified-code posterior (two-sided).** With the coding theorem,
-    `(1/c₂)·2^{−(K(R|x)+L+H)−4s} ≤ P(⟨W,R⟩ | x) ≤ (1/c₁)·2^{−(K(R|x)+L+H)+4s}`. -/
+/-- **Exact form of the abstract complexity weight (two-sided).** With the coding theorem,
+    `(1/c₂)·2^{−(K(R|x)+L+H)−4s} ≤ post (W,R) x ≤ (1/c₁)·2^{−(K(R|x)+L+H)+4s}`. -/
 theorem art_exact_form (F : AITProb) {c1 c2 : ℝ}
     (hLB : F.CodingLB c1) (hUB : F.CodingUB c2) (W R x y0 : F.Obj)
     (hcomp : OutputsComputable F.toAITFrame W R x y0)
@@ -108,7 +116,7 @@ theorem art_exact_form (F : AITProb) {c1 c2 : ℝ}
           · norm_num
 
 /-- **Upper half without the hidden-world term**: since `H ≥ 0`,
-    `P(⟨W,R⟩ | x) ≤ (1/c₁)·2^{−(K(R|x)+L)+4s}`. -/
+    `post (W,R) x ≤ (1/c₁)·2^{−(K(R|x)+L)+4s}`. -/
 theorem art_exact_upper (F : AITProb) {c1 c2 : ℝ}
     (hLB : F.CodingLB c1) (hUB : F.CodingUB c2) (W R x y0 : F.Obj)
     (hcomp : OutputsComputable F.toAITFrame W R x y0)
@@ -202,44 +210,44 @@ theorem four_term_exponent (W R x y0 : F.Obj)
   have := abs_le.mp h
   exact abs_le.mpr ⟨by omega, by omega⟩
 
-/-- **The excess is nonnegative up to slack.** With `K(R | x) ≤ K R` and
-    `K(W | ⟨⟨x,R⟩,y₀⟩) ≤ K(W | y₀) + slack`, the bridge gives `IK W R − (Δ − L) ≥ −6·slack`:
-    GART, read off the identity. -/
-theorem excess_nonneg (W R x y0 : F.Obj)
+/-- The bridge identity bounds the excess `IK W R - (gap - residual)` below by
+`-7*slack`. Both ignore-input instances carry their additive allowance. -/
+theorem excess_nonneg (F : AITFrame) (W R x y0 : F.Obj)
     (hcomp : OutputsComputable F W R x y0)
     (h1 : Chain F x (F.pair R (F.pair y0 W)))
     (h2 : CondChain F R (F.pair y0 W) x)
     (h3 : CondChain F y0 W (F.pair x R))
-    (h5 : |(F.K W : ℤ) - (F.K y0 : ℤ) - (F.cond W y0 : ℤ)| ≤ (F.slack : ℤ))
-    (hmono : (F.cond R x : ℤ) ≤ (F.K R : ℤ))
-    (h6 : (F.cond W (F.pair (F.pair x R) y0) : ℤ) ≤ (F.cond W y0 : ℤ) + (F.slack : ℤ)) :
-    IK F W R - (((F.K y0 : ℤ) - (F.K x : ℤ)) - residual F x y0 R) ≥ -6 * (F.slack : ℤ) := by
+    (h5 : |(F.K W : Int) - (F.K y0 : Int) - (F.cond W y0 : Int)| ≤ (F.slack : Int))
+    (hmono : RegulationBalance.CondMono F R x)
+    (h6 : (F.cond W (F.pair (F.pair x R) y0) : Int)
+      ≤ (F.cond W y0 : Int) + (F.slack : Int)) :
+    IK F W R - (((F.K y0 : Int) - (F.K x : Int)) - residual F x y0 R)
+      ≥ -7 * (F.slack : Int) := by
   have hb := bridge_identity F W R x y0 hcomp h1 h2 h3 h5
-  simp only [residual, hidden] at *
-  have := abs_le.mp hb
+  have hb' := abs_le.mp hb
+  simp only [ARTExactForm.hidden] at hb'
+  simp only [RegulationBalance.CondMono] at hmono
   omega
 
-/-- **ART with the residual (two-sided).** The upper bound is ART's exponent `IK − K R − Δ`
-    (exact up to `K(W | y₀)`); the lower bound is new: `−K R − L − K(W | y₀)`. The two
-    displayed exponents differ by the excess `IK − (Δ − L)` plus the hidden-world term
-    `K(W | y₀)`, up to `8·slack`. After subtracting the hidden-world term from the upper
-    exponent, the exponent difference is the excess plus the same `8·slack` allowance; the
-    multiplicative coding constants `c1, c2` are separate (WP0203 Prop. A2). -/
-theorem art_with_residual (F : AITProb) {c1 c2 : ℝ}
+/-- Two-sided residual bounds for the abstract complexity weight `F.post`.
+The lower exponent is `-K R-L-K(W|y0)-8s`; the upper is `IK-K R-gap+s`.
+Their difference is the excess `IK-(gap-L)` plus `K(W|y0)+9s`; the coding
+constants remain separate. Program-posterior interpretation requires
+`AITProb.compatible_program_factor` and the selected length offset. -/
+theorem art_with_residual (F : AITProb) {c1 c2 : Real}
     (hLB : F.CodingLB c1) (hUB : F.CodingUB c2) (W R x y0 : F.Obj)
     (hcomp : OutputsComputable F.toAITFrame W R x y0)
     (h1 : Chain F.toAITFrame x (F.pair R (F.pair y0 W)))
     (h2 : CondChain F.toAITFrame R (F.pair y0 W) x)
     (h3 : CondChain F.toAITFrame y0 W (F.pair x R))
-    (h5 : |(F.K W : ℤ) - (F.K y0 : ℤ) - (F.cond W y0 : ℤ)| ≤ (F.slack : ℤ))
-    (hmono : (F.cond R x : ℤ) ≤ (F.K R : ℤ))
-    (h6 : (F.cond W (F.pair (F.pair x R) y0) : ℤ) ≤ (F.cond W y0 : ℤ) + (F.slack : ℤ)) :
-    (1 / c2) * (2 : ℝ) ^ (-(F.K R : ℤ) - residual F.toAITFrame x y0 R - (F.cond W y0 : ℤ)
-        - 7 * (F.slack : ℤ))
-      ≤ F.post (F.pair W R) x ∧
-    F.post (F.pair W R) x
-      ≤ (1 / c1) * (2 : ℝ) ^ (IK F.toAITFrame W R - (F.K R : ℤ)
-        - ((F.K y0 : ℤ) - (F.K x : ℤ)) + (F.slack : ℤ)) := by
+    (h5 : |(F.K W : Int) - (F.K y0 : Int) - (F.cond W y0 : Int)| ≤ (F.slack : Int))
+    (hmono : RegulationBalance.CondMono F.toAITFrame R x)
+    (h6 : (F.cond W (F.pair (F.pair x R) y0) : Int)
+      ≤ (F.cond W y0 : Int) + (F.slack : Int)) :
+    (1 / c2) * (2 : Real) ^ (-(F.K R : Int) - residual F.toAITFrame x y0 R
+      - (F.cond W y0 : Int) - 8 * (F.slack : Int)) ≤ F.post (F.pair W R) x ∧
+    F.post (F.pair W R) x ≤ (1 / c1) * (2 : Real) ^ (IK F.toAITFrame W R
+      - (F.K R : Int) - ((F.K y0 : Int) - (F.K x : Int)) + (F.slack : Int)) := by
   have htilt := F.theorem1_posterior_tilt hLB hUB W R x
   have hIK : (F.K x : ℤ) - (F.K W : ℤ) - (F.K R : ℤ) + IK F.toAITFrame W R
       = (F.K x : ℤ) - (F.K (F.pair W R) : ℤ) := by simp only [IK]; ring
@@ -251,11 +259,11 @@ theorem art_with_residual (F : AITProb) {c1 c2 : ℝ}
   have hs := abs_le.mp hsh
   have hcw : (0 : ℤ) ≤ (F.cond W y0 : ℤ) := by positivity
   constructor
-  · have hlo : -(F.K R : ℤ) - residual F.toAITFrame x y0 R - (F.cond W y0 : ℤ) - 7 * (F.slack : ℤ)
+  · have hlo : -(F.K R : ℤ) - residual F.toAITFrame x y0 R - (F.cond W y0 : ℤ) - 8 * (F.slack : ℤ)
         ≤ (F.K x : ℤ) - (F.K (F.pair W R) : ℤ) := by
-      simp only [residual] at *; omega
+      simp only [ARTExactForm.residual] at *; omega
     calc (1 / c2) * (2 : ℝ) ^ (-(F.K R : ℤ) - residual F.toAITFrame x y0 R - (F.cond W y0 : ℤ)
-          - 7 * (F.slack : ℤ))
+          - 8 * (F.slack : ℤ))
         ≤ (1 / c2) * (2 : ℝ) ^ ((F.K x : ℤ) - (F.K (F.pair W R) : ℤ)) := by
           gcongr
           · norm_num
@@ -269,6 +277,147 @@ theorem art_with_residual (F : AITProb) {c1 c2 : ℝ}
             - ((F.K y0 : ℤ) - (F.K x : ℤ)) + (F.slack : ℤ)) := by
           gcongr
           · norm_num
+
+
+/-! ## Specified-code and symmetric-information bridges -/
+
+/-- the chain-rule slack remains in the exponent. -/
+theorem conditional_art_specified (F : AITProb) {c1 : Real}
+    (hLB : F.CodingLB c1) (W R x y0 : F.Obj)
+    (c0 delta : Int) (n : Nat)
+    (hoff : (F.K y0 : Int) ≤ (F.K W : Int) + c0)
+    (hlen : (n : Int) = (F.K (F.pair W R) : Int) + delta)
+    (hchain : Chain F.toAITFrame W R) :
+    specifiedWeight F n x ≤ ((1 / c1) * (2 : Real) ^ (c0 - delta)) *
+      (2 : Real) ^ (-(F.cond R W : Int)
+        - ((F.K y0 : Int) - (F.K x : Int)) + (F.slack : Int)) := by
+  have hs := sharp_art_specified F hLB W R x y0 c0 delta n hoff hlen
+  have hc1 := hLB.1
+  have hc := abs_le.mp hchain
+  have hexp : IK F.toAITFrame W R - (F.K R : Int)
+        - ((F.K y0 : Int) - (F.K x : Int))
+      ≤ -(F.cond R W : Int) - ((F.K y0 : Int) - (F.K x : Int)) + (F.slack : Int) := by
+    simp only [IK]
+    omega
+  refine hs.trans ?_
+  gcongr
+  norm_num
+
+/-- the pair-order conversion has its own fixed cost. -/
+theorem information_difference (F : AITFrame) (A B : F.Obj) (cPair : Nat)
+    (hchain : Chain F B A)
+    (hswap : |(F.K (F.pair A B) : Int) - (F.K (F.pair B A) : Int)|
+      ≤ (cPair : Int)) :
+    |IK F A B - ((F.K A : Int) - (F.cond A B : Int))|
+      ≤ (F.slack : Int) + (cPair : Int) := by
+  have hc := abs_le.mp hchain
+  have hp := abs_le.mp hswap
+  simp only [IK]
+  exact abs_le.mpr ⟨by omega, by omega⟩
+
+/-- distinguish pair reversal from reversal of the supplied context. -/
+theorem conditional_information_difference (F : AITFrame) (A B C : F.Obj)
+    (cPair cContext : Nat) (hchain : CondChain F B A C)
+    (hswap : |(F.cond (F.pair A B) C : Int) - (F.cond (F.pair B A) C : Int)|
+      ≤ (cPair : Int))
+    (hcontext : |(F.cond A (F.pair C B) : Int) - (F.cond A (F.pair B C) : Int)|
+      ≤ (cContext : Int)) :
+    |RegulationBalance.cIK F A B C
+      - ((F.cond A C : Int) - (F.cond A (F.pair B C) : Int))|
+      ≤ (F.slack : Int) + (cPair : Int) + (cContext : Int) := by
+  have hc := abs_le.mp hchain
+  have hp := abs_le.mp hswap
+  have hx := abs_le.mp hcontext
+  simp only [RegulationBalance.cIK]
+  exact abs_le.mpr ⟨by omega, by omega⟩
+
+/-- the paper's symmetric-information form of the bridge identity.
+With each fixed re-encoding cost at most s, the displayed tolerance is at most 10s. -/
+theorem bridge_symmetric_information (F : AITFrame) (W R x y0 : F.Obj)
+    (hcomp : OutputsComputable F W R x y0)
+    (h1 : Chain F x (F.pair R (F.pair y0 W)))
+    (h2 : CondChain F R (F.pair y0 W) x)
+    (h3 : CondChain F y0 W (F.pair x R))
+    (h5 : |(F.K W : Int) - (F.K y0 : Int) - (F.cond W y0 : Int)| ≤ (F.slack : Int))
+    (cPair cCondPair cContext : Nat)
+    (hreg : Chain F x R)
+    (hswap : |(F.K (F.pair R x) : Int) - (F.K (F.pair x R) : Int)| ≤ (cPair : Int))
+    (hworld : CondChain F (F.pair x R) W y0)
+    (hcondSwap : |(F.cond (F.pair W (F.pair x R)) y0 : Int)
+      - (F.cond (F.pair (F.pair x R) W) y0 : Int)| ≤ (cCondPair : Int))
+    (hcontext : |(F.cond W (F.pair y0 (F.pair x R)) : Int)
+      - (F.cond W (F.pair (F.pair x R) y0) : Int)| ≤ (cContext : Int)) :
+    |(IK F W R - (((F.K y0 : Int) - (F.K x : Int)) - residual F x y0 R))
+      - (IK F R x + RegulationBalance.cIK F W (F.pair x R) y0)|
+      ≤ 7 * (F.slack : Int) + (cPair : Int) + (cCondPair : Int) + (cContext : Int) := by
+  have hb := bridge_identity F W R x y0 hcomp h1 h2 h3 h5
+  have hr := information_difference F R x cPair hreg hswap
+  have hw := conditional_information_difference F W (F.pair x R) y0
+    cCondPair cContext hworld hcondSwap hcontext
+  have hb' := abs_le.mp hb
+  have hr' := abs_le.mp hr
+  have hw' := abs_le.mp hw
+  simp only [ARTExactForm.hidden] at hb'
+  exact abs_le.mpr ⟨by omega, by omega⟩
+
+/-- The selected program length shifts both residual-bound exponents by
+`-delta`. Compatibility and matching evidence are supplied separately by
+`AITProb.compatible_program_factor`; the exponent separation is unchanged. -/
+theorem art_with_residual_specified (F : AITProb) {c1 c2 : Real}
+    (hLB : F.CodingLB c1) (hUB : F.CodingUB c2) (W R x y0 : F.Obj)
+    (n : Nat) (delta : Int)
+    (hlen : (n : Int) = (F.K (F.pair W R) : Int) + delta)
+    (hcomp : OutputsComputable F.toAITFrame W R x y0)
+    (h1 : Chain F.toAITFrame x (F.pair R (F.pair y0 W)))
+    (h2 : CondChain F.toAITFrame R (F.pair y0 W) x)
+    (h3 : CondChain F.toAITFrame y0 W (F.pair x R))
+    (h5 : |(F.K W : Int) - (F.K y0 : Int) - (F.cond W y0 : Int)| ≤ (F.slack : Int))
+    (hmono : RegulationBalance.CondMono F.toAITFrame R x)
+    (h6 : (F.cond W (F.pair (F.pair x R) y0) : Int)
+      ≤ (F.cond W y0 : Int) + (F.slack : Int)) :
+    (1 / c2) * (2 : Real) ^ (-(F.K R : Int) - residual F.toAITFrame x y0 R
+      - (F.cond W y0 : Int) - 8 * (F.slack : Int) - delta) ≤ specifiedWeight F n x ∧
+    specifiedWeight F n x ≤ (1 / c1) * (2 : Real) ^ (IK F.toAITFrame W R
+      - (F.K R : Int) - ((F.K y0 : Int) - (F.K x : Int)) + (F.slack : Int) - delta) := by
+  have hb := art_with_residual F hLB hUB W R x y0 hcomp h1 h2 h3 h5 hmono h6
+  have hf : specifiedWeight F n x = (2 : Real) ^ (-delta) * F.post (F.pair W R) x := by
+    unfold specifiedWeight AITProb.post
+    rw [hlen, neg_add, zpow_add₀ (by norm_num : (2 : Real) ≠ 0)]
+    ring
+  have hexp : ∀ (c : Real) (a : Int),
+      (2 : Real) ^ (-delta) * (c * (2 : Real) ^ a) = c * (2 : Real) ^ (a - delta) := by
+    intro c a
+    rw [show a - delta = -delta + a by ring, zpow_add₀ (by norm_num : (2 : Real) ≠ 0)]
+    ring
+  constructor
+  · have h := mul_le_mul_of_nonneg_left hb.1 (by positivity : 0 ≤ (2 : Real) ^ (-delta))
+    rw [hexp, ← hf] at h
+    exact h
+  · have h := mul_le_mul_of_nonneg_left hb.2 (by positivity : 0 ≤ (2 : Real) ^ (-delta))
+    rw [hexp, ← hf] at h
+    exact h
+
+/-- logarithms preserve the coding constants explicitly. -/
+theorem log2_sandwich (weight c1 c2 : Real) (lo hi : Int)
+    (hweight : 0 < weight) (hc1 : 0 < c1) (hc2 : 0 < c2)
+    (hlo : (1 / c2) * (2 : Real) ^ lo ≤ weight)
+    (hhi : weight ≤ (1 / c1) * (2 : Real) ^ hi) :
+    (lo : Real) - Real.logb 2 c2 ≤ Real.logb 2 weight ∧
+    Real.logb 2 weight ≤ (hi : Real) - Real.logb 2 c1 := by
+  have heval : ∀ (c : Real), 0 < c → ∀ n : Int,
+      Real.logb 2 ((1 / c) * (2 : Real) ^ n) = (n : Real) - Real.logb 2 c := by
+    intro c hc n
+    rw [Real.logb_mul (by positivity) (by positivity), one_div, Real.logb_inv,
+      ← Real.rpow_intCast (2 : Real) n,
+      Real.logb_rpow (by norm_num : (0 : Real) < 2) (by norm_num : (2 : Real) ≠ 1)]
+    ring
+  have hl := Real.logb_le_logb_of_le (by norm_num : (1 : Real) < 2)
+    (by positivity : 0 < (1 / c2) * (2 : Real) ^ lo) hlo
+  have hh := Real.logb_le_logb_of_le (by norm_num : (1 : Real) < 2) hweight hhi
+  rw [heval c2 hc2 lo] at hl
+  rw [heval c1 hc1 hi] at hh
+  exact ⟨hl, hh⟩
+
 
 end ARTExactForm
 end KTAIT

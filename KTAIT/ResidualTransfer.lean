@@ -46,9 +46,16 @@ The statements include:
 * `conditional_tail_given_residual` — the corresponding finite, unnormalized weight inequality.
 * `unadjusted_threshold_counterexample` — GART alone allows `I < gap` with probability one even
   at arbitrarily large gaps and a residual of one bit.
-* `posterior_residual_transfer` — the instantiation on the `AITProb` canonical-code posterior
-  `post`, with the per-explanation hypothesis supplied by `GroundedRegulation.grounded_inequality`
-  (the named chain-rule and data-processing facts) for each explanation.
+* `posterior_residual_transfer` — a finite weight comparison for the abstract
+  `AITProb.post`, with the per-explanation GART premise supplied by named AIT facts.
+* `conditional_confidence_transfer`, `conditional_variable_transfer`, and
+  `conditional_exponential_transfer` — normalized transfers on positive finite evidence
+  mass, with hypotheses restricted to its positive-weight support. The exponential
+  residual tail is a separate premise.
+
+The `post` instantiations do not establish a normalized program posterior.
+That interpretation requires compatible selected programs, their length offsets,
+and agreement of evidence as in `AITProb.compatible_program_factor`.
 
 The tightness side (the clamp family) is a paper-level construction; the finite multiplicity
 witnesses in `ModelOrPay` show the generic mechanism.
@@ -332,11 +339,11 @@ theorem conditional_tail_given_residual {E : Type*} (S : Finset E) (w : E → �
     exact mul_nonneg (by positivity)
       (Finset.sum_nonneg (fun e he => hw e (Finset.mem_of_mem_filter e he)))
 
-/-! ## Instantiation on the canonical-code posterior -/
+/-! ## Instantiation on abstract complexity weights -/
 
 variable (F : AITProb)
 
-/-- The canonical-code posterior is nonnegative: `2^{−K e}/m x ≥ 0`. (Helper.) -/
+/-- The abstract complexity weight is nonnegative: `2^{−K e}/m x ≥ 0`. (Helper.) -/
 theorem post_nonneg (e x : F.Obj) : 0 ≤ F.post e x := by
   unfold AITProb.post
   exact div_nonneg (by positivity) (le_of_lt (F.m_pos x))
@@ -346,9 +353,10 @@ theorem post_nonneg (e x : F.Obj) : 0 ≤ F.post e x := by
     observed (regulated) output `x`, and null output `z0 i`. Suppose each explanation satisfies
     the named chain-rule facts behind GART (`MutualChain`, `CondSubadd`, `CondMono`,
     `DataProcessing`) and belongs to ART's class `E_b`, i.e. `K (z0 i) = b`. Then, for the
-    canonical-code posterior conditioned on `x`, the mass of explanations whose shared
+    abstract weights `F.post` at `x`, the mass of explanations whose shared
     information falls `k` below the gap `Δ = b − K x` is at most the mass of explanations whose
-    counterfactual residual exceeds `k − 4·slack`. -/
+    counterfactual residual is at least `k − 4·slack`. No normalization or
+    program assignment is concluded by this finite-weight comparison. -/
 theorem posterior_residual_transfer {ι : Type*} (S : Finset ι)
     (W R z0 : ι → F.Obj) (x : F.Obj) (b : ℕ) (k : ℤ)
     (hb : ∀ i ∈ S, F.K (z0 i) = b)
@@ -373,7 +381,7 @@ theorem posterior_residual_transfer {ι : Type*} (S : Finset ι)
   have hbi := hb i hi
   omega
 
-/-- **Conditional on a residual bound, the low-information class has posterior mass `0`.**
+/-- **Under a residual bound, the low-information class has abstract weight zero.**
     Same setting as `posterior_residual_transfer`, with every explanation's residual at most
     `lam`: no explanation has shared information below `Δ − lam − 4·slack`. -/
 theorem posterior_residual_bounded_zero {ι : Type*} (S : Finset ι)
@@ -398,6 +406,92 @@ theorem posterior_residual_bounded_zero {ι : Type*} (S : Finset ι)
     have hbi := hb i hi
     omega
   · exact hlam
+
+/-! ## Evidence-local conditional transfers -/
+
+/-- evidence-local hypotheses with an explicit conditional probability. -/
+theorem conditional_confidence_transfer {E : Type*} (w : E → ENNReal)
+    (gap I L : E → Int) (evidence : Set E) (d eta h : Int)
+    (hgart : ∀ e ∈ evidence, w e ≠ 0 → gap e ≤ I e + L e + h)
+    (hgap : ∀ e ∈ evidence, w e ≠ 0 → d ≤ gap e)
+    (hpos : 0 < eventMass w evidence) (hfinite : eventMass w evidence < ⊤) :
+    conditionalMass w {e | I e < d - eta - h} evidence hpos hfinite
+      ≤ conditionalMass w {e | eta < L e} evidence hpos hfinite := by
+  have hmass : eventMass w ({e | I e < d - eta - h} ∩ evidence)
+      ≤ eventMass w ({e | eta < L e} ∩ evidence) := by
+    apply ENNReal.tsum_le_tsum
+    intro e
+    by_cases he : e ∈ {e | I e < d - eta - h} ∩ evidence
+    · by_cases hw : w e = 0
+      · rw [Set.indicator_of_mem he, hw]
+        exact bot_le
+      · have hg := hgart e he.2 hw
+        have hd := hgap e he.2 hw
+        have hb : e ∈ {e | eta < L e} ∩ evidence := by
+          refine ⟨?_, he.2⟩
+          have hi := he.1
+          simp only [Set.mem_setOf_eq] at hi ⊢
+          omega
+        simp only [Set.indicator_of_mem he, Set.indicator_of_mem hb, le_refl]
+    · rw [Set.indicator_of_notMem he]
+      exact bot_le
+  simp only [conditionalMass, div_eq_mul_inv]
+  exact mul_le_mul' hmass le_rfl
+
+/-- retain a variable coding allowance inside the residual event. -/
+theorem conditional_variable_transfer {E : Type*} (w : E → ENNReal)
+    (gap I L allowance : E → Int) (evidence : Set E) (k : Int)
+    (hgart : ∀ e ∈ evidence, w e ≠ 0 → gap e ≤ I e + L e + allowance e)
+    (hpos : 0 < eventMass w evidence) (hfinite : eventMass w evidence < ⊤) :
+    conditionalMass w {e | I e ≤ gap e - k} evidence hpos hfinite
+      ≤ conditionalMass w {e | k ≤ L e + allowance e} evidence hpos hfinite := by
+  have hmass : eventMass w ({e | I e ≤ gap e - k} ∩ evidence)
+      ≤ eventMass w ({e | k ≤ L e + allowance e} ∩ evidence) := by
+    apply ENNReal.tsum_le_tsum
+    intro e
+    by_cases he : e ∈ {e | I e ≤ gap e - k} ∩ evidence
+    · by_cases hw : w e = 0
+      · rw [Set.indicator_of_mem he, hw]
+        exact bot_le
+      · have hg := hgart e he.2 hw
+        have hb : e ∈ {e | k ≤ L e + allowance e} ∩ evidence := by
+          refine ⟨?_, he.2⟩
+          have hi := he.1
+          simp only [Set.mem_setOf_eq] at hi ⊢
+          omega
+        simp only [Set.indicator_of_mem he, Set.indicator_of_mem hb, le_refl]
+    · rw [Set.indicator_of_notMem he]
+      exact bot_le
+  simp only [conditionalMass, div_eq_mul_inv]
+  exact mul_le_mul' hmass le_rfl
+
+/-- a separately supplied residual tail transfers to information deficit. -/
+theorem conditional_exponential_transfer {E : Type*} (w : E → ENNReal)
+    (gap I L allowance : E → Int) (evidence : Set E) (h k : Int)
+    (hgart : ∀ e ∈ evidence, w e ≠ 0 → gap e ≤ I e + L e + allowance e)
+    (hallow : ∀ e ∈ evidence, w e ≠ 0 → allowance e ≤ h)
+    (hpos : 0 < eventMass w evidence) (hfinite : eventMass w evidence < ⊤)
+    (A : ENNReal) (mu : Real) (_hA : 0 < A) (_hAfinite : A < ⊤) (_hmu : 0 < mu)
+    (htail : ∀ u : Int, 0 ≤ u →
+      conditionalMass w {e | u ≤ L e} evidence hpos hfinite
+        ≤ A * (2 : ENNReal) ^ (-mu * (u : Real)))
+    (hk : h ≤ k) :
+    conditionalMass w {e | I e ≤ gap e - k} evidence hpos hfinite
+      ≤ min 1 (A * (2 : ENNReal) ^ (-mu * ((k - h : Int) : Real))) := by
+  have hg : ∀ e ∈ evidence, w e ≠ 0 → gap e ≤ I e + L e + h := by
+    intro e he hw
+    have := hgart e he hw
+    have := hallow e he hw
+    omega
+  have htransfer := conditional_variable_transfer w gap I L (fun _ => h)
+    evidence k hg hpos hfinite
+  have hevents : {e | k ≤ L e + h} = {e | k - h ≤ L e} := by
+    ext e
+    simp only [Set.mem_setOf_eq]
+    omega
+  rw [hevents] at htransfer
+  exact le_min (conditionalMass_le_one w _ evidence hpos hfinite)
+    (htransfer.trans (htail (k - h) (by omega)))
 
 end ResidualTransfer
 end KTAIT

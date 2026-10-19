@@ -741,3 +741,6 @@ Registered the live temporal-persistence source for the recurrent-recovery ancho
 
 ## 2026-10-19 — docstrings as claims (WP0203 Round 1 audit)
 Four docstrings misstated what their declarations prove: a 3·slack where the type has 7, an endpoint difference that omitted K(W|y₀), an "equivalently" for a chain-rule step that is not a hypothesis, and a stale "Global ART (v20)" header. Corrected without touching any statement. Rule (docs/translation-fidelity.md, pitfall 8): audit docstrings against the types; a docstring copied into a paper becomes a claim.
+
+## 2026-10-19 — program weights and allowance propagation (WP0203 Round 1)
+The selected-program bridge retains the signed length offset and matching evidence; abstract `post` weights alone do not define a posterior over explanations. Exact-type checks against all 22 approved signatures preserve the local-support domains and strict endpoints. The relaxed conditioning premise propagates to excess −7s and the residual lower exponent −8s; pair/context conversions have separate costs.

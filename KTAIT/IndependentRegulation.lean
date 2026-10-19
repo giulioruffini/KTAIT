@@ -30,7 +30,7 @@ The allowance may vary with the pair. All regulator hypotheses are restricted to
 nonzero sampling weight. A uniform bound is needed only on the event used to infer
 `Pr[gap >= d and residual <= ell] <= min(1, a * b * 2^(-(d-ell-s)))`.
 The final theorem derives its pointwise bound from `GroundedRegulation.grounded_inequality`
-and the named chain-rule/data-processing hypotheses, with allowance `3 * F.slack`.
+and the named chain-rule/data-processing hypotheses, with allowance `4 * F.slack`.
 
 This is a prospective bound under independently sampled initial descriptions. It is not a
 posterior concentration theorem under ART's joint universal prior, and it does not assert that
@@ -258,6 +258,70 @@ theorem independent_regulation_given_residual (F : AITFrame) (p q : F.Obj → EN
     simp only [conditionalMass, div_eq_mul_inv]
     exact mul_le_mul' hnum le_rfl
 
+
+/-! ## Local regulator hypotheses and residual conditioning -/
+
+/-- the regulator inequality is required only on the small-residual support. -/
+theorem threshold_from_local_gart (F : AITFrame) (p q : F.Obj → ENNReal)
+    (a b : ENNReal) (hp : CodingDominated F p a) (hq : CodingDominated F q b)
+    (hk : PairKraft F) (hpMass : ∑' x, p x = 1) (hqMass : ∑' y, q y = 1)
+    (gap residual : F.Obj × F.Obj → Int) (d eta h : Int)
+    (hlocal : ∀ e, productWeight p q e ≠ 0 → residual e ≤ eta →
+      gap e ≤ IK F e.1 e.2 + residual e + h) :
+    ∑' e, Set.indicator {e | d ≤ gap e ∧ residual e ≤ eta} (productWeight p q) e
+      ≤ min 1 ((a * b) * (2 : ENNReal) ^ (-(d - eta - h))) := by
+  classical
+  let allowance : F.Obj × F.Obj → ℤ := fun e =>
+    if residual e ≤ eta then h else gap e - IK F e.1 e.2 - residual e
+  have hgart : ∀ e, productWeight p q e ≠ 0 →
+      gap e ≤ IK F e.1 e.2 + residual e + allowance e := by
+    intro e hw
+    dsimp [allowance]
+    split_ifs with hL
+    · exact hlocal e hw hL
+    · omega
+  have hs : ∀ e, productWeight p q e ≠ 0 →
+      d ≤ gap e → residual e ≤ eta → allowance e ≤ h := by
+    intro e _ _ hL
+    simp [allowance, hL]
+  exact independent_regulation_threshold F p q a b hp hq hk hpMass hqMass
+    gap residual allowance hgart d eta h hs
+
+/-- normalized marginals supply the finite event-mass obligation. -/
+theorem product_event_mass_le_one {E : Type*} (p q : E → ENNReal)
+    (hpMass : ∑' x, p x = 1) (hqMass : ∑' y, q y = 1) (S : Set (E × E)) :
+    eventMass (productWeight p q) S ≤ 1 := by
+  have htotal : ∑' e : E × E, productWeight p q e = 1 := by
+    unfold productWeight
+    rw [ENNReal.tsum_prod']
+    simp_rw [ENNReal.tsum_mul_left, hqMass, mul_one]
+    exact hpMass
+  unfold eventMass
+  exact (ENNReal.tsum_le_tsum (Set.indicator_le_self _ _)).trans_eq htotal
+
+/-- the same local premise, with the residual-event probability retained.
+The finiteness argument follows from normalized marginals by `product_event_mass_le_one`; positivity
+is the additional premise for conditioning on the residual event. -/
+theorem given_residual_from_local_gart (F : AITFrame) (p q : F.Obj → ENNReal)
+    (a b : ENNReal) (hp : CodingDominated F p a) (hq : CodingDominated F q b)
+    (hk : PairKraft F) (hpMass : ∑' x, p x = 1) (hqMass : ∑' y, q y = 1)
+    (gap residual : F.Obj × F.Obj → Int) (d eta h : Int)
+    (hlocal : ∀ e, productWeight p q e ≠ 0 → residual e ≤ eta →
+      gap e ≤ IK F e.1 e.2 + residual e + h)
+    (hpos : 0 < eventMass (productWeight p q) {e | residual e ≤ eta})
+    (hfinite : eventMass (productWeight p q) {e | residual e ≤ eta} < ⊤) :
+    conditionalMass (productWeight p q) {e | d ≤ gap e} {e | residual e ≤ eta} hpos hfinite
+      ≤ min 1 (((a * b) * (2 : ENNReal) ^ (-(d - eta - h))) /
+        eventMass (productWeight p q) {e | residual e ≤ eta}) := by
+  apply le_min
+  · exact conditionalMass_le_one _ _ _ hpos hfinite
+  · have hnum : eventMass (productWeight p q)
+        ({e | d ≤ gap e} ∩ {e | residual e ≤ eta}) ≤
+        (a * b) * (2 : ENNReal) ^ (-(d - eta - h)) :=
+      (threshold_from_local_gart F p q a b hp hq hk hpMass hqMass
+        gap residual d eta h hlocal).trans (min_le_right _ _)
+    simp only [conditionalMass, div_eq_mul_inv]
+    exact mul_le_mul' hnum le_rfl
 
 end
 end IndependentRegulation

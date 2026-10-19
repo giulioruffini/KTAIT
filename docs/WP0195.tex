@@ -313,7 +313,7 @@ Mathlib~v4.31.0. Modules:
 \lean{Ontology.lean} & six typed KT roles + part-whole guard & \lean{SelfCode} carries \lean{isSub} \\
 \lean{Basic.lean} & \lean{AITFrame}, \lean{IK}, \lean{NMAI}, \lean{condStar} & symmetry as named \lean{Prop} \\
 \lean{Probability.lean} & prefix machine, Bayes posterior, coding thm & Lemma~1 (bridge) \\
-\lean{ART.lean} & \lean{AITProb} (posterior), Theorem~2 & probabilistic regulator thm \\
+\lean{ART.lean} & \lean{AITProb}: positive complexity weights; selected-program length and evidence bridges & ART bounds with explicit constants \\
 \lean{Persistence.lean} & \lean{Pers}, \lean{TemporalSelfInfo} & persistence lemmas \\
 \lean{SelfModel.lean} & \lean{DeltaSelf}, Proposition~3 & temporal self-model \\
 \lean{SelfModelLimits.lean} & quine floor, diagonalization, Chaitin ceiling & WP0192 Principle~1 \\
@@ -334,9 +334,9 @@ Mathlib~v4.31.0. Modules:
 \resizebox{0.96\linewidth}{!}{\lean{ReversibleReconstruction.lean}} & \lean{ConditionalMapBound} & WP0203 v20: inverse joint dynamics, world decoding, and null replay \\
 \resizebox{0.96\linewidth}{!}{\lean{GenerativeRegulation.lean}} & retained model, additive compensation, map-cost bounds & WP0203 v22: lossless model-based regulation \\
 \lean{ActionLog.lean} & \lean{trajectory}; decoder identity; log, preload and gap cost bounds & WP0203 Round 1: the thermostat with an action log \\
-\resizebox{0.96\linewidth}{!}{\lean{ResidualTransfer.lean}} & countable mass transfer; explicit positive-mass conditioning & WP0203 v26: conditional ART and residual confidence bounds \\
-\lean{ARTExactForm.lean} & \lean{Chain}, \lean{CondChain}, \lean{OutputsComputable} & WP0203: ART's specified-code posterior as three additive costs, residual included \\
-\resizebox{0.96\linewidth}{!}{\lean{IndependentRegulation.lean}} & marginal coding bounds, pair Kraft, product weights & WP0203 v26: joint and conditional prospective regulation bounds \\
+\resizebox{0.96\linewidth}{!}{\lean{ResidualTransfer.lean}} & nonnegative weights; positive finite evidence mass & WP0203: evidence-local confidence and residual-tail transfers \\
+\lean{ARTExactForm.lean} & \lean{Chain}, \lean{CondChain}, \lean{OutputsComputable}; pair/context conversion costs & WP0203: exact exponents, selected-length and symmetric-information bridges \\
+\resizebox{0.96\linewidth}{!}{\lean{IndependentRegulation.lean}} & coding domination, pair Kraft, normalized product weights & WP0203: local GART thresholds and residual-conditioned sampling \\
 \lean{RegulationBalance.lean} & conditional information, reconstruction, incomplete records & WP0203 v23, the regulation balance \\
 \lean{GroundedRegulation.lean} & \lean{Grounded}, \lean{residual}, \lean{IKCeiling}, \lean{PairMono} & WP0203 grounded exposition, repaired corollary, self-regulation/implicit-self-model corollary \\
 \resizebox{0.96\linewidth}{!}{\lean{HorizonConditioning.lean}} & \lean{conditioning\_on\_horizon}, horizon families & WP0203 v32.10: GART read across horizons; horizon-free shared information \\
@@ -430,6 +430,20 @@ hypothesis; the headline drops $2^{-K(R)}\le 1$ via \lean{probabilistic\_regulat
 \item \lean{AITProb.theorem1\_posterior\_tilt} --- ART Theorem~1, two-sided posterior tilt.
 \item \lean{AITProb.theorem3\_onoff\_evidence} --- ART Theorem~3, ON/OFF evidence ratio
 $\asymp 2^{\Delta}$ (log-free form).
+\item In \lean{ART.lean}, \lean{AITProb.post} is the abstract weight
+$2^{-K(e)}/m(x)$. \lean{compatible\_program\_factor} identifies a compatible
+selected program's posterior with $2^{-\delta}\mathrm{post}(e,x)$ when its
+length is $K(e)+\delta$ and its evidence denominator agrees with the frame.
+\lean{specified\_weight\_coding\_bounds} retains the actual program length
+and both coding constants. \lean{sharp\_art\_specified} gives the sharp
+regulator bound with explicit prefactor $(1/c_1)2^{c_0-\delta}$;
+\lean{sharp\_art\_uniform} chooses one upper prefactor before quantifying
+over candidates, using a common lower bound on $\delta$.
+\lean{ARTExactForm.conditional\_art\_specified} converts the exponent by
+the two-sided chain rule while retaining $s=\mathrm{slack}$ in that
+exponent. The code assignment, prefix-machine interpretation and uniform
+program costs remain separate obligations; the abstract weights alone
+are not a normalized posterior over explanations.
 \item \lean{CoarseGraining.theoremB} / \lean{corollaryB} --- WP0193 Theorem~B / Corollary~B:
 regulatory coarse-graining is uncomputable, by reduction to Vereshchagin--Vitányi.
 \item \lean{quine\_floor}, \lean{self\_prediction\_dichotomy}, \lean{chaitin\_blocks\_minimality}
@@ -554,7 +568,9 @@ identifies the maps behind those premises and proves that they produce the recor
 $u_n=-(x_n+d_n)$ keeps the record at zero and is realized from the measurement),
 \lean{reactive\_log\_eq\_prefix\_suffix} (the log is the negated record assembled from a
 stored prefix and a supplied suffix), \lean{firstDiff\_null\_eq\_disturbance} and
-\lean{cumulate\_disturbance\_eq\_null}. The bridges \lean{hdec\_from\_decoder},
+\lean{cumulate\_disturbance\_eq\_null}, with the sum lemmas
+\lean{trajectory\_zero\_disturbance}, \lean{trajectory\_zero\_action} and
+\lean{sum\_fin\_truncate} behind them. The bridges \lean{hdec\_from\_decoder},
 \lean{hlog\_from\_prefix\_suffix}, \lean{hrec\_from\_first\_difference} and
 \lean{hcum\_from\_cumulative} derive the helpers' numerical premises from
 \lean{ConditionalMapBound} and \lean{DescriptionMapBound} for the encoded maps (the log map
@@ -581,19 +597,19 @@ state that if every explanation obeys a GART-type inequality $\Delta\le I+L+s$, 
 weight of the class $\{I\le\Delta-k\}$ is at most the weight of $\{L\ge k-s\}$; monotonicity
 of a nonnegative sum under set inclusion. \lean{residual\_bounded\_class\_mass\_zero} adds a
 uniform residual bound and empties the low-information class.
-The helper \lean{post\_nonneg} records that the canonical-code posterior is nonnegative.
+The helper \lean{post\_nonneg} records that the abstract weight \lean{AITProb.post} is nonnegative.
 \lean{conditional\_tail\_given\_residual} states ART's withdrawn display in its original shape,
 conditioned on a residual bound $\eta$: the weight of $\{I\le\Delta-k,\ L\le\eta\}$ is at most
 $2^{-(k-\eta-s)}$ times the weight of $\{L\le\eta\}$. With positive conditioning mass,
 their ratio is at most $2^{-(k-\eta-s)}$ and is $0$ for $k>\eta+s$.
 The factor packages a deterministic cutoff; it supplies no separate statistical decay law.
 \lean{posterior\_residual\_transfer} and \lean{posterior\_residual\_bounded\_zero} instantiate
-these on the canonical-code posterior \lean{AITProb.post} for a finite family of explanations
+these on the abstract complexity weight \lean{AITProb.post} (not by itself a normalized canonical-code posterior; the specified-program bridges supply that reading) for a finite family of explanations
 $(W_i,R_i)$ of one observed output $x$ with null outputs of common complexity $b$, taking the
 per-explanation inequality from \lean{GroundedRegulation.grounded\_inequality} under its named
 chain-rule and data-processing hypotheses: the posterior mass with $I_K(W{:}R)\le\Delta-k$ is at
-most the mass with residual $\ge k-3\,\mathrm{slack}$, and is $0$ under a residual bound
-$\lambda$ for $I_K<\Delta-\lambda-3\,\mathrm{slack}$.
+most the mass with residual $\ge k-4\,\mathrm{slack}$, and is $0$ under a residual bound
+$\lambda$ for $I_K<\Delta-\lambda-4\,\mathrm{slack}$.
 For WP0203 v25, \lean{class\_mass\_transfer\_variable\_tsum} permits both the gap and
 coding allowance to depend on the explanation. The strict-event consequence is
 \lean{class\_mass\_residual\_confidence\_tsum}, and its uniform-residual zero case is
@@ -603,6 +619,18 @@ before summing a countable class. A normalized conditional posterior is one choi
 these weights; all conditioning must use the same positive evidence denominator.
 An exponential information-deficit tail requires a separately justified residual tail
 under that posterior. The concrete clamp-family mass remains a paper-level construction.
+\lean{conditional\_confidence\_transfer} retains the strict endpoints
+$I<d-\eta-h$ and $L>\eta$ under the same evidence.
+\lean{conditional\_variable\_transfer} retains a varying allowance
+inside the residual event. \lean{conditional\_exponential\_transfer}
+transfers a separately supplied exponential residual tail, evaluated at
+$k-h\ge0$; it does not derive that tail from GART.
+All three condition on positive finite evidence mass and need their
+pointwise hypotheses only on its positive-weight support. The finite
+\lean{posterior\_residual\_transfer} and
+\lean{posterior\_residual\_bounded\_zero} compare abstract
+\lean{AITProb.post} weights at allowance $4s$; their names do not supply
+a normalized program-posterior interpretation.
 For WP0203 v26, \lean{conditional\_small\_residual\_zero} and
 \lean{conditional\_deficit\_zero} form the conditional probability explicitly,
 requiring positive finite mass for the evidence and residual-budget event.
@@ -628,6 +656,13 @@ These are prospective bounds under independently sampled initial descriptions, s
 from ART's joint-prior posterior. Computability-to-coding domination and prefix Kraft
 remain named classical AIT inputs; the exponential moment and regulation consequences
 are proved from them.
+\lean{threshold\_from\_local\_gart} requires GART only on the
+positive-weight support where $L\le\eta$.
+\lean{given\_residual\_from\_local\_gart} divides the resulting joint-event
+bound by $q_\eta=\Pr(L\le\eta)>0$ and caps it at one.
+\lean{product\_event\_mass\_le\_one} derives the finite event mass from
+normalized marginals; finiteness is not an independent probability
+assumption in that application.
 \item In \lean{ARTExactForm.lean}, \lean{exact\_exponent} proves from two-sided chain rules and
 computability of both outputs that $K(x)-K(\langle W,R\rangle)=-(K(R\mid x)+L+H)\pm4\,\mathrm{slack}$,
 with $L=K(y_\varnothing\mid x,R)$ the counterfactual residual and $H=K(W\mid x,R,y_\varnothing)$ the
@@ -636,12 +671,29 @@ two-sided bound on \lean{AITProb.post}, \lean{art\_exact\_upper} drops $H\ge0$, 
 \lean{residual\_dominates\_gap} shows $K(R\mid x)+L\ge\Delta+K(R\mid W)-7\,\mathrm{slack}$,
 so the upper half implies the original gap form of ART. \lean{shared\_information\_exponent}
 is the gap form made exact (the dropped term is $K(W\mid y_\varnothing)$), and
-\lean{bridge\_identity} equates the two exact forms:
-$I_K(W{:}R)=\Delta-L+I_K(R{:}x)+I_K(W{:}(x,R)\mid y_\varnothing)\pm5\,\mathrm{slack}$, GART with its
-slack identified; \lean{four\_term\_exponent} writes the exponent as
-$-K(R)-L-K(W\mid y_\varnothing)+[I_K(W{:}R)-(\Delta-L)]$ and \lean{excess\_nonneg} shows the
-bracket is nonnegative up to slack; \lean{art\_with\_residual} packages the two-sided statement
-WP0203 displays: ART's upper bound and the residual lower bound. This is WP0203's ``Algorithmic
+\lean{bridge\_identity} equates the two exact forms using the complexity
+differences $K(R)-K(R\mid x)$ and
+$K(W\mid y_\varnothing)-K(W\mid x,R,y_\varnothing)$, within $5s$.
+\lean{information\_difference} and
+\lean{conditional\_information\_difference} convert those differences
+into symmetric mutual information with explicit pair and context
+conversion costs. Thus \lean{bridge\_symmetric\_information} gives
+$I_K(W{:}R)=\Delta-L+I_K(R{:}x)+I_K(W{:}(x,R)\mid y_\varnothing)$
+within $7s+c_{\rm pair}+c_{\rm condpair}+c_{\rm context}$, at most $10s$
+when each conversion cost is at most $s$.
+\lean{four\_term\_exponent} retains the hidden-world cost
+$H_0=K(W\mid y_\varnothing)$.
+With the relaxed \lean{RegulationBalance.CondMono},
+\lean{excess\_nonneg} bounds the excess
+$\varepsilon=I_K(W{:}R)-(\Delta-L)$ below by $-7s$.
+\lean{art\_with\_residual} has lower exponent $-K(R)-L-H_0-8s$
+and upper exponent $I_K(W{:}R)-K(R)-\Delta+s$;
+\lean{art\_with\_residual\_specified} shifts both by the selected
+program's length offset $-\delta$.
+Their separation is $\varepsilon+H_0+9s$, before the distinct coding
+constants are included. \lean{log2\_sandwich} takes logarithms and
+retains the terms $-\log_2 c_2$ and $-\log_2 c_1$ at the two endpoints.
+This is WP0203's ``Algorithmic
 Regulator Theorem: exact form'': the posterior charges the residual bit for bit, which is why
 the clamp family ($2^N$ worlds at $2^{-N}$ each) defeats the aggregate tail and why
 conditioning on the residual repairs it.
@@ -1617,15 +1669,15 @@ Available-model inference & reading the model and generating the null output bou
   \stproved\ (\lean{model\_\allowbreak residual}, \lean{model\_\allowbreak initial\_\allowbreak information}) \\
 Class-mass transfer (v24.2) & GART on each explanation puts $\{I\le\Delta-k\}$ inside $\{L\ge k-s\}$; nonnegative weights are monotone & KT &
   \stproved\ (\lean{class\_\allowbreak mass\_\allowbreak transfer}, \lean{..\_tsum}, \lean{residual\_\allowbreak bounded\_\allowbreak class\_\allowbreak mass\_\allowbreak zero}) \\
-ART, residual-transfer form & posterior mass of low shared information $\le$ posterior mass of large residual; $0$ below the residual-bound threshold & KT &
+ART, residual-transfer form & abstract \lean{post} weights at allowance $4s$: mass of low shared information $\le$ mass of large residual; $0$ below the residual-bound threshold; interpretation supplied separately & KT &
   \stproved\ (\lean{posterior\_\allowbreak residual\_\allowbreak transfer}, \lean{posterior\_\allowbreak residual\_\allowbreak bounded\_\allowbreak zero}) \\
 Conditional tail given a residual bound & in ART's original shape: $\Pr[I\le\Delta-k\mid L\le\eta]\le2^{-(k-\eta-s)}$, and $0$ for $k>\eta+s$ & KT &
   \stproved\ (\lean{conditional\_\allowbreak tail\_\allowbreak given\_\allowbreak residual}) \\
-ART, exact form & $\log_2 P(e\mid x)=-K(R\mid x)-L-H\pm O(\mathrm{slack})$; upper half implies the gap form & KT &
+ART, exact form & $\log_2\mathrm{post}(e,x)=-K(R\mid x)-L-H\pm O(\mathrm{slack})$ up to the coding constants; upper half implies the gap form; a selected code's length offset $\delta$ is retained in the specified bridge or absorbed only under a uniform bounded-offset premise & KT &
   \stproved\ (\lean{exact\_\allowbreak exponent}, \lean{art\_\allowbreak exact\_\allowbreak form}, \lean{art\_\allowbreak exact\_\allowbreak upper}, \lean{residual\_\allowbreak dominates\_\allowbreak gap}) \\
-ART, shared-information form and bridge & $\log_2P=I_K(W{:}R)-K(R)-\Delta-K(W\mid y_\varnothing)\pm s$; $I_K(W{:}R)=\Delta-L+I_K(R{:}x)+I_K(W{:}(x,R)\mid y_\varnothing)\pm5s$ & KT &
+ART, shared-information form and bridge & $\log_2\mathrm{post}(e,x)=K(x)-K\langle W,R\rangle-\log_2 c$ with $c\in[c_1,c_2]$ and $K(x)-K\langle W,R\rangle=I_K(W{:}R)-K(R)-\Delta-K(W\mid y_\varnothing)\pm s$; $I_K(W{:}R)=\Delta-L+(K(R)-K(R\mid x))+(K(W\mid y_\varnothing)-K(W\mid x,R,y_\varnothing))\pm5s$ in complexity differences; the symmetric $I_K$/cIK form is the symmetric bridge with its larger explicit tolerance & KT &
   \stproved\ (\lean{shared\_\allowbreak information\_\allowbreak exponent}, \lean{bridge\_\allowbreak identity}, \lean{four\_\allowbreak term\_\allowbreak exponent}, \lean{excess\_\allowbreak nonneg}) \\
-ART with the residual (two-sided) & $-K(R)-L-K(W\mid y_\varnothing)\le\log_2P(e\mid x)\le I_K(W{:}R)-K(R)-\Delta$ (up to slack); ends differ by the excess & KT &
+ART with the residual (two-sided) & $-K(R)-L-K(W\mid y_\varnothing)-8s-\log_2c_2\le\log_2\mathrm{post}(e,x)\le I_K(W{:}R)-K(R)-\Delta+s-\log_2c_1$; the endpoints differ by $\varepsilon+H_0+9s+\log_2(c_2/c_1)$ & KT &
   \stproved\ (\lean{art\_\allowbreak with\_\allowbreak residual}) \\
 --- two-sided chain rules, outputs computable & $K\langle a,b\rangle=K a+K(b\mid a)\pm s$; conditional form; $K\langle W,R\rangle=K\langle x,R,y_\varnothing,W\rangle\pm s$ & STD &
   \staxiom\ (\lean{Chain}, \lean{CondChain}, \lean{OutputsComputable}) \\
@@ -1641,6 +1693,20 @@ Independent regulation (v25) & $\Pr(\Delta-L-h\ge t)\le\min\{1,ab2^{-t}\}$; even
   \stproved\ (\lean{independent\_regulation\_\allowbreak probability}, \lean{independent\_regulation\_\allowbreak threshold}) \\
 Conditional independent regulation (v26) & joint-event bound divided by the positive residual-event probability; probability capped at one & KT &
   \stproved\ (\lean{independent\_regulation\_\allowbreak given\_residual}) \\
+Specified-program bridge & actual length $K(e)+\delta$, common evidence: posterior $=2^{-\delta}\mathrm{post}(e,x)$ & KT &
+  \stproved\ (\lean{compatible\_\allowbreak program\_factor}, \lean{specified\_weight\_\allowbreak coding\_bounds}) \\
+Explicit ART constants & sharp bound with $(1/c_1)2^{c_0-\delta}$; uniform upper constant; chain allowance retained & KT &
+  \stproved\ (\lean{sharp\_art\_\allowbreak specified}, \lean{sharp\_art\_\allowbreak uniform}, \lean{conditional\_art\_\allowbreak specified}) \\
+Symmetric-information bridge & difference-form bridge plus pair/context costs: $7s+c_{\rm pair}+c_{\rm condpair}+c_{\rm context}$ & KT &
+  \stproved\ (\lean{information\_\allowbreak difference}, \lean{conditional\_\allowbreak information\_difference}, \lean{bridge\_symmetric\_\allowbreak information}) \\
+Selected residual endpoints & length offset shifts both exponents; separation $\varepsilon+H_0+9s$; logarithms retain coding constants & KT &
+  \stproved\ (\lean{art\_with\_residual\_\allowbreak specified}, \lean{log2\_\allowbreak sandwich}) \\
+Local sampling bound & GART only where $L\le\eta$; conditional bound divides by $q_\eta>0$ & KT &
+  \stproved\ (\lean{threshold\_from\_\allowbreak local\_gart}, \lean{given\_residual\_\allowbreak from\_local\_gart}) \\
+Finite product-event mass & normalized marginals imply each event has mass at most one & STD &
+  \stproved\ (\lean{product\_event\_\allowbreak mass\_le\_one}) \\
+Evidence-local transfers & strict confidence bound; variable allowance; separately assumed exponential residual tail & KT &
+  \stproved\ (\lean{conditional\_\allowbreak confidence\_transfer}, \lean{conditional\_\allowbreak variable\_transfer}, \lean{conditional\_\allowbreak exponential\_transfer}) \\
 --- GART instantiation & named chain and data-processing facts supply the pointwise balance & KT &
   \stproved\ (\lean{independent\_gart\_\allowbreak probability}) \\
 --- marginal coding and pair Kraft & computable-law domination by prefix-code weights; total shortest-pair-code weight at most one & STD &
