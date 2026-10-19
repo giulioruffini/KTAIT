@@ -7,7 +7,7 @@ import Mathlib
 import KTAIT.Basic
 
 /-!
-# KTAIT.RegulationBalance — the Global Algorithmic Regulator Theorem (WP0203 v20)
+# KTAIT.RegulationBalance — the Good Algorithmic Regulator Theorem (GART), WP0203
 
 For regulated output `x`, null output `y`, initial regulator `R`, and additional episode
 records `Q`, the output gap is bounded by initial shared information plus the conditional

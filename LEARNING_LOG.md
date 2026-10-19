@@ -738,3 +738,6 @@ hypothesis" adapter whose side condition asks a frame constant to dominate a mul
 ## 2026-10-05 — WP0216 draft19 import registration
 
 Registered the live temporal-persistence source for the recurrent-recovery anchors. WP0216 now cites the ordered APB, grouped capacity, and recurrence results at the shared fc60f68 snapshot; the manuscript build checks that all four active provenance files use that pin. No Lean statements changed.
+
+## 2026-10-19 — docstrings as claims (WP0203 Round 1 audit)
+Four docstrings misstated what their declarations prove: a 3·slack where the type has 7, an endpoint difference that omitted K(W|y₀), an "equivalently" for a chain-rule step that is not a hypothesis, and a stale "Global ART (v20)" header. Corrected without touching any statement. Rule (docs/translation-fidelity.md, pitfall 8): audit docstrings against the types; a docstring copied into a paper becomes a claim.

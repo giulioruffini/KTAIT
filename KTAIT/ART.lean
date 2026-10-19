@@ -134,8 +134,11 @@ theorem probabilistic_regulator_theorem
     `2^{−K(R)}≤1`. No extra hypothesis is needed — the exponent identity is exact
     (the `K(R)` term carried through, not bounded away):
     `post (W,R) x ≤ C · 2^{M(W:R)} · 2^{−Δ} · 2^{−K(R)}`.
-    Equivalently (by the chain rule `K(W,R)=K(W)+K(R\mid W)`, an AIT axiom) this reads
-    `≤ C · 2^{−K(R\mid W)} · 2^{−Δ}`. -/
+    The conditional-complexity form `≤ C' · 2^{−K(R∣W)} · 2^{−Δ}` used by WP0203
+    (Eq. art, second line) follows from the two-sided chain rule
+    `K(W,R) = K(W) + K(R∣W) ± O(log)`, a standard AIT fact that is **not** among this
+    theorem's hypotheses; it needs its own bridge declaration carrying that allowance
+    (WP0203 Round 1 fidelity audit, record A03). -/
 theorem probabilistic_regulator_theorem_sharp
     (W R xon xoff : F.Obj)
     (c0 : ℤ) (hoff : (F.K xoff : ℤ) ≤ (F.K W : ℤ) + c0)

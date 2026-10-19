@@ -132,7 +132,7 @@ theorem art_exact_upper (F : AITProb) {c1 c2 : ℝ}
         · norm_num
 
 /-- **Comparison with the gap form.** In the other chain-rule order, with `y₀` computable
-    from `W`, `K(R | x) + L ≥ Δ + K(R | W) − 3·slack`, so the upper half of the exact form
+    from `W`, `K(R | x) + L ≥ Δ + K(R | W) − 7·slack`, so the upper half of the exact form
     implies the second line of the original ART bound. Hypotheses: chain rule for `⟨W,R⟩`,
     chain rule `K W = K y₀ + K(W | y₀) ± slack` (computability of `y₀` from `W` folded in),
     and monotonicity `K(W | y₀) ≥ K(W | ⟨⟨x,R⟩,y₀⟩) − slack`. -/
@@ -220,8 +220,10 @@ theorem excess_nonneg (W R x y0 : F.Obj)
   omega
 
 /-- **ART with the residual (two-sided).** The upper bound is ART's exponent `IK − K R − Δ`
-    (exact up to `K(W | y₀)`); the lower bound is new: `−K R − L − K(W | y₀)`. They differ by
-    the excess `IK − (Δ − L) ≥ 0`. -/
+    (exact up to `K(W | y₀)`); the lower bound is new: `−K R − L − K(W | y₀)`. The two
+    displayed exponents differ by the excess `IK − (Δ − L)` plus the hidden-world term
+    `K(W | y₀)`, up to `8·slack`; only the sharpened upper exponent, with `K(W | y₀)`
+    subtracted, differs from the lower one by the excess alone (WP0203 Prop. A2). -/
 theorem art_with_residual (F : AITProb) {c1 c2 : ℝ}
     (hLB : F.CodingLB c1) (hUB : F.CodingUB c2) (W R x y0 : F.Obj)
     (hcomp : OutputsComputable F.toAITFrame W R x y0)
