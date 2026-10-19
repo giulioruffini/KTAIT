@@ -137,8 +137,10 @@ theorem probabilistic_regulator_theorem
     The conditional-complexity form `≤ C' · 2^{−K(R∣W)} · 2^{−Δ}` used by WP0203
     (Eq. art, second line) follows from the two-sided chain rule
     `K(W,R) = K(W) + K(R∣W) ± O(log)`, a standard AIT fact that is **not** among this
-    theorem's hypotheses; it needs its own bridge declaration carrying that allowance
-    (WP0203 Round 1 fidelity audit, record A03). -/
+    theorem's hypotheses; it needs its own bridge declaration carrying that allowance, and
+    the resulting factor `2^s` must stay visible in `C'` rather than be presented as a
+    horizon-independent constant when `s = O(log N)` (WP0203 Round 1 fidelity audit, record
+    A03). -/
 theorem probabilistic_regulator_theorem_sharp
     (W R xon xoff : F.Obj)
     (c0 : ℤ) (hoff : (F.K xoff : ℤ) ≤ (F.K W : ℤ) + c0)

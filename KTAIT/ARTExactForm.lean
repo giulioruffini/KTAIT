@@ -222,8 +222,9 @@ theorem excess_nonneg (W R x y0 : F.Obj)
 /-- **ART with the residual (two-sided).** The upper bound is ART's exponent `IK − K R − Δ`
     (exact up to `K(W | y₀)`); the lower bound is new: `−K R − L − K(W | y₀)`. The two
     displayed exponents differ by the excess `IK − (Δ − L)` plus the hidden-world term
-    `K(W | y₀)`, up to `8·slack`; only the sharpened upper exponent, with `K(W | y₀)`
-    subtracted, differs from the lower one by the excess alone (WP0203 Prop. A2). -/
+    `K(W | y₀)`, up to `8·slack`. After subtracting the hidden-world term from the upper
+    exponent, the exponent difference is the excess plus the same `8·slack` allowance; the
+    multiplicative coding constants `c1, c2` are separate (WP0203 Prop. A2). -/
 theorem art_with_residual (F : AITProb) {c1 c2 : ℝ}
     (hLB : F.CodingLB c1) (hUB : F.CodingUB c2) (W R x y0 : F.Obj)
     (hcomp : OutputsComputable F.toAITFrame W R x y0)
