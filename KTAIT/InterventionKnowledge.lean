@@ -15,11 +15,11 @@ information does and does not limit. This module checks them from named AIT fact
 * `key_bound`: a descriptor `m` recoverable by fixed maps from both `W` and `R` forces
   `I_K(W:R) ≥ K m − 3·slack`. Data processing in each argument, then self-information.
 * `intervention_and_gap`: the descriptor bound and the residual bound hold together, so
-  `I_K(W:R) ≥ max{K m, Δ − L} − 3·slack`; the two are not added.
+  `I_K(W:R) ≥ max{K m − 3·slack, Δ − L − 4·slack}`; the two are not added.
 * `readout_saving_upper`: for any world record `Z` computable from `W`, supplying `R` saves at
   most `I_K(W:R) + 2·slack` in describing `Z`.
 * `descriptive_saving`: for the null output, the saving `K y₀ − K(y₀ | R)` is at least
-  `Δ − L − slack` and at most `I_K(W:R) + 2·slack`.
+  `Δ − L − 2·slack` and at most `I_K(W:R) + 2·slack`.
 * `shared_content_split`: `I_K(W:R) = I_K(y₀:R) + I_K(W:R | y₀) ± 3·slack` when `y₀` is
   computable from `W`, the chain-rule decomposition of shared information.
 
@@ -72,7 +72,7 @@ theorem intervention_and_gap (W R m x y0 : F.Obj)
     (hmut : MutualChain F y0 R) (hsub : CondSubadd F x y0 R)
     (hmono : CondMono F x R) (hdp : DataProcessing F y0 W R) :
     IK F W R ≥ max ((F.K m : Int) - 3 * (F.slack : Int))
-      (gap F x y0 - residual F x y0 R - 3 * (F.slack : Int)) := by
+      (gap F x y0 - residual F x y0 R - 4 * (F.slack : Int)) := by
   have h1 := key_bound F W R m hW hR hself
   have h2 := grounded_inequality F W x y0 R hmut hsub hmono hdp
   rw [ge_iff_le, max_le_iff]
@@ -95,7 +95,7 @@ producing `x` (at most `K x`, ignoring `R`) and then the residual program. Upper
 theorem descriptive_saving (W R x y0 : F.Obj)
     (hmut : MutualChain F y0 R) (hsub : CondSubadd F x y0 R)
     (hmono : CondMono F x R) (hdp : DataProcessing F y0 W R) :
-    gap F x y0 - residual F x y0 R - (F.slack : Int)
+    gap F x y0 - residual F x y0 R - 2 * (F.slack : Int)
         ≤ (F.K y0 : Int) - (F.cond y0 R : Int) ∧
     (F.K y0 : Int) - (F.cond y0 R : Int) ≤ IK F W R + 2 * (F.slack : Int) := by
   refine ⟨?_, readout_saving_upper F W R y0 hmut hdp⟩

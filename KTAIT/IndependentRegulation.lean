@@ -200,7 +200,7 @@ theorem independent_regulation_threshold (F : AITFrame) (p q : F.Obj → ENNReal
 /-- **GART under independently sampled initial descriptions.** The named chain-rule and
     data-processing hypotheses imply GART for each positive-weight world–regulator pair. With the
     independent-sampling moment bound, they make a gap at least `d` and counterfactual residual
-    at most `ell` exponentially unlikely in `d - ell - 3*slack`, with factor `a * b`.
+    at most `ell` exponentially unlikely in `d - ell - 4*slack`, with factor `a * b`.
     Here `x e` and `z0 e` are the regulated and matched-null outputs of pair `e`. -/
 theorem independent_gart_probability (F : AITFrame) (p q : F.Obj → ENNReal)
     (a b : ENNReal) (hp : CodingDominated F p a) (hq : CodingDominated F q b)
@@ -215,11 +215,11 @@ theorem independent_gart_probability (F : AITFrame) (p q : F.Obj → ENNReal)
         {e | d ≤ RegulationBalance.gap F (x e) (z0 e) ∧
           GroundedRegulation.residual F (x e) (z0 e) e.2 ≤ ell}
         (productWeight p q) e
-      ≤ min 1 ((a * b) * (2 : ENNReal) ^ (-(d - ell - 3 * (F.slack : ℤ)))) := by
+      ≤ min 1 ((a * b) * (2 : ENNReal) ^ (-(d - ell - 4 * (F.slack : ℤ)))) := by
   apply independent_regulation_threshold F p q a b hp hq hk hpMass hqMass
     (fun e => RegulationBalance.gap F (x e) (z0 e))
     (fun e => GroundedRegulation.residual F (x e) (z0 e) e.2)
-    (fun _ => 3 * (F.slack : ℤ))
+    (fun _ => 4 * (F.slack : ℤ))
   · intro e hw
     exact GroundedRegulation.grounded_inequality F e.1 (x e) (z0 e) e.2
       (hmut e hw) (hsub e hw) (hmono e hw) (hdp e hw)

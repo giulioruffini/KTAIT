@@ -333,6 +333,7 @@ Mathlib~v4.31.0. Modules:
 \lean{ModelOrPay.lean} & \lean{MAICapped}; multiplicity witnesses & WP0203 Props.~1--2 \\
 \resizebox{0.96\linewidth}{!}{\lean{ReversibleReconstruction.lean}} & \lean{ConditionalMapBound} & WP0203 v20: inverse joint dynamics, world decoding, and null replay \\
 \resizebox{0.96\linewidth}{!}{\lean{GenerativeRegulation.lean}} & retained model, additive compensation, map-cost bounds & WP0203 v22: lossless model-based regulation \\
+\lean{ActionLog.lean} & \lean{trajectory}; decoder identity; log, preload and gap cost bounds & WP0203 Round 1: the thermostat with an action log \\
 \resizebox{0.96\linewidth}{!}{\lean{ResidualTransfer.lean}} & countable mass transfer; explicit positive-mass conditioning & WP0203 v26: conditional ART and residual confidence bounds \\
 \lean{ARTExactForm.lean} & \lean{Chain}, \lean{CondChain}, \lean{OutputsComputable} & WP0203: ART's specified-code posterior as three additive costs, residual included \\
 \resizebox{0.96\linewidth}{!}{\lean{IndependentRegulation.lean}} & marginal coding bounds, pair Kraft, product weights & WP0203 v26: joint and conditional prospective regulation bounds \\
@@ -525,7 +526,9 @@ nothing here establishes the positive claim it was meant to support.
 \item In \lean{ReversibleReconstruction.lean}, \lean{initial\_from\_complete\_records} and
 \lean{null\_from\_complete\_records} --- WP0203 v20's reconstruction proposition.
 The first result composes recovery of the final joint state with a supplied
-left inverse of the joint evolution. The second decodes the initial world
+recovery rule that inverts the joint evolution at the admitted initial state
+(the paper's $G(F^N(s),N)=s$ for admitted $s$; a global left inverse supplies that
+identity, and only the identity at $s_0$ is used). The second decodes the initial world
 and applies the specified null protocol. The resulting conditional complexity
 is bounded by the sum of the record, inverse, world-decoder, and null-decoder
 costs. Standard AIT bounds for applying fixed computable maps are explicit
@@ -534,6 +537,19 @@ constructed. Joint records include regulator memory: reversibility does not
 imply recovery from the world-side projection alone. Since v24.2, GART expands to
 Good Algorithmic Regulator Theorem (``Global'' in v20--v24.1) and names the existing output record
 balance; grounding remains its measurement extension.
+\item In \lean{ActionLog.lean}, \lean{trajectory} is the exact integer recurrence
+$x_{n+1}=x_n+d_n+u_n$ of WP0203's Round 1 worked case (the thermostat with an action log),
+and \lean{reconstruct\_null} is the decoder identity: subtracting the accumulated actions
+from the regulated trajectory gives the null trajectory at every step. At the frame level,
+\lean{residual\_from\_action\_log} bounds the residual by the log's description cost given
+the regulated record and the initial regulator plus the fixed decoder and one composition
+overhead; \lean{residual\_with\_preload} substitutes the stored-prefix bound
+$K(U\mid y_R,R)\le m+b_1$; \lean{gap\_from\_disturbance} gives $\Delta\ge N-r-(c_1+c_2)$ from
+an incompressible disturbance recovered from the null record and a simple regulated record;
+and \lean{preload\_certifies\_initial\_information} combines GART's world form, the residual
+bound and the gap bound into $\Ik(W{:}R)\ge N-m-(r+b+c+h)$. The decoder cost, the stored
+prefix, the first-difference recovery and the zero record enter as named hypotheses; the
+finite-record bridges that derive them are stated in the paper's review notes.
 \item In \lean{GenerativeRegulation.lean}, \lean{compensation\_reversible} and
 \lean{model\_cancellation} check that subtracting a generated disturbance while retaining
 its model is invertible and cancels an exact prediction. \lean{joint\_complexity\_preserved}
@@ -588,7 +604,7 @@ the probability of $\Delta-L-h\ge t$ by $\min\{1,ab2^{-t}\}$, allowing $h$ to va
 between pairs. \lean{independent\_regulation\_threshold} needs a uniform allowance
 only on the event $\{\Delta\ge d,L\le\ell\}$.
 \lean{independent\_gart\_probability} derives its pointwise premise from
-\lean{grounded\_inequality}, with allowance $3\,\mathrm{slack}$.
+\lean{grounded\_inequality}, with allowance $4\,\mathrm{slack}$.
 \lean{independent\_regulation\_given\_residual} conditions on a positive-mass
 residual-budget event and retains its probability in the denominator. This
 selection can remove the exponential rarity of the unconditioned joint event.
@@ -616,10 +632,12 @@ conditioning on the residual repairs it.
 \item In \lean{HorizonConditioning.lean}, \lean{conditioning\_on\_horizon} removes the
 horizon from the conditioning of shared information: with \lean{CondMono} for the two
 marginals and \lean{Subadd} for the pair against the horizon object $N$,
-$\Ik(W{:}R)\ge\Ik(W{:}R\mid N)-K(N)-\mathrm{slack}$. \lean{horizon\_bound\_every} composes
+$\Ik(W{:}R)\ge\Ik(W{:}R\mid N)-K(N)-3\,\mathrm{slack}$ (the two ignore-input bounds and the
+subadditivity each carry one slack; together they are the paper's fixed horizon-conditioning
+cost $c_0$). \lean{horizon\_bound\_every} composes
 this with the per-horizon initial-information bound $\Ik(W{:}R\mid N_i)\ge\Delta_i-\lambda_i-h_i$
 (WP0203's initial-information corollary with the horizon explicit) to give
-$\Ik(W{:}R)\ge\Delta_i-\lambda_i-h_i-K(N_i)-\mathrm{slack}$ at every admitted horizon, and
+$\Ik(W{:}R)\ge\Delta_i-\lambda_i-h_i-K(N_i)-3\,\mathrm{slack}$ at every admitted horizon, and
 \lean{horizon\_bound\_sup} states the supremum form over any nonempty finite family of horizons.
 This is WP0203 v32.10's remark on reading the bound across horizons, which the paper had left at
 paper level; the background $C_0$ is the frame and the horizon is an object.
@@ -629,7 +647,7 @@ recovered by fixed maps from both $W$ and $R$ forces $\Ik(W{:}R)\ge K(m)-3\,\mat
 places this beside \lean{grounded\_inequality} as a maximum, not a sum.
 \lean{readout\_saving\_upper} bounds the description saving $K(Z)-K(Z\mid R)$ of any world
 record $Z$ computable from $W$ by $\Ik(W{:}R)+2\,\mathrm{slack}$; \lean{descriptive\_saving}
-brackets the saving on the null output between $\Delta-L-\mathrm{slack}$ and that bound; and
+brackets the saving on the null output between $\Delta-L-2\,\mathrm{slack}$ and that bound; and
 \lean{shared\_content\_split} is the two-sided chain-rule decomposition
 $\Ik(W{:}R)=\Ik(y_\varnothing{:}R)+\Ik(W{:}R\mid y_\varnothing)\pm3\,\mathrm{slack}$ from three
 named chain facts. These are the four displays of WP0203 v34.3's Discussion subsection on
@@ -804,9 +822,13 @@ so under grounding $\Ik(W{:}R)\ge\Delta-L_Z-2\varepsilon-O(\mathrm{slack})$: the
 Good-Regulator reading is recovered exactly when the readout is grounded and the
 intervention is counterfactually non-collapsing ($L_Z$ small). The proof spine is
 \lean{RegulationBalance.balance\_readout} stopped at the residual instead of closed by $Q$.
-\item \lean{GroundedRegulation.simple\_regulator\_forces\_residual} --- the ceiling
+\item \lean{GroundedRegulation.simple\_regulator\_forces\_residual} and
+\lean{simple\_regulator\_forces\_residual\_readout} --- the ceiling
 $\Ik(W{:}R)\le K R+\mathrm{slack}$ (\lean{IKCeiling}, standard, named hypothesis) turns the
-grounded inequality around: $L_Z\ge\Delta_Z-K R-O(\mathrm{slack})$. A fixed simple regulator
+grounded inequality around: $L_Z\ge\Delta_Z-K R-O(\mathrm{slack})$. The readout form applies
+the ceiling to $\Ik(z_0{:}R)$ in \lean{grounded\_readout} and needs no null-output
+computability; it is WP0203's Eq.~(forcesL), with allowance $4\,\mathrm{slack}$ (the world
+form carries $5\,\mathrm{slack}$). A fixed simple regulator
 opening an extensive grounded gap is \emph{forced} into an extensive counterfactual
 residual --- the blind clamp/AC regime classified, and the structural reason no
 horizon-uniform $\Ik(W{:}R)\asymp\Delta_N$ can hold for fixed finite $R$: static model
@@ -814,7 +836,7 @@ content is reusable, cumulative regulation benefit is not.
 \item \lean{GroundedRegulation.closure\_by\_construction} --- WP0203 v10's Remark
 (automatic closure). In the deterministic Turing-pair idealization the persistent world
 description is instantiated in the realized world-side record $S$ and the null readout is
-computable from it, so $K(y\mid S,C)\le 3\,\mathrm{slack}$ for any visible episode $C$: an
+computable from it, so $K(y\mid S,C)\le 4\,\mathrm{slack}$ for any visible episode $C$: an
 information-closing record exists \emph{by construction}, via the named conditional
 composition fact \lean{CondCompose} ($K(y|S)\le K(W|S)+K(y|W)+\mathrm{slack}$) and
 conditioning monotonicity. Closure is therefore automatic in abstract ART and becomes a
@@ -827,7 +849,13 @@ $|L_Z-\mathrm{cIK}(z_0{:}Q\mid\langle z,R\rangle)|\le 2\,\mathrm{slack}$ (the se
 direction needs \lean{PairMono}, $K(B\mid C)\le K(\langle A,B\rangle\mid C)+\mathrm{slack}$):
 the residual is not a new sink but exactly the completion term, so the repaired corollary
 (when $L_Z$ is small) and the WP0203 balance (where $L_Z$ goes when it is not) are two views
-of the same accounting. \lean{grounded\_balance} is \lean{RegulationBalance.balance}
+of the same accounting. \lean{closure\_transfers} transports the reconstruction condition to
+a selected variable (WP0203 Eq.~zclosure-early): with the two grounding translations
+$K(y_R\mid\zeta_R)\le\varepsilon$ and $K(\zeta_\varnothing\mid y_\varnothing)\le\varepsilon$,
+the reconstruction bound \lean{InfoClosed}, two compositions and three context conversions
+written out as instances, $K(\zeta_\varnothing\mid\zeta_R,R,Q)\le2\varepsilon+6\,\mathrm{slack}$;
+the conclusion is not an \lean{InfoClosed} at tolerance slack, and a nonlogarithmic
+$\varepsilon$ is not absorbed. \lean{grounded\_balance} is \lean{RegulationBalance.balance}
 instantiated at $x:=z$, $y:=z_0$, recorded to show the constructions compose. The
 asymptotic $(1-o(1))\Delta$ form and the $\Theta(N)$ readings are analysis on top of these
 finite inequalities and are deliberately not formalized.

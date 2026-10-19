@@ -301,7 +301,7 @@ theorem bounded_self_code_update_capacity
     budget `K(Z₁) ≤ K₀` (and conditioning only shrinks description length), then the
     novelty storable uniquely in the self-code is capped:
 
-    `K(ι | ⟨Z₀,C⟩) ≤ K₀ + δ + slack`.
+    `K(ι | ⟨Z₀,C⟩) ≤ K₀ + δ + 2·slack`.
 
     A bounded identity cannot be an indefinitely growing memory: novelty beyond the budget
     must be compressed, consolidated outside the identity core, routed out, or forgotten. -/
@@ -311,7 +311,7 @@ theorem bounded_self_code_capacity
     (hrec : (F.cond iota (F.pair Z1 (F.pair Z0 Cf)) : Int) ≤ δ)
     (hmono : CondMono F Z1 (F.pair Z0 Cf))
     (hbudget : (F.K Z1 : Int) ≤ K0) :
-    (F.cond iota (F.pair Z0 Cf) : Int) ≤ K0 + δ + (F.slack : Int) := by
+    (F.cond iota (F.pair Z0 Cf) : Int) ≤ K0 + δ + 2 * (F.slack : Int) := by
   have h := self_code_overload F iota Z0 Z1 Cf δ hsub hrec
   simp only [CondMono] at hmono
   omega

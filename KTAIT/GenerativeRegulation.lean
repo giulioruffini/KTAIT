@@ -94,7 +94,7 @@ theorem model_initial_information
     (hmono : CondMono F output regulator)
     (hdp : DataProcessing F (generate model) world regulator) :
     IK F world regulator ≥ gap F output (generate model) -
-      (readCost + generateCost : Nat) - 3 * (F.slack : Int) := by
+      (readCost + generateCost : Nat) - 4 * (F.slack : Int) := by
   have hr := model_residual F generate model output regulator readCost generateCost
     hmodel hgenerate
   have hb := grounded_inequality F world output (generate model) regulator

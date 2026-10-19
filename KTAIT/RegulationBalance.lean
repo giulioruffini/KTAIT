@@ -66,8 +66,11 @@ def MutualChain (y R : F.Obj) : Prop :=
 def CondSubadd (x y R : F.Obj) : Prop :=
   (F.cond y R : Int) ≤ (F.cond x R : Int) + (F.cond y (F.pair x R) : Int) + (F.slack : Int)
 
-/-- **Monotonicity of conditioning**: `K(x | R) ≤ K(x)`. -/
-def CondMono (x R : F.Obj) : Prop := (F.cond x R : Int) ≤ (F.K x : Int)
+/-- **Monotonicity of conditioning**: `K(x | R) ≤ K(x) + slack`. The fixed interpreter that
+    runs a description of `x` and ignores the supplied `R` costs a constant, so the standard
+    fact holds up to an additive constant, not exactly (Shen, Uspensky and Vereshchagin,
+    Chapter 2, conditional complexity); `slack` carries that constant. Named hypothesis. -/
+def CondMono (x R : F.Obj) : Prop := (F.cond x R : Int) ≤ (F.K x : Int) + (F.slack : Int)
 
 /-- **Conditional chain rule**: `K(⟨y,Q⟩ | C) ≤ K(Q | C) + K(y | ⟨Q,C⟩) + slack`. -/
 def CondChain (y Q C : F.Obj) : Prop :=
@@ -133,14 +136,14 @@ theorem balance_with_missing_information (W x y R Q : F.Obj)
     (hchain : CondChain F y Q (F.pair x R))
     (hdp : DataProcessing F y W R) :
     gap F x y ≤ IK F W R + cIK F y Q (F.pair x R)
-      + (F.cond y (F.pair Q (F.pair x R)) : Int) + 4 * (F.slack : Int) := by
+      + (F.cond y (F.pair Q (F.pair x R)) : Int) + 5 * (F.slack : Int) := by
   simp only [MutualChain, CondSubadd, CondMono, CondChain, DataProcessing]
     at hmut hsub hmono hchain hdp
   simp only [gap, cIK]
   omega
 
 /-- **Theorem (algorithmic regulation balance), model-content form.**
-    `Δ ≤ M(y : R) + M(y : Q | ⟨x,R⟩) + 4·slack`.
+    `Δ ≤ M(y : R) + M(y : Q | ⟨x,R⟩) + 5·slack`.
 
     The gap a regulator opens is bounded by what it shares with the null readout plus the
     world-relevant information carried by the rest of the episode. -/
@@ -150,14 +153,14 @@ theorem balance_readout (x y R Q : F.Obj)
     (hmono : CondMono F x R)
     (hchain : CondChain F y Q (F.pair x R))
     (hclosed : InfoClosed F y Q (F.pair x R)) :
-    gap F x y ≤ IK F y R + cIK F y Q (F.pair x R) + 4 * (F.slack : Int) := by
+    gap F x y ≤ IK F y R + cIK F y Q (F.pair x R) + 5 * (F.slack : Int) := by
   have hres := residual_in_completion F y Q (F.pair x R) hchain hclosed
   simp only [MutualChain, CondSubadd, CondMono] at hmut hsub hmono
   simp only [gap]
   omega
 
 /-- **Theorem (algorithmic regulation balance), ART form.**
-    `Δ ≤ M(W : R) + M(y : Q | ⟨x,R⟩) + 5·slack`.
+    `Δ ≤ M(W : R) + M(y : Q | ⟨x,R⟩) + 6·slack`.
 
     This is the inequality quoted in the paper: static model content plus episode flow. -/
 theorem balance (W x y R Q : F.Obj)
@@ -167,13 +170,13 @@ theorem balance (W x y R Q : F.Obj)
     (hchain : CondChain F y Q (F.pair x R))
     (hclosed : InfoClosed F y Q (F.pair x R))
     (hdp : DataProcessing F y W R) :
-    gap F x y ≤ IK F W R + cIK F y Q (F.pair x R) + 5 * (F.slack : Int) := by
+    gap F x y ≤ IK F W R + cIK F y Q (F.pair x R) + 6 * (F.slack : Int) := by
   have h := balance_readout F x y R Q hmut hsub hmono hchain hclosed
   simp only [DataProcessing] at hdp
   omega
 
 /-- **Deficit form.** The information missing from the regulated readout must be somewhere:
-    `M(y : Q | ⟨x,R⟩) ≥ Δ − M(W : R) − 5·slack`.
+    `M(y : Q | ⟨x,R⟩) ≥ Δ − M(W : R) − 6·slack`.
 
     A regulator with little model content that nonetheless opens a large gap is *forced* to
     have routed the difference through its actions, its memory, or the world. -/
@@ -184,12 +187,12 @@ theorem deficit (W x y R Q : F.Obj)
     (hchain : CondChain F y Q (F.pair x R))
     (hclosed : InfoClosed F y Q (F.pair x R))
     (hdp : DataProcessing F y W R) :
-    cIK F y Q (F.pair x R) ≥ gap F x y - IK F W R - 5 * (F.slack : Int) := by
+    cIK F y Q (F.pair x R) ≥ gap F x y - IK F W R - 6 * (F.slack : Int) := by
   have h := balance F W x y R Q hmut hsub hmono hchain hclosed hdp
   omega
 
 /-- **Finite-horizon core of the rate form.** If the static model content is at most `m`
-    and the episode flow at most `f`, the gap cannot exceed `m + f + 5·slack`.
+    and the episode flow at most `f`, the gap cannot exceed `m + f + 6·slack`.
 
     Taking a family of horizons with `m = o(N)` and dividing by `N` gives the rate
     statement of the paper: a sustained extensive gap needs an extensive flow. That limiting
@@ -203,7 +206,7 @@ theorem balance_rate_finite (W x y R Q : F.Obj) (m f : Int)
     (hdp : DataProcessing F y W R)
     (hm : IK F W R ≤ m)
     (hf : cIK F y Q (F.pair x R) ≤ f) :
-    gap F x y ≤ m + f + 5 * (F.slack : Int) := by
+    gap F x y ≤ m + f + 6 * (F.slack : Int) := by
   have h := balance F W x y R Q hmut hsub hmono hchain hclosed hdp
   omega
 
@@ -232,7 +235,8 @@ def FlowSplit (y Oact Sreg Exh Q C : F.Obj) : Prop :=
     state retains nothing, cannot open a gap beyond what its world exhaust accounts for.
 
     This is the clamp regime: the counterexample of `KTAIT.ModelOrPay` does not violate the
-    balance, it saturates the exhaust term. -/
+    balance, it saturates the exhaust term. "Nothing" means at most `slack`, WP0203's
+    "negligible" (`O(log N)`); the three bounds and the balance give `10·slack`. -/
 theorem gap_forces_exhaust (W x y R Q Oact Sreg Exh : F.Obj)
     (hmut : MutualChain F y R)
     (hsub : CondSubadd F x y R)
@@ -241,10 +245,10 @@ theorem gap_forces_exhaust (W x y R Q Oact Sreg Exh : F.Obj)
     (hclosed : InfoClosed F y Q (F.pair x R))
     (hdp : DataProcessing F y W R)
     (hsplit : FlowSplit F y Oact Sreg Exh Q (F.pair x R))
-    (hmodel : IK F W R ≤ 0)
-    (hact : cIK F y Oact (F.pair x R) ≤ 0)
-    (hstate : cIK F y Sreg (F.pair Oact (F.pair x R)) ≤ 0) :
-    gap F x y ≤ cIK F y Exh (F.pair Sreg (F.pair Oact (F.pair x R))) + 6 * (F.slack : Int) := by
+    (hmodel : IK F W R ≤ (F.slack : Int))
+    (hact : cIK F y Oact (F.pair x R) ≤ (F.slack : Int))
+    (hstate : cIK F y Sreg (F.pair Oact (F.pair x R)) ≤ (F.slack : Int)) :
+    gap F x y ≤ cIK F y Exh (F.pair Sreg (F.pair Oact (F.pair x R))) + 10 * (F.slack : Int) := by
   have h := balance F W x y R Q hmut hsub hmono hchain hclosed hdp
   simp only [FlowSplit] at hsplit
   omega
@@ -267,9 +271,11 @@ recovery that the world record does not already support. -/
 def Localized (Exh S : F.Obj) : Prop := (F.cond Exh S : Int) ≤ (F.slack : Int)
 
 /-- Monotonicity of conditioning in the second argument, as a named hypothesis:
-    conditioning on more cannot cost more. -/
+    conditioning on more cannot cost more than a constant, `K(A | B,C) ≤ K(A | B) + slack`.
+    The fixed program discards the unneeded component `C` and runs a description of `A`
+    from `B`; `slack` carries its cost. -/
 def CondMonoMore (A B C : F.Obj) : Prop :=
-  (F.cond A (F.pair B C) : Int) ≤ (F.cond A B : Int)
+  (F.cond A (F.pair B C) : Int) ≤ (F.cond A B : Int) + (F.slack : Int)
 
 /-- Subadditivity through the exhaust: `K(y | ⟨S,C⟩) ≤ K(Ξ | ⟨S,C⟩) + K(y | ⟨Ξ,C⟩) + slack`. -/
 def SubaddVia (y Exh S C : F.Obj) : Prop :=
@@ -280,7 +286,7 @@ def SubaddVia (y Exh S C : F.Obj) : Prop :=
     the world-side record `S`, and `Ξ` together with the visible episode `C` recovers `y`,
     then `S` together with `C` already recovered `y`:
 
-    `K(y | ⟨S,C⟩) ≤ 3·slack`.
+    `K(y | ⟨S,C⟩) ≤ 4·slack`.
 
     This is the formal content of v4's localization clause. Its contrapositive is the one
     that bites, and is stated next. -/
@@ -289,7 +295,7 @@ theorem localized_closure_needs_world_record (y Exh S C : F.Obj)
     (hmono : CondMonoMore F Exh S C)
     (hsub : SubaddVia F y Exh S C)
     (hclosed : (F.cond y (F.pair Exh C) : Int) ≤ (F.slack : Int)) :
-    (F.cond y (F.pair S C) : Int) ≤ 3 * (F.slack : Int) := by
+    (F.cond y (F.pair S C) : Int) ≤ 4 * (F.slack : Int) := by
   simp only [Localized, CondMonoMore, SubaddVia] at hloc hmono hsub
   omega
 
@@ -302,7 +308,7 @@ theorem localized_closure_needs_world_record (y Exh S C : F.Obj)
 theorem no_localized_exhaust_of_world_record_insufficient (y Exh S C : F.Obj)
     (hmono : CondMonoMore F Exh S C)
     (hsub : SubaddVia F y Exh S C)
-    (hbad : 3 * (F.slack : Int) < (F.cond y (F.pair S C) : Int)) :
+    (hbad : 4 * (F.slack : Int) < (F.cond y (F.pair S C) : Int)) :
     ¬ (Localized F Exh S ∧ (F.cond y (F.pair Exh C) : Int) ≤ (F.slack : Int)) := by
   rintro ⟨hloc, hclosed⟩
   have := localized_closure_needs_world_record F y Exh S C hloc hmono hsub hclosed
@@ -316,12 +322,15 @@ state drops the memory channel, leaving the three-way statement of the title. -/
 /-- The private state is (nearly) determined by the visible episode: `K(σ | C) ≤ slack`. -/
 def CyclicMemory (Sreg C : F.Obj) : Prop := (F.cond Sreg C : Int) ≤ (F.slack : Int)
 
-/-- `M(y : B | C) ≤ K(B | C)`, since `y` is computable from `⟨y,B⟩`. Named hypothesis. -/
+/-- `M(y : B | C) ≤ K(B | C) + slack`: unfolding `cIK`, this is `K(y | C) ≤ K(⟨y,B⟩ | C) + slack`,
+    the fixed projection program that reads `y` off the pair; `slack` carries its constant
+    cost. Named hypothesis. -/
 def MutualBelowCond (y B C : F.Obj) : Prop :=
-  cIK F y B C ≤ (F.cond B C : Int)
+  cIK F y B C ≤ (F.cond B C : Int) + (F.slack : Int)
 
 /-- **Cyclic form.** With a cyclic regulator the private-memory channel contributes only
-    `slack`, so the deficit is carried by model content, action, and exhaust alone —
+    `2·slack` (`CyclicMemory` and `MutualBelowCond`), so the deficit is carried by model
+    content, action, and exhaust alone —
     *model it, transmit it, or leave it in the world*. -/
 theorem cyclic_form (W x y R Q Oact Sreg Exh : F.Obj)
     (hmut : MutualChain F y R)
@@ -337,7 +346,7 @@ theorem cyclic_form (W x y R Q Oact Sreg Exh : F.Obj)
       ≤ IK F W R
         + cIK F y Oact (F.pair x R)
         + cIK F y Exh (F.pair Sreg (F.pair Oact (F.pair x R)))
-        + 7 * (F.slack : Int) := by
+        + 9 * (F.slack : Int) := by
   have h := balance F W x y R Q hmut hsub hmono hchain hclosed hdp
   simp only [FlowSplit] at hsplit
   simp only [CyclicMemory] at hcyc

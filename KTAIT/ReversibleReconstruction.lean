@@ -29,35 +29,38 @@ It is a hypothesis about the map and frame, not an axiom for arbitrary functions
 def ConditionalMapBound (f : F.Obj → F.Obj) (cost : Nat) : Prop :=
   ∀ x context, F.cond (f x) context ≤ F.cond x context + cost
 
-/-- Recover the initial state from any records that recover the final state, using the
-left inverse of the joint evolution. No world-only recovery is inferred. -/
+/-- Recover the initial state from any records that recover the final state, using a
+recovery rule that inverts the joint evolution at the admitted initial state `s₀`
+(WP0203's `G(F^N(s), N) = s` for admitted `s`; a global left inverse supplies this identity,
+and only this identity is used). No world-only recovery is inferred. -/
 theorem initial_from_complete_records
     (forward backward : F.Obj → F.Obj)
-    (hinverse : Function.LeftInverse backward forward)
-    (s₀ records : F.Obj) (recordCost inverseCost : Nat)
+    (s₀ records : F.Obj) (hinverse : backward (forward s₀) = s₀)
+    (recordCost inverseCost : Nat)
     (hrecords : F.cond (forward s₀) records ≤ recordCost)
     (hbackward : ConditionalMapBound F backward inverseCost) :
     F.cond s₀ records ≤ recordCost + inverseCost := by
   have h := hbackward (forward s₀) records
-  rw [hinverse s₀] at h
+  rw [hinverse] at h
   omega
 
-/-- Complete final records, inverse joint dynamics, the initial-world decoder, and a
-specified null protocol together reconstruct the uncontrolled output. The four costs
-sum; there is no assumption that the resulting residual before records are supplied is
-small. This is the frame-level counterpart of WP0203's reconstruction proposition. -/
+/-- Complete final records, a recovery rule inverting the joint dynamics at the admitted
+initial state, the initial-world decoder, and a specified null protocol together reconstruct
+the uncontrolled output. The four costs sum; there is no assumption that the resulting
+residual before records are supplied is small. This is the frame-level counterpart of
+WP0203's reconstruction proposition. -/
 theorem null_from_complete_records
     (forward backward world nullOutput : F.Obj → F.Obj)
-    (hinverse : Function.LeftInverse backward forward)
-    (s₀ records : F.Obj) (recordCost inverseCost worldCost nullCost : Nat)
+    (s₀ records : F.Obj) (hinverse : backward (forward s₀) = s₀)
+    (recordCost inverseCost worldCost nullCost : Nat)
     (hrecords : F.cond (forward s₀) records ≤ recordCost)
     (hbackward : ConditionalMapBound F backward inverseCost)
     (hworld : ConditionalMapBound F world worldCost)
     (hnull : ConditionalMapBound F nullOutput nullCost) :
     F.cond (nullOutput (world s₀)) records ≤
       recordCost + inverseCost + worldCost + nullCost := by
-  have hi := initial_from_complete_records F forward backward hinverse
-    s₀ records recordCost inverseCost hrecords hbackward
+  have hi := initial_from_complete_records F forward backward s₀ records hinverse
+    recordCost inverseCost hrecords hbackward
   have hw := hworld s₀ records
   have hn := hnull (world s₀) records
   omega

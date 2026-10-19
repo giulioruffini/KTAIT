@@ -150,12 +150,12 @@ theorem gart_mass_transfer_tsum (F : AITFrame) {E : Type*} (w : E → ENNReal)
     ∑' e, Set.indicator
       {e | IK F (W e) (R e) ≤ RegulationBalance.gap F (y e) (y0 e) - k} w e
       ≤ ∑' e, Set.indicator
-      {e | k ≤ GroundedRegulation.residual F (y e) (y0 e) (R e) + 3 * (F.slack : ℤ)} w e := by
+      {e | k ≤ GroundedRegulation.residual F (y e) (y0 e) (R e) + 4 * (F.slack : ℤ)} w e := by
   apply class_mass_transfer_variable_tsum w
     (fun e => RegulationBalance.gap F (y e) (y0 e))
     (fun e => IK F (W e) (R e))
     (fun e => GroundedRegulation.residual F (y e) (y0 e) (R e))
-    (fun _ => 3 * (F.slack : ℤ)) k
+    (fun _ => 4 * (F.slack : ℤ)) k
   intro e
   exact GroundedRegulation.grounded_inequality F (W e) (y e) (y0 e) (R e)
     (hmut e) (hsub e) (hmono e) (hdp e)
@@ -348,7 +348,7 @@ theorem post_nonneg (e x : F.Obj) : 0 ≤ F.post e x := by
     `DataProcessing`) and belongs to ART's class `E_b`, i.e. `K (z0 i) = b`. Then, for the
     canonical-code posterior conditioned on `x`, the mass of explanations whose shared
     information falls `k` below the gap `Δ = b − K x` is at most the mass of explanations whose
-    counterfactual residual exceeds `k − 3·slack`. -/
+    counterfactual residual exceeds `k − 4·slack`. -/
 theorem posterior_residual_transfer {ι : Type*} (S : Finset ι)
     (W R z0 : ι → F.Obj) (x : F.Obj) (b : ℕ) (k : ℤ)
     (hb : ∀ i ∈ S, F.K (z0 i) = b)
@@ -358,14 +358,14 @@ theorem posterior_residual_transfer {ι : Type*} (S : Finset ι)
     (hdp : ∀ i ∈ S, RegulationBalance.DataProcessing F.toAITFrame (z0 i) (W i) (R i)) :
     (S.filter (fun i => IK F.toAITFrame (W i) (R i) ≤ ((b : ℤ) - (F.K x : ℤ)) - k)).sum
         (fun i => F.post (F.pair (W i) (R i)) x)
-      ≤ (S.filter (fun i => k - 3 * (F.slack : ℤ)
+      ≤ (S.filter (fun i => k - 4 * (F.slack : ℤ)
             ≤ GroundedRegulation.residual F.toAITFrame x (z0 i) (R i))).sum
         (fun i => F.post (F.pair (W i) (R i)) x) := by
   apply class_mass_transfer S (fun i => F.post (F.pair (W i) (R i)) x)
     (fun i _ => post_nonneg F _ x)
     (fun i => IK F.toAITFrame (W i) (R i))
     (fun i => GroundedRegulation.residual F.toAITFrame x (z0 i) (R i))
-    ((b : ℤ) - (F.K x : ℤ)) k (3 * (F.slack : ℤ))
+    ((b : ℤ) - (F.K x : ℤ)) k (4 * (F.slack : ℤ))
   intro i hi
   have h := GroundedRegulation.grounded_inequality F.toAITFrame (W i) x (z0 i) (R i)
     (hmut i hi) (hsub i hi) (hmono i hi) (hdp i hi)
@@ -375,7 +375,7 @@ theorem posterior_residual_transfer {ι : Type*} (S : Finset ι)
 
 /-- **Conditional on a residual bound, the low-information class has posterior mass `0`.**
     Same setting as `posterior_residual_transfer`, with every explanation's residual at most
-    `lam`: no explanation has shared information below `Δ − lam − 3·slack`. -/
+    `lam`: no explanation has shared information below `Δ − lam − 4·slack`. -/
 theorem posterior_residual_bounded_zero {ι : Type*} (S : Finset ι)
     (W R z0 : ι → F.Obj) (x : F.Obj) (b : ℕ) (lam : ℤ)
     (hb : ∀ i ∈ S, F.K (z0 i) = b)
@@ -385,12 +385,12 @@ theorem posterior_residual_bounded_zero {ι : Type*} (S : Finset ι)
     (hdp : ∀ i ∈ S, RegulationBalance.DataProcessing F.toAITFrame (z0 i) (W i) (R i))
     (hlam : ∀ i ∈ S, GroundedRegulation.residual F.toAITFrame x (z0 i) (R i) ≤ lam) :
     (S.filter (fun i => IK F.toAITFrame (W i) (R i)
-        < ((b : ℤ) - (F.K x : ℤ)) - lam - 3 * (F.slack : ℤ))).sum
+        < ((b : ℤ) - (F.K x : ℤ)) - lam - 4 * (F.slack : ℤ))).sum
         (fun i => F.post (F.pair (W i) (R i)) x) = 0 := by
   apply residual_bounded_class_mass_zero S (fun i => F.post (F.pair (W i) (R i)) x)
     (fun i => IK F.toAITFrame (W i) (R i))
     (fun i => GroundedRegulation.residual F.toAITFrame x (z0 i) (R i))
-    ((b : ℤ) - (F.K x : ℤ)) lam (3 * (F.slack : ℤ))
+    ((b : ℤ) - (F.K x : ℤ)) lam (4 * (F.slack : ℤ))
   · intro i hi
     have h := GroundedRegulation.grounded_inequality F.toAITFrame (W i) x (z0 i) (R i)
       (hmut i hi) (hsub i hi) (hmono i hi) (hdp i hi)

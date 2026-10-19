@@ -86,32 +86,32 @@ theorem gap_transfer (x y z z0 : F.Obj) (eps : Int)
 /-! ## The grounded regulator inequality -/
 
 /-- **Theorem (grounded regulator inequality), reguland form.**
-    `Δ_Z ≤ I_K(z₀:R) + L_Z + 2·slack`. The same chain-rule spine as
+    `Δ_Z ≤ I_K(z₀:R) + L_Z + 3·slack`. The same chain-rule spine as
     `RegulationBalance.balance_readout`, stopped at the residual instead of closed by `Q`. -/
 theorem grounded_readout (z z0 R : F.Obj)
     (hmut : MutualChain F z0 R)
     (hsub : CondSubadd F z z0 R)
     (hmono : CondMono F z R) :
-    gap F z z0 ≤ IK F z0 R + residual F z z0 R + 2 * (F.slack : Int) := by
+    gap F z z0 ≤ IK F z0 R + residual F z z0 R + 3 * (F.slack : Int) := by
   simp only [MutualChain, CondSubadd, CondMono] at hmut hsub hmono
   simp only [gap, residual]
   omega
 
 /-- **Theorem (grounded regulator inequality), world form.**
-    `Δ_Z ≤ I_K(W:R) + L_Z + 3·slack`, since `z₀` is computable from `W` at fixed horizon
+    `Δ_Z ≤ I_K(W:R) + L_Z + 4·slack`, since `z₀` is computable from `W` at fixed horizon
     and fixed reguland projection (data processing). -/
 theorem grounded_inequality (W z z0 R : F.Obj)
     (hmut : MutualChain F z0 R)
     (hsub : CondSubadd F z z0 R)
     (hmono : CondMono F z R)
     (hdp : DataProcessing F z0 W R) :
-    gap F z z0 ≤ IK F W R + residual F z z0 R + 3 * (F.slack : Int) := by
+    gap F z z0 ≤ IK F W R + residual F z z0 R + 4 * (F.slack : Int) := by
   have h := grounded_readout F z z0 R hmut hsub hmono
   simp only [DataProcessing] at hdp
   omega
 
 /-- **The repaired static-MAI corollary.** For an `ε`-grounded readout,
-    `I_K(W:R) ≥ Δ − L_Z − 2ε − 5·slack`: the original Good-Regulator reading is recovered
+    `I_K(W:R) ≥ Δ − L_Z − 2ε − 6·slack`: the original Good-Regulator reading is recovered
     exactly when the readout is grounded and the counterfactual residual is small. -/
 theorem repaired_corollary (W x y z z0 R : F.Obj) (eps : Int)
     (hg : Grounded F x y z z0 eps)
@@ -121,14 +121,14 @@ theorem repaired_corollary (W x y z z0 R : F.Obj) (eps : Int)
     (hsub : CondSubadd F z z0 R)
     (hmono : CondMono F z R)
     (hdp : DataProcessing F z0 W R) :
-    IK F W R ≥ gap F x y - residual F z z0 R - 2 * eps - 5 * (F.slack : Int) := by
+    IK F W R ≥ gap F x y - residual F z z0 R - 2 * eps - 6 * (F.slack : Int) := by
   have htr := gap_transfer F x y z z0 eps hg hzx hxz hz0y hyz0
   have hgi := grounded_inequality F W z z0 R hmut hsub hmono hdp
   rw [abs_le] at htr
   omega
 
 /-- **Repaired Good-Regulator corollary.** Grounded and `λ`-non-collapsing
-    (`L_Z ≤ λ`) regulation forces `I_K(W:R) ≥ Δ − λ − 2ε − 5·slack`. With
+    (`L_Z ≤ λ`) regulation forces `I_K(W:R) ≥ Δ − λ − 2ε − 6·slack`. With
     `λ, ε = o(Δ)` this is the asymptotic `I_K(W:R) ≥ (1−o(1))Δ` of the exposition;
     the limit itself is analysis and is not formalized. -/
 theorem repaired_good_regulator (W x y z z0 R : F.Obj) (eps lam : Int)
@@ -140,7 +140,7 @@ theorem repaired_good_regulator (W x y z z0 R : F.Obj) (eps lam : Int)
     (hmono : CondMono F z R)
     (hdp : DataProcessing F z0 W R)
     (hnc : residual F z z0 R ≤ lam) :
-    IK F W R ≥ gap F x y - lam - 2 * eps - 5 * (F.slack : Int) := by
+    IK F W R ≥ gap F x y - lam - 2 * eps - 6 * (F.slack : Int) := by
   have h := repaired_corollary F W x y z z0 R eps hg hzx hxz hz0y hyz0 hmut hsub hmono hdp
   omega
 
@@ -157,7 +157,7 @@ encoded as new ontology. No new axiom, and no claim of explicit symbolic
 self-representation. -/
 
 /-- **Corollary (implicit self-model from grounded self-regulation), reguland form.**
-    `SM^imp ≥ Δ_Z − L_Z − 2·slack`: reading `z, z₀` as the regulated and matched-null
+    `SM^imp ≥ Δ_Z − L_Z − 3·slack`: reading `z, z₀` as the regulated and matched-null
     self-side reguland trajectories `ζ^P_R, ζ^P_∅`, successful self-regulation with a small
     counterfactual residual requires initial information about the focal pattern's own
     counterfactual trajectory. A rearrangement of `grounded_readout`; the inequality
@@ -167,13 +167,13 @@ theorem self_regulation_forces_self_model (z z0 R : F.Obj)
     (hmut : MutualChain F z0 R)
     (hsub : CondSubadd F z z0 R)
     (hmono : CondMono F z R) :
-    IK F z0 R ≥ gap F z z0 - residual F z z0 R - 2 * (F.slack : Int) := by
+    IK F z0 R ≥ gap F z z0 - residual F z z0 R - 3 * (F.slack : Int) := by
   have h := grounded_readout F z z0 R hmut hsub hmono
   omega
 
 /-- **Corollary, grounded form.** If the scored readout `x, y` is additionally `ε`-grounded
     in the self-side reguland `z, z₀`, the bound transfers to the scored gap:
-    `SM^imp ≥ Δ − L_Z − 2ε − 4·slack`. Composition of
+    `SM^imp ≥ Δ − L_Z − 2ε − 5·slack`. Composition of
     `self_regulation_forces_self_model` with `gap_transfer`. -/
 theorem self_regulation_forces_self_model_grounded (x y z z0 R : F.Obj) (eps : Int)
     (hg : Grounded F x y z z0 eps)
@@ -182,7 +182,7 @@ theorem self_regulation_forces_self_model_grounded (x y z z0 R : F.Obj) (eps : I
     (hmut : MutualChain F z0 R)
     (hsub : CondSubadd F z z0 R)
     (hmono : CondMono F z R) :
-    IK F z0 R ≥ gap F x y - residual F z z0 R - 2 * eps - 4 * (F.slack : Int) := by
+    IK F z0 R ≥ gap F x y - residual F z z0 R - 2 * eps - 5 * (F.slack : Int) := by
   have htr := gap_transfer F x y z z0 eps hg hzx hxz hz0y hyz0
   have h := grounded_readout F z z0 R hmut hsub hmono
   rw [abs_le] at htr
@@ -195,7 +195,7 @@ theorem self_regulation_forces_self_model_grounded (x y z z0 R : F.Obj) (eps : I
 def IKCeiling (W R : F.Obj) : Prop := IK F W R ≤ (F.K R : Int) + (F.slack : Int)
 
 /-- **Corollary (simple regulator forces counterfactual residual).**
-    `L_Z ≥ Δ_Z − K R − 4·slack`. If `K R = O(1)` while `Δ_Z = Θ(N)`, then `L_Z = Θ(N)`:
+    `L_Z ≥ Δ_Z − K R − 5·slack`. If `K R = O(1)` while `Δ_Z = Θ(N)`, then `L_Z = Θ(N)`:
     the blind clamp/AC regime classified. No horizon-uniform `I_K(W:R) ≍ Δ_N` can hold for
     a fixed finite regulator — static model content is reusable, cumulative regulation
     benefit is not. -/
@@ -205,8 +205,22 @@ theorem simple_regulator_forces_residual (W z z0 R : F.Obj)
     (hmono : CondMono F z R)
     (hdp : DataProcessing F z0 W R)
     (hceil : IKCeiling F W R) :
-    residual F z z0 R ≥ gap F z z0 - (F.K R : Int) - 4 * (F.slack : Int) := by
+    residual F z z0 R ≥ gap F z z0 - (F.K R : Int) - 5 * (F.slack : Int) := by
   have h := grounded_inequality F W z z0 R hmut hsub hmono hdp
+  simp only [IKCeiling] at hceil
+  omega
+
+/-- **Corollary (simple regulator forces counterfactual residual), readout form.** WP0203's
+    Eq. (forcesL): the residual bound without null-output computability,
+    `L_Z ≥ Δ_Z − K R − 4·slack`, by the paper's own route, the ceiling applied to
+    `I_K(z₀:R)` in `grounded_readout`. -/
+theorem simple_regulator_forces_residual_readout (z z0 R : F.Obj)
+    (hmut : MutualChain F z0 R)
+    (hsub : CondSubadd F z z0 R)
+    (hmono : CondMono F z R)
+    (hceil : IKCeiling F z0 R) :
+    residual F z z0 R ≥ gap F z z0 - (F.K R : Int) - 4 * (F.slack : Int) := by
+  have h := grounded_readout F z z0 R hmut hsub hmono
   simp only [IKCeiling] at hceil
   omega
 
@@ -226,14 +240,14 @@ def CondCompose (y W S : F.Obj) : Prop :=
 /-- **Remark (closure by construction).** If the world description `W` is instantiated in
     the realized world-side record `S` (`K(W|S) ≤ slack`) and the null readout is computable
     from it (`K(y|W) ≤ slack`), then the record closes the accounting even after
-    conditioning on the visible episode `C`: `K(y | ⟨S,C⟩) ≤ 3·slack`. Localization and
+    conditioning on the visible episode `C`: `K(y | ⟨S,C⟩) ≤ 4·slack`. Localization and
     minimality still govern which part of `S` may be charged as exhaust. -/
 theorem closure_by_construction (y W S C : F.Obj)
     (hinst : (F.cond W S : Int) ≤ (F.slack : Int))
     (hcomp : (F.cond y W : Int) ≤ (F.slack : Int))
     (hchain : CondCompose F y W S)
     (hmono : CondMonoMore F y S C) :
-    (F.cond y (F.pair S C) : Int) ≤ 3 * (F.slack : Int) := by
+    (F.cond y (F.pair S C) : Int) ≤ 4 * (F.slack : Int) := by
   simp only [CondCompose, CondMonoMore] at hchain hmono
   omega
 
@@ -263,7 +277,7 @@ theorem residual_is_completion (z z0 R Q : F.Obj)
 
 /-- **Grounded balance.** Substituting the completion for the residual in the grounded
     inequality recovers the WP0203 balance at the reguland level:
-    `Δ_Z ≤ I_K(W:R) + M(z₀:Q | ⟨z,R⟩) + 5·slack`. (This is
+    `Δ_Z ≤ I_K(W:R) + M(z₀:Q | ⟨z,R⟩) + 6·slack`. (This is
     `RegulationBalance.balance` with `x := z`, `y := z₀`; stated here to record that the
     grounded construction composes with the existing accounting.) -/
 theorem grounded_balance (W z z0 R Q : F.Obj)
@@ -273,8 +287,36 @@ theorem grounded_balance (W z z0 R Q : F.Obj)
     (hchain : CondChain F z0 Q (F.pair z R))
     (hclosed : InfoClosed F z0 Q (F.pair z R))
     (hdp : DataProcessing F z0 W R) :
-    gap F z z0 ≤ IK F W R + cIK F z0 Q (F.pair z R) + 5 * (F.slack : Int) :=
+    gap F z z0 ≤ IK F W R + cIK F z0 Q (F.pair z R) + 6 * (F.slack : Int) :=
   balance F W z z0 R Q hmut hsub hmono hchain hclosed hdp
+
+/-- **Transport of reconstruction to the selected variable** (WP0203 Eq. zclosure-early).
+    With `D = ⟨zR, ⟨R, Q⟩⟩` the decoder's supplied context: recover `yR` from `zR`
+    (grounding, `≤ ε`), reconstruct `ynull` from `⟨yR, R, Q⟩` (`InfoClosed`, `≤ slack`),
+    recover `znull` from `ynull` (grounding, `≤ ε`). Two compositions (`h1`, `h2`) and three
+    context conversions (`h3`, `h4`, `h5`; `h4` is the one fixed program that extracts and
+    reorders `Q, yR, R` from the enlarged context) give
+    `K(znull | zR, R, Q) ≤ 2ε + 6·slack`. The instances are written out; the conclusion is
+    not an `InfoClosed` at tolerance `slack`, and a nonlogarithmic `ε` is not absorbed. -/
+theorem closure_transfers (yR ynull zR znull R Q : F.Obj) (eps : Int)
+    (hg : Grounded F yR ynull zR znull eps)
+    (hclosed : InfoClosed F ynull Q (F.pair yR R))
+    (h1 : (F.cond znull (F.pair zR (F.pair R Q)) : Int)
+        ≤ (F.cond yR (F.pair zR (F.pair R Q)) : Int)
+          + (F.cond znull (F.pair yR (F.pair zR (F.pair R Q))) : Int) + (F.slack : Int))
+    (h2 : (F.cond znull (F.pair yR (F.pair zR (F.pair R Q))) : Int)
+        ≤ (F.cond ynull (F.pair yR (F.pair zR (F.pair R Q))) : Int)
+          + (F.cond znull (F.pair ynull (F.pair yR (F.pair zR (F.pair R Q)))) : Int)
+          + (F.slack : Int))
+    (h3 : (F.cond yR (F.pair zR (F.pair R Q)) : Int) ≤ (F.cond yR zR : Int) + (F.slack : Int))
+    (h4 : (F.cond ynull (F.pair yR (F.pair zR (F.pair R Q))) : Int)
+        ≤ (F.cond ynull (F.pair Q (F.pair yR R)) : Int) + (F.slack : Int))
+    (h5 : (F.cond znull (F.pair ynull (F.pair yR (F.pair zR (F.pair R Q)))) : Int)
+        ≤ (F.cond znull ynull : Int) + (F.slack : Int)) :
+    (F.cond znull (F.pair zR (F.pair R Q)) : Int) ≤ 2 * eps + 6 * (F.slack : Int) := by
+  obtain ⟨_, hyz, hz0y, _⟩ := hg
+  simp only [InfoClosed] at hclosed
+  omega
 
 /-! ## The exact counterfactual balance (WP0203 v16): the conservation seam
 
