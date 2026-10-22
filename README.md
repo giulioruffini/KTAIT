@@ -282,6 +282,7 @@ CC-BY-4.0, not Apache-2.0, and not this code:
 | DOI | What it is |
 |---|---|
 | [10.5281/zenodo.21008868](https://doi.org/10.5281/zenodo.21008868) | **Concept DOI** — always resolves to the latest version of the paper. Cite this one. |
+| 10.5281/zenodo.23562943 | Version DOI, WP0195 v0.7.0 (2026-10-22) |
 | 10.5281/zenodo.21982845 | Version DOI, WP0195 v0.6.0 (2026-08-17) |
 | 10.5281/zenodo.21838718 | Version DOI, WP0195 v0.5.0 (2026-08-07) |
 | 10.5281/zenodo.21737260 | Version DOI, WP0195 v0.4.0 (2026-08-01) |

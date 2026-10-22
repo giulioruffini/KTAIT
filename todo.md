@@ -2,7 +2,7 @@
 
 - [ ] connect WP0228 finite marking and descriptor codes to partial-recursive decoders and optimal prefix evaluators
 - [ ] formalize WP0228's unrestricted total-function count via the bounded-width prefix-tree construction
-- [ ] when WP0195 is next deposited (v0.7.0), cut it in Calliope with Giulio's authorization; the tex now carries September 2026 and the concept DOI on its title page
+- [x] deposited WP0195 v0.7.0 via Calliope (DOI 10.5281/zenodo.23562943), dated October 2026, with Giulio's authorization — 2026-10-22
 - [ ] wrap long existing identifiers in the WP0195 module inventory and result prose; v22's new entries fit, but older entries overflow
 - [x] formalize acquired-model costs and innovation capacity in ModelAccounting, check finite block recovery, and update the inventory and axiom record — 2026-10-04
 - [x] independently audit CompletionLedger at f6eb677 and rebuild the stale WP0195 PDF to include its module, prose, and inventory — 2026-10-04
