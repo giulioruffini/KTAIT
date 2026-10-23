@@ -744,3 +744,8 @@ Four docstrings misstated what their declarations prove: a 3·slack where the ty
 
 ## 2026-10-19 — program weights and allowance propagation (WP0203 Round 1)
 The selected-program bridge retains the signed length offset and matching evidence; abstract `post` weights alone do not define a posterior over explanations. Exact-type checks against all 22 approved signatures preserve the local-support domains and strict endpoints. The relaxed conditioning premise propagates to excess −7s and the residual lower exponent −8s; pair/context conversions have separate costs.
+
+
+## 2026-10-23 — WP0215 program-to-generator extraction
+Defined a finite arithmetic syntax and proved that recursive symbolic first jets give the value and step derivative at zero. The result concerns real arithmetic and a declared state/time interface; it does not certify LLVM parsing, IEEE execution, or state selection. Lean 4.31 real-structure instance paths required explicit conversion followed by reflexivity at derivative-rule applications.
+The six new theorem dependency audits contain only propext, Classical.choice, and Quot.sound; no custom axioms or proof gaps.

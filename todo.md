@@ -2,8 +2,9 @@
 
 - [ ] connect WP0228 finite marking and descriptor codes to partial-recursive decoders and optimal prefix evaluators
 - [ ] formalize WP0228's unrestricted total-function count via the bounded-width prefix-tree construction
-- [x] deposited WP0195 v0.7.0 via Calliope (DOI 10.5281/zenodo.23562943), dated October 2026, with Giulio's authorization — 2026-10-22
 - [ ] wrap long existing identifiers in the WP0195 module inventory and result prose; v22's new entries fit, but older entries overflow
+- [x] prove WP0215's symbolic first-jet extractor, generator uniqueness, and Euler/RK4 scalar example; record the limits of compiler and floating-point coverage
+- [x] deposited WP0195 v0.7.0 via Calliope (DOI 10.5281/zenodo.23562943), dated October 2026, with Giulio's authorization — 2026-10-22
 - [x] formalize acquired-model costs and innovation capacity in ModelAccounting, check finite block recovery, and update the inventory and axiom record — 2026-10-04
 - [x] independently audit CompletionLedger at f6eb677 and rebuild the stale WP0195 PDF to include its module, prose, and inventory — 2026-10-04
 - [x] formalize WP0203 v34.3's Discussion 5.2 displays (InterventionKnowledge.lean: key_bound, intervention_and_gap, readout_saving_upper, descriptive_saving, shared_content_split); register v34.3 and v34.4 — 2026-09-21
@@ -18,5 +19,4 @@
 - [x] prove WP0228 marking budget and coverage, descriptor parsing, finite cardinality and structural-image bounds
 - [x] integrate the FunctionalCore module and WP0195 update with WP0007 v0.31.9
 - [x] formalize the conditional functional-core benchmark and its implementation bound
-
 - [x] separate reconstruction error from frame slack in APB and flow bounds, add conditional self-code update capacity, and audit axioms — 2026-10-03

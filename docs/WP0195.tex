@@ -322,6 +322,7 @@ Mathlib~v4.31.0. Modules:
 \lean{CoarseGraining.lean} & \lean{RegSuff}, structure function & WP0193 Thms~A/B \\
 \lean{AlgorithmicEmergence.lean} & counting bound, construction barriers, schedule refinement, fixed-task construction--decision equivalence & WP0007 barriers, inheritance, discussion proposition \\
 \lean{ComputationCores.lean} & deterministic experiments, observability, coordinate overwrites & WP0229 structural comparisons \\
+\lean{ProgramGenerator.lean} & arithmetic expression syntax and first jets & WP0215: generator extraction and uniqueness \\
 \lean{FunctionalCore.lean} & exact and approximate task descriptions & WP0007 minimum-description bound \\
 \lean{Certification.lean} & partial semantics; computable certificate stream & WP0228 unrestricted minimum \\
 \lean{Marking.lean} & persistent finite marking; event witnesses & WP0228 budget and eventual coverage \\
@@ -364,6 +365,15 @@ Mathlib~v4.31.0. Modules:
 
 \noindent\textbf{Proved KT corollaries (no \lean{sorry}; \lean{\#print axioms} = Lean core only):}
 \begin{itemize}[leftmargin=1.4em,itemsep=1pt]
+\item \lean{ProgramGenerator.jet\_value}, \lean{jet\_derivative},
+\lean{symbolic\_jet\_correct}, and \lean{symbolic\_generator\_sound} --- WP0215's
+worked example: a recursive syntax-to-syntax transformation extracts the value and derivative
+at zero in a declared step parameter for finite rational arithmetic expressions over real states.
+\lean{generator\_unique} proves uniqueness of the extracted derivative;
+\lean{decay\_common\_core} verifies the common first jet of explicit Euler and RK4
+expressions for scalar decay. These are standard differentiation results applied to the program
+class, without AIT assumptions. Compiler correctness, LLVM parsing, floating-point rounding,
+polynomial normalization, state-interface discovery, and experiential sufficiency are not formalized.
 \item \lean{PP.token\_is\_agent}, \lean{PP.class\_not\_agent\_here}, \lean{PP.kind\_not\_agent\_here},
 \lean{PP.collective\_can\_be\_agent}, \lean{PP.collective\_not\_agent\_here} --- the four cells of the
 WP0207 square (token $a_i$, constituent class $\mathcal T$, collective $M$, collective kind
@@ -1896,6 +1906,11 @@ Realization relation & $P\models_{\rho,C}\mathfrak{S}$ with commuting and counte
   conditions & KT & \sttodo\ (not yet formalized) \\
 Structured experience & $\mathcal{S}(P)\cong\mathfrak{S}(P)$, experience as implemented structure
   & KT & \stna\ (not a proof target; no formal referent for experience) \\
+Arithmetic program extraction & value and derivative from an explicit syntax transformation;
+unique generator in a declared interface & STD &
+  \stproved\ (\lean{symbolic\_generator\_sound}, \lean{generator\_unique}) \\
+--- scalar decay & Euler and RK4 expression trees have the same first jet & STD &
+  \stproved\ (\lean{decay\_common\_core}) \\
 \midrule
 \multicolumn{4}{@{}l}{\textit{World models / Lie groups --- Entropy 2025 (separate geometry track)}}\\
 \midrule
