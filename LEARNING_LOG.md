@@ -755,3 +755,7 @@ The six new theorem dependency audits contain only propext, Classical.choice, an
 Added actual partial-recursive report search, its correctness, and conditional replacement-complexity consequences. The replacement selector need not be effective: the bounded-complexity conclusion uses Meyer as a named hypothesis. Scalar probability margins are checked; quantum contraction, matrix nets, and construction of the block observer remain paper arguments. KTAIT stays on Lean 4.31; the separate concrete Meyer proof stays on 4.35.
 
 The subsequent physics note distinguishes a complete reported string from answers to alternative queries. `reliable_report_bound` checks only the scalar consequence of coding and a physical surprisal budget; the Gibbs and quantum data-processing arguments remain outside Lean. A reference-state parameter must have its description cost counted when it varies.
+
+### 2026-10-29 — Binary event inequality for WP0251
+
+Proved the relative-entropy/binary-entropy decomposition and report-surprisal bound, including actual probabilities zero and one. Keep reference probability strictly between zero and one: totalized real logarithms otherwise hide infinite divergences. Klaus approved the interpretation before proof; uniform reference coding and the quantum/Gibbs instantiation remain external obligations. The probability argument is the standard weak converse used by Wang and Renner (2012), not a new inequality.

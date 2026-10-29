@@ -323,7 +323,7 @@ Mathlib~v4.31.0. Modules:
 \lean{AlgorithmicEmergence.lean} & counting bound, construction barriers, schedule refinement, fixed-task construction--decision equivalence & WP0007 barriers, inheritance, discussion proposition \\
 \lean{ComputationCores.lean} & deterministic experiments, observability, coordinate overwrites & WP0229 structural comparisons \\
 \lean{ProgramGenerator.lean} & arithmetic expression syntax and first jets & WP0215: generator extraction and uniqueness \\
-\resizebox{0.96\linewidth}{!}{\lean{OperationalInformation.lean}} & partial-recursive search; named coding, Meyer, and report-budget premises & WP0251: replacement complexity, report bound, and threshold margins \\
+\resizebox{0.96\linewidth}{!}{\lean{OperationalInformation.lean}} & partial-recursive search; binary relative entropy; named coding, Meyer, and quantum-budget premises & WP0251: replacement complexity, report bounds, and threshold margins \\
 \lean{FunctionalCore.lean} & exact and approximate task descriptions & WP0007 minimum-description bound \\
 \lean{Certification.lean} & partial semantics; computable certificate stream & WP0228 unrestricted minimum \\
 \lean{Marking.lean} & persistent finite marking; event witnesses & WP0228 budget and eventual coverage \\
@@ -385,6 +385,20 @@ physical budget to a bound on the complexity of a complete reported string.
 Both inequalities are named premises. Gibbs-state construction, quantum
 relative-entropy data processing, and the cavity calculation remain paper proofs
 in WP0251's separate research note; they are not verified by this declaration.
+\item {\raggedright In \lean{OperationalInformation},
+\lean{binaryRelativeEntropy\_eq\_binEntropy} proves the binary-divergence
+identity for actual probabilities in \([0,1]\) and reference probabilities in
+\((0,1)\). \lean{binary\_surprisal\_le} and
+\lean{binary\_surprisal\_le\_add\_log\_two} prove the classical
+success-weighted surprisal bound, first with binary entropy and then with
+its upper bound \(\ln2\). These are standard information inequalities.
+\lean{reliable\_report\_of\_binary\_budget} composes that proof with
+named coding and binary-divergence budget premises;
+\lean{reliable\_report\_of\_reference\_one} handles unit reference probability
+without evaluating a divergent relative entropy through Lean's totalized
+logarithm. Quantum data processing, Gibbs states, reference semimeasure
+construction, uniform coding constants, and the spectral limit remain
+paper-level obligations.\par}
 \item \lean{ProgramGenerator.jet\_value}, \lean{jet\_derivative},
 \lean{symbolic\_jet\_correct}, and \lean{symbolic\_generator\_sound} --- WP0215's
 worked example: a recursive syntax-to-syntax transformation extracts the value and derivative
@@ -1491,6 +1505,8 @@ Replacement bound & \(K(A_n\mid n)\leq K(a_n\mid n)+c\), conditional on the codi
 Bounded replacement & Bounded conditional replacement complexity implies task computability; the contrapositive gives unboundedness & KT & \stproved\ (bounded/unbounded replacement declarations) \\
 Description budget & A supplied replacement-description budget bounds answer complexity with fixed overhead & KT & \stproved\ (\lean{budget\_transfer}) \\
 Complete report & Coding and success-weighted surprisal premises imply a bound at any positive reliability margin & KT & \stproved\ (\lean{reliable\_report\_bound}) \\
+Binary event & \(p(-\ln q)\le d(p\Vert q)+h(p)\le d(p\Vert q)+\ln2\), including \(p=0,1\) with \(0<q<1\) & STD & \stproved\ (binary-event declarations) \\
+Report composition & Coding and a supplied binary-divergence budget imply the report bound; unit reference probability is separate & STD & \stproved\ (binary-budget and reference-one declarations) \\
 Threshold margins & Replacement error \(1/12\) and estimation error \(1/48\) preserve the separation at \(1/2\) & STD & \stproved\ (estimate declarations) \\
 Coding and Meyer & Standard conditional prefix-map bound and bounded-prefix characterization & STD & \staxiom\ (named hypotheses) \\
 Quantum realization & Trace-distance control, rational state net, logarithmic copy budget, and replenishable biased source & STD & \sttodo\ (paper proofs) \\

@@ -25,6 +25,9 @@ tensor-product inequalities remain paper-level arguments.
 `reliable_report_bound` separately checks a scalar consequence for a complete
 reported string, assuming reference coding and a success-weighted surprisal
 budget. It does not formalize the Gibbs/quantum argument supplying that budget.
+The binary-relative-entropy lemmas prove the classical event inequality used
+in that argument, including actual success probabilities zero and one. The
+quantum data-processing and Gibbs steps remain named paper-level premises.
 -/
 
 namespace KTAIT.OperationalInformation
@@ -151,6 +154,98 @@ theorem reliable_report_bound (complexity : ℕ)
   have hbound : surprisal ≤ (budget + 1) / margin := by
     apply (le_div_iff₀ hmargin).2
     simpa only [mul_comm] using hweighted
+  linarith
+
+/-- Binary relative entropy in natural-log units on `0 ≤ p ≤ 1`, `0 < q < 1`.
+Outside that domain Lean's totalized logarithm and division need not agree
+with extended-real relative entropy. In particular this definition is not
+used to represent the infinite divergence at `q = 0` or `q = 1, p < 1`. -/
+noncomputable def binaryRelativeEntropy (p q : ℝ) : ℝ :=
+  p * Real.log (p / q) + (1 - p) * Real.log ((1 - p) / (1 - q))
+
+/-- The binary divergence decomposes into cross-entropy minus binary entropy.
+Both actual-probability endpoints are included with the convention `0 log 0 = 0`. -/
+theorem binaryRelativeEntropy_eq_binEntropy (p q : ℝ)
+    (hp₀ : 0 ≤ p) (hp₁ : p ≤ 1) (hq₀ : 0 < q) (hq₁ : q < 1) :
+    binaryRelativeEntropy p q = -Real.binEntropy p +
+      p * (-Real.log q) + (1 - p) * (-Real.log (1 - q)) := by
+  rcases hp₀.eq_or_lt with hp | hp
+  · subst p
+    simp [binaryRelativeEntropy, Real.binEntropy, one_div]
+  rcases hp₁.eq_or_lt with hp_one | hp_one
+  · subst p
+    simp [binaryRelativeEntropy, Real.binEntropy, one_div]
+  unfold binaryRelativeEntropy Real.binEntropy
+  rw [Real.log_div hp.ne' hq₀.ne',
+    Real.log_div (sub_pos.mpr hp_one).ne' (sub_pos.mpr hq₁).ne',
+    Real.log_inv, Real.log_inv]
+  ring
+
+/-- Success-weighted reference surprisal is bounded by binary divergence
+plus the actual binary entropy. This is the classical event step in the
+hypothesis-testing weak converse, not a new information-theoretic inequality. -/
+theorem binary_surprisal_le (p q : ℝ)
+    (hp₀ : 0 ≤ p) (hp₁ : p ≤ 1) (hq₀ : 0 < q) (hq₁ : q < 1) :
+    p * (-Real.log q) ≤ binaryRelativeEntropy p q + Real.binEntropy p := by
+  rw [binaryRelativeEntropy_eq_binEntropy p q hp₀ hp₁ hq₀ hq₁]
+  have hlog : 0 ≤ -Real.log (1 - q) :=
+    neg_nonneg.mpr (Real.log_nonpos (sub_pos.mpr hq₁).le (by linarith))
+  have hrest := mul_nonneg (sub_nonneg.mpr hp₁) hlog
+  linarith
+
+/-- Replacing binary entropy by `log 2` gives the one-bit allowance used
+in WP0251's original Gibbs-report derivation. All quantities here are in nats. -/
+theorem binary_surprisal_le_add_log_two (p q : ℝ)
+    (hp₀ : 0 ≤ p) (hp₁ : p ≤ 1) (hq₀ : 0 < q) (hq₁ : q < 1) :
+    p * (-Real.log q) ≤ binaryRelativeEntropy p q + Real.log 2 :=
+  (binary_surprisal_le p q hp₀ hp₁ hq₀ hq₁).trans
+    (add_le_add le_rfl Real.binEntropy_le_log_two)
+
+/-- A complete-report bound from conditional prefix coding and a binary
+relative-entropy budget, with the classical event inequality proved here.
+The coding premise has interpretation `K(z|n) ≤ -log₂ q + K(b|n) + c_M`.
+Its uniform constant, the reference semimeasure, quantum data processing,
+and the Gibbs budget are external obligations, not certified by this theorem.
+`budget` is in nats; complexity and overhead are in bits. -/
+theorem reliable_report_of_binary_budget (complexity : ℕ)
+    (overhead budget p margin q : ℝ)
+    (hmargin : 0 < margin) (hreliable : margin ≤ p) (hp₁ : p ≤ 1)
+    (hq₀ : 0 < q) (hq₁ : q < 1)
+    (hcoding : (complexity : ℝ) ≤ (-Real.log q) / Real.log 2 + overhead)
+    (hphysical : binaryRelativeEntropy p q ≤ budget) :
+    (complexity : ℝ) ≤ (budget + Real.log 2) / (margin * Real.log 2) + overhead := by
+  have htwo : 0 < Real.log 2 := Real.log_pos (by norm_num)
+  have hsurprisal : 0 ≤ (-Real.log q) / Real.log 2 :=
+    div_nonneg (neg_nonneg.mpr (Real.log_nonpos hq₀.le hq₁.le)) htwo.le
+  have hbinary := binary_surprisal_le_add_log_two p q
+    (hmargin.le.trans hreliable) hp₁ hq₀ hq₁
+  have hweighted : p * ((-Real.log q) / Real.log 2) ≤ budget / Real.log 2 + 1 := by
+    calc
+      p * ((-Real.log q) / Real.log 2) = (p * (-Real.log q)) / Real.log 2 :=
+        (mul_div_assoc _ _ _).symm
+      _ ≤ (budget + Real.log 2) / Real.log 2 :=
+        div_le_div_of_nonneg_right (hbinary.trans (add_le_add hphysical le_rfl)) htwo.le
+      _ = budget / Real.log 2 + 1 := by rw [add_div, div_self htwo.ne']
+  have hbound := reliable_report_bound complexity overhead
+    ((-Real.log q) / Real.log 2) (budget / Real.log 2) p margin
+    hmargin hreliable hsurprisal hcoding hweighted
+  have hunits : (budget / Real.log 2 + 1) / margin =
+      (budget + Real.log 2) / (margin * Real.log 2) := by
+    field_simp
+  rwa [hunits] at hbound
+
+/-- Reference report probability one is handled by coding directly, without
+using the real-valued binary-divergence definition at its excluded boundary.
+Nonnegativity of the physical budget is a premise; a Gibbs application must
+justify it even when the partition function is less than one. -/
+theorem reliable_report_of_reference_one (complexity : ℕ)
+    (overhead budget margin : ℝ) (hbudget : 0 ≤ budget) (hmargin : 0 < margin)
+    (hcoding : (complexity : ℝ) ≤ (-Real.log 1) / Real.log 2 + overhead) :
+    (complexity : ℝ) ≤ (budget + Real.log 2) / (margin * Real.log 2) + overhead := by
+  have htwo : 0 < Real.log 2 := Real.log_pos (by norm_num)
+  have hsimple : (complexity : ℝ) ≤ overhead := by simpa using hcoding
+  have hallowance : 0 ≤ (budget + Real.log 2) / (margin * Real.log 2) :=
+    div_nonneg (add_nonneg hbudget htwo.le) (mul_pos hmargin htwo).le
   linarith
 
 end KTAIT.OperationalInformation
