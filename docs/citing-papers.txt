@@ -299,3 +299,8 @@ WP0218-v0.7.0-draft12 | ../../BCOM WPs and Blogs/working_drafts/WP0218-Algorithm
 WP0218-v0.7.0-draft13 | ../../BCOM WPs and Blogs/working_drafts/WP0218-Algorithmic information conservation/build/revision/WP0218_v0.7.0-draft13.tex
 # WP0251 internal mathematical development: conditional operational-information reductions.
 WP0251-development-2026-10-29 | ../../BCOM WPs and Blogs/working_drafts/WP0251-Physical_Computation_Finite_Information/notes/2026-10-29_kaiti/operational_results.tex
+
+# WP0251 first full manuscript: scoped operational-information references.
+WP0251-manuscript-03_results | ../../BCOM WPs and Blogs/working_drafts/WP0251-Physical_Computation_Finite_Information/manuscript/bcom/sections/03_results.tex
+WP0251-manuscript-04_physics | ../../BCOM WPs and Blogs/working_drafts/WP0251-Physical_Computation_Finite_Information/manuscript/bcom/sections/04_physics.tex
+WP0251-manuscript-06_appendices | ../../BCOM WPs and Blogs/working_drafts/WP0251-Physical_Computation_Finite_Information/manuscript/bcom/sections/06_appendices.tex
