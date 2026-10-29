@@ -749,3 +749,7 @@ The selected-program bridge retains the signed length offset and matching eviden
 ## 2026-10-23 — WP0215 program-to-generator extraction
 Defined a finite arithmetic syntax and proved that recursive symbolic first jets give the value and step derivative at zero. The result concerns real arithmetic and a declared state/time interface; it does not certify LLVM parsing, IEEE execution, or state selection. Lean 4.31 real-structure instance paths required explicit conversion followed by reflexivity at derivative-rule applications.
 The six new theorem dependency audits contain only propext, Classical.choice, and Quot.sound; no custom axioms or proof gaps.
+
+## 2026-10-29 — Operational information (WP0251)
+
+Added actual partial-recursive report search, its correctness, and conditional replacement-complexity consequences. The replacement selector need not be effective: the bounded-complexity conclusion uses Meyer as a named hypothesis. Scalar probability margins are checked; quantum contraction, matrix nets, and construction of the block observer remain paper arguments. KTAIT stays on Lean 4.31; the separate concrete Meyer proof stays on 4.35.

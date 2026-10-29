@@ -323,6 +323,7 @@ Mathlib~v4.31.0. Modules:
 \lean{AlgorithmicEmergence.lean} & counting bound, construction barriers, schedule refinement, fixed-task construction--decision equivalence & WP0007 barriers, inheritance, discussion proposition \\
 \lean{ComputationCores.lean} & deterministic experiments, observability, coordinate overwrites & WP0229 structural comparisons \\
 \lean{ProgramGenerator.lean} & arithmetic expression syntax and first jets & WP0215: generator extraction and uniqueness \\
+\resizebox{0.96\linewidth}{!}{\lean{OperationalInformation.lean}} & partial-recursive report search; conditional prefix coding and Meyer as named hypotheses & WP0251: replacement complexity, unboundedness, and threshold margins \\
 \lean{FunctionalCore.lean} & exact and approximate task descriptions & WP0007 minimum-description bound \\
 \lean{Certification.lean} & partial semantics; computable certificate stream & WP0228 unrestricted minimum \\
 \lean{Marking.lean} & persistent finite marking; event witnesses & WP0228 budget and eventual coverage \\
@@ -365,6 +366,19 @@ Mathlib~v4.31.0. Modules:
 
 \noindent\textbf{Proved KT corollaries (no \lean{sorry}; \lean{\#print axioms} = Lean core only):}
 \begin{itemize}[leftmargin=1.4em,itemsep=1pt]
+\item {\raggedright In \lean{OperationalInformation}, \lean{recover\_partrec} and
+\lean{recover\_correct} formalize finite-stage search and correctness of recognized answer tables.
+\lean{replacement\_bound}, \lean{computable\_of\_bounded\_replacements},
+\lean{noncomputable\_unbounded\_replacements}, and \lean{budget\_transfer}
+derive WP0251's conditional AIT bounds from an effective table observer,
+adequate replacements, and the named standard hypotheses \lean{DecoderCoding}
+and \lean{Meyer}. Replacement selection need not be computable.
+\lean{wrong\_estimate\_below\_half} and \lean{correct\_estimate\_above\_half}
+verify the real-valued decision margins. The construction of the block observer
+from probability approximators, quantum effects and contraction, matrix nets,
+copy-count bounds, and biased-source sampling remain paper-level arguments.
+The separate Lean~4.35 project proves Meyer from an optimal-machine definition;
+this Lean~4.31 module does not import that proof.\par}
 \item \lean{ProgramGenerator.jet\_value}, \lean{jet\_derivative},
 \lean{symbolic\_jet\_correct}, and \lean{symbolic\_generator\_sound} --- WP0215's
 worked example: a recursive syntax-to-syntax transformation extracts the value and derivative
@@ -1464,6 +1478,16 @@ paper,\cite{ruffini2025worldmodels} and the foundational AIT-of-consciousness pa
 \textbf{ID (paper)} & \textbf{Statement (abbreviated)} & \textbf{Class} & \textbf{Status} \\
 \midrule
 \endhead
+\multicolumn{4}{@{}l}{\textit{Reliable physical decisions --- WP0251 (OperationalInformation)}}\\
+\midrule
+Effective search & Partial-recursive search returns the target table from sound, eventual reports & STD & \stproved\ (\lean{recover\_partrec}, \lean{recover\_correct}) \\
+Replacement bound & \(K(A_n\mid n)\leq K(a_n\mid n)+c\), conditional on the coding interface and adequate effective observation & KT & \stproved\ (\lean{replacement\_bound}) \\
+Bounded replacement & Bounded conditional replacement complexity implies task computability; the contrapositive gives unboundedness & KT & \stproved\ (bounded/unbounded replacement declarations) \\
+Description budget & A supplied replacement-description budget bounds answer complexity with fixed overhead & KT & \stproved\ (\lean{budget\_transfer}) \\
+Threshold margins & Replacement error \(1/12\) and estimation error \(1/48\) preserve the separation at \(1/2\) & STD & \stproved\ (estimate declarations) \\
+Coding and Meyer & Standard conditional prefix-map bound and bounded-prefix characterization & STD & \staxiom\ (named hypotheses) \\
+Quantum realization & Trace-distance control, rational state net, logarithmic copy budget, and replenishable biased source & STD & \sttodo\ (paper proofs) \\
+\midrule
 \multicolumn{4}{@{}l}{\textit{ART paper --- The Algorithmic Regulator (Entropy 2026, 28, 257)}}\\
 \midrule
 Lemma 1 & $P(p\mid x)=2^{-|p|}/m(x)$; sandwiched by coding thm & STD & \stproved\ (\lean{lemma1\_...}) \\

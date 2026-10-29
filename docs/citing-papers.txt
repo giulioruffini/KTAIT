@@ -297,3 +297,5 @@ WP0218-v0.7.0-draft12 | ../../BCOM WPs and Blogs/working_drafts/WP0218-Algorithm
 
 # WP0218 draft 13: six-section focus; temporal corollary and transport relocated, proof pin fc60f68 unchanged.
 WP0218-v0.7.0-draft13 | ../../BCOM WPs and Blogs/working_drafts/WP0218-Algorithmic information conservation/build/revision/WP0218_v0.7.0-draft13.tex
+# WP0251 internal mathematical development: conditional operational-information reductions.
+WP0251-development-2026-10-29 | ../../BCOM WPs and Blogs/working_drafts/WP0251-Physical_Computation_Finite_Information/notes/2026-10-29_kaiti/operational_results.tex

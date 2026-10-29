@@ -84,6 +84,7 @@ declarations by source paper.
 | WP0218 (revision) | Acquired model, parameter, and residual costs; lossless recoding; innovation capacity and finite repeated-block recovery | `model_parameter_residual_bound`, `innovations_force_complement`, `block_residual_recovery` | `ModelAccounting` |
 | WP0215 | Common-semantics bound; boundary vs. organization; finite-horizon unfolding | `common_semantics_bound`, `boundary_eq_of_iso`, `no_fixed_unfolding_covers_all_horizons` | `IS/CommonSemantics`, `IS/Boundary`, `IS/Unfolding` |
 | WP0215 example | Symbolic first-jet extraction from arithmetic expressions; unique generator; Euler/RK4 scalar case | `symbolic_generator_sound`, `generator_unique`, `decay_common_core` | `ProgramGenerator` |
+| WP0251 operational information | Effective report search; conditional replacement-complexity and computability consequences; probability margins | replacement_bound, computable_of_bounded_replacements, budget_transfer | OperationalInformation |
 | WP0229 | Deterministic experiments, observability, coordinate overwrites | `observable_conjugacy`, `overwrite_rigidity` | `ComputationCores` |
 | WP0228 | Certified programs: marking budget and coverage, prefix-free descriptors, finite counting, whole-function minima | `marking_step_covers`, `gamma_prefix_free`, `whole_function_minimum_exists` | `CertifiedPrograms/*` |
 | WP0236 | One diagonal: Lawvere fixed point, Cantor and Kleene faces, valence self-scoring bar | `lawvere_fixed_point`, `self_prediction_bar` | `Lawvere` |

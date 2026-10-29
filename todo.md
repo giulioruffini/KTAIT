@@ -3,6 +3,8 @@
 - [ ] connect WP0228 finite marking and descriptor codes to partial-recursive decoders and optimal prefix evaluators
 - [ ] formalize WP0228's unrestricted total-function count via the bounded-width prefix-tree construction
 - [ ] wrap long existing identifiers in the WP0195 module inventory and result prose; v22's new entries fit, but older entries overflow
+- [ ] connect WP0251's probability approximators to the effective block observer; formalize the quantum net/copy realization and link the concrete Meyer proof across toolchains
+- [x] prove WP0251's effective report search, conditional AIT replacement bounds, and scalar probability margins; document the named AIT hypotheses and paper-proof boundary
 - [x] prove WP0215's symbolic first-jet extractor, generator uniqueness, and Euler/RK4 scalar example; record the limits of compiler and floating-point coverage
 - [x] deposited WP0195 v0.7.0 via Calliope (DOI 10.5281/zenodo.23562943), dated October 2026, with Giulio's authorization — 2026-10-22
 - [x] formalize acquired-model costs and innovation capacity in ModelAccounting, check finite block recovery, and update the inventory and axiom record — 2026-10-04

@@ -12,6 +12,7 @@ import KTAIT.AlgorithmicEmergence
 import KTAIT.FunctionalCore
 import KTAIT.ComputationCores
 import KTAIT.ProgramGenerator
+import KTAIT.OperationalInformation
 import KTAIT.CertifiedPrograms.Certification
 import KTAIT.CertifiedPrograms.Counting
 import KTAIT.Decoder
