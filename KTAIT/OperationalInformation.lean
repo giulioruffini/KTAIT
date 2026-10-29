@@ -21,6 +21,10 @@ premises justified by the paper's probability-threshold construction.
 The scalar threshold bounds are proved here, but assembling that construction
 into a block observer, quantum trace-distance contraction, state nets, and
 tensor-product inequalities remain paper-level arguments.
+
+`reliable_report_bound` separately checks a scalar consequence for a complete
+reported string, assuming reference coding and a success-weighted surprisal
+budget. It does not formalize the Gibbs/quantum argument supplying that budget.
 -/
 
 namespace KTAIT.OperationalInformation
@@ -127,6 +131,26 @@ theorem correct_estimate_above_half (p q e : ℝ)
     (hestimate : |e - q| ≤ 1 / 48) : 1 / 2 < e := by
   have hq := (abs_le.mp hreplace).1
   have he := (abs_le.mp hestimate).1
+  linarith
+
+/-- A complete reported string inherits a budget from reference surprisal.
+`surprisal` and `budget` are in bits; `margin` is a positive lower bound on
+the unconditional probability of that particular complete string.
+The prefix-coding bound and the physical inequality are named premises.
+Quantum relative-entropy data processing, the Gibbs state, and effectiveness
+of reference report probabilities are NOT formalized by this scalar result. -/
+theorem reliable_report_bound (complexity : ℕ)
+    (overhead surprisal budget success margin : ℝ)
+    (hmargin : 0 < margin) (hreliable : margin ≤ success)
+    (hsurprisal : 0 ≤ surprisal)
+    (hcoding : (complexity : ℝ) ≤ surprisal + overhead)
+    (hphysical : success * surprisal ≤ budget + 1) :
+    (complexity : ℝ) ≤ (budget + 1) / margin + overhead := by
+  have hweighted : margin * surprisal ≤ budget + 1 :=
+    (mul_le_mul_of_nonneg_right hreliable hsurprisal).trans hphysical
+  have hbound : surprisal ≤ (budget + 1) / margin := by
+    apply (le_div_iff₀ hmargin).2
+    simpa only [mul_comm] using hweighted
   linarith
 
 end KTAIT.OperationalInformation
