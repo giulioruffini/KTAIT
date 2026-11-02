@@ -759,3 +759,8 @@ The subsequent physics note distinguishes a complete reported string from answer
 ### 2026-10-29 — Binary event inequality for WP0251
 
 Proved the relative-entropy/binary-entropy decomposition and report-surprisal bound, including actual probabilities zero and one. Keep reference probability strictly between zero and one: totalized real logarithms otherwise hide infinite divergences. Klaus approved the interpretation before proof; uniform reference coding and the quantum/Gibbs instantiation remain external obligations. The probability argument is the standard weak converse used by Wang and Renner (2012), not a new inequality.
+
+
+## 2026-11-02 — Symmetry, orbit tables, and closure (WP0215)
+
+An equivariant update is determined by one image per orbit; an explicit represented orbit quotient therefore gives reconstruction, finite counting, and closed dynamics. Its AIT cost bound uses named finite-table and decoder inequalities, with no effective selector inferred from an abstract action. Symmetry enables reusable descriptions, but closure does not guarantee a short law or free discovery of the representation.

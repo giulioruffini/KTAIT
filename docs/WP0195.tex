@@ -323,6 +323,7 @@ Mathlib~v4.31.0. Modules:
 \lean{AlgorithmicEmergence.lean} & counting bound, construction barriers, schedule refinement, fixed-task construction--decision equivalence & WP0007 barriers, inheritance, discussion proposition \\
 \lean{ComputationCores.lean} & deterministic experiments, observability, coordinate overwrites & WP0229 structural comparisons \\
 \lean{ProgramGenerator.lean} & arithmetic expression syntax and first jets & WP0215: generator extraction and uniqueness \\
+\lean{SymmetryCompression.lean} & orbit-table reconstruction; represented quotients; conditional coding premises & WP0215: equivariant-law counting, closure, and code costs \\
 \resizebox{0.96\linewidth}{!}{\lean{OperationalInformation.lean}} & partial-recursive search; binary relative entropy; named coding, Meyer, and quantum-budget premises & WP0251: replacement complexity, report bounds, and threshold margins \\
 \lean{FunctionalCore.lean} & exact and approximate task descriptions & WP0007 minimum-description bound \\
 \lean{Certification.lean} & partial semantics; computable certificate stream & WP0228 unrestricted minimum \\
@@ -399,6 +400,19 @@ without evaluating a divergent relative entropy through Lean's totalized
 logarithm. Quantum data processing, Gibbs states, reference semimeasure
 construction, uniform coding constants, and the spectral limit remain
 paper-level obligations.\par}
+\item {\raggedright In \lean{SymmetryCompression},
+\lean{orbit\_table\_recovery} and \lean{orbit\_table\_injective} reconstruct
+an equivariant update from one image per represented orbit.
+\lean{equivariant\_update\_count} bounds the number of such updates by
+$n^k$ for $n$ states and $k$ orbits. \lean{quotient\_update\_commutes} and
+\lean{quotient\_update\_iterates} prove exact closure and its finite iterates.
+\lean{equivariant\_update\_complexity} derives the conditional bound
+$k\ell+c_{\rm code}+c_{\rm dec}$ from the named premises
+\lean{TableCodingBound} and \lean{OrbitDecoderBound}. Orbit representatives
+and reconstruction coordinates are supplied; no effective selector or
+optimal prefix-machine compiler is constructed. The paper instantiates
+$\ell=\lceil\log_2 n\rceil$ by ordinary finite-table coding and charges
+any presentation absent from the conditioning context.\par}
 \item \lean{ProgramGenerator.jet\_value}, \lean{jet\_derivative},
 \lean{symbolic\_jet\_correct}, and \lean{symbolic\_generator\_sound} --- WP0215's
 worked example: a recursive syntax-to-syntax transformation extracts the value and derivative
@@ -1917,6 +1931,18 @@ AIT bound & certified whole-function distance and class-size compression & STD &
 \midrule
 \multicolumn{4}{@{}l}{\textit{The Simulation Is Phenomenally Itself --- WP0215}}\\
 \midrule
+Orbit-table reconstruction & one image per orbit recovers every equivariant update & STD &
+  \stproved\ (\lean{orbit\_table\_recovery}, \lean{orbit\_table\_injective}) \\
+Equivariant-law count & at most $n^k$ updates on $n$ states with $k$ represented orbits & STD &
+  \stproved\ (\lean{equivariant\_update\_count}) \\
+Orbit closure & the represented orbit map commutes with the update and its finite iterates & STD &
+  \stproved\ (\lean{quotient\_update\_commutes}, \lean{quotient\_update\_iterates}) \\
+Conditional table cost & $K(F\mid D)\le k\ell+c_{\rm code}+c_{\rm dec}$ & STD &
+  \stproved\ (\lean{equivariant\_update\_complexity}) \\
+--- coding premises & finite-table code bound and decoder overhead & STD &
+  \staxiom\ (named \lean{TableCodingBound}, \lean{OrbitDecoderBound}) \\
+--- concrete compiler & optimal prefix machine and effective presentation discovery & STD &
+  \stna\ (finite-code instantiation is a paper argument) \\
 Common semantics & $\Ik(p{:}q)\ge K(F)-c_1-c_2-4\,\mathrm{slack}$ when $F$ is cheaply
   recoverable from both & KT & \stproved\ (\lean{common\_semantics\_bound}) \\
 --- cost-free form & same, with the frame's own $K(F\mid p^\ast),K(F\mid q^\ast)$ & KT &

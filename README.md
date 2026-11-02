@@ -245,6 +245,8 @@ LEARNING_LOG.md          — a short note per milestone
 
 ## Status & future work
 
+`SymmetryCompression` supplies WP0215's finite orbit-table reconstruction, equivariant-law count, and closed quotient updates. Its conditional description-cost consequence names the finite-code and decoder premises explicitly; the paper supplies their prefix-code instantiation. Arbitrary group actions are not assumed to have computable selectors.
+
 The original five roadmap phases (WP0162 Props. 1–4, WP0192 Principle 1, WP0193 Thm B, the full
 probabilistic ART chain) are complete, and the development has since grown module by module with
 the KT papers it serves. Documented future work:

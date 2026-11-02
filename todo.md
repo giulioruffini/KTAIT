@@ -5,6 +5,7 @@
 - [ ] wrap long existing identifiers in the WP0195 module inventory and result prose; v22's new entries fit, but older entries overflow
 - [ ] connect WP0251's probability approximators to the effective block observer; formalize the quantum net/copy realization and link the concrete Meyer proof across toolchains
 - [ ] formalize the Gibbs reference semimeasure, uniform coding overhead, quantum data processing, and spectral limit
+- [x] prove WP0215's orbit-table recovery, equivariant-law count and closed quotient; document the conditional AIT coding interface and audit its dependencies
 - [x] independently review and prove the binary relative-entropy report inequality, including probability endpoints, and compose it with the named coding/quantum budget premises
 - [x] check the scalar reliable-report bound with coding and physical budget as explicit premises
 - [x] prove WP0251's effective report search, conditional AIT replacement bounds, and scalar probability margins; document the named AIT hypotheses and paper-proof boundary
