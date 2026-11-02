@@ -1,7 +1,9 @@
 # TODO — KTAIT
 
+- [x] formalize WP0215 general closure, finite-output reconstruction, orbit codes, and thermostat bounds; audit and synchronize the paper inventory
+
 - [ ] connect WP0228 finite marking and descriptor codes to partial-recursive decoders and optimal prefix evaluators
-- [ ] formalize WP0228's unrestricted total-function count via the bounded-width prefix-tree construction
+- [ ] replace the named bounded-width tree-labeling premise with a checked online label construction
 - [ ] wrap long existing identifiers in the WP0195 module inventory and result prose; v22's new entries fit, but older entries overflow
 - [ ] connect WP0251's probability approximators to the effective block observer; formalize the quantum net/copy realization and link the concrete Meyer proof across toolchains
 - [ ] formalize the Gibbs reference semimeasure, uniform coding overhead, quantum data processing, and spectral limit

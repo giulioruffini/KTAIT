@@ -764,3 +764,9 @@ Proved the relative-entropy/binary-entropy decomposition and report-surprisal bo
 ## 2026-11-02 — Symmetry, orbit tables, and closure (WP0215)
 
 An equivariant update is determined by one image per orbit; an explicit represented orbit quotient therefore gives reconstruction, finite counting, and closed dynamics. Its AIT cost bound uses named finite-table and decoder inequalities, with no effective selector inferred from an abstract action. Symmetry enables reusable descriptions, but closure does not guarantee a short law or free discovery of the representation.
+
+## 2026-11-02 — WP0215 theorem coverage
+
+The numbered propositions now have explicit formal counterparts for general closure, orbit quotients and codes, finite-output reconstruction, and the saturated thermostat, alongside the earlier boundary, common-semantics, generator, and unfolding proofs. Added stochastic quotient laws, content-factorization order facts, actual source decoders, and partial-recursive answer-table generation. Standard coding, universal compilation, and bounded-width tree labeling remain named premises; their consequences are derived, with no global axioms.
+
+An independent review caught framed-stream decoder correctness inside a compiler premise. Keep decoding correctness separate from uniform compiler overhead. A clean axiom list alone does not reveal a conclusion hidden among hypotheses.

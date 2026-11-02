@@ -323,6 +323,16 @@ Mathlib~v4.31.0. Modules:
 \lean{AlgorithmicEmergence.lean} & counting bound, construction barriers, schedule refinement, fixed-task construction--decision equivalence & WP0007 barriers, inheritance, discussion proposition \\
 \lean{ComputationCores.lean} & deterministic experiments, observability, coordinate overwrites & WP0229 structural comparisons \\
 \lean{ProgramGenerator.lean} & arithmetic expression syntax and first jets & WP0215: generator extraction and uniqueness \\
+% BEGIN WP0215 MODULES
+\lean{AnswerTableCoding.lean} & partial-recursive answer prefixes and uniform coding & WP0215: checked deductions and explicit premises \\
+\lean{WholeFunctionTree.lean} & threshold trees and unrestricted whole-function multiplicity & WP0215: checked deductions and explicit premises \\
+\lean{WholeFunctionPrograms.lean} & certified whole-function source reconstruction & WP0215: checked deductions and explicit premises \\
+\lean{ClosureExtensions.lean} & finite stochastic quotients and ordered grain families & WP0215: checked deductions and explicit premises \\
+\lean{ClosureInvariance.lean} & general state maps, within-fiber permutations, and group quotients & WP0215: checked deductions and explicit premises \\
+\lean{FiniteTableCode.lean} & literal binary tables and fixed-interpreter cost & WP0215: checked deductions and explicit premises \\
+\lean{NearMinimalPrograms.lean} & staged source enumeration and near-minimal reconstruction & WP0215: checked deductions and explicit premises \\
+\lean{PredictiveThermostat.lean} & saturated forecast controller and approximation error & WP0215: checked deductions and explicit premises \\
+% END WP0215 MODULES
 \lean{SymmetryCompression.lean} & orbit-table reconstruction; represented quotients; conditional coding premises & WP0215: equivariant-law counting, closure, and code costs \\
 \resizebox{0.96\linewidth}{!}{\lean{OperationalInformation.lean}} & partial-recursive search; binary relative entropy; named coding, Meyer, and quantum-budget premises & WP0251: replacement complexity, report bounds, and threshold margins \\
 \lean{FunctionalCore.lean} & exact and approximate task descriptions & WP0007 minimum-description bound \\
@@ -400,6 +410,24 @@ without evaluating a divergent relative entropy through Lean's totalized
 logarithm. Quantum data processing, Gibbs states, reference semimeasure
 construction, uniform coding constants, and the spectral limit remain
 paper-level obligations.\par}
+% BEGIN WP0215 COROLLARIES
+\item {\raggedright In \lean{AnswerTableCoding}, A partial-recursive evaluator generates finite answer tables. Totality is required only at the selected model code. The general conditional-map coding principle gives one description overhead across models, response functions, and prefix lengths.
+Checked declarations: \lean{collect\_partrec}, \lean{collect\_correct}, \lean{realized\_task\_computable}, \lean{answers\_length}, \lean{answer\_table\_computable}, \lean{answer\_prefix\_complexity}, \lean{total\_evaluator\_complexity}.\par}
+\item {\raggedright In \lean{WholeFunctionTree}, Source streams with computable stages generate a threshold tree. Disjoint contributor sets bound every finite antichain, and every prefix of the total target enters. The standard bounded-width tree-labeling principle and fixed compilation law give the whole-function multiplicity bound. The tree-labeling theorem is a named AIT premise; it is not re-proved here.
+Checked declarations: \lean{framed\_prefix\_mono}, \lean{framed\_prefix\_length}, \lean{admitted\_prefix\_closed}, \lean{incompatible\_contributors\_disjoint}, \lean{antichain\_source\_budget}, \lean{admitted\_antichain\_width}, \lean{target\_prefix\_admitted}, \lean{parse\_frame\_append}, \lean{parse\_frame\_sound}, \lean{parse\_output\_append\_stable}, \lean{parse\_output\_framed\_prefix}, \lean{parse\_output\_stream\_sound}, \lean{tree\_decode\_at\_stable}, \lean{tree\_decode\_mem\_iff}, \lean{label\_produces\_decode\_complete}, \lean{label\_produces\_decode\_sound}, \lean{label\_produces\_decoder\_correct}, \lean{total\_tree\_description\_bound}, \lean{whole\_function\_log\_count}, \lean{whole\_function\_multiplicity\_bound}, \lean{whole\_function\_real\_log\_bound}.\par}
+\item {\raggedright In \lean{WholeFunctionPrograms}, An executable scan over binary sources and a computable certificate stream produces permanent marks and chronological events. Coverage and event budgets justify the global and local prefix descriptors. Named fixed-compiler laws turn their proved decoding behavior into the certified whole-function reconstruction bound, including partial functions with their domains.
+Checked declarations: \lean{global\_event\_budget}, \lean{global\_coverage}, \lean{local\_complete}, \lean{global\_decode\_stable}, \lean{local\_decode\_stable}, \lean{global\_decode\_unique}, \lean{local\_decode\_unique}, \lean{global\_decoder\_correct}, \lean{local\_decoder\_correct}, \lean{global\_cost\_bound}, \lean{local\_cost\_bound}, \lean{certified\_reconstruction}, \lean{certified\_near\_minimal}.\par}
+\item {\raggedright In \lean{ClosureExtensions}, Strong lumpability gives a unique stochastic quotient whose evolution commutes with projection for every initial law and every finite iterate. The content kernel is the greatest unrestricted content-preserving equivalence; declared admissible families can have no coarsest or maximal member. The counterexamples concern abstract equivalence families, not physical admissibility.
+Checked declarations: \lean{lumpable\_iff\_unique\_quotient}, \lean{quotient\_stochastic}, \lean{stochastic\_quotient\_exists\_unique}, \lean{pushforward\_evolve}, \lean{pushforward\_evolve\_iterates}, \lean{lumpable\_linear\_combination}, \lean{content\_kernel\_is\_greatest}, \lean{greatest\_content\_equivalence\_unique}, \lean{finite\_family\_without\_coarsest}, \lean{infinite\_family\_without\_maximal}.\par}
+\item {\raggedright In \lean{ClosureInvariance}, Closure is equivalent to representative invariance; two-sided closure normalizes the fiber-permutation group and conserves equivalence on paired states. Arbitrary equivariant group actions induce closed orbit quotients. The module also proves content factorization, operation composition, and finite iteration.
+Checked declarations: \lean{factor\_iff\_fiber\_constant}, \lean{closure\_iff\_fiber\_constant}, \lean{fiber\_constant\_iff\_representative\_invariant}, \lean{unique\_reduced\_iff\_representative\_invariant}, \lean{closure\_iff\_representative\_invariant}, \lean{closure\_iff\_conjugate\_subset}, \lean{closure\_both\_iff\_normalizes}, \lean{flow\_closure\_iff\_normalizes}, \lean{Closed.preserves}, \lean{closed\_composition}, \lean{reduced\_composition}, \lean{reduced\_iterates}, \lean{closed\_iterates}, \lean{same\_macrostate\_iff}, \lean{equivalence\_indicator\_conserved}, \lean{same\_macrostate\_iterate\_iff}, \lean{flow\_equivalence\_indicator\_conserved}, \lean{equivariant\_preserves\_orbits}, \lean{symmetry\_quotient}, \lean{orbit\_update\_commutes}.\par}
+\item {\raggedright In \lean{FiniteTableCode}, The explicit encoder and parser recover finite tables with exactly $k\lceil\log_2 n\rceil$ bits and conditional prefix-freeness. Together with the supplied orbit presentation, named fixed-interpreter and orbit-decoder laws give the equivariant-update complexity bound. The prefix code is proved; an optimal universal-machine construction remains a standard AIT premise.
+Checked declarations: \lean{encode\_length}, \lean{parse\_encode\_append}, \lean{parse\_encode}, \lean{encode\_prefix\_free}, \lean{state\_index\_fits}, \lean{literal\_table\_complexity}, \lean{table\_values\_length}, \lean{table\_values\_lt}, \lean{finite\_table\_coding\_bound}, \lean{equivariant\_update\_code\_bound}.\par}
+\item {\raggedright In \lean{NearMinimalPrograms}, Conditional coding mass bounds the actual finite family of near-minimal programs. A staged enumeration and parsed deficit/index descriptor recover either source from the other, giving an explicit excess-plus-logarithm bound. Coding and universal simulation are named standard AIT premises; interpreter soundness, completeness, and stability are explicit. The module also proves normalized common-semantics and report-information consequences.
+Checked declarations: \lean{mem\_nearFamily}, \lean{near\_family\_card}, \lean{discoveries\_complete}, \lean{near\_code\_length}, \lean{near\_code\_prefix\_free}, \lean{decodeAt\_stable}, \lean{decodeAt\_unique}, \lean{near\_decoder\_correct}, \lean{near\_minimal\_reconstruction}, \lean{near\_minimal\_programs}, \lean{normalized\_overlap}, \lean{normalized\_common\_semantics}, \lean{report\_fraction\_reconstruction}.\par}
+\item {\raggedright In \lean{PredictiveThermostat}, The actual clipped heating controller contracts in the temperature/forecast-error norm. Finite-horizon perturbation bounds, affine record recoding, and mismatch identities follow. These are real-algebraic controller results; experiential assignments and physical implementations are outside their statements.
+Checked declarations: \lean{clip\_secant}, \lean{forecast\_error\_step}, \lean{synchronized\_step}, \lean{thermostat\_contraction}, \lean{stateDist\_triangle}, \lean{error\_recurrence\_bound}, \lean{thermostat\_perturbation\_bound}, \lean{additive\_error\_distance}, \lean{thermostat\_additive\_perturbation\_bound}, \lean{decode\_recode}, \lean{recoding\_conjugacy}, \lean{forecast\_error\_mismatch}, \lean{clip\_bounds}, \lean{command\_unique\_maximizer}, \lean{normal\_gates\_step}, \lean{outward\_gate\_independence}, \lean{gated\_square\_invariant}, \lean{recode\_decode}, \lean{recoding\_record\_increment}, \lean{synchronized\_trajectory}, \lean{numerical\_record\_commands}, \lean{numerical\_record\_states}, \lean{temperature\_projection\_not\_closed}, \lean{numerical\_read\_bypass}, \lean{numerical\_write\_block}.\par}
+% END WP0215 COROLLARIES
 \item {\raggedright In \lean{SymmetryCompression},
 \lean{orbit\_table\_recovery} and \lean{orbit\_table\_injective} reconstruct
 an equivariant update from one image per represented orbit.
@@ -1410,10 +1438,11 @@ for its stream and explicit semantic soundness. No concrete optimal evaluator is
 \item \lean{CertifiedPrograms.combine\_decoder\_costs} and
 \lean{near\_minimal\_cost\_corollary} --- scalar arithmetic for the two decoder costs and
 the additive-minimality specialization. These results take their displayed input inequalities
-as hypotheses. They are not the whole-function information-distance theorem. The connection
-from the finite scan to partial-recursive source decoders, uniform prefix-machine compilation,
-and the ensuing Kolmogorov-complexity bounds remains a paper proof in WP0228. No class-size
-compression theorem or final information-distance bound is postulated as a Lean axiom.
+as hypotheses. The later \lean{WholeFunctionPrograms} module supplies actual source decoders,
+coverage, and their resulting whole-function reconstruction bounds under named uniform compiler
+laws. \lean{WholeFunctionTree} supplies the unrestricted count under the standard tree-labeling
+principle and stream-decoder compilation. A concrete optimal evaluator and its compiler instances
+remain outside these interfaces; no final multiplicity or information-distance bound is postulated.
 \par\endgroup
 \item \lean{ComputationCores.run\_intertwines} and \lean{experiment\_outputs}
 transport every finite experiment through a map that intertwines each admitted operation.
@@ -1512,6 +1541,17 @@ paper,\cite{ruffini2025worldmodels} and the foundational AIT-of-consciousness pa
 \textbf{ID (paper)} & \textbf{Statement (abbreviated)} & \textbf{Class} & \textbf{Status} \\
 \midrule
 \endhead
+% BEGIN WP0215 INVENTORY
+WP0215 & A partial-recursive evaluator generates finite answer tables. Totality is required only at the selected model code. The general conditional-map coding principle gives one description overhead across models, response functions, and prefix lengths. & KT & \stproved \\
+WP0215 & Source streams with computable stages generate a threshold tree. Disjoint contributor sets bound every finite antichain, and every prefix of the total target enters. The standard bounded-width tree-labeling principle and fixed compilation law give the whole-function multiplicity bound. The tree-labeling theorem is a named AIT premise; it is not re-proved here. & KT & \stproved \\
+WP0215 & An executable scan over binary sources and a computable certificate stream produces permanent marks and chronological events. Coverage and event budgets justify the global and local prefix descriptors. Named fixed-compiler laws turn their proved decoding behavior into the certified whole-function reconstruction bound, including partial functions with their domains. & KT & \stproved \\
+WP0215 & Strong lumpability gives a unique stochastic quotient whose evolution commutes with projection for every initial law and every finite iterate. The content kernel is the greatest unrestricted content-preserving equivalence; declared admissible families can have no coarsest or maximal member. The counterexamples concern abstract equivalence families, not physical admissibility. & KT & \stproved \\
+WP0215 & Closure is equivalent to representative invariance; two-sided closure normalizes the fiber-permutation group and conserves equivalence on paired states. Arbitrary equivariant group actions induce closed orbit quotients. The module also proves content factorization, operation composition, and finite iteration. & KT & \stproved \\
+WP0215 & The explicit encoder and parser recover finite tables with exactly $k\lceil\log_2 n\rceil$ bits and conditional prefix-freeness. Together with the supplied orbit presentation, named fixed-interpreter and orbit-decoder laws give the equivariant-update complexity bound. The prefix code is proved; an optimal universal-machine construction remains a standard AIT premise. & KT & \stproved \\
+WP0215 & Conditional coding mass bounds the actual finite family of near-minimal programs. A staged enumeration and parsed deficit/index descriptor recover either source from the other, giving an explicit excess-plus-logarithm bound. Coding and universal simulation are named standard AIT premises; interpreter soundness, completeness, and stability are explicit. The module also proves normalized common-semantics and report-information consequences. & KT & \stproved \\
+WP0215 & The actual clipped heating controller contracts in the temperature/forecast-error norm. Finite-horizon perturbation bounds, affine record recoding, and mismatch identities follow. These are real-algebraic controller results; experiential assignments and physical implementations are outside their statements. & KT & \stproved \\
+WP0215 AIT interface & Conditional coding, universal prefix-interpreter simulation, and the existing information laws & STD & \staxiom\ (named hypotheses) \\
+% END WP0215 INVENTORY
 \multicolumn{4}{@{}l}{\textit{Reliable physical decisions --- WP0251 (OperationalInformation)}}\\
 \midrule
 Effective search & Partial-recursive search returns the target table from sound, eventual reports & STD & \stproved\ (\lean{recover\_partrec}, \lean{recover\_correct}) \\
@@ -1926,8 +1966,8 @@ Whole-function minimum & existence, comparison and invariance under full semanti
   \stproved\ (\lean{whole\_...}) \\
 Integer algebra & combines supplied decoder inequalities; specializes additive excess & STD &
   \stproved\ (\lean{combine\_...}) \\
-AIT bound & certified whole-function distance and class-size compression & STD &
-  \stna\ (paper proof; concrete decoder compilation remains) \\
+AIT bound & certified reconstruction and unrestricted count under named standard compilation and tree-labeling premises & STD &
+  \stproved\ (explicit AIT interfaces) \\
 \midrule
 \multicolumn{4}{@{}l}{\textit{The Simulation Is Phenomenally Itself --- WP0215}}\\
 \midrule

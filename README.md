@@ -31,6 +31,10 @@ and genuinely entailed by it.
 
 **Before citing a declaration in a paper**, read [`docs/translation-fidelity.md`](docs/translation-fidelity.md): a compiled declaration checks the derivation from its hypotheses, not that it states what the paper states.
 
+## WP0215 proof coverage
+
+The WP0215 development now includes general representative invariance and flow normalization, arbitrary symmetry quotients, finite stochastic closure, literal orbit-table codes, finite-output and certified whole-function source reconstruction, a conditional whole-function count, and the clipped predictive thermostat. The existing internal-structure and program-generator modules supply the other numbered propositions. `docs/WP0195.tex` lists the declarations and their scope. The AIT layer still supplies named standard coding and compilation principles; the bounded-width tree-labeling theorem is also explicit. Experiential hypotheses are not formal conclusions.
+
 ## The one rule
 
 > **Standard AIT and probability theorems may be *assumed* (a named axiom layer).
@@ -42,14 +46,14 @@ theorem is honest and expected.
 **Soundness note.** The AIT facts are stated as *named hypotheses* (`Prop`s about a frame),
 **not** as global `axiom`s — a global "law for every frame" would be inconsistent here (one can
 build a frame violating it and derive `False`). As a result, `#print axioms` on every KT
-corollary shows only Lean's core axioms (`propext`, `Classical.choice`, `Quot.sound`) plus the
-named hypotheses, and a *toy model* witnesses that the hypotheses are jointly satisfiable — so
-the corollaries are not vacuously true.
+corollary shows only Lean's core axioms (`propext`, `Classical.choice`, `Quot.sound`). Named
+hypotheses appear in the theorem's type, not in that axiom list, and must be reviewed separately.
+Toy models witness satisfiability for the interfaces they instantiate.
 
 ## What is proved
 
-All results are `sorry`-free; `#print axioms` confirms each rests only on Lean core + the named
-AIT hypotheses. WP0195 carries the per-statement inventory; this table names the flagship
+All results are `sorry`-free; the axiom audit checks foundational dependencies, while each
+theorem's type records its named AIT premises. WP0195 carries the per-statement inventory; this table names the flagship
 declarations by source paper.
 
 | Source | Result | Lean name | Module |

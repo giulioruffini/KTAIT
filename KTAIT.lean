@@ -48,3 +48,11 @@ import KTAIT.IS.Boundary
 import KTAIT.IS.Unfolding
 import KTAIT.ToyModel
 import KTAIT.BadStatements
+import KTAIT.ClosureInvariance
+import KTAIT.FiniteTableCode
+import KTAIT.NearMinimalPrograms
+import KTAIT.PredictiveThermostat
+import KTAIT.ClosureExtensions
+import KTAIT.WholeFunctionPrograms
+import KTAIT.AnswerTableCoding
+import KTAIT.WholeFunctionTree
