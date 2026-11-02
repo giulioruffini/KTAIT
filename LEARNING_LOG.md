@@ -770,3 +770,7 @@ An equivariant update is determined by one image per orbit; an explicit represen
 The numbered propositions now have explicit formal counterparts for general closure, orbit quotients and codes, finite-output reconstruction, and the saturated thermostat, alongside the earlier boundary, common-semantics, generator, and unfolding proofs. Added stochastic quotient laws, content-factorization order facts, actual source decoders, and partial-recursive answer-table generation. Standard coding, universal compilation, and bounded-width tree labeling remain named premises; their consequences are derived, with no global axioms.
 
 An independent review caught framed-stream decoder correctness inside a compiler premise. Keep decoding correctness separate from uniform compiler overhead. A clean axiom list alone does not reveal a conclusion hidden among hypotheses.
+
+### 2026-11-02 — State the recovery consequence in Lean
+
+A first-jet derivative theorem implies the paper's conditional difference-quotient limit, but the implication should be instantiated when the proposition includes it. Keep state and auxiliary coordinates explicit and take zero-step identity and auxiliary independence as hypotheses; do not confuse these hypotheses with a verified parser acceptance algorithm.

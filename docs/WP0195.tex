@@ -322,7 +322,7 @@ Mathlib~v4.31.0. Modules:
 \lean{CoarseGraining.lean} & \lean{RegSuff}, structure function & WP0193 Thms~A/B \\
 \lean{AlgorithmicEmergence.lean} & counting bound, construction barriers, schedule refinement, fixed-task construction--decision equivalence & WP0007 barriers, inheritance, discussion proposition \\
 \lean{ComputationCores.lean} & deterministic experiments, observability, coordinate overwrites & WP0229 structural comparisons \\
-\lean{ProgramGenerator.lean} & arithmetic expression syntax and first jets & WP0215: generator extraction and uniqueness \\
+\lean{ProgramGenerator.lean} & arithmetic expressions, first jets, and state/auxiliary interfaces & WP0215: generator extraction and conditional recovery \\
 % BEGIN WP0215 MODULES
 \lean{AnswerTableCoding.lean} & partial-recursive answer prefixes and uniform coding & WP0215: checked deductions and explicit premises \\
 \lean{WholeFunctionTree.lean} & threshold trees and unrestricted whole-function multiplicity & WP0215: checked deductions and explicit premises \\
@@ -445,6 +445,10 @@ any presentation absent from the conditioning context.\par}
 \lean{symbolic\_jet\_correct}, and \lean{symbolic\_generator\_sound} --- WP0215's
 worked example: a recursive syntax-to-syntax transformation extracts the value and derivative
 at zero in a declared step parameter for finite rational arithmetic expressions over real states.
+\lean{interface\_coefficients} represents separate state and auxiliary coordinates;
+\lean{scalar\_recovery\_limit} and \lean{recovery\_with\_auxiliary\_inputs} derive the
+difference-quotient limit from zero-step identity and auxiliary-independent first jets.
+\lean{recovered\_vector\_field\_unique} gives uniqueness under those conditions.
 \lean{generator\_unique} proves uniqueness of the extracted derivative;
 \lean{decay\_common\_core} verifies the common first jet of explicit Euler and RK4
 expressions for scalar decay. These are standard differentiation results applied to the program
@@ -2022,6 +2026,8 @@ Structured experience & $\mathcal{S}(P)\cong\mathfrak{S}(P)$, experience as impl
 Arithmetic program extraction & value and derivative from an explicit syntax transformation;
 unique generator in a declared interface & STD &
   \stproved\ (\lean{symbolic\_generator\_sound}, \lean{generator\_unique}) \\
+--- declared state/auxiliary interface & conditional coordinatewise recovery limit and unique vector field & STD &
+  \stproved\ (\lean{recovery\_with\_auxiliary\_inputs}, \lean{recovered\_vector\_field\_unique}) \\
 --- scalar decay & Euler and RK4 expression trees have the same first jet & STD &
   \stproved\ (\lean{decay\_common\_core}) \\
 \midrule

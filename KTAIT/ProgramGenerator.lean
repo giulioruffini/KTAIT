@@ -5,6 +5,8 @@ Authors: Giulio Ruffini (with Kaiti/Codex)
 -/
 import Mathlib.Analysis.Calculus.Deriv.Add
 import Mathlib.Analysis.Calculus.Deriv.Mul
+import Mathlib.Analysis.Calculus.Deriv.Slope
+import Mathlib.Data.Fin.Tuple.Basic
 import Mathlib.Tactic.Convert
 import Mathlib.Tactic.Ring
 
@@ -100,6 +102,84 @@ theorem symbolic_generator_sound {n : Nat} (e : Expr n) (q : Fin n → ℝ) :
     HasDerivAt (eval e q) (eval (symbolicJet e).2 q 0) 0 := by
   rw [(symbolic_jet_correct e q 0).2]
   exact jet_derivative e q
+
+/-! ### Declared state and auxiliary-input interface
+
+A vector program has one expression per retained coordinate. State and auxiliary
+coordinates occupy separate blocks of the fixed expression-variable vector.
+The zero-step identity and independence of the linear coefficient from auxiliary
+inputs are supplied conditions; this does not claim a verified equality checker.
+-/
+
+open Filter
+open scoped Topology
+
+/-- Evaluate a vector program at the declared state, auxiliary input, and step. -/
+def interfaceUpdate {d m : Nat} (e : Fin d → Expr (d + m))
+    (q : Fin d → ℝ) (a : Fin m → ℝ) (h : ℝ) : Fin d → ℝ :=
+  fun i => eval (e i) (Fin.append q a) h
+
+/-- The constant coefficient returned by symbolic extraction. -/
+def constantCoefficient {d m : Nat} (e : Fin d → Expr (d + m))
+    (q : Fin d → ℝ) (a : Fin m → ℝ) : Fin d → ℝ :=
+  fun i => eval (symbolicJet (e i)).1 (Fin.append q a) 0
+
+/-- The linear coefficient returned by symbolic extraction. -/
+def linearCoefficient {d m : Nat} (e : Fin d → Expr (d + m))
+    (q : Fin d → ℝ) (a : Fin m → ℝ) : Fin d → ℝ :=
+  fun i => eval (symbolicJet (e i)).2 (Fin.append q a) 0
+
+/-- Symbolic coefficients give the actual zero-step value and derivative with
+all state and auxiliary coordinates held fixed. -/
+theorem interface_coefficients {d m : Nat} (e : Fin d → Expr (d + m))
+    (q : Fin d → ℝ) (a : Fin m → ℝ) (i : Fin d) :
+    constantCoefficient e q a i = interfaceUpdate e q a 0 i ∧
+    HasDerivAt (fun h => interfaceUpdate e q a h i) (linearCoefficient e q a i) 0 := by
+  constructor
+  · exact ((symbolic_jet_correct (e i) (Fin.append q a) 0).1).trans
+      (jet_value (e i) (Fin.append q a))
+  · exact symbolic_generator_sound (e i) (Fin.append q a)
+
+/-- The scalar difference quotient converges to the extracted derivative once
+the supplied zero-step value matches the retained coordinate. -/
+theorem scalar_recovery_limit {n : Nat} (e : Expr n) (x : Fin n → ℝ)
+    (q : ℝ) (hzero : eval e x 0 = q) :
+    Tendsto (fun h : ℝ => (eval e x h - q) / h) (𝓝[≠] 0)
+      (𝓝 (eval (symbolicJet e).2 x 0)) := by
+  have hd := (symbolic_generator_sound e x).tendsto_slope_zero
+  simpa only [zero_add, hzero, smul_eq_mul, div_eq_mul_inv, mul_comm] using hd
+
+/-- Conditional generator recovery with an explicit state/auxiliary split.
+The constant coefficient is the retained state, and the linear coefficient
+factors through that state alone. No auxiliary input is silently fixed by the
+recovered field: the conclusion holds for every admitted value of a. -/
+theorem recovery_with_auxiliary_inputs {d m : Nat} (e : Fin d → Expr (d + m))
+    (f : (Fin d → ℝ) → Fin d → ℝ)
+    (hzero : ∀ q a, constantCoefficient e q a = q)
+    (hclosed : ∀ q a, linearCoefficient e q a = f q)
+    (q : Fin d → ℝ) (a : Fin m → ℝ) (i : Fin d) :
+    Tendsto (fun h : ℝ => (interfaceUpdate e q a h i - q i) / h)
+      (𝓝[≠] 0) (𝓝 (f q i)) := by
+  have hz : eval (e i) (Fin.append q a) 0 = q i :=
+    (interface_coefficients e q a i).1.symm.trans (congrFun (hzero q a) i)
+  have hr := scalar_recovery_limit (e i) (Fin.append q a) (q i) hz
+  change Tendsto (fun h : ℝ => (interfaceUpdate e q a h i - q i) / h)
+    (𝓝[≠] 0) (𝓝 (linearCoefficient e q a i)) at hr
+  rw [hclosed q a] at hr
+  exact hr
+
+/-- Any vector field satisfying the same difference-quotient limits equals the
+recovered field at the declared coordinates and step parameter. -/
+theorem recovered_vector_field_unique {d m : Nat} (e : Fin d → Expr (d + m))
+    (f g : (Fin d → ℝ) → Fin d → ℝ)
+    (hzero : ∀ q a, constantCoefficient e q a = q)
+    (hclosed : ∀ q a, linearCoefficient e q a = f q)
+    (hg : ∀ q a i, Tendsto
+      (fun h : ℝ => (interfaceUpdate e q a h i - q i) / h)
+      (𝓝[≠] 0) (𝓝 (g q i))) : g = f := by
+  funext q i
+  exact tendsto_nhds_unique (hg q (fun _ => 0) i)
+    (recovery_with_auxiliary_inputs e f hzero hclosed q (fun _ => 0) i)
 
 def eulerDecay : Expr 1 :=
   .add (.state 0) (.mul .step (.neg (.state 0)))
