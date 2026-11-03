@@ -774,3 +774,7 @@ An independent review caught framed-stream decoder correctness inside a compiler
 ### 2026-11-02 — State the recovery consequence in Lean
 
 A first-jet derivative theorem implies the paper's conditional difference-quotient limit, but the implication should be instantiated when the proposition includes it. Keep state and auxiliary coordinates explicit and take zero-step identity and auxiliary independence as hypotheses; do not confuse these hypotheses with a verified parser acceptance algorithm.
+
+### 2026-11-03 — Closure as an indicator law
+
+For a surjective reduction, forward closure is equivalent to a nondecreasing binary co-membership indicator. For an invertible update, closure of the update and its inverse is equivalent to exact conservation of that indicator on pairs; invertibility of the source alone does not imply backward closure.

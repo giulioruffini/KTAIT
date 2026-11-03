@@ -238,6 +238,45 @@ theorem equivalence_indicator_conserved (ρ : X → Q) (e : Equiv.Perm X)
   classical
   simp only [equivalenceIndicator, same_macrostate_iff ρ e hf hi x y]
 
+/-- For an onto state map, forward closure is equivalent to nondecrease of the
+same-macrostate indicator along paired updates. Different classes may merge. -/
+theorem closed_iff_indicator_nondecreasing (ρ : X → Q)
+    (hρ : Function.Surjective ρ) (f : X → X) :
+    Closed ρ f ↔ ∀ x y,
+      equivalenceIndicator ρ x y ≤ equivalenceIndicator ρ (f x) (f y) := by
+  classical
+  constructor
+  · intro hf x y
+    by_cases hxy : ρ x = ρ y
+    · simp [equivalenceIndicator, hxy, hf.preserves hxy]
+    · simp [equivalenceIndicator, hxy]
+  · intro h
+    apply (closure_iff_fiber_constant ρ hρ f).mpr
+    intro x y hxy
+    change ρ (f x) = ρ (f y)
+    by_contra hne
+    have hi := h x y
+    simp [equivalenceIndicator, hxy, hne] at hi
+
+/-- For an onto state map and a bijective update, closure in both directions
+is equivalent to conservation of the same-macrostate indicator on pairs. -/
+theorem closed_both_iff_indicator_conserved (ρ : X → Q)
+    (hρ : Function.Surjective ρ) (e : Equiv.Perm X) :
+    (Closed ρ e ∧ Closed ρ e.symm) ↔ ∀ x y,
+      equivalenceIndicator ρ (e x) (e y) = equivalenceIndicator ρ x y := by
+  constructor
+  · rintro ⟨hf, hi⟩ x y
+    exact equivalence_indicator_conserved ρ e hf hi x y
+  · intro h
+    constructor
+    · apply (closed_iff_indicator_nondecreasing ρ hρ e).mpr
+      intro x y
+      exact le_of_eq (h x y).symm
+    · apply (closed_iff_indicator_nondecreasing ρ hρ e.symm).mpr
+      intro x y
+      have hi := h (e.symm x) (e.symm y)
+      simpa using le_of_eq hi
+
 /-- The discrete-time equivalence relation is invariant at every finite iterate. -/
 theorem same_macrostate_iterate_iff (ρ : X → Q) (e : Equiv.Perm X)
     (hf : Closed ρ e) (hi : Closed ρ e.symm) (n : Nat) (x y : X) :
