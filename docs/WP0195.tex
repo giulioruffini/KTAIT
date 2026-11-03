@@ -333,6 +333,9 @@ Mathlib~v4.31.0. Modules:
 \lean{NearMinimalPrograms.lean} & staged source enumeration and near-minimal reconstruction & WP0215: checked deductions and explicit premises \\
 \lean{PredictiveThermostat.lean} & saturated forecast controller and approximation error & WP0215: checked deductions and explicit premises \\
 % END WP0215 MODULES
+% BEGIN WP0255 MODULES
+\lean{ClosureSymmetry.lean} & symmetry quotients, reversibility, and what a symmetry removes & WP0255: checked deductions and explicit premises \\
+% END WP0255 MODULES
 \lean{SymmetryCompression.lean} & orbit-table reconstruction; represented quotients; conditional coding premises & WP0215: equivariant-law counting, closure, and code costs \\
 \resizebox{0.96\linewidth}{!}{\lean{OperationalInformation.lean}} & partial-recursive search; binary relative entropy; named coding, Meyer, and quantum-budget premises & WP0251: replacement complexity, report bounds, and threshold margins \\
 \lean{FunctionalCore.lean} & exact and approximate task descriptions & WP0007 minimum-description bound \\
@@ -428,6 +431,10 @@ Checked declarations: \lean{mem\_nearFamily}, \lean{near\_family\_card}, \lean{d
 \item {\raggedright In \lean{PredictiveThermostat}, The actual clipped heating controller contracts in the temperature/forecast-error norm. Finite-horizon perturbation bounds, affine record recoding, and mismatch identities follow. These are real-algebraic controller results; experiential assignments and physical implementations are outside their statements.
 Checked declarations: \lean{clip\_secant}, \lean{forecast\_error\_step}, \lean{synchronized\_step}, \lean{thermostat\_contraction}, \lean{stateDist\_triangle}, \lean{error\_recurrence\_bound}, \lean{thermostat\_perturbation\_bound}, \lean{additive\_error\_distance}, \lean{thermostat\_additive\_perturbation\_bound}, \lean{decode\_recode}, \lean{recoding\_conjugacy}, \lean{forecast\_error\_mismatch}, \lean{clip\_bounds}, \lean{command\_unique\_maximizer}, \lean{normal\_gates\_step}, \lean{outward\_gate\_independence}, \lean{gated\_square\_invariant}, \lean{recode\_decode}, \lean{recoding\_record\_increment}, \lean{synchronized\_trajectory}, \lean{numerical\_record\_commands}, \lean{numerical\_record\_states}, \lean{temperature\_projection\_not\_closed}, \lean{numerical\_read\_bypass}, \lean{numerical\_write\_block}.\par}
 % END WP0215 COROLLARIES
+% BEGIN WP0255 COROLLARIES
+\item {\raggedright In \lean{ClosureSymmetry}, for an onto state map, conservation of the co-membership indicator is equivalent to forward closure with an injective reduced update, with no invertibility of the microscopic update; for a bijective update it is equivalent to closure of the update and of its inverse, and the reduced update is then a bijection that reduces the inverse. A group action commuting with a bijection commutes with its inverse, so its orbit quotient is closed in both directions, its orbit indicator is conserved, and its reduced update is injective. A symmetry fixing every macrostate induces the identity; a bijection carries fibers onto fibers exactly when it normalizes the relabeling group, and a commuting symmetry then descends to a map commuting with the reduced update. An orbit of a finite group has at most as many points as the group; a commuting update preserves the fixed-point set. For the trivial partition, a transitive group of bijections commuting with the update forces equal return-time sets (necessity only; the converse construction and the return-map centralizer characterization are not formalized).
+Checked declarations: \lean{indicator\_conserved\_iff\_closed\_injective}, \lean{closed\_both\_iff\_closed\_injective}, \lean{reduced\_bijective\_of\_closed\_both}, \lean{trivial\_partition\_closed}, \lean{fiberPerm\_induces\_id}, \lean{maps\_fibers\_iff\_normalizes}, \lean{descended\_commutes}, \lean{orbit\_mk\_surjective}, \lean{orbit\_mk\_eq\_iff}, \lean{equivariant\_symm}, \lean{symmetry\_quotient\_both}, \lean{symmetry\_quotient\_indicator\_conserved}, \lean{symmetry\_quotient\_reduced\_injective}, \lean{card\_orbit\_le\_card\_group}, \lean{fixedPoints\_invariant}, \lean{zpow\_apply\_comm}, \lean{returnTimes\_eq\_of\_commute}, \lean{returnTimes\_const\_of\_transitive}.\par}
+% END WP0255 COROLLARIES
 \item {\raggedright In \lean{SymmetryCompression},
 \lean{orbit\_table\_recovery} and \lean{orbit\_table\_injective} reconstruct
 an equivariant update from one image per represented orbit.
@@ -1556,6 +1563,13 @@ WP0215 & Conditional coding mass bounds the actual finite family of near-minimal
 WP0215 & The actual clipped heating controller contracts in the temperature/forecast-error norm. Finite-horizon perturbation bounds, affine record recoding, and mismatch identities follow. These are real-algebraic controller results; experiential assignments and physical implementations are outside their statements. & KT & \stproved \\
 WP0215 AIT interface & Conditional coding, universal prefix-interpreter simulation, and the existing information laws & STD & \staxiom\ (named hypotheses) \\
 % END WP0215 INVENTORY
+% BEGIN WP0255 INVENTORY
+WP0255 & Co-membership lemma: for an onto reduction, conservation of the co-membership indicator is forward closure with an injective reduced update; for a bijective update it is two-sided closure with a bijective reduced update. & KT & \stproved \\
+WP0255 & Two-sided corollary: an action commuting with a bijection commutes with its inverse; the orbit quotient is closed in both directions, the orbit indicator is conserved, and the reduced update is injective. & KT & \stproved \\
+WP0255 & Labels-and-dimensions proposition, part (a), set level: an orbit of a finite group has at most as many points as the group; (c): a commuting update carries fixed points to fixed points. The covering-map and quotient-manifold clauses are cited, not formalized. & KT & \stproved \\
+WP0255 & Two-positions proposition: a symmetry fixing every macrostate induces the identity; a bijection carries fibers onto fibers exactly when it normalizes the relabeling group, and then descends to a map commuting with the reduced update. & KT & \stproved \\
+WP0255 & Trivial-partition proposition, necessity: a transitive group of bijections commuting with the update forces equal return-time sets. The sufficiency construction is not formalized. & KT & \stproved \\
+% END WP0255 INVENTORY
 \multicolumn{4}{@{}l}{\textit{Reliable physical decisions --- WP0251 (OperationalInformation)}}\\
 \midrule
 Effective search & Partial-recursive search returns the target table from sound, eventual reports & STD & \stproved\ (\lean{recover\_partrec}, \lean{recover\_correct}) \\

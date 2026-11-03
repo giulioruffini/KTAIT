@@ -778,3 +778,7 @@ A first-jet derivative theorem implies the paper's conditional difference-quotie
 ### 2026-11-03 — Closure as an indicator law
 
 For a surjective reduction, forward closure is equivalent to a nondecreasing binary co-membership indicator. For an invertible update, closure of the update and its inverse is equivalent to exact conservation of that indicator on pairs; invertibility of the source alone does not imply backward closure.
+
+### 2026-11-03 — Symmetry quotients are two-sided; conservation is injectivity of the reduced map
+
+Conservation of the paired indicator needs no invertible microscopic update: it is forward closure plus an injective reduced update, and surjectivity of the reduction is what lets injectivity be read off the indicator. Commuting with a bijection gives commuting with its inverse in one line (`apply e.injective`), so orbit quotients of invertible dynamics are closed both ways. `Nat.card_le_card_of_surjective` needs `[Finite G]`; without it the inequality is false for an infinite group with a finite orbit. Mathlib's `Commute.zpow_left` plus `Equiv.Perm.mul_apply` moves a commuting bijection through integer powers of the update.

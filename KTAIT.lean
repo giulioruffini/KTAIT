@@ -49,6 +49,7 @@ import KTAIT.IS.Unfolding
 import KTAIT.ToyModel
 import KTAIT.BadStatements
 import KTAIT.ClosureInvariance
+import KTAIT.ClosureSymmetry
 import KTAIT.FiniteTableCode
 import KTAIT.NearMinimalPrograms
 import KTAIT.PredictiveThermostat
