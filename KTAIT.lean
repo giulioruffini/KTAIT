@@ -57,3 +57,8 @@ import KTAIT.ClosureExtensions
 import KTAIT.WholeFunctionPrograms
 import KTAIT.AnswerTableCoding
 import KTAIT.WholeFunctionTree
+import KTAIT.OperationalAlgebra
+import KTAIT.OperationalGalois
+import KTAIT.OperationalFinite
+import KTAIT.OperationalPrograms
+import KTAIT.OperationalApproximation
