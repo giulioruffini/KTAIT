@@ -15,6 +15,6 @@
     "algebra_demo": 783,
     "galois_demo": 1325
   },
-  "proof_commit": "pending",
+  "proof_commit": "b77623d89982997ff57f7f359163722c17544ce5",
   "sync_guard": "passed"
 }
