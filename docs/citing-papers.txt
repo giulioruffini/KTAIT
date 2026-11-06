@@ -310,4 +310,4 @@ WP0215-author-WP0215_nc | ../../BCOM WPs and Blogs/working_drafts/WP0215-Simulat
 WP0215-author-WP0215_nc_supplement | ../../BCOM WPs and Blogs/working_drafts/WP0215-Simulation-Phenomenally-Itself/journal_version/WP0215_nc_supplement.tex
 WP0255 | ../../BCOM WPs and Blogs/working_drafts/WP0255-Coarse_Graining_Symmetry_Conservation/manuscript/bcom/main.tex
 
-WP0004-v0.3.0 | ../../BCOM WPs and Blogs/working_drafts/WP0004-Computation_as_Algebras/manuscript/journal/main.tex
+WP0004-v0.4.0 | ../../BCOM WPs and Blogs/working_drafts/WP0004-Computation_as_Algebras/manuscript/journal/main.tex

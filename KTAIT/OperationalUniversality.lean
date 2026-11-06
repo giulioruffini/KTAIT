@@ -23,6 +23,17 @@ def execute {I S O : Type*} (F : S → S) (input : I → S) (observe : S → Opt
     (x : I) : Part O :=
   Nat.rfindOpt fun n => observe (F^[n] (input x))
 
+/-- The history lift preserves the whole partial execution protocol, including
+the first returned value and divergence, for arbitrary preparation and observation. -/
+theorem execute_reversible_eq {I S O : Type*} [DecidableEq S]
+    (F : S → S) (input : I → S) (observe : S → Option O) (x : I) :
+    execute (advance F) (prepare ∘ input) (fun z => observe z.1.1) x =
+      execute F input observe x := by
+  unfold execute
+  congr 1
+  funext n
+  exact observation_simulates F observe (input x) n
+
 /-- Effective sequential actions with computable preparation and observation
 compute only partial-recursive functions. No algebraic word-problem oracle is used. -/
 theorem execute_partrec {I S O : Type*} [Primcodable I] [Primcodable S] [Primcodable O]

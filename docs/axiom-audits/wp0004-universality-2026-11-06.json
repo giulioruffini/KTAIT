@@ -4,9 +4,9 @@
   "mathlib": "v4.31.0",
   "theorems": {
     "OperationalReversibility": 22,
-    "OperationalUniversality": 17
+    "OperationalUniversality": 18
   },
-  "audited_declarations": 58,
+  "audited_declarations": 59,
   "allowed_axioms": [
     "Classical.choice",
     "Quot.sound",
@@ -412,10 +412,17 @@
         "Classical.choice",
         "Quot.sound"
       ]
+    },
+    {
+      "name": "KTAIT.OperationalUniversality.execute_reversible_eq",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
     }
   ],
   "files": {
     "OperationalReversibility": "dfe5acd3267c33ba40d17cec072d10c0a812b5bc518f2fdd3f82464271c18148",
-    "OperationalUniversality": "1472f6f6dc4527672933e82e07ead53b85ad173f0eed467738c832e7fbea184d"
+    "OperationalUniversality": "520c7aee0a1c89704bc8192a88369b1d0be5d49f0d585429ef62509a1e282d4c"
   }
 }
