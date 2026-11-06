@@ -62,3 +62,5 @@ import KTAIT.OperationalGalois
 import KTAIT.OperationalFinite
 import KTAIT.OperationalPrograms
 import KTAIT.OperationalApproximation
+import KTAIT.OperationalReversibility
+import KTAIT.OperationalUniversality

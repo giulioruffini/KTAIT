@@ -788,3 +788,7 @@ Conservation of the paired indicator needs no invertible microscopic update: it 
 A generator criterion must descend the realized transformation monoid, not only the free word action: surjectivity of the state reduction proves independence of the word representative. Finite enumeration requires a closure certificate and a proof that it equals the generated monoid. The modulo-four orbit example separates generated congruence (parity) from the contextual kernel (equality).
 
 Standardness and Python regression tests do not exempt a paper-level derivation from formalization. All six propositions and the original finite comparisons now have explicit counterparts. External universality, decomposition, and smooth-flow results remain listed literature dependencies, not new axioms. The hashing runtime estimate is conditional on its cost model; the checked refinement bound counts signature entries.
+
+## 2026-11-06 — WP0004 effective universality
+
+A history stack makes any transition injective; pairing forward states with recorded successors and flipping a direction bit completes it to two involutions. Mathlib’s bounded evaluator supplies a fixed primitive-recursive universal transition, with trivial preparation/readout and an exact partial-recursive converse. The history length proves faithful integer iteration, so the abstract group alone cannot encode computational distinctions. The evaluation bound is not a Turing-machine time bound.
