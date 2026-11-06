@@ -64,3 +64,4 @@ import KTAIT.OperationalPrograms
 import KTAIT.OperationalApproximation
 import KTAIT.OperationalReversibility
 import KTAIT.OperationalUniversality
+import KTAIT.OperationalActions

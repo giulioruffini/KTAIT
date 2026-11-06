@@ -1,0 +1,426 @@
+{
+  "date": "2026-11-06",
+  "lean": "4.31.0",
+  "mathlib": "v4.31.0",
+  "theorems": 37,
+  "audited_declarations": 54,
+  "allowed_axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "new_axioms": false,
+  "sorry": false,
+  "declarations": [
+    {
+      "name": "KTAIT.OperationalActions.apply_eq_iff_inv_mul_mem_ker",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.apply_pointwise_eq_iff",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.range_faithful",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.range_faithfulSMul",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.quotientEquivRange",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.quotientAction",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.quotientAction_mk",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.quotientAction_injective",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.quotientAction_ker",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.quotientAction_range",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.flip",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.flip_mul_self",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.c4Action",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.c2Action",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.c4Action_apply",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.c4Action_range",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.c2Action_range",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.c4Action_range_eq_c2Action_range",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.c4Action_ker_iff",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.c4Action_ker_nontrivial",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.c4Action_ker_ne_bot",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.c2Action_injective",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.c2Action_ker",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.c4_not_isomorphic_c2",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.Intertwines",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.fixedCount",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.fixedCount_conj",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.transposition",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.doubleTransposition",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.transpositionAction",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.doubleTranspositionAction",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.transpositionAction_injective",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.doubleTranspositionAction_injective",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.transpositionAction_gen",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.doubleTranspositionAction_gen",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.transposition_fixedCount",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.doubleTransposition_fixedCount",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.c2_elements",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.transposition_not_intertwines_double",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.IntertwinesOps",
+      "axioms": [
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.run_conj",
+      "axioms": [
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.marked_run_conj",
+      "axioms": [
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.readout_conj",
+      "axioms": [
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.completion_conj",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.kernelCon",
+      "axioms": []
+    },
+    {
+      "name": "KTAIT.OperationalActions.kernelCon_iff",
+      "axioms": []
+    },
+    {
+      "name": "KTAIT.OperationalActions.kernelCon_iff_pointwise",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.mrange_faithful",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.mrange_faithfulSMul",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.quotientEquivMrange",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.quotientMonoidAction",
+      "axioms": [
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.quotientMonoidAction_mk",
+      "axioms": [
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.quotientMonoidAction_injective",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalActions.quotientMonoidAction_mrange",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ],
+  "file_sha256": "eeccde7d903811da5eb0203bae90d91f723387507e4f369a9e7f2866baaa7728"
+}

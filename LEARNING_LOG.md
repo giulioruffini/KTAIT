@@ -792,3 +792,5 @@ Standardness and Python regression tests do not exempt a paper-level derivation 
 ## 2026-11-06 — WP0004 effective universality
 
 A history stack makes any transition injective; pairing forward states with recorded successors and flipping a direction bit completes it to two involutions. Mathlib’s bounded evaluator supplies a fixed primitive-recursive universal transition, with trivial preparation/readout and an exact partial-recursive converse. The history length proves faithful integer iteration, so the abstract group alone cannot encode computational distinctions. The evaluation bound is not a Turing-machine time bound.
+
+The group kernel and the monoid kernel congruence both remove exactly duplicated state transformations. Faithful actions still need state-space comparison: fixed-state counts separate the two order-two actions on four states. The marked-run lemmas preserve preparation, completion, and readout under operation conjugacy.
