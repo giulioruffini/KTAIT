@@ -778,3 +778,8 @@ A first-jet derivative theorem implies the paper's conditional difference-quotie
 ### 2026-11-03 — Closure as an indicator law
 
 For a surjective reduction, forward closure is equivalent to a nondecreasing binary co-membership indicator. For an invertible update, closure of the update and its inverse is equivalent to exact conservation of that indicator on pairs; invertibility of the source alone does not imply backward closure.
+
+### 2026-11-08 — Informational self-model exclusion (WP0215)
+
+Index candidates by their realizations, since identical programs can have different excluded-part remainders. Signed conditional mutual information is bounded by a uniform candidate-complexity budget plus the named fixed projection cost; exclusion requires the declared tolerance to cover both. Physical admissibility and the experiential interpretation remain outside this arithmetic implication.
+The three new theorem axiom audits contain only `propext` and `Quot.sound`; the combined WP0215 audit passes for 139 declarations, including the six new definitions and theorems.

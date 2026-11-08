@@ -3,6 +3,7 @@ import KTAIT.Ontology
 import KTAIT.ART
 import KTAIT.Probability
 import KTAIT.SelfModel
+import KTAIT.InformationalSelfModel
 import KTAIT.Persistence
 import KTAIT.RegulatorSelection
 import KTAIT.SelfModelLimits

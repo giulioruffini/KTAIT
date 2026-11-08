@@ -1,5 +1,6 @@
 # TODO — KTAIT
 
+- [x] verify WP0215's informational self-model bound and synchronize the WP0195 inventory
 - [x] formalize WP0215 general closure, finite-output reconstruction, orbit codes, and thermostat bounds; audit and synchronize the paper inventory
 
 - [ ] connect WP0228 finite marking and descriptor codes to partial-recursive decoders and optimal prefix evaluators
