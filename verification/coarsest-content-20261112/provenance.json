@@ -1,0 +1,11 @@
+{
+  "imported_file": "KTAIT/OperationalAlgebra.lean",
+  "source_commit": "062f32330d3b234dbb808c8e658e45e960d29d8e",
+  "source_blob": "6ada0af2e73fdecdfb758790c0b9806566a03c17",
+  "copied_blob": "6ada0af2e73fdecdfb758790c0b9806566a03c17",
+  "existing_dependencies_unchanged": [
+    "KTAIT/ComputationCores.lean",
+    "KTAIT/ClosureInvariance.lean"
+  ],
+  "branch_base": "675a2249404053112340fc3f43ac24730a3686bb"
+}

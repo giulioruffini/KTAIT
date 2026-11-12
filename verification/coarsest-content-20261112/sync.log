@@ -1,4 +1,3 @@
-WP0215 registered paths temporarily directed to the Part 1 paper worktree; canonical registry restored after checking.
 == sorry-free ==
   OK: no proof gaps
 == WP0195 coverage ==
@@ -210,14 +209,14 @@ WP0215 registered paths temporarily directed to the Part 1 paper worktree; canon
   SKIP WP0251-manuscript-03_results (not present here: ../../BCOM WPs and Blogs/working_drafts/WP0251-Physical_Computation_Finite_Information/manuscript/bcom/sections/03_results.tex)
   SKIP WP0251-manuscript-04_physics (not present here: ../../BCOM WPs and Blogs/working_drafts/WP0251-Physical_Computation_Finite_Information/manuscript/bcom/sections/04_physics.tex)
   SKIP WP0251-manuscript-06_appendices (not present here: ../../BCOM WPs and Blogs/working_drafts/WP0251-Physical_Computation_Finite_Information/manuscript/bcom/sections/06_appendices.tex)
-  OK WP0215-author-WP0215_nc: all \lean{} and \ktait{} references resolve
-  OK WP0215-author-WP0215_nc_supplement: all \lean{} and \ktait{} references resolve
+  SKIP WP0215-author-WP0215_nc (not present here: ../../BCOM WPs and Blogs/working_drafts/WP0215-Simulation-Phenomenally-Itself/journal_version/WP0215_nc.tex)
+  SKIP WP0215-author-WP0215_nc_supplement (not present here: ../../BCOM WPs and Blogs/working_drafts/WP0215-Simulation-Phenomenally-Itself/journal_version/WP0215_nc_supplement.tex)
 == statement drift ==
   OK: no statement changed while its prose stood still
 == results named, not numbered ==
   OK: no new references by number (111 legacy, 22 converted since baseline)
 == claim coverage ==
-  OK: 12 results, every one with a recorded status (11 machine-checked)
+  OK: 0 results, every one with a recorded status (0 machine-checked)
 == provenance pins ==
 
 IN SYNC.

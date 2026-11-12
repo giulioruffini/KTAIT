@@ -787,3 +787,7 @@ The three new theorem axiom audits contain only `propext` and `Quot.sound`; the 
 ## 2026-11-12 — Exact content-preserving minimal realization
 
 Indistinguishability over all finite input sequences gives the greatest stable relation inside the content kernel. An onto reduction factors uniquely through its quotient; matching initialized responses give isomorphic reachable quotients. Kept generic unmarked execution separate from the existing marked Machine interface, with a proved bridge, so empty source types are not excluded. The manifest currently indexes unqualified declaration names, so the concatenation helper uses run_sequence_append to avoid an ambiguous run_append fingerprint.
+
+### 2026-11-12 — Reuse the WP0004 future-equivalence development
+
+WP0004 v0.4 already contains the greatest stable content equivalence and both refinement laws. Imported OperationalAlgebra unchanged from its pinned source; the WP0215 module now constructs the quotient and specializes the existing factorization and observable-conjugacy theorems. Check sibling branches and cited companions before declaring a missing formal result.

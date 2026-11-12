@@ -46,6 +46,7 @@ import KTAIT.TokenTransport
 import KTAIT.Agentoptosis
 import KTAIT.IS.CommonSemantics
 import KTAIT.IS.Boundary
+import KTAIT.OperationalAlgebra
 import KTAIT.IS.MinimalRealization
 import KTAIT.IS.Unfolding
 import KTAIT.ToyModel
