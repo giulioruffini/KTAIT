@@ -808,3 +808,7 @@ A history stack makes any transition injective; pairing forward states with reco
 The group kernel and the monoid kernel congruence both remove exactly duplicated state transformations. Faithful actions still need state-space comparison: fixed-state counts separate the two order-two actions on four states. The marked-run lemmas preserve preparation, completion, and readout under operation conjugacy.
 
 Klaus’s final review requested an explicit generic partial-execution equality in addition to per-time observation preservation. Added `execute_reversible_eq`: the first returned value and divergence agree for arbitrary preparation and observation. The formal universality class remains `Nat.Partrec`; its standard equivalence with Turing computability is stated separately in the paper.
+
+## 2026-11-12 — Local groups and exact operational division
+
+An idempotent corner has its own identity, so it cannot be modeled as a submonoid with the ambient identity. Bundling the idempotent and taking units of its corner keeps inverses inside the admitted semigroup. Finite group lifting follows from a minimal onto subsemigroup. An operational division uses a readout on its invariant domain and fixed implementing input sequences; concatenation preserves endpoint invariance without requiring each primitive intermediate state to remain in the domain.

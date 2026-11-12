@@ -1,0 +1,272 @@
+{
+  "checked_declarations": 68,
+  "allowed_axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "sorryAx": false,
+  "custom_axioms": false,
+  "utc": "2026-11-12T09:45:11.708335+00:00",
+  "declarations": {
+    "KTAIT.SemigroupCore.Corner": [],
+    "KTAIT.SemigroupCore.Divides": [],
+    "KTAIT.SemigroupCore.Divides.realizedRun_val": [
+      "propext",
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupCore.Divides.realizedUpdate": [],
+    "KTAIT.SemigroupCore.Divides.refl": [],
+    "KTAIT.SemigroupCore.Divides.run_comm": [],
+    "KTAIT.SemigroupCore.Divides.trans": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupCore.Equivariant": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupCore.Retained": [],
+    "KTAIT.SemigroupCore.Tracks": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupCore.bijective_comp_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupCore.card_image_comp_le_left": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupCore.card_image_comp_le_right": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupCore.conjugation": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupCore.conjugation_generated": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupCore.cornerAction": [
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupCore.cornerAction_apply": [
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupCore.cornerAction_injective": [
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupCore.cornerCongr": [
+      "propext",
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupCore.cornerGroupCongr": [
+      "propext",
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupCore.cornerGroupMap": [
+      "propext"
+    ],
+    "KTAIT.SemigroupCore.cornerGroupMap_apply": [
+      "propext"
+    ],
+    "KTAIT.SemigroupCore.cornerGroupMap_groupToCorner": [
+      "propext"
+    ],
+    "KTAIT.SemigroupCore.cornerPerm": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupCore.cornerValue": [],
+    "KTAIT.SemigroupCore.cornerValue_injective": [],
+    "KTAIT.SemigroupCore.cornerValue_mul": [],
+    "KTAIT.SemigroupCore.cornerValue_one": [],
+    "KTAIT.SemigroupCore.corner_ext": [
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupCore.corner_group_faithful": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupCore.equivariant_run": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupCore.generatedConjugation": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupCore.groupIdentity": [
+      "propext"
+    ],
+    "KTAIT.SemigroupCore.groupToCorner": [
+      "propext"
+    ],
+    "KTAIT.SemigroupCore.groupToCornerValue": [
+      "propext"
+    ],
+    "KTAIT.SemigroupCore.groupToCorner_injective": [
+      "propext"
+    ],
+    "KTAIT.SemigroupCore.groupToCorner_value": [
+      "propext"
+    ],
+    "KTAIT.SemigroupCore.group_identity_unique": [
+      "propext"
+    ],
+    "KTAIT.SemigroupCore.idempotent_map_eq_one": [
+      "propext"
+    ],
+    "KTAIT.SemigroupCore.idempotent_unit_eq_one": [
+      "propext"
+    ],
+    "KTAIT.SemigroupCore.irreversible_ideal": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupCore.kernel_factorization": [
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupCore.mapWrite": [
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupCore.track": [
+      "propext"
+    ],
+    "KTAIT.SemigroupCore.track_mul": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupCore.track_on_range": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupCore.track_one": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupCore.trackingHom": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupCore.tracking_kernel": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupCore.unit_iff_bijective": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupCore.write_fixes_range": [],
+    "KTAIT.SemigroupCore.writes_orbit": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupTracking.DivisionCorresponds": [
+      "propext",
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupTracking.WorldActionImage": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupTracking.actionGeneratedEquiv": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupTracking.actionGeneratedEquiv_apply": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupTracking.divisionFactor": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupTracking.divisionSubmonoid": [
+      "propext",
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupTracking.division_factor_commutes": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupTracking.division_factor_surjective": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupTracking.division_forces_group": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupTracking.division_sequence_corresponds": [
+      "propext",
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupTracking.finite_group_lifting": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupTracking.group_divisor_lifts": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupTracking.trackingFactor": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupTracking.tracking_factor_commutes": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupTracking.tracking_factor_surjective": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.SemigroupTracking.tracking_forces_group": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ]
+  },
+  "sources": {
+    "SemigroupCore": "cba4ac5161082749db105f5acc889b11ff049577b6615c1f085656db2823c5dd",
+    "SemigroupTracking": "7137a208bdf6e2ba51e42da24cf5e53439ca99e52572e14b49b85e0c787f8e64"
+  },
+  "build": "lake build passed (8632 jobs)"
+}
