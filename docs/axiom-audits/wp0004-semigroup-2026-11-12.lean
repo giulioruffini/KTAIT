@@ -69,3 +69,4 @@ import KTAIT.SemigroupTracking
 #print axioms KTAIT.SemigroupTracking.tracking_factor_commutes
 #print axioms KTAIT.SemigroupTracking.tracking_factor_surjective
 #print axioms KTAIT.SemigroupTracking.tracking_forces_group
+#print axioms KTAIT.SemigroupTracking.division_lifts_group

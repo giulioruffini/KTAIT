@@ -66,3 +66,4 @@
 'KTAIT.SemigroupTracking.tracking_factor_commutes' depends on axioms: [propext, Classical.choice, Quot.sound]
 'KTAIT.SemigroupTracking.tracking_factor_surjective' depends on axioms: [propext, Classical.choice, Quot.sound]
 'KTAIT.SemigroupTracking.tracking_forces_group' depends on axioms: [propext, Classical.choice, Quot.sound]
+'KTAIT.SemigroupTracking.division_lifts_group' depends on axioms: [propext, Classical.choice, Quot.sound]

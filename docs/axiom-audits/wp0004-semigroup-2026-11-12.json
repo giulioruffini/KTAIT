@@ -1,5 +1,5 @@
 {
-  "checked_declarations": 68,
+  "checked_declarations": 69,
   "allowed_axioms": [
     "Classical.choice",
     "Quot.sound",
@@ -7,7 +7,7 @@
   ],
   "sorryAx": false,
   "custom_axioms": false,
-  "utc": "2026-11-12T09:45:11.708335+00:00",
+  "utc": "2026-11-12T09:56:12.200739+00:00",
   "declarations": {
     "KTAIT.SemigroupCore.Corner": [],
     "KTAIT.SemigroupCore.Divides": [],
@@ -262,11 +262,16 @@
       "propext",
       "Classical.choice",
       "Quot.sound"
+    ],
+    "KTAIT.SemigroupTracking.division_lifts_group": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
     ]
   },
   "sources": {
     "SemigroupCore": "cba4ac5161082749db105f5acc889b11ff049577b6615c1f085656db2823c5dd",
-    "SemigroupTracking": "7137a208bdf6e2ba51e42da24cf5e53439ca99e52572e14b49b85e0c787f8e64"
+    "SemigroupTracking": "222caafb0533d6825f11b86be7c578736650d6399d6aaa0f689d3f5c2382db9b"
   },
   "build": "lake build passed (8632 jobs)"
 }

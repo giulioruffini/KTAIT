@@ -173,6 +173,29 @@ theorem group_divisor_lifts [Finite M] (R : Subsemigroup M) (φ : R →ₙ* G)
     (cornerGroupMap φ e).comp j.symm.toMonoidHom, ?_⟩
   exact he.comp j.symm.surjective
 
+private theorem group_preimage_factor {K : Type*} [Semigroup K]
+    (φ : M →ₙ* K) (ι : G →ₙ* K) (hφ : Surjective φ) (hι : Injective ι) :
+    ∃ R : Subsemigroup M, ∃ ψ : R →ₙ* G, Surjective ψ := by
+  let R : Subsemigroup M :=
+    { carrier := {m | ∃ g : G, φ m = ι g}
+      mul_mem' := by
+        rintro m n ⟨g, hg⟩ ⟨h, hh⟩
+        exact ⟨g * h, by rw [map_mul, hg, hh, map_mul]⟩ }
+  let ψ : R →ₙ* G :=
+    { toFun := fun r => r.property.choose
+      map_mul' := by
+        intro r s
+        apply hι
+        exact (r * s).property.choose_spec.symm.trans
+          ((φ.map_mul r s).trans
+            ((congrArg₂ (· * ·) r.property.choose_spec s.property.choose_spec).trans
+              (ι.map_mul r.property.choose s.property.choose).symm)) }
+  refine ⟨R, ψ, fun g => ?_⟩
+  obtain ⟨m, hm⟩ := hφ (ι g)
+  let r : R := ⟨m, g, hm⟩
+  refine ⟨r, hι ?_⟩
+  exact r.property.choose_spec.symm.trans hm
+
 section Tracking
 
 variable {N W : Type*} [MulAction G W]
@@ -359,6 +382,23 @@ theorem division_factor_surjective (d : Divides S T) : Surjective (divisionFacto
   refine ⟨m', ?_⟩
   exact division_correspondence_unique d m _ q'
     (division_factor_commutes d m') hmq
+
+/-- Every group in an operational target lifts to a group divisor in its finite emulator.
+The target group may have a local identity different from the identity update. -/
+theorem division_lifts_group [Finite Y] (d : Divides S T)
+    (ι : G →ₙ* generated S) (hι : Injective ι) :
+    ∃ e : {m : generated T // IsIdempotentElem m},
+      ∃ H : Subgroup ((Corner e)ˣ), ∃ ψ : H →* G, Surjective ψ := by
+  letI : Fintype Y := Fintype.ofFinite Y
+  letI : Finite (Function.End Y) := inferInstanceAs (Finite (Y → Y))
+  letI : Finite (generated T) := Finite.of_injective
+    (fun m : generated T => m.val) Subtype.val_injective
+  obtain ⟨P, ψ, hψ⟩ := group_preimage_factor (divisionFactor d).toMulHom ι
+    (division_factor_surjective d) hι
+  let incl := (divisionSubmonoid d).subtype.toMulHom
+  let j := P.equivMapOfInjective incl Subtype.val_injective
+  exact group_divisor_lifts (P.map incl) (ψ.comp j.symm.toMulHom)
+    (hψ.comp j.symm.surjective)
 
 /-- A finite operational emulator contains a local group with the tracked action as a divisor.
 Only compiled-operation endpoints must remain in the declared domain. -/
