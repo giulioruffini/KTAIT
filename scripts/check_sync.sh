@@ -91,8 +91,8 @@ else
   # All declaration names KTAIT actually defines.
   DECLS=$(mktemp); trap 'rm -f "$NORM" "$DECLS"' EXIT
   find KTAIT -name '*.lean' \
-    -exec grep -hoE '^(theorem|lemma|def|structure|abbrev|instance) [A-Za-z_0-9]+' {} + \
-    | awk '{print $2}' | sort -u > "$DECLS"
+    -exec grep -hoE '^(noncomputable )?(theorem|lemma|def|structure|abbrev|instance) [A-Za-z_0-9]+' {} + \
+    | awk '{print $NF}' | sort -u > "$DECLS"
 
   while IFS= read -r line; do
     case "$line" in ''|'#'*) continue ;; esac

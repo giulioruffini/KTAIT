@@ -812,3 +812,7 @@ Klaus’s final review requested an explicit generic partial-execution equality 
 ## 2026-11-12 — Local groups and exact operational division
 
 An idempotent corner has its own identity, so it cannot be modeled as a submonoid with the ambient identity. Bundling the idempotent and taking units of its corner keeps inverses inside the admitted semigroup. Finite group lifting follows from a minimal onto subsemigroup. An operational division uses a readout on its invariant domain and fixed implementing input sequences; concatenation preserves endpoint invariance without requiring each primitive intermediate state to remain in the domain.
+
+## 2026-11-12 — Noncomputable definitions in citation guards
+
+The operational division composition is a `noncomputable def`; the name and claim scanners skipped that modifier although the pin checker resolved it. Both scanners now accept the modifier. A temporary absolute-path registry exercises the current manuscript sources in isolated worktrees, where ordinary relative registrations would be skipped.

@@ -70,7 +70,7 @@ BASELINE = os.path.join(ROOT, "docs", "claim-coverage-baseline.tsv")
 RESULT_ENVS = ["theorem", "proposition", "corollary", "lemma", "claim", "conjecture"]
 ANNOTATABLE = RESULT_ENVS + ["definition", "remark", "assumption", "problem"]
 
-DECL_RE = re.compile(r"^(theorem|lemma|def|structure|abbrev|instance) ([A-Za-z_0-9]+)", re.M)
+DECL_RE = re.compile(r"^(?:noncomputable )?(theorem|lemma|def|structure|abbrev|instance) ([A-Za-z_0-9]+)", re.M)
 
 
 def declarations():
