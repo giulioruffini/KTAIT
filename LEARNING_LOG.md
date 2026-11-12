@@ -791,3 +791,20 @@ Indistinguishability over all finite input sequences gives the greatest stable r
 ### 2026-11-12 — Reuse the WP0004 future-equivalence development
 
 WP0004 v0.4 already contains the greatest stable content equivalence and both refinement laws. Imported OperationalAlgebra unchanged from its pinned source; the WP0215 module now constructs the quotient and specializes the existing factorization and observable-conjugacy theorems. Check sibling branches and cited companions before declaring a missing formal result.
+### 2026-11-03 — Symmetry quotients are two-sided; conservation is injectivity of the reduced map
+
+Conservation of the paired indicator needs no invertible microscopic update: it is forward closure plus an injective reduced update, and surjectivity of the reduction is what lets injectivity be read off the indicator. Commuting with a bijection gives commuting with its inverse in one line (`apply e.injective`), so orbit quotients of invertible dynamics are closed both ways. `Nat.card_le_card_of_surjective` needs `[Finite G]`; without it the inequality is false for an infinite group with a finite orbit. Mathlib's `Commute.zpow_left` plus `Equiv.Perm.mul_apply` moves a commuting bijection through integer powers of the update.
+
+### 2026-11-05 — WP0004 operational algebra
+
+A generator criterion must descend the realized transformation monoid, not only the free word action: surjectivity of the state reduction proves independence of the word representative. Finite enumeration requires a closure certificate and a proof that it equals the generated monoid. The modulo-four orbit example separates generated congruence (parity) from the contextual kernel (equality).
+
+Standardness and Python regression tests do not exempt a paper-level derivation from formalization. All six propositions and the original finite comparisons now have explicit counterparts. External universality, decomposition, and smooth-flow results remain listed literature dependencies, not new axioms. The hashing runtime estimate is conditional on its cost model; the checked refinement bound counts signature entries.
+
+## 2026-11-06 — WP0004 effective universality
+
+A history stack makes any transition injective; pairing forward states with recorded successors and flipping a direction bit completes it to two involutions. Mathlib’s bounded evaluator supplies a fixed primitive-recursive universal transition, with trivial preparation/readout and an exact partial-recursive converse. The history length proves faithful integer iteration, so the abstract group alone cannot encode computational distinctions. The evaluation bound is not a Turing-machine time bound.
+
+The group kernel and the monoid kernel congruence both remove exactly duplicated state transformations. Faithful actions still need state-space comparison: fixed-state counts separate the two order-two actions on four states. The marked-run lemmas preserve preparation, completion, and readout under operation conjugacy.
+
+Klaus’s final review requested an explicit generic partial-execution equality in addition to per-time observation preservation. Added `execute_reversible_eq`: the first returned value and divergence agree for arbitrary preparation and observation. The formal universality class remains `Nat.Partrec`; its standard equivalence with Turing computability is stated separately in the paper.

@@ -52,6 +52,7 @@ import KTAIT.IS.Unfolding
 import KTAIT.ToyModel
 import KTAIT.BadStatements
 import KTAIT.ClosureInvariance
+import KTAIT.ClosureSymmetry
 import KTAIT.FiniteTableCode
 import KTAIT.NearMinimalPrograms
 import KTAIT.PredictiveThermostat
@@ -59,3 +60,11 @@ import KTAIT.ClosureExtensions
 import KTAIT.WholeFunctionPrograms
 import KTAIT.AnswerTableCoding
 import KTAIT.WholeFunctionTree
+import KTAIT.OperationalAlgebra
+import KTAIT.OperationalGalois
+import KTAIT.OperationalFinite
+import KTAIT.OperationalPrograms
+import KTAIT.OperationalApproximation
+import KTAIT.OperationalReversibility
+import KTAIT.OperationalUniversality
+import KTAIT.OperationalActions

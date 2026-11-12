@@ -31,6 +31,10 @@ and genuinely entailed by it.
 
 **Before citing a declaration in a paper**, read [`docs/translation-fidelity.md`](docs/translation-fidelity.md): a compiled declaration checks the derivation from its hypotheses, not that it states what the paper states.
 
+## WP0004 proof coverage
+
+Five operational modules formalize the generated-action factor, greatest stable quotient and finite refinement, orbit saturation and contextual rewrite adjunctions, finite program and state examples, and approximate composition bounds. The finite enumeration certificates are checked by kernel reduction. External universality and decomposition results remain cited background; no new axioms encode them. `docs/axiom-audits/wp0004-2026-11-05.lean` lists the audited declarations, and WP0195 records their statements and scope.
+
 ## WP0215 proof coverage
 
 The WP0215 development now includes general representative invariance and flow normalization, arbitrary symmetry quotients, finite stochastic closure, literal orbit-table codes, finite-output and certified whole-function source reconstruction, a conditional whole-function count, and the clipped predictive thermostat. The existing internal-structure and program-generator modules supply the other numbered propositions. `docs/WP0195.tex` lists the declarations and their scope. The AIT layer still supplies named standard coding and compilation principles; the bounded-width tree-labeling theorem is also explicit. Experiential hypotheses are not formal conclusions.

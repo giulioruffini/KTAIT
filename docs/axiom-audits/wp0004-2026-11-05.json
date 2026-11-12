@@ -1,0 +1,20 @@
+{
+  "toolchain": "Lean 4.31.0 / Mathlib v4.31.0",
+  "modules": 5,
+  "new_public_theorems": 148,
+  "new_audited_declarations": 209,
+  "existing_supporting_declarations": 4,
+  "axioms_allowed": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "unexpected_axioms": [],
+  "full_build": "passed: 8625 jobs",
+  "python_assertions": {
+    "algebra_demo": 783,
+    "galois_demo": 1325
+  },
+  "proof_commit": "b77623d89982997ff57f7f359163722c17544ce5",
+  "sync_guard": "passed"
+}

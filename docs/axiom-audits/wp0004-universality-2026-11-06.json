@@ -1,0 +1,428 @@
+{
+  "date": "2026-11-06",
+  "lean": "4.31.0",
+  "mathlib": "v4.31.0",
+  "theorems": {
+    "OperationalReversibility": 22,
+    "OperationalUniversality": 18
+  },
+  "audited_declarations": 59,
+  "allowed_axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "new_axioms": false,
+  "sorry": false,
+  "declarations": [
+    {
+      "name": "KTAIT.OperationalReversibility.History",
+      "axioms": []
+    },
+    {
+      "name": "KTAIT.OperationalReversibility.State",
+      "axioms": []
+    },
+    {
+      "name": "KTAIT.OperationalReversibility.record",
+      "axioms": []
+    },
+    {
+      "name": "KTAIT.OperationalReversibility.record_injective",
+      "axioms": [
+        "propext"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalReversibility.turn",
+      "axioms": [
+        "propext"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalReversibility.crossFun",
+      "axioms": []
+    },
+    {
+      "name": "KTAIT.OperationalReversibility.cross_involutive",
+      "axioms": [
+        "propext"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalReversibility.cross",
+      "axioms": [
+        "propext"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalReversibility.turn_involutive",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalReversibility.turn_sq",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalReversibility.cross_sq",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalReversibility.advance",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalReversibility.advance_positive",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalReversibility.advance_iterate_positive",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalReversibility.record_iterate_state",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalReversibility.record_iterate_length",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalReversibility.prepare",
+      "axioms": []
+    },
+    {
+      "name": "KTAIT.OperationalReversibility.simulates",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalReversibility.simulation_history_length",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalReversibility.observation_simulates",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalReversibility.machineGroup",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalReversibility.advance_mem",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalReversibility.advance_pow_mem",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalReversibility.advance_powers_injective",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalReversibility.advance_integer_powers_injective",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalReversibility.integerActionEquiv",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalReversibility.primrec_record",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalReversibility.primrec_turn",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalReversibility.primrec_cross",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalReversibility.primrec_advance",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalReversibility.primrec_advance_inverse",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalReversibility.primrec_prepare",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalUniversality.execute",
+      "axioms": []
+    },
+    {
+      "name": "KTAIT.OperationalUniversality.execute_partrec",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalUniversality.Code",
+      "axioms": []
+    },
+    {
+      "name": "KTAIT.OperationalUniversality.Config",
+      "axioms": []
+    },
+    {
+      "name": "KTAIT.OperationalUniversality.step",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalUniversality.initial",
+      "axioms": []
+    },
+    {
+      "name": "KTAIT.OperationalUniversality.observe",
+      "axioms": []
+    },
+    {
+      "name": "KTAIT.OperationalUniversality.step_primrec",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalUniversality.initial_primrec",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalUniversality.observe_primrec",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalUniversality.iterate_step",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalUniversality.monoid_evaluates",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalUniversality.step_not_injective",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalUniversality.universalStep",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalUniversality.reversibleInitial",
+      "axioms": []
+    },
+    {
+      "name": "KTAIT.OperationalUniversality.reversibleObserve",
+      "axioms": []
+    },
+    {
+      "name": "KTAIT.OperationalUniversality.universal_step_primrec",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalUniversality.universal_inverse_primrec",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalUniversality.reversible_initial_primrec",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalUniversality.reversible_observe_primrec",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalUniversality.reversible_observation",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalUniversality.group_evaluates",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalUniversality.universal_group",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalUniversality.universal_monoid",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalUniversality.group_computability_iff",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalUniversality.monoid_computability_iff",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "KTAIT.OperationalUniversality.execute_reversible_eq",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    }
+  ],
+  "files": {
+    "OperationalReversibility": "dfe5acd3267c33ba40d17cec072d10c0a812b5bc518f2fdd3f82464271c18148",
+    "OperationalUniversality": "520c7aee0a1c89704bc8192a88369b1d0be5d49f0d585429ef62509a1e282d4c"
+  }
+}

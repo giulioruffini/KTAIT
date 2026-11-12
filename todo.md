@@ -11,6 +11,7 @@
 - [ ] wrap long existing identifiers in the WP0195 module inventory and result prose; v22's new entries fit, but older entries overflow
 - [ ] connect WP0251's probability approximators to the effective block observer; formalize the quantum net/copy realization and link the concrete Meyer proof across toolchains
 - [ ] formalize the Gibbs reference semimeasure, uniform coding overhead, quantum data processing, and spectral limit
+- [x] formalize WP0215 general closure, finite-output reconstruction, orbit codes, and thermostat bounds; audit and synchronize the paper inventory
 - [x] prove WP0215's orbit-table recovery, equivariant-law count and closed quotient; document the conditional AIT coding interface and audit its dependencies
 - [x] independently review and prove the binary relative-entropy report inequality, including probability endpoints, and compose it with the named coding/quantum budget premises
 - [x] check the scalar reliable-report bound with coding and physical budget as explicit premises
@@ -27,8 +28,3 @@
 - [x] register WP0203 v23 and correct the self-regulation docstring without changing statements or proofs — 2026-09-19
 - [x] register WP0203 v24's three formats and verify the unchanged theorem dependencies — 2026-09-19
 - [x] formalize WP0203 v22's retained-model compensation, conservation, and initial-information inference; audit its 35 cited declarations — 2026-09-18
-- [x] register all WP0203 v21 formats and verify their existing theorem dependencies — 2026-09-18
-- [x] prove WP0228 marking budget and coverage, descriptor parsing, finite cardinality and structural-image bounds
-- [x] integrate the FunctionalCore module and WP0195 update with WP0007 v0.31.9
-- [x] formalize the conditional functional-core benchmark and its implementation bound
-- [x] separate reconstruction error from frame slack in APB and flow bounds, add conditional self-code update capacity, and audit axioms — 2026-10-03
