@@ -305,6 +305,7 @@ WP0251-manuscript-03_results | ../../BCOM WPs and Blogs/working_drafts/WP0251-Ph
 WP0251-manuscript-04_physics | ../../BCOM WPs and Blogs/working_drafts/WP0251-Physical_Computation_Finite_Information/manuscript/bcom/sections/04_physics.tex
 WP0251-manuscript-06_appendices | ../../BCOM WPs and Blogs/working_drafts/WP0251-Physical_Computation_Finite_Information/manuscript/bcom/sections/06_appendices.tex
 
+# WP0215 exact content quotient and reachable minimal realization; IS/MinimalRealization.lean.
 WP0215-author-WP0215_nc | ../../BCOM WPs and Blogs/working_drafts/WP0215-Simulation-Phenomenally-Itself/journal_version/WP0215_nc.tex
 
 WP0215-author-WP0215_nc_supplement | ../../BCOM WPs and Blogs/working_drafts/WP0215-Simulation-Phenomenally-Itself/journal_version/WP0215_nc_supplement.tex

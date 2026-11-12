@@ -1,5 +1,8 @@
 # TODO — KTAIT
 
+- [ ] publish the WP0215 coarsest-content branch only after K approves the Part 1 report
+- [x] prove the coarsest exact content quotient, monotonicity, and reachable quotient isomorphism; audit and document all declarations
+
 - [x] verify WP0215's informational self-model bound and synchronize the WP0195 inventory
 - [x] formalize WP0215 general closure, finite-output reconstruction, orbit codes, and thermostat bounds; audit and synchronize the paper inventory
 

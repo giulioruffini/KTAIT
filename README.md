@@ -86,7 +86,7 @@ declarations by source paper.
 | WP0218 (revision) | Reconstruction and capacity with neutral names: grouped and ordered completion balances, bounded internal budgets force external information; the five-record APB as the ordered instance | `grouped_completion_balance`, `ordered_bounded_internal_forces_external`, `apb_flow_from_ordered` | `CompletionLedger` |
 | WP0218 App. E | Singleton support layers are the graph of a permutation; exact-step layers are singletons; conserved orbit label | `unique_iff_permGraph`, `steps_unique_succ`, `orbit_label_of_unique` | `StateGraph` |
 | WP0218 (revision) | Acquired model, parameter, and residual costs; lossless recoding; innovation capacity and finite repeated-block recovery | `model_parameter_residual_bound`, `innovations_force_complement`, `block_residual_recovery` | `ModelAccounting` |
-| WP0215 | Common-semantics bound; boundary vs. organization; finite-horizon unfolding | `common_semantics_bound`, `boundary_eq_of_iso`, `no_fixed_unfolding_covers_all_horizons` | `IS/CommonSemantics`, `IS/Boundary`, `IS/Unfolding` |
+| WP0215 | Common semantics; boundary vs. organization; exact content quotients; finite-horizon unfolding | `common_semantics_bound`, `boundary_eq_of_iso`, `coarsest_factorization`, `reachable_quotient_iso`, `no_fixed_unfolding_covers_all_horizons` | `IS/CommonSemantics`, `IS/Boundary`, `IS/MinimalRealization`, `IS/Unfolding` |
 | WP0215 example | Symbolic first-jet extraction from arithmetic expressions; unique generator; Euler/RK4 scalar case | `symbolic_generator_sound`, `generator_unique`, `decay_common_core` | `ProgramGenerator` |
 | WP0251 operational information | Effective report search; conditional replacement and complete-report bounds; binary relative entropy and probability margins | replacement_bound, computable_of_bounded_replacements, budget_transfer, reliable_report_bound, reliable_report_of_binary_budget | OperationalInformation |
 | WP0229 | Deterministic experiments, observability, coordinate overwrites | `observable_conjugacy`, `overwrite_rigidity` | `ComputationCores` |
@@ -239,7 +239,7 @@ KTAIT/
 ├── CompletionLedger                                        — WP0218 revision (completion account)
 ├── StateGraph                                              — WP0218 App. E (support graphs, permutations)
 ├── OrbitLabel, NoetherFlow, ComputationCores               — orbit labels, Noether core, WP0229
-├── IS/  (CommonSemantics, Boundary, Unfolding)             — WP0215
+├── IS/  (CommonSemantics, Boundary, MinimalRealization, Unfolding)             — WP0215
 └── CertifiedPrograms/  (Certification, Marking, Encoding, Counting) — WP0228
 docs/WP0195.tex          — the status paper (canonical; symlinked from the working-drafts folder)
 docs/citing-papers.txt   — registry of papers whose \lean{}/\ktait{} citations the guard checks

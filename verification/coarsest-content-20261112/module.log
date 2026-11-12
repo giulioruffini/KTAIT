@@ -1,0 +1,7 @@
+ℹ [8558/8559] Replayed KTAIT.IS.Boundary
+info: KTAIT/IS/Boundary.lean:206:0: @boundary_eq_of_iso : ∀ {I O S₁ S₂ : Type} {M₁ : Machine S₁ I O} {M₂ : Machine S₂ I O} (Φ : InternalIso M₁ M₂)
+  (w : List I), M₁.boundary w = M₂.boundary w
+info: KTAIT/IS/Boundary.lean:207:0: parity4_boundary_eq_parity2 : ∀ (w : List Unit), parity4.boundary w = parity2.boundary w
+info: KTAIT/IS/Boundary.lean:208:0: parity4_not_internal_iso : ¬Nonempty (InternalIso parity4 parity2)
+✔ [8559/8559] Built KTAIT.IS.MinimalRealization (24s)
+Build completed successfully (8559 jobs).

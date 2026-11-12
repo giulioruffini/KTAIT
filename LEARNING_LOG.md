@@ -783,3 +783,7 @@ For a surjective reduction, forward closure is equivalent to a nondecreasing bin
 
 Index candidates by their realizations, since identical programs can have different excluded-part remainders. Signed conditional mutual information is bounded by a uniform candidate-complexity budget plus the named fixed projection cost; exclusion requires the declared tolerance to cover both. Physical admissibility and the experiential interpretation remain outside this arithmetic implication.
 The three new theorem axiom audits contain only `propext` and `Quot.sound`; the combined WP0215 audit passes for 139 declarations, including the six new definitions and theorems.
+
+## 2026-11-12 — Exact content-preserving minimal realization
+
+Indistinguishability over all finite input sequences gives the greatest stable relation inside the content kernel. An onto reduction factors uniquely through its quotient; matching initialized responses give isomorphic reachable quotients. Kept generic unmarked execution separate from the existing marked Machine interface, with a proved bridge, so empty source types are not excluded. The manifest currently indexes unqualified declaration names, so the concatenation helper uses run_sequence_append to avoid an ambiguous run_append fingerprint.

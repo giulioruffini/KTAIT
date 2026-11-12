@@ -1,0 +1,19 @@
+'KTAIT.IS.MinimalRealization.run_sequence_append' does not depend on any axioms
+'KTAIT.IS.MinimalRealization.indist_equivalence' does not depend on any axioms
+'KTAIT.IS.MinimalRealization.indist_closed' does not depend on any axioms
+'KTAIT.IS.MinimalRealization.indist_content' does not depend on any axioms
+'KTAIT.IS.MinimalRealization.indist_coarsest' does not depend on any axioms
+'KTAIT.IS.MinimalRealization.project_eq_iff' depends on axioms: [propext, Quot.sound]
+'KTAIT.IS.MinimalRealization.project_closed' depends on axioms: [Quot.sound]
+'KTAIT.IS.MinimalRealization.project_content' does not depend on any axioms
+'KTAIT.IS.MinimalRealization.coarsest_factorization' depends on axioms: [propext, Classical.choice, Quot.sound]
+'KTAIT.IS.MinimalRealization.factorization_preserves' depends on axioms: [Quot.sound]
+'KTAIT.IS.MinimalRealization.indist_mono_content' does not depend on any axioms
+'KTAIT.IS.MinimalRealization.run_map_inputs' does not depend on any axioms
+'KTAIT.IS.MinimalRealization.indist_mono_inputs' does not depend on any axioms
+'KTAIT.IS.MinimalRealization.run_machine' does not depend on any axioms
+'KTAIT.IS.MinimalRealization.reached_surjective' does not depend on any axioms
+'KTAIT.IS.MinimalRealization.reachStep_reached' depends on axioms: [Quot.sound]
+'KTAIT.IS.MinimalRealization.same_path_classes' depends on axioms: [propext, Quot.sound]
+'KTAIT.IS.MinimalRealization.reachMap_reached' depends on axioms: [propext, Classical.choice, Quot.sound]
+'KTAIT.IS.MinimalRealization.reachable_quotient_iso' depends on axioms: [propext, Classical.choice, Quot.sound]
