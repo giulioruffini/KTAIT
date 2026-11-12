@@ -1,0 +1,27 @@
+'KTAIT.CanonicalPrediction.tracking_canonical' depends on axioms: [propext, Quot.sound]
+'KTAIT.CanonicalPrediction.trackingEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+'KTAIT.CanonicalPrediction.trackingEquiv_project' depends on axioms: [propext, Classical.choice, Quot.sound]
+'KTAIT.CanonicalPrediction.trackingEquiv_step' depends on axioms: [propext, Classical.choice, Quot.sound]
+'KTAIT.CanonicalPrediction.generatedEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+'KTAIT.CanonicalPrediction.trackingGeneratedEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+'KTAIT.CanonicalPrediction.trackingGroupEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+'KTAIT.CanonicalPrediction.groupObservationStep' does not depend on any axioms
+'KTAIT.CanonicalPrediction.group_observation_generated' depends on axioms: [propext, Quot.sound]
+'KTAIT.CanonicalPrediction.group_observation_idempotents' depends on axioms: [propext, Quot.sound]
+'KTAIT.CanonicalPrediction.group_observation_group_isUnit' depends on axioms: [propext, Quot.sound]
+'KTAIT.CanonicalPrediction.group_observation_units' depends on axioms: [propext, Quot.sound]
+'KTAIT.CanonicalPrediction.Reach' does not depend on any axioms
+'KTAIT.CanonicalPrediction.start' does not depend on any axioms
+'KTAIT.CanonicalPrediction.step' depends on axioms: [propext, Quot.sound]
+'KTAIT.CanonicalPrediction.reach_run' depends on axioms: [propext, Quot.sound]
+'KTAIT.CanonicalPrediction.prediction_reach_accessible' depends on axioms: [propext, Quot.sound]
+'KTAIT.CanonicalPrediction.reachProject' does not depend on any axioms
+'KTAIT.CanonicalPrediction.reachProject_surjective' does not depend on any axioms
+'KTAIT.CanonicalPrediction.reachProject_start' does not depend on any axioms
+'KTAIT.CanonicalPrediction.reachProject_step' depends on axioms: [propext, Quot.sound]
+'KTAIT.CanonicalPrediction.reachProject_content' does not depend on any axioms
+'KTAIT.CanonicalPrediction.observableReachEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+'KTAIT.CanonicalPrediction.PredictionFactor' depends on axioms: [propext, Quot.sound]
+'KTAIT.CanonicalPrediction.prediction_factor' depends on axioms: [propext, Classical.choice, Quot.sound]
+'KTAIT.CanonicalPrediction.prediction_factor_kernel' depends on axioms: [propext, Quot.sound]
+'KTAIT.CanonicalPrediction.prediction_divides' depends on axioms: [propext, Classical.choice, Quot.sound]

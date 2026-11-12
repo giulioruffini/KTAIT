@@ -69,3 +69,4 @@ import KTAIT.OperationalUniversality
 import KTAIT.OperationalActions
 import KTAIT.SemigroupCore
 import KTAIT.SemigroupTracking
+import KTAIT.CanonicalPrediction

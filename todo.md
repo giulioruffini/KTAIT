@@ -6,7 +6,8 @@
 - [ ] wrap long existing identifiers in the WP0195 module inventory and result prose; v22's new entries fit, but older entries overflow
 - [ ] connect WP0251's probability approximators to the effective block observer; formalize the quantum net/copy realization and link the concrete Meyer proof across toolchains
 - [ ] formalize the Gibbs reference semimeasure, uniform coding overhead, quantum data processing, and spectral limit
-- [x] update the WP0004 registry label to v0.5.0 and verify its live paper references
+- [x] prove canonical tracking and exact initialized prediction; audit 27 declarations and build the full library
+- [x] update the WP0004 registry label to v0.6.0 and verify the current paper references
 - [x] reuse WP0004 future equivalence and refinement, specialize factorization and reachable quotient isomorphism, and audit the combined development
 - [x] verify WP0215's informational self-model bound and synchronize the WP0195 inventory
 - [x] formalize WP0215 general closure, finite-output reconstruction, orbit codes, and thermostat bounds; audit and synchronize the paper inventory

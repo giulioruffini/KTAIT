@@ -816,3 +816,9 @@ An idempotent corner has its own identity, so it cannot be modeled as a submonoi
 ## 2026-11-12 — Noncomputable definitions in citation guards
 
 The operational division composition is a `noncomputable def`; the name and claim scanners skipped that modifier although the pin checker resolved it. Both scanners now accept the modifier. A temporary absolute-path registry exercises the current manuscript sources in isolated worktrees, where ordinary relative registrations would be skipped.
+
+## 2026-11-12 — Exact prediction and reachable canonical descriptions
+
+Initialized agreement constrains reachable states. Observable-world uniqueness derives the predictor-to-world map and its kernel; three systems agreeing at one content interface share reachable minimal descriptions without requiring maps onto one another's full states. A closed readout identifies its quotient by kernel equality, which transports the generated action. In the group-plus-observation case, print the all-group-label and constant-readout assumptions before classifying transformations.
+
+The manifest still indexes unqualified theorem names. The new helper is `prediction_reach_accessible` to avoid colliding with the existing minimal-realization theorem; no statement changed.

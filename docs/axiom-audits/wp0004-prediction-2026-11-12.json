@@ -1,0 +1,109 @@
+{
+  "checked_declarations": 27,
+  "allowed_axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "sorryAx": false,
+  "custom_axioms": false,
+  "utc": "2026-11-12T11:16:10.431340+00:00",
+  "declarations": {
+    "KTAIT.CanonicalPrediction.tracking_canonical": [
+      "propext",
+      "Quot.sound"
+    ],
+    "KTAIT.CanonicalPrediction.trackingEquiv": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.CanonicalPrediction.trackingEquiv_project": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.CanonicalPrediction.trackingEquiv_step": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.CanonicalPrediction.generatedEquiv": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.CanonicalPrediction.trackingGeneratedEquiv": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.CanonicalPrediction.trackingGroupEquiv": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.CanonicalPrediction.groupObservationStep": [],
+    "KTAIT.CanonicalPrediction.group_observation_generated": [
+      "propext",
+      "Quot.sound"
+    ],
+    "KTAIT.CanonicalPrediction.group_observation_idempotents": [
+      "propext",
+      "Quot.sound"
+    ],
+    "KTAIT.CanonicalPrediction.group_observation_group_isUnit": [
+      "propext",
+      "Quot.sound"
+    ],
+    "KTAIT.CanonicalPrediction.group_observation_units": [
+      "propext",
+      "Quot.sound"
+    ],
+    "KTAIT.CanonicalPrediction.Reach": [],
+    "KTAIT.CanonicalPrediction.start": [],
+    "KTAIT.CanonicalPrediction.step": [
+      "propext",
+      "Quot.sound"
+    ],
+    "KTAIT.CanonicalPrediction.reach_run": [
+      "propext",
+      "Quot.sound"
+    ],
+    "KTAIT.CanonicalPrediction.prediction_reach_accessible": [
+      "propext",
+      "Quot.sound"
+    ],
+    "KTAIT.CanonicalPrediction.reachProject": [],
+    "KTAIT.CanonicalPrediction.reachProject_surjective": [],
+    "KTAIT.CanonicalPrediction.reachProject_start": [],
+    "KTAIT.CanonicalPrediction.reachProject_step": [
+      "propext",
+      "Quot.sound"
+    ],
+    "KTAIT.CanonicalPrediction.reachProject_content": [],
+    "KTAIT.CanonicalPrediction.observableReachEquiv": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.CanonicalPrediction.PredictionFactor": [
+      "propext",
+      "Quot.sound"
+    ],
+    "KTAIT.CanonicalPrediction.prediction_factor": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.CanonicalPrediction.prediction_factor_kernel": [
+      "propext",
+      "Quot.sound"
+    ],
+    "KTAIT.CanonicalPrediction.prediction_divides": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ]
+  }
+}
