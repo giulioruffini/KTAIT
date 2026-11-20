@@ -1,7 +1,7 @@
 /-
 Copyright (c) 2026 Giulio Ruffini. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Giulio Ruffini (with Claude and Codex)
+Authors: Giulio Ruffini (with Claude, Codex)
 -/
 import Mathlib
 import KTAIT.CanonicalPrediction
@@ -141,6 +141,18 @@ theorem decoder_factor (hclose : EmulatesWithin F π x₀ T o w₀ δ)
     obtain ⟨s, hs⟩ := x.property
     rw [decoder_reached hclose hsep x s hs, ← hs]
     exact hclose s
+
+/-- Any map from reachable emulator states to reachable target classes that preserves the
+marking and commutes with the updates is the decoder. -/
+theorem decoder_unique (hclose : EmulatesWithin F π x₀ T o w₀ δ)
+    (hsep : SeparatedBeyond T o w₀ δ) (q : Reach F x₀ → Reachable T o w₀)
+    (hstart : q (start F x₀) = reached T o w₀ [])
+    (hstep : ∀ a x, q (step F x₀ a x) = reachStep T o w₀ a (q x)) :
+    q = decoder F x₀ T o w₀ :=
+  initialized_intertwiner_unique (step F x₀) (reachStep T o w₀) (start F x₀)
+    (prediction_reach_accessible F x₀) q (decoder F x₀ T o w₀)
+    (hstart.trans (decoder_factor hclose hsep).2.1.symm) hstep
+    (decoder_factor hclose hsep).2.2.1
 
 /-- **Half-separation theorem.** Uniform emulation within `δ` of a target whose reachable
 classes are separated by more than `2 * δ` gives a unique marked factor from the reachable

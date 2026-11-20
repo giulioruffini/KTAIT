@@ -1,5 +1,5 @@
 {
-  "checked_declarations": 35,
+  "checked_declarations": 36,
   "allowed_axioms": [
     "Classical.choice",
     "Quot.sound",
@@ -7,7 +7,7 @@
   ],
   "sorryAx": false,
   "custom_axioms": false,
-  "utc": "2026-11-20T19:40:31.737004+00:00",
+  "utc": "2026-11-20T19:54:36.655010+00:00",
   "declarations": {
     "KTAIT.ApproximateEmulation.run_concat": [
       "propext",
@@ -51,6 +51,11 @@
       "Quot.sound"
     ],
     "KTAIT.ApproximateEmulation.decoder_factor": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.ApproximateEmulation.decoder_unique": [
       "propext",
       "Classical.choice",
       "Quot.sound"

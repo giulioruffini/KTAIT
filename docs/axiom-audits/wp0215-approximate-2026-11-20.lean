@@ -10,6 +10,7 @@ import KTAIT.IS.PredictionRadius
 #print axioms KTAIT.ApproximateEmulation.reachStep_reached
 #print axioms KTAIT.ApproximateEmulation.ApproximateFactor
 #print axioms KTAIT.ApproximateEmulation.decoder_factor
+#print axioms KTAIT.ApproximateEmulation.decoder_unique
 #print axioms KTAIT.ApproximateEmulation.approximate_emulation_factor
 #print axioms KTAIT.ApproximateEmulation.approximate_emulation_divides
 #print axioms KTAIT.ApproximateEmulation.approximate_emulation_monoid_onto
