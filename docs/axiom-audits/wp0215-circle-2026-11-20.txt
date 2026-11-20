@@ -1,0 +1,2 @@
+'KTAIT.CircleTracking.finite_rotation_error' depends on axioms: [propext, Classical.choice, Quot.sound]
+'KTAIT.CircleTracking.irrational_rotation_error' depends on axioms: [propext, Classical.choice, Quot.sound]

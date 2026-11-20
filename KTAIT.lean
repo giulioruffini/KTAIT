@@ -50,6 +50,7 @@ import KTAIT.OperationalAlgebra
 import KTAIT.IS.MinimalRealization
 import KTAIT.IS.Unfolding
 import KTAIT.IS.PredictionRadius
+import KTAIT.IS.CircleTracking
 import KTAIT.ToyModel
 import KTAIT.BadStatements
 import KTAIT.ClosureInvariance

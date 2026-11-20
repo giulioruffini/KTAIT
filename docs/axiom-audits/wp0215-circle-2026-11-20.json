@@ -1,0 +1,23 @@
+{
+  "checked_declarations": 2,
+  "allowed_axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "sorryAx": false,
+  "custom_axioms": false,
+  "utc": "2026-11-20T19:50:20.545456+00:00",
+  "declarations": {
+    "KTAIT.CircleTracking.finite_rotation_error": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.CircleTracking.irrational_rotation_error": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ]
+  }
+}
