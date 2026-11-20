@@ -1,0 +1,43 @@
+'KTAIT.ApproximateEmulation.run_concat' depends on axioms: [propext, Quot.sound]
+'KTAIT.ApproximateEmulation.EmulatesWithin' depends on axioms: [propext, Classical.choice, Quot.sound]
+'KTAIT.ApproximateEmulation.SeparatedBeyond' depends on axioms: [propext, Classical.choice, Quot.sound]
+'KTAIT.ApproximateEmulation.same_state_readings_close' depends on axioms: [propext, Classical.choice, Quot.sound]
+'KTAIT.ApproximateEmulation.same_state_same_class' depends on axioms: [propext, Classical.choice, Quot.sound]
+'KTAIT.ApproximateEmulation.decoder' depends on axioms: [Classical.choice]
+'KTAIT.ApproximateEmulation.decoder_reached' depends on axioms: [propext, Classical.choice, Quot.sound]
+'KTAIT.ApproximateEmulation.reachStep_reached' depends on axioms: [propext, Quot.sound]
+'KTAIT.ApproximateEmulation.ApproximateFactor' depends on axioms: [propext, Classical.choice, Quot.sound]
+'KTAIT.ApproximateEmulation.decoder_factor' depends on axioms: [propext, Classical.choice, Quot.sound]
+'KTAIT.ApproximateEmulation.approximate_emulation_factor' depends on axioms: [propext, Classical.choice, Quot.sound]
+'KTAIT.ApproximateEmulation.approximate_emulation_divides' depends on axioms: [propext, Classical.choice, Quot.sound]
+'KTAIT.ApproximateEmulation.approximate_emulation_monoid_onto' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'KTAIT.ApproximateEmulation.approximate_emulation_submonoid_top' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'KTAIT.ApproximateEmulation.approximate_emulation_update_monoid_onto' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'KTAIT.ApproximateEmulation.approximate_emulation_lifts_group' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'KTAIT.ApproximateEmulation.EmulatesWithinUpTo' depends on axioms: [propext, Classical.choice, Quot.sound]
+'KTAIT.ApproximateEmulation.finite_horizon_distinct_states' depends on axioms: [propext, Classical.choice, Quot.sound]
+'KTAIT.ApproximateEmulation.finite_horizon_memory_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'KTAIT.ApproximateEmulation.toggle' does not depend on any axioms
+'KTAIT.ApproximateEmulation.toggleReading' depends on axioms: [propext, Classical.choice, Quot.sound]
+'KTAIT.ApproximateEmulation.half_separation_sharp' depends on axioms: [propext, Classical.choice, Quot.sound]
+'KTAIT.ApproximateEmulation.two_point_prediction_floor' depends on axioms: [propext, Classical.choice, Quot.sound]
+'KTAIT.ApproximateEmulation.deterministic_one_step_floor' depends on axioms: [propext, Classical.choice, Quot.sound]
+'KTAIT.ApproximateClosure.successorError' depends on axioms: [propext, Classical.choice, Quot.sound]
+'KTAIT.ApproximateClosure.successorRadius' depends on axioms: [propext, Classical.choice, Quot.sound]
+'KTAIT.ApproximateClosure.deterministic_error_floor' depends on axioms: [propext, Classical.choice, Quot.sound]
+'KTAIT.ApproximateClosure.diameter_le_twice_radius' depends on axioms: [propext, Classical.choice, Quot.sound]
+'KTAIT.ApproximateClosure.radius_le_diameter' depends on axioms: [propext, Classical.choice, Quot.sound]
+'KTAIT.ApproximateClosure.affine_hidden_minimax' depends on axioms: [propext, Classical.choice, Quot.sound]
+'KTAIT.ApproximateClosure.weakGain' depends on axioms: [propext, Classical.choice, Quot.sound]
+'KTAIT.ApproximateClosure.weakRetained' depends on axioms: [propext, Classical.choice, Quot.sound]
+'KTAIT.ApproximateClosure.weak_retained_affine' depends on axioms: [propext, Classical.choice, Quot.sound]
+'KTAIT.ApproximateClosure.weak_gain_sum' depends on axioms: [propext, Classical.choice, Quot.sound]
+'KTAIT.ApproximateClosure.weak_retained_minimax' depends on axioms: [propext, Classical.choice, Quot.sound]

@@ -1,0 +1,180 @@
+{
+  "checked_declarations": 35,
+  "allowed_axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "sorryAx": false,
+  "custom_axioms": false,
+  "utc": "2026-11-20T19:40:31.737004+00:00",
+  "declarations": {
+    "KTAIT.ApproximateEmulation.run_concat": [
+      "propext",
+      "Quot.sound"
+    ],
+    "KTAIT.ApproximateEmulation.EmulatesWithin": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.ApproximateEmulation.SeparatedBeyond": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.ApproximateEmulation.same_state_readings_close": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.ApproximateEmulation.same_state_same_class": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.ApproximateEmulation.decoder": [
+      "Classical.choice"
+    ],
+    "KTAIT.ApproximateEmulation.decoder_reached": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.ApproximateEmulation.reachStep_reached": [
+      "propext",
+      "Quot.sound"
+    ],
+    "KTAIT.ApproximateEmulation.ApproximateFactor": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.ApproximateEmulation.decoder_factor": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.ApproximateEmulation.approximate_emulation_factor": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.ApproximateEmulation.approximate_emulation_divides": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.ApproximateEmulation.approximate_emulation_monoid_onto": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.ApproximateEmulation.approximate_emulation_submonoid_top": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.ApproximateEmulation.approximate_emulation_update_monoid_onto": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.ApproximateEmulation.approximate_emulation_lifts_group": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.ApproximateEmulation.EmulatesWithinUpTo": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.ApproximateEmulation.finite_horizon_distinct_states": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.ApproximateEmulation.finite_horizon_memory_bound": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.ApproximateEmulation.toggle": [],
+    "KTAIT.ApproximateEmulation.toggleReading": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.ApproximateEmulation.half_separation_sharp": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.ApproximateEmulation.two_point_prediction_floor": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.ApproximateEmulation.deterministic_one_step_floor": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.ApproximateClosure.successorError": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.ApproximateClosure.successorRadius": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.ApproximateClosure.deterministic_error_floor": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.ApproximateClosure.diameter_le_twice_radius": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.ApproximateClosure.radius_le_diameter": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.ApproximateClosure.affine_hidden_minimax": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.ApproximateClosure.weakGain": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.ApproximateClosure.weakRetained": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.ApproximateClosure.weak_retained_affine": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.ApproximateClosure.weak_gain_sum": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.ApproximateClosure.weak_retained_minimax": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ]
+  }
+}

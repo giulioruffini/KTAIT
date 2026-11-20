@@ -49,6 +49,7 @@ import KTAIT.IS.Boundary
 import KTAIT.OperationalAlgebra
 import KTAIT.IS.MinimalRealization
 import KTAIT.IS.Unfolding
+import KTAIT.IS.PredictionRadius
 import KTAIT.ToyModel
 import KTAIT.BadStatements
 import KTAIT.ClosureInvariance
@@ -70,3 +71,4 @@ import KTAIT.OperationalActions
 import KTAIT.SemigroupCore
 import KTAIT.SemigroupTracking
 import KTAIT.CanonicalPrediction
+import KTAIT.ApproximateEmulation

@@ -1,0 +1,37 @@
+import KTAIT.ApproximateEmulation
+import KTAIT.IS.PredictionRadius
+#print axioms KTAIT.ApproximateEmulation.run_concat
+#print axioms KTAIT.ApproximateEmulation.EmulatesWithin
+#print axioms KTAIT.ApproximateEmulation.SeparatedBeyond
+#print axioms KTAIT.ApproximateEmulation.same_state_readings_close
+#print axioms KTAIT.ApproximateEmulation.same_state_same_class
+#print axioms KTAIT.ApproximateEmulation.decoder
+#print axioms KTAIT.ApproximateEmulation.decoder_reached
+#print axioms KTAIT.ApproximateEmulation.reachStep_reached
+#print axioms KTAIT.ApproximateEmulation.ApproximateFactor
+#print axioms KTAIT.ApproximateEmulation.decoder_factor
+#print axioms KTAIT.ApproximateEmulation.approximate_emulation_factor
+#print axioms KTAIT.ApproximateEmulation.approximate_emulation_divides
+#print axioms KTAIT.ApproximateEmulation.approximate_emulation_monoid_onto
+#print axioms KTAIT.ApproximateEmulation.approximate_emulation_submonoid_top
+#print axioms KTAIT.ApproximateEmulation.approximate_emulation_update_monoid_onto
+#print axioms KTAIT.ApproximateEmulation.approximate_emulation_lifts_group
+#print axioms KTAIT.ApproximateEmulation.EmulatesWithinUpTo
+#print axioms KTAIT.ApproximateEmulation.finite_horizon_distinct_states
+#print axioms KTAIT.ApproximateEmulation.finite_horizon_memory_bound
+#print axioms KTAIT.ApproximateEmulation.toggle
+#print axioms KTAIT.ApproximateEmulation.toggleReading
+#print axioms KTAIT.ApproximateEmulation.half_separation_sharp
+#print axioms KTAIT.ApproximateEmulation.two_point_prediction_floor
+#print axioms KTAIT.ApproximateEmulation.deterministic_one_step_floor
+#print axioms KTAIT.ApproximateClosure.successorError
+#print axioms KTAIT.ApproximateClosure.successorRadius
+#print axioms KTAIT.ApproximateClosure.deterministic_error_floor
+#print axioms KTAIT.ApproximateClosure.diameter_le_twice_radius
+#print axioms KTAIT.ApproximateClosure.radius_le_diameter
+#print axioms KTAIT.ApproximateClosure.affine_hidden_minimax
+#print axioms KTAIT.ApproximateClosure.weakGain
+#print axioms KTAIT.ApproximateClosure.weakRetained
+#print axioms KTAIT.ApproximateClosure.weak_retained_affine
+#print axioms KTAIT.ApproximateClosure.weak_gain_sum
+#print axioms KTAIT.ApproximateClosure.weak_retained_minimax
