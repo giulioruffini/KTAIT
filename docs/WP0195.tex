@@ -167,8 +167,11 @@ Kraft's inequality, Bayes' rule, the Solomonoff--Levin universal semimeasure, th
 theorem, Rice's and Chaitin's theorems, and the Vereshchagin--Vitányi structure-function
 results) are taken as a clearly delimited \emph{axiom layer}. Every \emph{KT} corollary is then
 \emph{proved} from that layer with no \lean{sorry}, and a toy model witnesses that the axiom
-layer is jointly satisfiable (so the corollaries are not vacuously true). This working paper
-states the methodology, fixes the axiom layer, inventories every theorem/lemma across the KT
+layer is jointly satisfiable (so the corollaries are not vacuously true). The development has
+since grown beyond that interface: it also checks finite and algebraic results that need no AIT
+hypothesis, among them the operational algebra of computation (WP0004) and the exact and
+approximate emulation and group-lifting results used for brain simulation (WP0215). This working
+paper states the methodology, fixes the axiom layer, inventories every theorem/lemma across the KT
 corpus with its current formalization status, and sets a prioritized roadmap.
 \end{abstract}
 
@@ -228,6 +231,12 @@ The current effort is \textbf{Level~1} (a typed, axiomatic KT/AIT interface) plu
 the coding-theorem bridge). Out of scope for now: a computability-backed $K$ from a concrete
 universal machine (Level~2), and the differential-geometric (Lie-group / Noether) layer of the
 world-models paper,\cite{ruffini2025worldmodels} which is a separate track.
+
+Since October 2026 the repository also holds developments that stand outside these levels
+because they assume no AIT interface: the operational algebra of computation (WP0004) and the
+closure, emulation, and group-lifting results of WP0215. The one rule applies to them unchanged:
+no \lean{sorry}, and \lean{\#print axioms} shows Lean's core axioms only.
+Section~\ref{sec:status} lists every module with the paper it serves.
 
 \subsection{Citing the formalization}
 \label{sec:citing}
@@ -2178,6 +2187,12 @@ reduction to Vereshchagin--Vitányi (\lean{theoremB}, \lean{corollaryB}).
 \smallskip\noindent\textbf{All five roadmap phases are complete.} The WP0162 / WP0192 / WP0193
 KT corollaries and the full probabilistic ART layer are machine-checked, \lean{sorry}-free,
 resting only on Lean core plus the named AIT axiom layer of \S\ref{sec:axioms}.
+\item[Since then --- paper by paper.] The development now follows the papers. A new KT paper
+states which of its claims are machine-checked, cites the declarations with
+\ktait{\textbackslash ktait}, and pins a commit; the guard of \S\ref{sec:citing} keeps the paper
+and the proofs in step. The module table of \S\ref{sec:status} records the lines added this way,
+among them the information accounting of WP0203 and WP0218, the operational algebra of WP0004,
+and the closure and emulation results of WP0215.
 \item[\textcolor{gray}{Later --- geometry track.}] The Lie-group/Noether layer of the world-models
 paper is a distinct development (differential geometry in Mathlib), deferred until the AIT/KT core
 is complete.
@@ -2192,9 +2207,10 @@ Lean core + named hypotheses; new hypotheses discharged by an extended toy model
 We have a green, machine-checked Level-1/1.5 core: the probabilistic ART (Theorem~2), the
 Bayes$\leftrightarrow$Kolmogorov bridge (Lemma~1), the temporal self-model (Proposition~3), and
 persistence, all proved from an explicit, satisfiable AIT/Bayes axiom layer, with the KT ontology
-typed so the whole-vs-part error cannot compile. This document is the living status tracker; the
-roadmap above closes the remaining KT corollaries paper-by-paper while keeping the soundness
-invariants intact.
+typed so the whole-vs-part error cannot compile. Around that core the repository now carries the
+formal claims of the later KT papers, including results on computation and emulation that assume
+no AIT interface. This document is the living status tracker; the citation guard ties each
+paper's machine-checked claims to the commit it pins.
 
 % ── Bibliography (manual) ─────────────────────────────────────────────
 \begin{thebibliography}{9}
