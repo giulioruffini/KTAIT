@@ -1,10 +1,13 @@
 # TODO — KTAIT
 
+- [ ] ask K whether to cut WP0195 on Calliope whenever a paper that cites new KTAIT proofs is released (v0.7.0 of 22 October sat a month and 26 modules behind the repository)
+- [ ] ask K whether the WP0195 abstract may drop three LaTeX constructs (the lean macro around KTAIT, the tie in "Lean 4", "e.g." with a control space): Calliope reads the abstract from the source and they appear literally in the Zenodo description
+- [x] WP0195 v0.8.0 public, 2026-11-21: abstract, Scope, roadmap and conclusion state the lines outside the AIT interface (7c0752b); Calliope v0.8.0, Zenodo DOI 10.5281/zenodo.24425735
 - [x] WP0215 approximate emulation: half-separation factor, monoid map, group lifting, sharpness, bounded-horizon memory bound (ApproximateEmulation.lean) and the prediction radius (IS/PredictionRadius.lean, Kaiti); 36 declarations audited — 2026-11-20
 - [x] WP0215 circle tracking: a finite deterministic tracker of a rotation of infinite order errs by at least half the period (IS/CircleTracking.lean, Kaiti); 2 declarations audited — 2026-11-20
 - [x] WP0215 quarter-turn group: heading error below a quarter revolution under repeated quarter turns forces a group onto Z/4 in a finite emulator, sharp at a quarter revolution (QuarterTurn.lean); 11 declarations audited — 2026-11-21
-- [ ] WP0215 quarter-turn group: local branch wp0215-quarter-turn-20261121 is not pushed; push needs K's word, and the supplement may cite it only after
-- [ ] push branch wp0215-approximate-emulation-20261120 and move the WP0215 pin once K approves publishing the result and the supplement cites the declarations
+- [x] WP0215 quarter-turn group published: public main at c6c8b6f since 2026-11-21 12:34 CET, at K's word ("publish and install"); the WP0215 supplement cites the declarations and pins that commit
+- [x] WP0215 approximate-emulation branch published: public main at e844c2f since 2026-11-21 12:04 CET, at K's word ("ok, publish the proofs"); pins moved
 - [ ] obtain K’s direct authorization before merging and pushing the integrated WP0004/WP0215 checkpoint
 - [ ] connect WP0228 finite marking and descriptor codes to partial-recursive decoders and optimal prefix evaluators
 - [ ] replace the named bounded-width tree-labeling premise with a checked online label construction
