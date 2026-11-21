@@ -1,0 +1,66 @@
+{
+  "checked_declarations": 11,
+  "allowed_axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "sorryAx": false,
+  "custom_axioms": false,
+  "utc": "2026-11-21T11:14:55.172054+00:00",
+  "declarations": {
+    "KTAIT.QuarterTurn.nsmul_quarter_of_mod_four_eq_two": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.QuarterTurn.quarter_turn_period": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.QuarterTurn.cast_eq_of_iterate_eq": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.QuarterTurn.finite_quarter_turn_cycle": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.QuarterTurn.run_fourTurn": [
+      "propext",
+      "Quot.sound"
+    ],
+    "KTAIT.QuarterTurn.rotationHom_injective": [
+      "propext",
+      "Quot.sound"
+    ],
+    "KTAIT.QuarterTurn.quarter_turn_divides": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.QuarterTurn.quarter_turn_lifts_group": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.QuarterTurn.norm_quarter": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.QuarterTurn.four_nsmul_quarter": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "KTAIT.QuarterTurn.quarter_turn_sharp": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ]
+  }
+}

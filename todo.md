@@ -2,6 +2,8 @@
 
 - [x] WP0215 approximate emulation: half-separation factor, monoid map, group lifting, sharpness, bounded-horizon memory bound (ApproximateEmulation.lean) and the prediction radius (IS/PredictionRadius.lean, Kaiti); 36 declarations audited — 2026-11-20
 - [x] WP0215 circle tracking: a finite deterministic tracker of a rotation of infinite order errs by at least half the period (IS/CircleTracking.lean, Kaiti); 2 declarations audited — 2026-11-20
+- [x] WP0215 quarter-turn group: heading error below a quarter revolution under repeated quarter turns forces a group onto Z/4 in a finite emulator, sharp at a quarter revolution (QuarterTurn.lean); 11 declarations audited — 2026-11-21
+- [ ] WP0215 quarter-turn group: local branch wp0215-quarter-turn-20261121 is not pushed; push needs K's word, and the supplement may cite it only after
 - [ ] push branch wp0215-approximate-emulation-20261120 and move the WP0215 pin once K approves publishing the result and the supplement cites the declarations
 - [ ] obtain K’s direct authorization before merging and pushing the integrated WP0004/WP0215 checkpoint
 - [ ] connect WP0228 finite marking and descriptor codes to partial-recursive decoders and optimal prefix evaluators
